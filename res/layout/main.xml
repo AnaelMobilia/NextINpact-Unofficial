@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    
-    
-    <!--<LinearLayout
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+    <LinearLayout
         android:orientation="vertical"
     	android:background="@drawable/header"
         android:layout_width="fill_parent"
@@ -25,25 +25,27 @@
             android:layout_gravity="center"
             android:text="@string/app_name" />
             
-    </LinearLayout>-->
-    
-    
-        <TextView  android:id="@+id/header_text"
+    </LinearLayout>
+    -->
+
+    <TextView
+        android:id="@+id/header_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:background="@android:color/black"
-            android:textColor="@android:color/white"
-            android:singleLine="true"
-            android:gravity="center" />
-    
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
     <com.handmark.pulltorefresh.library.PullToRefreshListView
-    android:id="@+id/listview"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent" />
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
     <!--
        <com.pcinpact.views.PullToRefreshListView	android:id="@+id/listview"
     			android:layout_width="fill_parent"
     			android:layout_height="fill_parent" />
-    			-->
+    -->
+
 </LinearLayout>
