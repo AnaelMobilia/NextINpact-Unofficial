@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  					android:layout_width="fill_parent"
+  					android:layout_height="wrap_content" 
+  					android:orientation="vertical"
+  					android:gravity="center_horizontal">
+  					
+      <TextView android:id="@+id/TextViewDay"
+          			android:background="#E0E0E0"
+            	  android:layout_width="fill_parent"
+            	  android:layout_height="wrap_content"
+             	  android:textAppearance="?android:attr/textAppearanceMedium"
+             	  android:gravity="center_horizontal"
+             	  android:textColor="#F06D2F"/>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    				android:id="@+id/LinearLayoutForArticle"
+  					android:layout_width="fill_parent"
+  					android:layout_height="wrap_content" 
+  					android:orientation="horizontal"
+  					android:paddingLeft="9dip"
+    				android:paddingRight="5dip"
+  					android:gravity="center_vertical">
+  					
+	<RelativeLayout android:id="@+id/RelativeLayout01"
+    				android:layout_width="wrap_content"
+    				android:layout_height="wrap_content">		
+	
+		<ImageView android:src="@drawable/logo_pcinpact"
+    			    android:id="@+id/ImageView01"
+    			   android:layout_width="70dp"
+    		 	   android:layout_height="70dp" />
+	</RelativeLayout>
+	<LinearLayout android:layout_width="0dip"
+        		  android:layout_height="wrap_content"
+        		  android:layout_weight="1"
+        		  android:layout_marginLeft="5dip"
+        		  android:paddingTop="5dip"
+        		  android:paddingBottom="7dip"
+        		  android:orientation="vertical"
+        		  android:gravity="center_vertical">
+		
+
+        <TextView android:id="@+id/TextView01"
+            	  android:layout_width="wrap_content"
+            	  android:layout_height="wrap_content"
+             	  android:textAppearance="?android:attr/textAppearanceSmall"
+             	  android:textStyle="bold"/>
+        
+        <LinearLayout android:layout_width="wrap_content"
+        		  android:layout_height="wrap_content"
+        		  android:orientation="horizontal" >
+        		 
+
+	        <TextView android:id="@+id/TextViewSubTitle"
+	            	  android:layout_width="wrap_content"
+	            	  android:layout_height="wrap_content"
+	            	  android:textColor="#566189"
+	            	  android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </LinearLayout>
+        
+        
+	    <TextView android:id="@+id/TextViewCommentsCount"
+	            	  android:layout_width="wrap_content"
+		        	  android:layout_height="wrap_content"
+		        	  android:layout_gravity="right"
+	            	  android:textSize="10sp"
+	            	  android:paddingRight="5dip"
+	            	  android:drawableRight="@drawable/small_comms"/>
+        
+         
+    </LinearLayout>
+  	
+</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="hello">Hello World</string>
+    <string name="app_name">PCINpact (Unofficial)</string>
+    <string name="refresh">Rafraîchir</string>
+    <string name="pull_to_refresh_pull_label">Tirer pour rafraîchir...</string>
+    <string name="pull_to_refresh_release_label">Relâcher pour rafraîchir...</string>
+    <string name="pull_to_refresh_refreshing_label">Chargement...</string>
+    <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
+    <string name="comments">Commentaires</string>
+    <string name="home">Accueil</string>
+</resources>
