@@ -310,13 +310,15 @@ public class HtmlParser {
 		 */
 
 		List<TempClass> days = new ArrayList<TempClass>();
-
 		for (TagNode htmlSpan : rootNode.getElementsByAttValue("class",
 				"actu_separator_date", true, true)) {
+
 			TempClass temp = new TempClass();
 			temp.index = htmlSpan.getParent().getChildIndex(htmlSpan);
-			temp.value = htmlSpan.getText().toString();
-
+			// Date qui sera affichée
+			HtmlCleaner monHtmlCleaner = new HtmlCleaner();
+			temp.value = monHtmlCleaner.getInnerHtml(htmlSpan);
+						
 			days.add(temp);
 		}
 
