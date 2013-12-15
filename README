@@ -1,0 +1,16 @@
+Librairies utilisées par le projet :
+HtmlCleaner
+	v2.2
+	http://htmlcleaner.sourceforge.net
+	Nettoie le code HTML téléchargé (convertion des html entities & co)
+
+PullToRefreshLibrary
+	/*/*/ DEPRECATED */*/
+	v2.1.2-SNAPSHOT
+	https://github.com/chrisbanes/Android-PullToRefresh
+	Rechargement de la liste des articles au touch + pull
+		
+SherlockBarLibrary
+	v4.2.0
+	http://actionbarsherlock.com/
+	Mise en page de ... ? (permet une unification de code pour les plateformes Android 3.*)

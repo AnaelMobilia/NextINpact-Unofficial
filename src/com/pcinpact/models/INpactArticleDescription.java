@@ -9,6 +9,10 @@ public class INpactArticleDescription implements Serializable {
 	private String articleID;
 
 	public String title;// imagine {get;set;}
+
+	/**
+	 * Heure de publication de l'article
+	 */
 	public String date;// imagine {get;set;}
 	public String subTitle;// imagine {get;set;}
 	public String numberOfComs;// imagine {get;set;}

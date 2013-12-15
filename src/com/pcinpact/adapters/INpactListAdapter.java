@@ -109,6 +109,7 @@ public class INpactListAdapter extends BaseAdapter {
 	}
 
 	/**
+	 * Article dans la liste principale
 	 * Make a view to hold each row.
 	 * 
 	 * @see android.widget.ListAdapter#getView(int, android.view.View,
@@ -131,15 +132,18 @@ public class INpactListAdapter extends BaseAdapter {
 			holder.day.setVisibility(View.GONE);
 
 			holder.container.setVisibility(View.VISIBLE);
-
+			// Titre de l'article
 			holder.title.setText(entry.article.title);
+			// Date de l'article + sous titre de l'article 
 			SpannableString text = new SpannableString(entry.article.date
 					+ entry.article.subTitle);
+			// On les affiche
 			text.setSpan(new ForegroundColorSpan(Color.parseColor("#F06D2F")),
 					0, entry.article.date.length(), 0);
 			holder.value2.setText(text, BufferType.SPANNABLE);
+			// Nombre de commentaires
 			holder.coms.setText(entry.article.numberOfComs);
-
+			// Image associée à l'article
 			fillImageView(holder.image, entry.article.getID());
 		}
 
@@ -195,6 +199,7 @@ public class INpactListAdapter extends BaseAdapter {
 		Integer section = -1;
 
 		for (INpactArticleDescription article : this.articles) {
+			// Si on est dans une autre journée que l'actuelle, on crée une nouvelle section
 			if (section != article.section) {
 				section = article.section;
 				mData.add(new ViewEntry(section, article.day));
