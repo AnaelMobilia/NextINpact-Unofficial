@@ -127,10 +127,21 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		Log.i("MainAct", "onOptionsItemSelected");
 		switch (pItem.getItemId()) {
+		// Rafraîchir la liste des articles
 		case 0:
 			if (!listView.isRefreshing())
-				listView.setRefreshing();// loadArticlesListFromServer();
-											// Refreshes by its own
+				listView.setRefreshing();
+			return true;
+			
+		// Menu Options
+		case 1:
+			//TODO : faire le menu d'options
+			CharSequence text = "Hello toast!";
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+			toast.show();
+			
 			return true;
 		}
 
@@ -143,9 +154,15 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		m_menu = menu;
+		// Ecran principal : bouton en haut à droite de rafraîchissement des
+		// news
+		// Ou dans le menu d'options de l'application
 		menu.add(0, 0, 0, getResources().getString(R.string.refresh))
 				.setIcon(R.drawable.ic_refresh)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+		// Menu des paramètres (ID = 1)
+		menu.add(0, 1, 0, R.string.options);
 
 		return true;
 	}

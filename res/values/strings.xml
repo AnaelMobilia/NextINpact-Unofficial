@@ -9,4 +9,5 @@
     <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
+    <string name="options">Options</string>
 </resources>
