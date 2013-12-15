@@ -39,6 +39,10 @@ public class HtmlParser {
 
 	}
 
+	/**
+	 * Récupère les commentaires
+	 * @return
+	 */
 	public List<INPactComment> getComments() {
 		/*
 		 * <div class="actu_comm" id="c4500881">
@@ -131,6 +135,10 @@ public class HtmlParser {
 
 	}
 
+	/**
+	 * Contenu d'un article
+	 * @return
+	 */
 	public INpactArticle getArticleContent() {
 
 		/*
@@ -255,7 +263,6 @@ public class HtmlParser {
 		try {
 			INpactArticle content = new INpactArticle();
 			content.Title = Html.fromHtml(title).toString();
-			// content.Content = htmlSerializer.getAsString(actu_content);
 			content.Content = htmlSerializer.getAsString(article);
 			return content;
 		} catch (IOException e) {
@@ -271,6 +278,10 @@ public class HtmlParser {
 
 	}
 
+	/**
+	 * Résumés de l'ensemble des articles (vue générale)
+	 * @return
+	 */
 	public List<INpactArticleDescription> getArticles() {
 		/*
 		 * <article> <div> <div> <a
@@ -423,6 +434,13 @@ public class HtmlParser {
 		return value;
 	}
 
+	/**
+	 * Premier élement par valeur d'attribut
+	 * @param node
+	 * @param attrName Nom de l'attribut
+	 * @param attrValue Valeur de l'attribut
+	 * @return Tagnode
+	 */
 	public static TagNode getFirstElementByAttValue(TagNode node,
 			String attrName, String attrValue) {
 		TagNode[] nodes = node.getElementsByAttValue(attrName, attrValue, true,
@@ -433,6 +451,12 @@ public class HtmlParser {
 		return nodes[0];
 	}
 
+/**
+ * Premier élément par nom
+ * @param node
+ * @param name Nom
+ * @return Tagnode
+ */
 	public static TagNode getFirstElementByName(TagNode node, String name) {
 		TagNode[] nodes = node.getElementsByName(name, true);
 		if (nodes.length == 0)
