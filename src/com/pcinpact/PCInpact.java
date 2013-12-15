@@ -11,8 +11,6 @@ public class PCInpact {
 	// public static int THEME =R.style.Theme_Sherlock_Light;
 	// public static int THEME =R.style.Theme_Sherlock_Light_DarkActionBar;
 	public final static String PC_INPACT_URL = "http://m.pcinpact.com";
-	// public final static String PC_INPACT_URL
-	// ="http://ikoula.nomalys.com/pcinpact/";
 
 	static private PCInpact instance;
 
