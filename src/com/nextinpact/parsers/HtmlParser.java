@@ -59,7 +59,7 @@ public class HtmlParser {
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 
 		for (TagNode htmlComment : rootNode.getElementsByAttValue("class",
-				"actu_comm", true, true)) {
+				"actu_comm ", true, true)) {
 
 			TagNode actu_comm_author = getFirstElementByAttValue(htmlComment,
 					"class", "actu_comm_author");
@@ -74,25 +74,23 @@ public class HtmlParser {
 			TagNode quote_bloc = getFirstElementByAttValue(htmlComment,
 					"class", "quote_bloc");
 
-			String auth = actu_comm_author.getText().toString();
-			auth = Html.fromHtml(auth).toString();
-
 			String commentDate = null;
 			TagNode span = getFirstElementByName(actu_comm_author, "span");
+			if(span != null) {
+				commentDate = Html.fromHtml(span.getText().toString()).toString();
+			}
 
 			String commentID = null;
 			TagNode actu_comm_num = getFirstElementByAttValue(actu_comm_author,
 					"class", "actu_comm_num");
-
-			if (actu_comm_num != null && span != null) {
-				commentDate = Html.fromHtml(span.getText().toString())
-						.toString();
-				commentID = Html.fromHtml(actu_comm_num.getText().toString())
-						.toString();
-
-				auth = auth.substring(0, auth.length() - commentDate.length()
-						- commentID.length());
+			if(actu_comm_num != null) {
+				commentID = Html.fromHtml(actu_comm_num.getText().toString()).toString();
 			}
+
+			for (TagNode child: actu_comm_author.getChildTags()) {
+				actu_comm_author.removeChild(child);
+			}
+			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
 
 			String content = getStringWithLineBreaks(actu_comm_content);
 			String quote = null;
@@ -356,8 +354,7 @@ public class HtmlParser {
 				continue;
 
 			TagNode notif_link = getFirstElementByAttValue(htmlArticle,
-					"class", "notif_link");
-
+					"class", "notif_link ui-link");
 			if (notif_link == null) {
 				TagNode temp = getFirstElementByAttValue(htmlArticle, "class",
 						"sprite sprite-ico-commentaire");

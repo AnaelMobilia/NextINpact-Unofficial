@@ -37,6 +37,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 
 		comments = CommentManager.getCommentsFromFile(this, url);
+		Log.d("NiN", "Comments: " + comments.size() + " in db");
 
 		listView = (ListView) this.findViewById(R.id.listview_comment);
 		adapter = new INpactListAdapter2(this, comments)
@@ -50,6 +51,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID
 					+ "&commId=0";
+			Log.d("NiN", "Comments: query " + data + " to " + NextInpact.PC_INPACT_URL + "/comment/");
 			connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/", "POST",
 					data, null);
 		}
@@ -97,6 +99,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		List<INPactComment> newComments = CommentManager
 				.getCommentsFromBytes(result);
 
+		Log.d("NiN", "Comments: retrieved " + newComments.size() + " new comments");
 		if (newComments.size() == 0) {
 			moreCommentsAvailabe = false;
 			adapter.refreshData(comments, moreCommentsAvailabe);

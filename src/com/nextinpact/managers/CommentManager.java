@@ -58,8 +58,8 @@ public class CommentManager {
 		try {
 			is = new ByteArrayInputStream(result);
 		}
-
 		catch (Exception e) {
+			e.printStackTrace();
 			return new ArrayList<INPactComment>();
 		}
 
@@ -67,6 +67,7 @@ public class CommentManager {
 		try {
 			parser = new HtmlParser(is);
 		} catch (IOException e) {
+			e.printStackTrace();
 			return new ArrayList<INPactComment>();
 		}
 
