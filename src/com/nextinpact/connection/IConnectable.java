@@ -1,4 +1,4 @@
-package com.pcinpact.connection;
+package com.nextinpact.connection;
 
 public interface IConnectable {
 

@@ -1,4 +1,4 @@
-package com.pcinpact.models;
+package com.nextinpact.models;
 
 public class INpactArticle {
 	public String Title;

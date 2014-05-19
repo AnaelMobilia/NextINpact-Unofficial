@@ -1,29 +1,29 @@
-package com.pcinpact;
+package com.nextinpact;
 
 import android.content.Context;
 
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.models.ArticlesWrapper;
+import com.nextinpact.managers.ArticleManager;
+import com.nextinpact.models.ArticlesWrapper;
 
-public class PCInpact {
+public class NextInpact {
 	public static boolean DL_COMMENTS = true;
 	public static int THEME = R.style.MyTheme;
 	// public static int THEME =R.style.Theme_Sherlock_Light;
 	// public static int THEME =R.style.Theme_Sherlock_Light_DarkActionBar;
-	public final static String PC_INPACT_URL = "http://m.pcinpact.com";
+	public final static String PC_INPACT_URL = "http://m.nextinpact.com";
 
-	static private PCInpact instance;
+	static private NextInpact instance;
 
 	ArticlesWrapper wrapper;
 	Context context;
 
-	private PCInpact(Context context) {
+	private NextInpact(Context context) {
 		this.context = context;
 	}
 
-	static public PCInpact getInstance(Context context) {
+	static public NextInpact getInstance(Context context) {
 		if (instance == null || instance.context == null)
-			instance = new PCInpact(context);
+			instance = new NextInpact(context);
 
 		instance.context = context;
 		return instance;

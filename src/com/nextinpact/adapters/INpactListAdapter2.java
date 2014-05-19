@@ -1,10 +1,10 @@
-package com.pcinpact.adapters;
+package com.nextinpact.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pcinpact.R;
-import com.pcinpact.models.INPactComment;
+import com.nextinpact.R;
+import com.nextinpact.models.INPactComment;
 
 import android.content.Context;
 import android.view.LayoutInflater;

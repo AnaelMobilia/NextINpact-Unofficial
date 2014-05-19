@@ -1,4 +1,4 @@
-package com.pcinpact.models;
+package com.nextinpact.models;
 
 public class INPactComment {
 	public String author;// imagine {get;set;}

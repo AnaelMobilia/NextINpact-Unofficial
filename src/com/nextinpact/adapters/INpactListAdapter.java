@@ -1,11 +1,11 @@
-package com.pcinpact.adapters;
+package com.nextinpact.adapters;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pcinpact.R;
-import com.pcinpact.models.INpactArticleDescription;
+import com.nextinpact.R;
+import com.nextinpact.models.INpactArticleDescription;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -164,7 +164,7 @@ public class INpactListAdapter extends BaseAdapter {
 			in = context.openFileInput(position + ".jpg");
 		} catch (FileNotFoundException e) {
 			iv.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.logo_pcinpact));
+					R.drawable.logo_nextinpact));
 			return;
 		}
 		iv.setImageBitmap(BitmapFactory.decodeStream(in));

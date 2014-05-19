@@ -1,4 +1,4 @@
-package com.pcinpact.models;
+package com.nextinpact.models;
 
 import java.io.Serializable;
 

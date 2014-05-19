@@ -1,4 +1,4 @@
-package com.pcinpact;
+package com.nextinpact;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,12 +7,12 @@ import java.io.IOException;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
+import com.nextinpact.connection.HtmlConnector;
+import com.nextinpact.connection.IConnectable;
+import com.nextinpact.managers.ArticleManager;
+import com.nextinpact.models.INpactArticle;
+import com.nextinpact.models.INpactArticleDescription;
+import com.nextinpact.parsers.HtmlParser;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +34,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	String articleID;
 
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PCInpact.THEME);
+		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		url = getIntent().getExtras().getString("URL");
@@ -65,12 +65,12 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		} catch (FileNotFoundException e) {
 			Log.e("WTF", "" + e.getMessage());
 
-			INpactArticleDescription article = PCInpact.getInstance(this)
+			INpactArticleDescription article = NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticle(articleID);
 
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.tag = article.getID();
-			connector.sendRequest(PCInpact.PC_INPACT_URL + article.getUrl(),
+			connector.sendRequest(NextInpact.PC_INPACT_URL + article.getUrl(),
 					"GET", null, 0, null);
 
 			data = "<html><H1>Article non synchronisé, rechargement...<H1><html>";

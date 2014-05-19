@@ -1,4 +1,4 @@
-package com.pcinpact.parsers;
+package com.nextinpact.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +11,9 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
-import com.pcinpact.models.INPactComment;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
+import com.nextinpact.models.INPactComment;
+import com.nextinpact.models.INpactArticle;
+import com.nextinpact.models.INpactArticleDescription;
 
 import android.text.Html;
 import android.util.Log;
@@ -162,10 +162,10 @@ public class HtmlParser {
 		 * M6</a>&nbsp;concentre son attention sur le gaspillage de l'argent
 		 * public. &Agrave; cette occasion, l&rsquo;&eacute;mission va aborder
 		 * le sujet de la loi Hadopi.</p><p><a class="fancyimg"
-		 * href="http://static.pcinpact.com/images/bd/news/129249.png"
+		 * href="http://static.nextinpact.com/images/bd/news/129249.png"
 		 * rel="group_fancy"><img
 		 * style="display: block; margin-left: auto; margin-right: auto;"
-		 * src="http://static.pcinpact.com/images/bd/news/medium-129249.png"
+		 * src="http://static.nextinpact.com/images/bd/news/medium-129249.png"
 		 * alt="capital M6"/></a></p><p>&nbsp;</p><p>L&rsquo;&eacute;mission
 		 * Capital sur M6 se penche ce soir sur l&rsquo;utilisation de
 		 * l&rsquo;argent public. &laquo;<em> L'&Eacute;tat d&eacute;pense-t-il
@@ -183,32 +183,32 @@ public class HtmlParser {
 		 * mobilis&eacute; plus de 30 millions d&rsquo;euros de subventions
 		 * publiques.&nbsp;Pour 2013, la Hadopi devrait percevoir 8,5 millions
 		 * d'euros, mais elle anticipe toujours <a href=
-		 * "http://www.pcinpact.com/news/77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013.htm"
+		 * "http://www.nextinpact.com/news/77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013.htm"
 		 * itemprop="news" rel=
 		 * "77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013"
 		 * class="pci_ref" target="_blank">plus de 10 millions d'euros de
 		 * d&eacute;penses</a>. Un budget que le minist&egrave;re de la Culture
 		 * avoue &ecirc;tre dans l'<a href=
-		 * "http://www.pcinpact.com/news/77913-le-ministere-culture-incapable-detailler-budget-hadopi.htm"
+		 * "http://www.nextinpact.com/news/77913-le-ministere-culture-incapable-detailler-budget-hadopi.htm"
 		 * itemprop="news"
 		 * rel="77913-le-ministere-culture-incapable-detailler-budget-hadopi"
 		 * class="pci_ref" target="_blank">incapacit&eacute; de
 		 * d&eacute;tailler</a>, et qui pourrait m&ecirc;me exploser si on y
 		 * ajoute<a href=
-		 * "http://www.pcinpact.com/news/77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais.htm"
+		 * "http://www.nextinpact.com/news/77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais.htm"
 		 * itemprop="news"
 		 * rel="77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais"
 		 * class="pci_ref" target="_blank">l'indemnisation des fournisseurs
 		 * d'acc&egrave;s</a>.</p><p>&nbsp;</p><p>En tout, seuls trois jugements
 		 * ont &eacute;t&eacute; prononc&eacute;s : <a href=
-		 * "http://www.pcinpact.com/news/76967-hadopi-premier-jugement-relaxe.htm"
+		 * "http://www.nextinpact.com/news/76967-hadopi-premier-jugement-relaxe.htm"
 		 * itemprop="news" rel="76967-hadopi-premier-jugement-relaxe"
 		 * class="pci_ref" target="_blank">une relaxe</a>, une <a href=
-		 * "http://www.pcinpact.com/news/77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois.htm"
+		 * "http://www.nextinpact.com/news/77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois.htm"
 		 * itemprop="news"
 		 * rel="77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois"
 		 * class="pci_ref" target="_blank">dispense de peine</a> et <a href=
-		 * "http://www.pcinpact.com/news/74364-hadopi-condamne-pour-seul-titre-flashe-150-fois.htm"
+		 * "http://www.nextinpact.com/news/74364-hadopi-condamne-pour-seul-titre-flashe-150-fois.htm"
 		 * itemprop="news"
 		 * rel="74364-hadopi-condamne-pour-seul-titre-flashe-150-fois"
 		 * class="pci_ref" target="_blank">150 euros de contravention</a>. Une
@@ -287,7 +287,7 @@ public class HtmlParser {
 		 * <article> <div> <div> <a
 		 * href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm">
 		 * <img
-		 * data-src="http://static.pcinpact.com/images/bd/dedicated/78299.jpg"
+		 * data-src="http://static.nextinpact.com/images/bd/dedicated/78299.jpg"
 		 * alt="Les coûts de la Hadopi à l’honneur de Capital sur M6" src=
 		 * "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 		 * onload="lzld(this)" onerror="lzld(this)" class=""/> </a> </div> <div>
@@ -302,7 +302,7 @@ public class HtmlParser {
 		 * data-datePubli="04/05/2013 15:33:13"> <div> <div> <a href=
 		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm"
 		 * > <img
-		 * data-src="http://static.pcinpact.com/images/bd/dedicated/79579.jpg"
+		 * data-src="http://static.nextinpact.com/images/bd/dedicated/79579.jpg"
 		 * alt=
 		 * "Il y a 35 ans, le premier spam de l'histoire n'avait que 600 destinataires"
 		 * src=

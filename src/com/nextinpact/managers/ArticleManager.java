@@ -1,4 +1,4 @@
-package com.pcinpact.managers;
+package com.nextinpact.managers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -15,7 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
-import com.pcinpact.models.ArticlesWrapper;
+import com.nextinpact.models.ArticlesWrapper;
 
 public class ArticleManager {
 

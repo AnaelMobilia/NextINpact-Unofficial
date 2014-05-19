@@ -1,15 +1,15 @@
-package com.pcinpact;
+package com.nextinpact;
 
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.pcinpact.adapters.INpactListAdapter2;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.CommentManager;
-import com.pcinpact.models.INPactComment;
+import com.nextinpact.adapters.INpactListAdapter2;
+import com.nextinpact.connection.HtmlConnector;
+import com.nextinpact.connection.IConnectable;
+import com.nextinpact.managers.CommentManager;
+import com.nextinpact.models.INPactComment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +29,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PCInpact.THEME);
+		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment_main);
 
@@ -50,7 +50,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID
 					+ "&commId=0";
-			connector.sendRequest(PCInpact.PC_INPACT_URL + "/comment/", "POST",
+			connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/", "POST",
 					data, null);
 		}
 
@@ -168,7 +168,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		HtmlConnector connector = new HtmlConnector(this, this);
 		page++;
 		String data = "page=" + page + "&newsId=" + articleID + "&commId=0";
-		connector.sendRequest(PCInpact.PC_INPACT_URL + "/comment/", "POST",
+		connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/", "POST",
 				data, null);
 
 	}

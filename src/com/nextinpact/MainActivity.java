@@ -1,17 +1,17 @@
-package com.pcinpact;
+package com.nextinpact;
 
 import java.io.ByteArrayInputStream;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.pcinpact.adapters.INpactListAdapter;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.managers.CommentManager;
-import com.pcinpact.models.ArticlesWrapper;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
+import com.nextinpact.adapters.INpactListAdapter;
+import com.nextinpact.connection.HtmlConnector;
+import com.nextinpact.connection.IConnectable;
+import com.nextinpact.managers.ArticleManager;
+import com.nextinpact.managers.CommentManager;
+import com.nextinpact.models.ArticlesWrapper;
+import com.nextinpact.models.INpactArticleDescription;
+import com.nextinpact.parsers.HtmlParser;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -67,7 +67,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PCInpact.THEME);
+		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -95,7 +95,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		// deleteCache();
 		// showCache();
 
-		ArticlesWrapper w = PCInpact.getInstance(this).getArticlesWrapper();
+		ArticlesWrapper w = NextInpact.getInstance(this).getArticlesWrapper();
 
 		Log.i("OnCreate", "SIZE : " + w.getArticles().size());
 
@@ -168,7 +168,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	}
 
 	void loadArticles() {
-		adapter.refreshData(PCInpact.getInstance(this).getArticlesWrapper()
+		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper()
 				.getArticles());
 	}
 
@@ -199,7 +199,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			boolean newArticle = false;
 			String articleID = null;
 
-			for (INpactArticleDescription article : PCInpact.getInstance(this)
+			for (INpactArticleDescription article : NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticles()) {
 				if ((article.getID() + ".html").equals(file)) {
 					newArticle = true;
@@ -221,7 +221,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Log.i("MainAct", "loadArticlesListFromServer");
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
-		connector.sendRequest(PCInpact.PC_INPACT_URL, "GET", null, 0, null);
+		connector.sendRequest(NextInpact.PC_INPACT_URL, "GET", null, 0, null);
 	}
 
 	List<INpactArticleDescription> newArticles;
@@ -232,18 +232,18 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			return;
 		}
 
-		PCInpact.getInstance(this).getArticlesWrapper().LastUpdate = Calendar
+		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = Calendar
 				.getInstance().getTime().toLocaleString();
-		PCInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
-		ArticleManager.saveArticlesWrapper(this, PCInpact.getInstance(this)
+		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
+		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
 				.getArticlesWrapper());
 
 		loadArticles();
 
 		headerTextView.setText("Dernière mise à jour : "
-				+ PCInpact.getInstance(this).getArticlesWrapper().LastUpdate);
+				+ NextInpact.getInstance(this).getArticlesWrapper().LastUpdate);
 
-		ArticleManager.saveArticlesWrapper(this, PCInpact.getInstance(this)
+		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
 				.getArticlesWrapper());
 
 		numberOfPendingArticles.set(articles.size());
@@ -261,7 +261,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.state = DL_ARTICLE;
 			connector.tag = article.getID();
-			connector.sendRequest(PCInpact.PC_INPACT_URL + article.getUrl(),
+			connector.sendRequest(NextInpact.PC_INPACT_URL + article.getUrl(),
 					"GET", null, 0, null);
 		}
 
@@ -284,7 +284,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		}
 
 		for (int i = 0; i < articles.size(); i++) {
-			if (PCInpact.DL_COMMENTS) {
+			if (NextInpact.DL_COMMENTS) {
 				INpactArticleDescription article = articles.get(i);
 
 				if (fileExists(article.getID() + "_comms.html")) {
@@ -295,7 +295,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 				connector.state = DL_COMMS;
 				connector.tag = article.getID();
 				String data = "page=1&newsId=" + article.getID() + "&commId=0";
-				connector.sendRequest(PCInpact.PC_INPACT_URL + "/comment/",
+				connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/",
 						"POST", data, null);
 			}
 		}
@@ -448,7 +448,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			return;
 
 		// int index =
-		// PCInpact.getInstance(this).getArticlesWrapper().getArticles().indexOf(article);
+		// NextInpact.getInstance(this).getArticlesWrapper().getArticles().indexOf(article);
 
 		Intent intentWeb = new Intent(this, WebActivity.class);
 		intentWeb.putExtra("URL", article.getID() + ".html");

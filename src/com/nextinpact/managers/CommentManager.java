@@ -1,4 +1,4 @@
-package com.pcinpact.managers;
+package com.nextinpact.managers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -12,8 +12,8 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
-import com.pcinpact.models.INPactComment;
-import com.pcinpact.parsers.HtmlParser;
+import com.nextinpact.models.INPactComment;
+import com.nextinpact.parsers.HtmlParser;
 
 public class CommentManager {
 	public static List<INPactComment> getCommentsFromFile(Context context,
