@@ -364,6 +364,12 @@ public class HtmlParser {
 			String imgUrl = img.getAttributeByName("data-src");
 			if (imgUrl == null)
 				imgUrl = img.getAttributeByName("src");
+
+			//2014-05-20: image url is incorrectly formed (missing 'http:' at the beginning)
+			if (imgUrl.startsWith("//")) {
+				imgUrl = "http:" + imgUrl;
+			}
+
 			String url = a.getAttributeByName("href");
 			String title = a.getText().toString();
 			String subTitleWithDate = p.getText().toString();
