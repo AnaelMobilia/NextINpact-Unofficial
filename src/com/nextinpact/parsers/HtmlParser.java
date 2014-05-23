@@ -71,9 +71,6 @@ public class HtmlParser {
 			if (actu_comm_content == null)
 				continue;
 
-			TagNode quote_bloc = getFirstElementByAttValue(htmlComment,
-					"class", "quote_bloc");
-
 			String commentDate = null;
 			TagNode span = getFirstElementByName(actu_comm_author, "span");
 			if(span != null) {
@@ -92,21 +89,32 @@ public class HtmlParser {
 			}
 			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
 
-			String content = getStringWithLineBreaks(actu_comm_content);
-			String quote = null;
+			// comment :: content
 
-			if (quote_bloc != null) {
-				quote = getStringWithLineBreaks(quote_bloc);
-				content = content.substring(quote.length(), content.length());
+			//  replace 'quote_bloc' div by 'xquote' tag to format citations
+			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
+				TagNode xquote = new TagNode("xquote");
+				xquote.addChildren(quotes.getAllElementsList(false));
+
+				quotes.getParent().insertChildBefore(quotes, xquote);
+				quotes.getParent().removeChild(quotes);
+			}
+
+			String content = null;
+			try {
+				content = htmlSerializer.getAsString(actu_comm_content);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				continue;
 			}
 
 			INPactComment comment = new INPactComment();
 
-			comment.author = auth;
+			comment.author      = auth;
 			comment.commentDate = commentDate;
-			comment.commentID = commentID;
-			comment.quote = quote;
-			comment.content = content;
+			comment.commentID   = commentID;
+			comment.content     = content;
 
 			comments.add(comment);
 
