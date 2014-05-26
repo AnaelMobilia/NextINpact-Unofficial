@@ -90,8 +90,17 @@ public class HtmlParser {
 			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
 
 			// comment :: content
+			//  1. remove links to citations
+			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
+				String href = link.getAttributeByName("href");
 
-			//  replace 'quote_bloc' div by 'xquote' tag to format citations
+				// quote
+				if (href.startsWith("?")) {
+					link.removeAttribute("href");
+				}
+			}
+
+			//  2. replace 'quote_bloc' div by 'xquote' tag to format citations
 			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
 				TagNode xquote = new TagNode("xquote");
 				xquote.addChildren(quotes.getAllElementsList(false));

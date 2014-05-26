@@ -27,6 +27,7 @@ import android.graphics.Typeface;
 import android.text.style.StyleSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.LineBackgroundSpan;
+import android.text.method.LinkMovementMethod;
 
 import org.xml.sax.XMLReader;
 
@@ -276,6 +277,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 					.findViewById(R.id.CommTextViewID);
 			this.content = (TextView) convertView
 					.findViewById(R.id.CommTextViewContent);
+			this.content.setMovementMethod(LinkMovementMethod.getInstance());
 
 			this.loadingWrapper = (LinearLayout) convertView
 					.findViewById(R.id.CommLinearLayoutLoadMore);
