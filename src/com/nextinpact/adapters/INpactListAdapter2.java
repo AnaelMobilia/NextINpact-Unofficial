@@ -3,16 +3,25 @@ package com.nextinpact.adapters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Hashtable;
+import java.net.URL;
+import java.net.URLConnection;
+import java.io.BufferedInputStream;
 
 import com.nextinpact.R;
 import com.nextinpact.models.INPactComment;
 
+import android.util.Log;
 import android.content.Context;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.style.StyleSpan;
+import android.text.style.LeadingMarginSpan;
+import android.text.style.LineBackgroundSpan;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +32,15 @@ import android.widget.TextView;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.text.style.StyleSpan;
-import android.text.style.LeadingMarginSpan;
-import android.text.style.LineBackgroundSpan;
-import android.text.method.LinkMovementMethod;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 
 import org.xml.sax.XMLReader;
+
+import jp.tomorrowkey.android.gifplayer.GifDecoder;
+
 
 public class INpactListAdapter2 extends BaseAdapter {
 
@@ -65,8 +76,54 @@ public class INpactListAdapter2 extends BaseAdapter {
 		 * (TextView formatting)
 		 */ 
 		private Spanned format(String content) {
-			return Html.fromHtml(content, null, new TagHandler());
+			return Html.fromHtml(content, imageGetter, new TagHandler());
 
+		}
+	}
+
+	// render images
+	private class ImageGetter implements Html.ImageGetter {
+		private Hashtable<String,Drawable> cache = new Hashtable<String,Drawable>();
+
+		public void ImageGetter() {
+		}
+
+		public Drawable getDrawable(String source) {
+			Log.d("NXI", "draw " + source);
+
+			if(cache.containsKey(source)) {
+				Log.d("NXI", "fetched from cache");
+				return (Drawable) cache.get(source);
+			}
+
+			Drawable drawable = null;
+			try {
+				URL aURL = new URL(source);
+				final URLConnection conn = aURL.openConnection(); 
+				conn.connect(); 
+
+				final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream()); 
+
+				GifDecoder dec = new GifDecoder();
+				dec.read(bis);
+
+				final Bitmap bm = dec.getBitmap();
+
+				drawable = new BitmapDrawable(ctx.getResources(), bm);
+				drawable.setBounds(0,0,bm.getWidth(),bm.getHeight());
+				//drawable.setBounds(0, 0, c.getWidth(), c.getHeight());
+				//drawable.draw(c);
+
+				cache.put(source, drawable);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				drawable = ctx.getResources().getDrawable(R.drawable.fallback_emoticon);
+				drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
+        	} 
+
+			return drawable;
 		}
 	}
 
@@ -164,10 +221,17 @@ public class INpactListAdapter2 extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<ViewEntry> mData = new ArrayList<ViewEntry>();
 	public List<INPactComment> comments;
+	private static Context ctx;
+	private static ImageGetter imageGetter = null;
 
 	public INpactListAdapter2(Context context, List<INPactComment> comments) {
 		mInflater = LayoutInflater.from(context);
 		this.comments = comments;
+
+		ctx = context;
+		if(imageGetter == null) {
+			imageGetter = new ImageGetter();
+		}
 	}
 
 	/**

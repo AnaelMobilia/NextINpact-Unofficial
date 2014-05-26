@@ -11,6 +11,7 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
+import com.nextinpact.NextInpact;
 import com.nextinpact.models.INPactComment;
 import com.nextinpact.models.INpactArticle;
 import com.nextinpact.models.INpactArticleDescription;
@@ -100,7 +101,17 @@ public class HtmlParser {
 				}
 			}
 
-			//  2. replace 'quote_bloc' div by 'xquote' tag to format citations
+			//  2. change image src to absolute link
+			for (TagNode img : actu_comm_content.getElementsByName("img", true)) {
+				String src = img.getAttributeByName("src");
+
+				// emoticons
+				if (src.startsWith("/images")) {
+					img.setAttribute("src", NextInpact.PC_INPACT_URL + src);
+				}
+			}
+
+			//  3. replace 'quote_bloc' div by 'xquote' tag to format citations
 			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
 				TagNode xquote = new TagNode("xquote");
 				xquote.addChildren(quotes.getAllElementsList(false));
