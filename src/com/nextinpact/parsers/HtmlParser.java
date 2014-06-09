@@ -417,7 +417,7 @@ public class HtmlParser {
 				subTitle = subTitleWithDate;
 
 			String coms = notif_link == null ? "0" : notif_link.getText()
-					.toString();
+					.toString().trim();
 
 			INpactArticleDescription article = new INpactArticleDescription();
 			article.imgURL = imgUrl;
