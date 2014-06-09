@@ -18,6 +18,7 @@ import android.text.Layout;
 import android.text.Spanned;
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.SpannedString;
 import android.text.style.StyleSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.LineBackgroundSpan;
@@ -76,8 +77,14 @@ public class INpactListAdapter2 extends BaseAdapter {
 		 * (TextView formatting)
 		 */ 
 		private Spanned format(String content) {
-			return Html.fromHtml(content, imageGetter, new TagHandler());
+			try {
+				return Html.fromHtml(content, imageGetter, new TagHandler());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.d("NXI", content);
+			}
 
+			return new SpannedString("*ERROR*");
 		}
 	}
 
