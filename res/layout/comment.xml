@@ -48,23 +48,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/CommTextViewQuote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dip"
-            android:background="#f3f3f3"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="italic" />
-
-        <TextView
             android:id="@+id/CommTextViewContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="5dip"
             android:paddingTop="5dip"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:clickable="true" />
 
         <LinearLayout
             android:id="@+id/CommLinearLayoutLoadMore"
