@@ -10,4 +10,5 @@
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
     <string name="options">Options</string>
+    <string name="lastUpdate">Dernière mise à jour : </string>
 </resources>
