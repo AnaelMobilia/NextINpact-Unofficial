@@ -51,8 +51,8 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID
 					+ "&commId=0";
-			Log.d("NiN", "Comments: query " + data + " to " + NextInpact.PC_INPACT_URL + "/comment/");
-			connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/", "POST",
+			Log.d("NiN", "Comments: query " + data + " to " + NextInpact.NEXT_INPACT_URL + "/comment/");
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST",
 					data, null);
 		}
 
@@ -171,7 +171,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		HtmlConnector connector = new HtmlConnector(this, this);
 		page++;
 		String data = "page=" + page + "&newsId=" + articleID + "&commId=0";
-		connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/", "POST",
+		connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST",
 				data, null);
 
 	}

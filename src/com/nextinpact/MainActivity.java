@@ -221,7 +221,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Log.i("MainAct", "loadArticlesListFromServer");
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
-		connector.sendRequest(NextInpact.PC_INPACT_URL, "GET", null, 0, null);
+		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
 	}
 
 	List<INpactArticleDescription> newArticles;
@@ -261,7 +261,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.state = DL_ARTICLE;
 			connector.tag = article.getID();
-			connector.sendRequest(NextInpact.PC_INPACT_URL + article.getUrl(),
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(),
 					"GET", null, 0, null);
 		}
 
@@ -295,7 +295,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 				connector.state = DL_COMMS;
 				connector.tag = article.getID();
 				String data = "page=1&newsId=" + article.getID() + "&commId=0";
-				connector.sendRequest(NextInpact.PC_INPACT_URL + "/comment/",
+				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/",
 						"POST", data, null);
 			}
 		}

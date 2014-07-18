@@ -10,7 +10,7 @@ public class NextInpact {
 	public static int THEME = R.style.MyTheme;
 	// public static int THEME =R.style.Theme_Sherlock_Light;
 	// public static int THEME =R.style.Theme_Sherlock_Light_DarkActionBar;
-	public final static String PC_INPACT_URL = "http://m.nextinpact.com";
+	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 
 	static private NextInpact instance;
 

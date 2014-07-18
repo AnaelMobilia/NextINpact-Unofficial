@@ -70,7 +70,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.tag = article.getID();
-			connector.sendRequest(NextInpact.PC_INPACT_URL + article.getUrl(),
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(),
 					"GET", null, 0, null);
 
 			data = "<html><H1>Article non synchronisé, rechargement...<H1><html>";

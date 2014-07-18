@@ -107,7 +107,7 @@ public class HtmlParser {
 
 				// emoticons
 				if (src.startsWith("/images")) {
-					img.setAttribute("src", NextInpact.PC_INPACT_URL + src);
+					img.setAttribute("src", NextInpact.NEXT_INPACT_URL + src);
 				}
 			}
 
