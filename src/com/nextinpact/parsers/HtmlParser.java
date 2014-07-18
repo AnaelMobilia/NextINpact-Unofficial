@@ -3,10 +3,12 @@ package com.nextinpact.parsers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
@@ -16,6 +18,7 @@ import com.nextinpact.models.INPactComment;
 import com.nextinpact.models.INpactArticle;
 import com.nextinpact.models.INpactArticleDescription;
 
+import android.R;
 import android.text.Html;
 import android.util.Log;
 
@@ -42,6 +45,7 @@ public class HtmlParser {
 
 	/**
 	 * Récupère les commentaires
+	 * 
 	 * @return
 	 */
 	public List<INPactComment> getComments() {
@@ -74,24 +78,27 @@ public class HtmlParser {
 
 			String commentDate = null;
 			TagNode span = getFirstElementByName(actu_comm_author, "span");
-			if(span != null) {
-				commentDate = Html.fromHtml(span.getText().toString()).toString();
+			if (span != null) {
+				commentDate = Html.fromHtml(span.getText().toString())
+						.toString();
 			}
 
 			String commentID = null;
 			TagNode actu_comm_num = getFirstElementByAttValue(actu_comm_author,
 					"class", "actu_comm_num");
-			if(actu_comm_num != null) {
-				commentID = Html.fromHtml(actu_comm_num.getText().toString()).toString();
+			if (actu_comm_num != null) {
+				commentID = Html.fromHtml(actu_comm_num.getText().toString())
+						.toString();
 			}
 
-			for (TagNode child: actu_comm_author.getChildTags()) {
+			for (TagNode child : actu_comm_author.getChildTags()) {
 				actu_comm_author.removeChild(child);
 			}
-			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
+			String auth = Html.fromHtml(actu_comm_author.getText().toString())
+					.toString();
 
 			// comment :: content
-			//  1. remove links to citations
+			// 1. remove links to citations
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
 				String href = link.getAttributeByName("href");
 
@@ -101,7 +108,7 @@ public class HtmlParser {
 				}
 			}
 
-			//  2. change image src to absolute link
+			// 2. change image src to absolute link
 			for (TagNode img : actu_comm_content.getElementsByName("img", true)) {
 				String src = img.getAttributeByName("src");
 
@@ -111,8 +118,9 @@ public class HtmlParser {
 				}
 			}
 
-			//  3. replace 'quote_bloc' div by 'xquote' tag to format citations
-			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
+			// 3. replace 'quote_bloc' div by 'xquote' tag to format citations
+			for (TagNode quotes : htmlComment.getElementsByAttValue("class",
+					"quote_bloc", true, true)) {
 				TagNode xquote = new TagNode("xquote");
 				xquote.addChildren(quotes.getAllElementsList(false));
 
@@ -131,10 +139,10 @@ public class HtmlParser {
 
 			INPactComment comment = new INPactComment();
 
-			comment.author      = auth;
+			comment.author = auth;
 			comment.commentDate = commentDate;
-			comment.commentID   = commentID;
-			comment.content     = content;
+			comment.commentID = commentID;
+			comment.content = content;
 
 			comments.add(comment);
 
@@ -163,6 +171,7 @@ public class HtmlParser {
 
 	/**
 	 * Contenu d'un article
+	 * 
 	 * @return
 	 */
 	public INpactArticle getArticleContent() {
@@ -285,14 +294,31 @@ public class HtmlParser {
 		for (TagNode link : actu_content.getElementsByName("a", true)) {
 			link.removeAttribute("href");
 		}
-		
+
 		// Correction des URL des iframes intégrant les vidéos
 		for (TagNode iframe : actu_content.getElementsByName("iframe", true)) {
 			String laSrc = iframe.getAttributeByName("src");
-			
+
+			// Si c'est une vidéo youtube (le rendu direct n'est pas possible)
+			if (laSrc.startsWith("//www.youtube.com/embed/")) {
+				// Je récupère le <p> parent de l'iframe
+				TagNode parentIframe = iframe.getParent();
+
+				// je récupère l'id de la vidéo
+				// //www.youtube.com/embed/AEl_myyA21w?rel=0
+				String idVideo = laSrc.substring(laSrc.lastIndexOf("/")+1, laSrc.lastIndexOf("?"));
+
+				// je crée un élément de texte
+				ContentNode monContenu = new ContentNode(
+						"<br /><a href=\"http://www.youtube.com/watch?v="
+								+ idVideo + "\">Voir la vidéo sur Youtube</a>");
+
+				// j'injecte mon texte dans le parent
+				parentIframe.addChild(monContenu);
+			}
+
 			// Si pas de protocole en début d'url, je l'injecte
-			if(laSrc.startsWith("//"))
-			{
+			if (laSrc.startsWith("//")) {
 				iframe.setAttribute("src", "http:" + laSrc);
 			}
 		}
@@ -317,6 +343,7 @@ public class HtmlParser {
 
 	/**
 	 * Résumés de l'ensemble des articles (vue générale)
+	 * 
 	 * @return
 	 */
 	public List<INpactArticleDescription> getArticles() {
@@ -366,7 +393,7 @@ public class HtmlParser {
 			// Date qui sera affichée
 			HtmlCleaner monHtmlCleaner = new HtmlCleaner();
 			temp.value = monHtmlCleaner.getInnerHtml(htmlSpan);
-						
+
 			days.add(temp);
 		}
 
@@ -404,7 +431,8 @@ public class HtmlParser {
 			if (imgUrl == null)
 				imgUrl = img.getAttributeByName("src");
 
-			//2014-05-20: image url is incorrectly formed (missing 'http:' at the beginning)
+			// 2014-05-20: image url is incorrectly formed (missing 'http:' at
+			// the beginning)
 			if (imgUrl.startsWith("//")) {
 				imgUrl = "http:" + imgUrl;
 			}
@@ -478,9 +506,12 @@ public class HtmlParser {
 
 	/**
 	 * Premier élement par valeur d'attribut
+	 * 
 	 * @param node
-	 * @param attrName Nom de l'attribut
-	 * @param attrValue Valeur de l'attribut
+	 * @param attrName
+	 *            Nom de l'attribut
+	 * @param attrValue
+	 *            Valeur de l'attribut
 	 * @return Tagnode
 	 */
 	public static TagNode getFirstElementByAttValue(TagNode node,
@@ -493,12 +524,14 @@ public class HtmlParser {
 		return nodes[0];
 	}
 
-/**
- * Premier élément par nom
- * @param node
- * @param name Nom
- * @return Tagnode
- */
+	/**
+	 * Premier élément par nom
+	 * 
+	 * @param node
+	 * @param name
+	 *            Nom
+	 * @return Tagnode
+	 */
 	public static TagNode getFirstElementByName(TagNode node, String name) {
 		TagNode[] nodes = node.getElementsByName(name, true);
 		if (nodes.length == 0)
