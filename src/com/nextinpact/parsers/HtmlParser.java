@@ -285,6 +285,17 @@ public class HtmlParser {
 		for (TagNode link : actu_content.getElementsByName("a", true)) {
 			link.removeAttribute("href");
 		}
+		
+		// Correction des URL des iframes intégrant les vidéos
+		for (TagNode iframe : actu_content.getElementsByName("iframe", true)) {
+			String laSrc = iframe.getAttributeByName("src");
+			
+			// Si pas de protocole en début d'url, je l'injecte
+			if(laSrc.startsWith("//"))
+			{
+				iframe.setAttribute("src", "http:" + laSrc);
+			}
+		}
 
 		try {
 			INpactArticle content = new INpactArticle();
