@@ -429,9 +429,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	public void showErrorDialog(final String error) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Error");
+		builder.setTitle(getString(R.string.titleError));
 		builder.setMessage(error);
-		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.buttonOkError), new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface pDialog, final int pWhich) {
 				pDialog.dismiss();
 			}

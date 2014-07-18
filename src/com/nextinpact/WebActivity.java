@@ -73,7 +73,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(),
 					"GET", null, 0, null);
 
-			data = "<html><H1>Article non synchronisé, rechargement...<H1><html>";
+			data = getString(R.string.articleNonSynchroHTML);
 
 		}
 
@@ -95,7 +95,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		}
 
 		if (data == null)
-			data = "<html><H1>Oups...<H1><html>";
+			data = getString(R.string.articleVideErreurHTML);
 
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 		/*
@@ -172,7 +172,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	protected void safeDidFailWithError(String error, int state) {
 
 		Log.i("WebActivity", "didFailWithErrorOnUiThread " + error);
-		String data = "<html><H1>Oups...<H1><html>";
+		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
 	}
