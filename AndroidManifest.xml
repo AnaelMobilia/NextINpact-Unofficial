@@ -11,7 +11,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="9" />
     <!--
     minSdkVersion est la version minimum pour faire tourner l'application (2.2)
     targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoind e faire tourner la rétro-compatibilité)

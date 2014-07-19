@@ -114,6 +114,7 @@ public class HtmlParser {
 
 				// emoticons
 				if (src.startsWith("/images")) {
+					// @TODO : vérifier l'impact sur le cache de l'application
 					img.setAttribute("src", NextInpact.NEXT_INPACT_URL + src);
 				}
 			}
