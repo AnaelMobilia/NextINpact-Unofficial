@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Hashtable;
+import java.util.concurrent.ExecutionException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedInputStream;
@@ -13,6 +14,7 @@ import com.nextinpact.models.INPactComment;
 
 import android.util.Log;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
@@ -26,6 +28,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -33,15 +36,10 @@ import android.widget.TextView;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
-
 import org.xml.sax.XMLReader;
-
-import jp.tomorrowkey.android.gifplayer.GifDecoder;
-
 
 public class INpactListAdapter2 extends BaseAdapter {
 
@@ -67,15 +65,15 @@ public class INpactListAdapter2 extends BaseAdapter {
 			Title = article.author;
 			commentDate = article.commentDate;
 			CommentID = article.commentID;
-			Value       = format(article.content);
+			Value = format(article.content);
 
 			CellType = ECellType.Normal;
 		}
 
 		/*
-		 * format comment content: convert from HTML (tags) to Spanned
-		 * (TextView formatting)
-		 */ 
+		 * format comment content: convert from HTML (tags) to Spanned (TextView
+		 * formatting)
+		 */
 		private Spanned format(String content) {
 			try {
 				return Html.fromHtml(content, imageGetter, new TagHandler());
@@ -88,53 +86,54 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 	}
 
-	// render images
+	// Rendu des images dans les commentaires
 	private class ImageGetter implements Html.ImageGetter {
-		private Hashtable<String,Drawable> cache = new Hashtable<String,Drawable>();
-
-		public void ImageGetter() {
-		}
+		// Cache en mémoire
+		private Hashtable<String, Drawable> cache = new Hashtable<String, Drawable>();
 
 		public Drawable getDrawable(String source) {
-			Log.d("NXI", "draw " + source);
+			Log.i("NXI", "draw " + source);
 
-			if(cache.containsKey(source)) {
-				Log.d("NXI", "fetched from cache");
+			if (cache.containsKey(source)) {
+				Log.i("NXI", "fetched from cache");
 				return (Drawable) cache.get(source);
 			}
 
 			Drawable drawable = null;
 			try {
 				URL aURL = new URL(source);
-				final URLConnection conn = aURL.openConnection(); 
-				conn.connect(); 
+				final URLConnection conn = aURL.openConnection();
+				conn.connect();
 
-				final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream()); 
+				// Je bufferise le gif
+				BufferedInputStream bis = new BufferedInputStream(
+						conn.getInputStream());
 
-				GifDecoder dec = new GifDecoder();
-				dec.read(bis);
+				// Je transforme le gif en element drawable
+				drawable = new BitmapDrawable(null, bis);
 
-				final Bitmap bm = dec.getBitmap();
-
-				drawable = new BitmapDrawable(ctx.getResources(), bm);
-				drawable.setBounds(0,0,bm.getWidth(),bm.getHeight());
-				//drawable.setBounds(0, 0, c.getWidth(), c.getHeight());
-				//drawable.draw(c);
+				// Auto-définition de la taille de l'image
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+						drawable.getIntrinsicHeight());
 
 				cache.put(source, drawable);
 
 			} catch (Exception e) {
 				e.printStackTrace();
 
-				drawable = ctx.getResources().getDrawable(R.drawable.fallback_emoticon);
-				drawable.setBounds(0,0,drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
-        	} 
+				drawable = ctx.getResources().getDrawable(
+						R.drawable.fallback_emoticon);
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+						drawable.getIntrinsicHeight());
+			}
 
 			return drawable;
 		}
+
 	}
 
-	private class XQuoteSpan extends StyleSpan implements LineBackgroundSpan, LeadingMarginSpan {
+	private class XQuoteSpan extends StyleSpan implements LineBackgroundSpan,
+			LeadingMarginSpan {
 
 		public XQuoteSpan(int style) {
 			super(style);
@@ -145,12 +144,12 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		// inherited from LineBackgroundSpan
-		public void drawBackground(Canvas c, Paint p, int left, int right, int top, 
-				int baseline, int bottom, CharSequence text, int start, int end, 
-				int lnum) {
+		public void drawBackground(Canvas c, Paint p, int left, int right,
+				int top, int baseline, int bottom, CharSequence text,
+				int start, int end, int lnum) {
 
 			Paint.Style style = p.getStyle();
-			int color         = p.getColor();
+			int color = p.getColor();
 
 			p.setStyle(Paint.Style.FILL);
 			p.setColor(Color.parseColor("#f3f3f3"));
@@ -165,29 +164,30 @@ public class INpactListAdapter2 extends BaseAdapter {
 			return 20;
 		}
 
-	    public void  drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, 
-				int baseline, int bottom, CharSequence text, int start, int end,
-				boolean first, Layout layout) {
+		public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
+				int top, int baseline, int bottom, CharSequence text,
+				int start, int end, boolean first, Layout layout) {
 			// do nothing
-	    }
+		}
 
 	}
 
 	// html tag to TextView formatting spans
 	// inspired from http://stackoverflow.com/a/11476084
 	private class TagHandler implements Html.TagHandler {
-		private List<Object> _format_stack = new LinkedList<Object>();	
+		private List<Object> _format_stack = new LinkedList<Object>();
 
-		public void handleTag(boolean opening, String tag, Editable output, 
+		public void handleTag(boolean opening, String tag, Editable output,
 				XMLReader reader) {
 			final int length = output.length();
 
-			if(tag.equals("xquote")) {
-				if(opening) {
+			if (tag.equals("xquote")) {
+				if (opening) {
 					final Object format = new XQuoteSpan();
 					_format_stack.add(format);
 
-					output.setSpan(format, length, length, Spanned.SPAN_MARK_MARK);
+					output.setSpan(format, length, length,
+							Spanned.SPAN_MARK_MARK);
 				} else {
 					applySpan(output, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
@@ -201,8 +201,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 
 			if (spans.length != 0) {
 				for (int i = spans.length; i > 0; i--) {
-					if (text.getSpanFlags(spans[i-1]) == Spannable.SPAN_MARK_MARK) {
-						return spans[i-1];
+					if (text.getSpanFlags(spans[i - 1]) == Spannable.SPAN_MARK_MARK) {
+						return spans[i - 1];
 					}
 				}
 			}
@@ -211,7 +211,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		private void applySpan(Editable output, int length, int flags) {
-			if (_format_stack.isEmpty()) return;
+			if (_format_stack.isEmpty())
+				return;
 
 			final Object format = _format_stack.remove(0);
 			final Object span = getLast(output, format.getClass());
@@ -236,7 +237,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		this.comments = comments;
 
 		ctx = context;
-		if(imageGetter == null) {
+		if (imageGetter == null) {
 			imageGetter = new ImageGetter();
 		}
 	}
