@@ -101,7 +101,8 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 		if (w.getArticles().size() > 0) {
 			loadArticles();
-			headerTextView.setText(getString(R.string.lastUpdate) + w.LastUpdate);
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ w.LastUpdate);
 		} else {
 			listView.setRefreshing();
 			progressDialog = ProgressDialog.show(this, "Chargement...",
@@ -132,16 +133,17 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			if (!listView.isRefreshing())
 				listView.setRefreshing();
 			return true;
-			
-		// Menu Options
+
+			// Menu Options
 		case 1:
-			//TODO : faire le menu d'options
+			// TODO : faire le menu d'options
 			CharSequence text = "Hello toast!";
 			int duration = Toast.LENGTH_SHORT;
 
-			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+			Toast toast = Toast.makeText(getApplicationContext(), text,
+					duration);
 			toast.show();
-			
+
 			return true;
 		}
 
@@ -199,8 +201,8 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			boolean newArticle = false;
 			String articleID = null;
 
-			for (INpactArticleDescription article : NextInpact.getInstance(this)
-					.getArticlesWrapper().getArticles()) {
+			for (INpactArticleDescription article : NextInpact
+					.getInstance(this).getArticlesWrapper().getArticles()) {
 				if ((article.getID() + ".html").equals(file)) {
 					newArticle = true;
 					articleID = article.getID();
@@ -261,8 +263,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.state = DL_ARTICLE;
 			connector.tag = article.getID();
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(),
-					"GET", null, 0, null);
+			connector.sendRequest(
+					NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null,
+					0, null);
 		}
 
 		numberOfPendingImages.set(articles.size());
@@ -431,11 +434,13 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.titleError));
 		builder.setMessage(error);
-		builder.setPositiveButton(getString(R.string.buttonOkError), new DialogInterface.OnClickListener() {
-			public void onClick(final DialogInterface pDialog, final int pWhich) {
-				pDialog.dismiss();
-			}
-		});
+		builder.setPositiveButton(getString(R.string.buttonOkError),
+				new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface pDialog,
+							final int pWhich) {
+						pDialog.dismiss();
+					}
+				});
 		builder.create().show();
 	}
 

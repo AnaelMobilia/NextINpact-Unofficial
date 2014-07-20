@@ -298,23 +298,57 @@ public class HtmlParser {
 		for (TagNode iframe : actu_content.getElementsByName("iframe", true)) {
 			String laSrc = iframe.getAttributeByName("src");
 
-			// Si c'est une vidéo youtube (le rendu direct n'est pas possible)
+			// Indicateur du site de la vidéo
+			String site = null;
+
 			if (laSrc.startsWith("//www.youtube.com/embed/")) {
+				site = "youtube";
+			} else if (laSrc.startsWith("//www.dailymotion.com/embed/video/")) {
+				site = "dailymotion";
+			}
+
+			// Vidéo youtube ou dailmotion
+			if (site != null) {
 				// Je récupère le <p> parent de l'iframe
 				TagNode parentIframe = iframe.getParent();
 
 				// je récupère l'id de la vidéo
-				// //www.youtube.com/embed/AEl_myyA21w?rel=0
-				String idVideo = laSrc.substring(laSrc.lastIndexOf("/")+1, laSrc.lastIndexOf("?"));
+				String idVideo = "";
+				// URL avec des paramètres
+				// (//www.youtube.com/embed/AEl_myyA21w?rel=0)
+				if (laSrc.contains("?")) {
+					// Je ne prends pas les paramètres (partie ?xxxx=nnn)
+					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1,
+							laSrc.lastIndexOf("?"));
+				}
+				// URL sans paramètres
+				else {
+					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1,
+							laSrc.length());
+				}
 
-				// je crée un élément de texte
-				ContentNode monContenu = new ContentNode(
-						"<br /><a href=\"http://www.youtube.com/watch?v="
-								+ idVideo + "\">Voir la vidéo sur Youtube</a>");
+				// Je crée l'élément de texte correspondant au site
+				ContentNode monContenu = new ContentNode("");
+				switch (site) {
+				case "youtube":
+					monContenu = new ContentNode(
+							"<br /><a href=\"http://www.youtube.com/watch?v="
+									+ idVideo
+									+ "\">Voir la vidéo sur Youtube</a>");
+					break;
 
+				case "dailymotion":
+					monContenu = new ContentNode(
+							"<br /><a href=\"http://www.dailymotion.com/video/"
+									+ idVideo
+									+ "\">Voir la vidéo sur Dailymotion</a>");
+					break;
+				}
+				
 				// j'injecte mon texte dans le parent
 				parentIframe.addChild(monContenu);
 			}
+
 
 			// Si pas de protocole en début d'url, je l'injecte
 			if (laSrc.startsWith("//")) {
@@ -329,13 +363,12 @@ public class HtmlParser {
 			return content;
 		} catch (IOException e) {
 
-			Log.e("HtmlParser WTF #1", "" + e.getMessage());
+			Log.e("HtmlParser WTF #1", "" + e.getMessage(), e);
 		}
 
 		catch (Exception e) {
-			Log.e("HtmlParser WTF #2", "" + e.getMessage());
+			Log.e("HtmlParser WTF #2", "" + e.getMessage(), e);
 		}
-
 		return null;
 
 	}

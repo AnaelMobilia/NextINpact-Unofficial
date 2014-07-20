@@ -64,15 +64,16 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			l_Stream = l_Context.openFileInput(url);
 			// headerTextView.setText(article.Title);
 		} catch (FileNotFoundException e) {
-			Log.e("WebActivity WTF #1", "" + e.getMessage());
+			Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
 
 			INpactArticleDescription article = NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticle(articleID);
 
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.tag = article.getID();
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(),
-					"GET", null, 0, null);
+			connector.sendRequest(
+					NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null,
+					0, null);
 
 			data = getString(R.string.articleNonSynchroHTML);
 
@@ -85,14 +86,15 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		}
 
 		catch (Exception e) {
-			Log.e("WebActivity WTF #2", "" + e.getMessage());
+			Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
+			e.printStackTrace();
 		}
 
 		try {
 			if (l_Stream != null)
 				l_Stream.close();
 		} catch (IOException e) {
-			Log.e("WebActivity WTF #3", "" + e.getMessage());
+			Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
 		}
 
 		if (data == null)
