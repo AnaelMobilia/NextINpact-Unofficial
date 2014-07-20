@@ -30,7 +30,7 @@ public class ArticleManager {
 			bm.compress(CompressFormat.JPEG, 90, fos);
 
 		} catch (Exception e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #1", "" + e.getMessage());
 
 		}
 	}
@@ -42,7 +42,7 @@ public class ArticleManager {
 			l_Stream.write(result);
 
 		} catch (Exception e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #2", "" + e.getMessage());
 		}
 	}
 
@@ -51,28 +51,28 @@ public class ArticleManager {
 		try {
 			fis = context.openFileInput(FILE_NAME_ARTICLES);
 		} catch (FileNotFoundException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #3", "" + e.getMessage());
 			return null;
 		}
 		ObjectInputStream is = null;
 		try {
 			is = new ObjectInputStream(fis);
 		} catch (StreamCorruptedException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #4", "" + e.getMessage());
 			return null;
 		} catch (IOException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #5", "" + e.getMessage());
 			return null;
 		}
 		ArticlesWrapper simpleClass = null;
 		try {
 			simpleClass = (ArticlesWrapper) is.readObject();
 		} catch (OptionalDataException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #6", "" + e.getMessage());
 		} catch (ClassNotFoundException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #7", "" + e.getMessage());
 		} catch (IOException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("ArticleManager WTF #8", "" + e.getMessage());
 		} finally {
 			try {
 				is.close();

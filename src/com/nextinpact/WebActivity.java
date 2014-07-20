@@ -59,11 +59,12 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 		FileInputStream l_Stream = null;
 
+		// On charge l'article depuis le cache, ou à défaut depuis le site
 		try {
 			l_Stream = l_Context.openFileInput(url);
 			// headerTextView.setText(article.Title);
 		} catch (FileNotFoundException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("WebActivity WTF #1", "" + e.getMessage());
 
 			INpactArticleDescription article = NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticle(articleID);
@@ -84,14 +85,14 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		}
 
 		catch (Exception e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("WebActivity WTF #2", "" + e.getMessage());
 		}
 
 		try {
 			if (l_Stream != null)
 				l_Stream.close();
 		} catch (IOException e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("WebActivity WTF #3", "" + e.getMessage());
 		}
 
 		if (data == null)

@@ -3,7 +3,6 @@ package com.nextinpact.parsers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.nextinpact.models.INPactComment;
 import com.nextinpact.models.INpactArticle;
 import com.nextinpact.models.INpactArticleDescription;
 
-import android.R;
 import android.text.Html;
 import android.util.Log;
 
@@ -331,11 +329,11 @@ public class HtmlParser {
 			return content;
 		} catch (IOException e) {
 
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("HtmlParser WTF #1", "" + e.getMessage());
 		}
 
 		catch (Exception e) {
-			Log.e("WTF", "" + e.getMessage());
+			Log.e("HtmlParser WTF #2", "" + e.getMessage());
 		}
 
 		return null;
