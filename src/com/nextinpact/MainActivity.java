@@ -136,13 +136,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 			// Menu Options
 		case 1:
-			// TODO : faire le menu d'options
-			CharSequence text = "Hello toast!";
-			int duration = Toast.LENGTH_SHORT;
-
-			Toast toast = Toast.makeText(getApplicationContext(), text,
-					duration);
-			toast.show();
+			// Je lance l'activité options
+			Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
+			startActivity(intent);
 
 			return true;
 		}

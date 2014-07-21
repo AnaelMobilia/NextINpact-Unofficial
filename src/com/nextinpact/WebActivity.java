@@ -81,7 +81,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 		try {
 			HtmlParser hh = new HtmlParser(l_Stream);
-			INpactArticle article = hh.getArticleContent();
+			INpactArticle article = hh.getArticleContent(l_Context);
 			data = article.Content;
 		}
 

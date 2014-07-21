@@ -17,6 +17,9 @@ import com.nextinpact.models.INPactComment;
 import com.nextinpact.models.INpactArticle;
 import com.nextinpact.models.INpactArticleDescription;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 
@@ -173,7 +176,7 @@ public class HtmlParser {
 	 * 
 	 * @return
 	 */
-	public INpactArticle getArticleContent() {
+	public INpactArticle getArticleContent(Context contextParent) {
 
 		/*
 		 * <article>
@@ -290,8 +293,16 @@ public class HtmlParser {
 		if (actu_content == null)
 			return null;
 
-		for (TagNode link : actu_content.getElementsByName("a", true)) {
-			link.removeAttribute("href");
+		// Gestion des liens hypertextes (option de l'utilisateur)
+		SharedPreferences mesPrefs = PreferenceManager
+				.getDefaultSharedPreferences(contextParent);
+		if (mesPrefs.getBoolean("checkbox_activerLiensArticle", false)) {
+			// On laisse les liens...
+		} else {
+			// Suppression des liens
+			for (TagNode link : actu_content.getElementsByName("a", true)) {
+				link.removeAttribute("href");
+			}
 		}
 
 		// Correction des URL des iframes intégrant les vidéos
@@ -344,11 +355,10 @@ public class HtmlParser {
 									+ "\">Voir la vidéo sur Dailymotion</a>");
 					break;
 				}
-				
+
 				// j'injecte mon texte dans le parent
 				parentIframe.addChild(monContenu);
 			}
-
 
 			// Si pas de protocole en début d'url, je l'injecte
 			if (laSrc.startsWith("//")) {

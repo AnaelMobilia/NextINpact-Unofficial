@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Options génériques -->
+    <PreferenceCategory android:title="@string/optionsGenerales" >
+    </PreferenceCategory>
+    <!-- Options spécifiques aux articles -->
+    <PreferenceCategory android:title="@string/optionsArticles" >
+        <CheckBoxPreference
+            android:key="checkbox_activerLiensArticle"
+            android:summary="@string/activerLiensArticleDetail"
+            android:title="@string/activerLiensArticle" />
+    </PreferenceCategory>
+    <!-- Options spécifiques aux commentaires -->
+    <PreferenceCategory android:title="@string/optionsCommentaires" >
+    </PreferenceCategory>
+
+</PreferenceScreen>
