@@ -13,6 +13,10 @@
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires" >
+        <CheckBoxPreference
+            android:key="checkbox_activerLiensCommentaire"
+            android:summary="@string/activerLiensCommentaireDetail"
+            android:title="@string/activerLiensCommentaire" />
     </PreferenceCategory>
 
 </PreferenceScreen>

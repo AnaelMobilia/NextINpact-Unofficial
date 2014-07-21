@@ -97,7 +97,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 
 		loadingMoreComments = false;
 		List<INPactComment> newComments = CommentManager
-				.getCommentsFromBytes(result);
+				.getCommentsFromBytes(this, result);
 
 		Log.d("NiN", "Comments: retrieved " + newComments.size() + " new comments");
 		if (newComments.size() == 0) {

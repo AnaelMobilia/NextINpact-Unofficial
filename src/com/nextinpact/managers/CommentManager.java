@@ -22,7 +22,7 @@ public class CommentManager {
 		try {
 			FileInputStream l_Stream = context.openFileInput(path);
 			HtmlParser hh = new HtmlParser(l_Stream);
-			comments = hh.getComments();
+			comments = hh.getComments(context);
 			l_Stream.close();
 		} catch (FileNotFoundException e) {
 			Log.e("CommentManager WTF #1", "" + e.getMessage(), e);
@@ -52,7 +52,7 @@ public class CommentManager {
 
 	}
 
-	public static List<INPactComment> getCommentsFromBytes(byte[] result) {
+	public static List<INPactComment> getCommentsFromBytes(Context context, byte[] result) {
 
 		InputStream is = null;
 		try {
@@ -70,7 +70,7 @@ public class CommentManager {
 			return new ArrayList<INPactComment>();
 		}
 
-		return parser.getComments();
+		return parser.getComments(context);
 
 	}
 }

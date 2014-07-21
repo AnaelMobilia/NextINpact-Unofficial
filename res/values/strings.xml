@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+
     <string name="hello">Hello World</string>
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">Dernière mise à jour : </string>
@@ -10,7 +11,7 @@
     <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
-	<!-- Message d'erreur -->
+    <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
     <string name="buttonOkError">Fermer</string>
     <string name="articleNonSynchroHTML"><html><h1>Article non synchronisé, rechargement...</h1></html></string>
@@ -23,4 +24,7 @@
     <string name="activerLiensArticle">Liens hypertextes</string>
     <string name="activerLiensArticleDetail">Activer les liens externes dans les articles</string>
     <string name="optionsCommentaires">Options des commentaires</string>
+    <string name="activerLiensCommentaire">Liens hypertextes</string>
+    <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
+
 </resources>

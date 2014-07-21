@@ -49,7 +49,7 @@ public class HtmlParser {
 	 * 
 	 * @return
 	 */
-	public List<INPactComment> getComments() {
+	public List<INPactComment> getComments(Context monContext) {
 		/*
 		 * <div class="actu_comm" id="c4500881">
 		 * 
@@ -99,12 +99,22 @@ public class HtmlParser {
 					.toString();
 
 			// comment :: content
-			// 1. remove links to citations
+			// Gestion des liens hypertextes (option de l'utilisateur)
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
 				String href = link.getAttributeByName("href");
 
-				// quote
+				// Liens interne vers une autre citation
 				if (href.startsWith("?")) {
+					link.removeAttribute("href");
+				}
+
+				SharedPreferences mesPrefs = PreferenceManager
+						.getDefaultSharedPreferences(monContext);
+				if (mesPrefs.getBoolean("checkbox_activerLiensCommentaire",
+						false)) {
+					// On laisse les liens...
+				} else {
+					// Suppression des liens
 					link.removeAttribute("href");
 				}
 			}
