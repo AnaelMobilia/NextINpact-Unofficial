@@ -117,7 +117,10 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 				.setIcon(R.drawable.ic_menu_comment)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-		menu.add(0, 1, 1, getResources().getString(R.string.home))
+		// Menu des paramètres (ID = 1)
+		menu.add(0, 1, 0, R.string.options);
+
+		menu.add(0, 2, 1, getResources().getString(R.string.home))
 				.setIcon(R.drawable.ic_menu_home)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -136,7 +139,15 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			}
 			return true;
 
+			// Menu Options
 		case 1:
+			// Je lance l'activité options
+			Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
+			startActivity(intent);
+
+			return true;
+
+		case 2:
 			finish();
 			return true;
 		}
