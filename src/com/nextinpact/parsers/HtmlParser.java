@@ -305,6 +305,8 @@ public class HtmlParser {
 				site = "youtube";
 			} else if (laSrc.startsWith("//www.dailymotion.com/embed/video/")) {
 				site = "dailymotion";
+			} else if (laSrc.startsWith("//player.vimeo.com/video/")) {
+				site = "vimeo";
 			}
 
 			// Vidéo youtube ou dailmotion
@@ -343,12 +345,18 @@ public class HtmlParser {
 									+ idVideo
 									+ "\">Voir la vidéo sur Dailymotion</a>");
 					break;
+
+				case "vimeo":
+					monContenu = new ContentNode(
+							"<br /><a href=\"http://www.vimeo.com/"
+									+ idVideo
+									+ "\">Voir la vidéo sur Vimeo</a>");
+					break;
 				}
-				
+
 				// j'injecte mon texte dans le parent
 				parentIframe.addChild(monContenu);
 			}
-
 
 			// Si pas de protocole en début d'url, je l'injecte
 			if (laSrc.startsWith("//")) {
