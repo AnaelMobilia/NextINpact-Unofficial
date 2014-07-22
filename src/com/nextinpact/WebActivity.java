@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.htmlcleaner.TagNode;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,8 +18,11 @@ import com.nextinpact.parsers.HtmlParser;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -26,7 +31,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
-	// Button button;
 	TextView headerTextView;
 
 	String url;
@@ -101,12 +105,25 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			data = getString(R.string.articleVideErreurHTML);
 
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
-		/*
-		 * try {
-		 * webview.loadData(URLEncoder.encode(data,"utf-8").replaceAll("\\+"
-		 * ," "), "text/html", "utf-8"); } catch (UnsupportedEncodingException
-		 * e) { //PokÃ©mon }
-		 */
+
+		// Taille des textes (option de l'utilisateur)
+		SharedPreferences mesPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		// L'option selectionnée
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+				"list_tailleTexte", "16"));
+
+		// la taille par défaut est de 16
+		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+		int tailleDefaut = 16;
+
+		if (tailleOptionUtilisateur == tailleDefaut) {
+			// Valeur par défaut...
+		} else {
+			// On applique la taille demandée
+			WebSettings webSettings = webview.getSettings();
+			webSettings.setDefaultFontSize(tailleOptionUtilisateur);
+		}
 
 	}
 

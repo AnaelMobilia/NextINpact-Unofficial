@@ -3,6 +3,13 @@
 
     <!-- Options génériques -->
     <PreferenceCategory android:title="@string/optionsGenerales" >
+        <ListPreference
+            android:entries="@array/tailleTexteLiteral"
+            android:entryValues="@array/tailleTexteValeur"
+            android:key="list_tailleTexte"
+            android:summary="@string/tailleTexteDetail"
+            android:title="@string/tailleTexte"
+            android:defaultValue="1" />
     </PreferenceCategory>
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles" >

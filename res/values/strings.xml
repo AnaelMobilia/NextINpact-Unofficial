@@ -20,6 +20,8 @@
     <!-- Vue "Options" -->
     <string name="options">Options</string>
     <string name="optionsGenerales">Options de l\'application</string>
+    <string name="tailleTexte">Taille des textes</string>
+    <string name="tailleTexteDetail">Modifier la taille des textes de l\'application</string>
     <string name="optionsArticles">Options des articles</string>
     <string name="activerLiensArticle">Liens hypertextes</string>
     <string name="activerLiensArticleDetail">Activer les liens externes dans les articles</string>
