@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.htmlcleaner.TagNode;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,8 +18,11 @@ import com.nextinpact.parsers.HtmlParser;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -26,7 +31,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
-	// Button button;
 	TextView headerTextView;
 
 	String url;
@@ -81,7 +85,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 		try {
 			HtmlParser hh = new HtmlParser(l_Stream);
-			INpactArticle article = hh.getArticleContent();
+			INpactArticle article = hh.getArticleContent(l_Context);
 			data = article.Content;
 		}
 
@@ -101,12 +105,25 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			data = getString(R.string.articleVideErreurHTML);
 
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
-		/*
-		 * try {
-		 * webview.loadData(URLEncoder.encode(data,"utf-8").replaceAll("\\+"
-		 * ," "), "text/html", "utf-8"); } catch (UnsupportedEncodingException
-		 * e) { //PokÃ©mon }
-		 */
+
+		// Taille des textes (option de l'utilisateur)
+		SharedPreferences mesPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		// la taille par défaut est de 16
+		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+		int tailleDefaut = 16;
+
+		// L'option selectionnée
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+				"list_tailleTexte", "" + tailleDefaut));
+		
+		if (tailleOptionUtilisateur == tailleDefaut) {
+			// Valeur par défaut...
+		} else {
+			// On applique la taille demandée
+			WebSettings webSettings = webview.getSettings();
+			webSettings.setDefaultFontSize(tailleOptionUtilisateur);
+		}
 
 	}
 
@@ -117,7 +134,10 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 				.setIcon(R.drawable.ic_menu_comment)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-		menu.add(0, 1, 1, getResources().getString(R.string.home))
+		// Menu des paramètres (ID = 1)
+		menu.add(0, 1, 0, R.string.options);
+
+		menu.add(0, 2, 1, getResources().getString(R.string.home))
 				.setIcon(R.drawable.ic_menu_home)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -136,7 +156,15 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			}
 			return true;
 
+			// Menu Options
 		case 1:
+			// Je lance l'activité options
+			Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
+			startActivity(intent);
+
+			return true;
+
+		case 2:
 			finish();
 			return true;
 		}

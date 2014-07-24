@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
+
     <string name="hello">Hello World</string>
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">Dernière mise à jour : </string>
@@ -10,11 +11,22 @@
     <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
-    <string name="options">Options</string>
-	<!-- Message d'erreur -->
+    <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
     <string name="buttonOkError">Fermer</string>
     <string name="articleNonSynchroHTML"><html><h1>Article non synchronisé, rechargement...</h1></html></string>
     <string name="articleVideErreurHTML"><html><h1>Cet article présente une erreur, désolé.</h1></html></string>
     <string name="articleErreurHTML"><html><h1>Cet article présente une erreur grave, désolé.</h1></html></string>
+    <!-- Vue "Options" -->
+    <string name="options">Options</string>
+    <string name="optionsGenerales">Options de l\'application</string>
+    <string name="tailleTexte">Taille des textes</string>
+    <string name="tailleTexteDetail">Modifier la taille des textes de l\'application</string>
+    <string name="optionsArticles">Options des articles</string>
+    <string name="activerLiensArticle">Liens hypertextes</string>
+    <string name="activerLiensArticleDetail">Activer les liens externes dans les articles</string>
+    <string name="optionsCommentaires">Options des commentaires</string>
+    <string name="activerLiensCommentaire">Liens hypertextes</string>
+    <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
+
 </resources>

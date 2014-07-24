@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Options génériques -->
+    <PreferenceCategory android:title="@string/optionsGenerales" >
+        <ListPreference
+            android:defaultValue="16"
+            android:entries="@array/tailleTexteLiteral"
+            android:entryValues="@array/tailleTexteValeur"
+            android:key="list_tailleTexte"
+            android:summary="@string/tailleTexteDetail"
+            android:title="@string/tailleTexte" />
+    </PreferenceCategory>
+    <!-- Options spécifiques aux articles -->
+    <PreferenceCategory android:title="@string/optionsArticles" >
+        <CheckBoxPreference
+            android:key="checkbox_activerLiensArticle"
+            android:summary="@string/activerLiensArticleDetail"
+            android:title="@string/activerLiensArticle" />
+    </PreferenceCategory>
+    <!-- Options spécifiques aux commentaires -->
+    <PreferenceCategory android:title="@string/optionsCommentaires" >
+        <CheckBoxPreference
+            android:key="checkbox_activerLiensCommentaire"
+            android:summary="@string/activerLiensCommentaireDetail"
+            android:title="@string/activerLiensCommentaire" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

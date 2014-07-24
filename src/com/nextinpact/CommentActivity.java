@@ -51,9 +51,10 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID
 					+ "&commId=0";
-			Log.d("NiN", "Comments: query " + data + " to " + NextInpact.NEXT_INPACT_URL + "/comment/");
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST",
-					data, null);
+			Log.d("NiN", "Comments: query " + data + " to "
+					+ NextInpact.NEXT_INPACT_URL + "/comment/");
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/",
+					"POST", data, null);
 		}
 
 	}
@@ -66,6 +67,9 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 				.setIcon(R.drawable.ic_menu_home)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
+		// Menu des paramètres (ID = 1)
+		menu.add(0, 1, 0, R.string.options);
+
 		return true;
 	}
 
@@ -77,6 +81,15 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			Intent i = new Intent(this, MainActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(i);
+			return true;
+
+			// Menu Options
+		case 1:
+			// Je lance l'activité options
+			Intent intent = new Intent(CommentActivity.this,
+					OptionsActivity.class);
+			startActivity(intent);
+
 			return true;
 		}
 
@@ -96,10 +109,11 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 	protected void safeDidConnectionResult(byte[] result, int state, String tag) {
 
 		loadingMoreComments = false;
-		List<INPactComment> newComments = CommentManager
-				.getCommentsFromBytes(result);
+		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(
+				this, result);
 
-		Log.d("NiN", "Comments: retrieved " + newComments.size() + " new comments");
+		Log.d("NiN", "Comments: retrieved " + newComments.size()
+				+ " new comments");
 		if (newComments.size() == 0) {
 			moreCommentsAvailabe = false;
 			adapter.refreshData(comments, moreCommentsAvailabe);
