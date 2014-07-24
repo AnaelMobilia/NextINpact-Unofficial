@@ -109,14 +109,14 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		// Taille des textes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-				"list_tailleTexte", "16"));
-
 		// la taille par défaut est de 16
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 		int tailleDefaut = 16;
 
+		// L'option selectionnée
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+				"list_tailleTexte", "" + tailleDefaut));
+		
 		if (tailleOptionUtilisateur == tailleDefaut) {
 			// Valeur par défaut...
 		} else {

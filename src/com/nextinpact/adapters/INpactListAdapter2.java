@@ -13,6 +13,8 @@ import com.nextinpact.models.INPactComment;
 
 import android.util.Log;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
@@ -26,6 +28,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -110,9 +113,31 @@ public class INpactListAdapter2 extends BaseAdapter {
 				drawable = new BitmapDrawable(null, bis);
 
 				// Auto-définition de la taille de l'image
-				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-						drawable.getIntrinsicHeight());
+//				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+//						drawable.getIntrinsicHeight());
+				// Taille des textes (option de l'utilisateur)
+				SharedPreferences mesPrefs = PreferenceManager
+						.getDefaultSharedPreferences(ctx);
+				// la taille par défaut est de 16
+				// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+				int tailleDefaut = 16;
 
+				// L'option selectionnée
+				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+						"list_tailleTexte", "" + tailleDefaut));
+				
+				if (tailleOptionUtilisateur == tailleDefaut) {
+					// Valeur par défaut... (doublage de la taille sinon les smileys sont vraiment trop petits)
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth()*2,
+							drawable.getIntrinsicHeight()*2);
+				} else {
+					// On applique la taille demandée (doublage du zoom sinon les smileys sont vraiment trop petits)
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth()*(2*tailleOptionUtilisateur/tailleDefaut),
+							drawable.getIntrinsicHeight()*(2*tailleOptionUtilisateur/tailleDefaut));
+				}
+				
+
+				
 				cache.put(source, drawable);
 
 			} catch (Exception e) {
@@ -237,6 +262,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		if (imageGetter == null) {
 			imageGetter = new ImageGetter();
 		}
+
 	}
 
 	/**
@@ -354,6 +380,28 @@ public class INpactListAdapter2 extends BaseAdapter {
 					.findViewById(R.id.CommTextViewloadMore);
 			this.progressView = (ProgressBar) convertView
 					.findViewById(R.id.CommProgressBar);
+			
+			// Taille des textes (option de l'utilisateur)
+			SharedPreferences mesPrefs = PreferenceManager
+					.getDefaultSharedPreferences(ctx);
+			// la taille par défaut est de 16
+			// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+			int tailleDefaut = 16;
+
+			// L'option selectionnée
+			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+					"list_tailleTexte", "" + tailleDefaut));
+
+			if (tailleOptionUtilisateur == tailleDefaut) {
+				// Valeur par défaut...
+			} else {
+				// On applique la taille demandée
+				this.author.setTextSize(tailleOptionUtilisateur);
+				this.commentDate.setTextSize(tailleOptionUtilisateur);
+				this.commentID.setTextSize(tailleOptionUtilisateur);
+				this.content.setTextSize(tailleOptionUtilisateur);
+			}
+
 		}
 	}
 
