@@ -8,8 +8,10 @@ import com.nextinpact.R;
 import com.nextinpact.models.INpactArticleDescription;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -45,7 +47,7 @@ public class INpactListAdapter extends BaseAdapter {
 		}
 	}
 
-	private Context context;
+	private static Context context;
 	private LayoutInflater mInflater;
 	private ArrayList<ViewEntry> mData = new ArrayList<ViewEntry>();
 	public List<INpactArticleDescription> articles;
@@ -189,6 +191,28 @@ public class INpactListAdapter extends BaseAdapter {
 			this.coms = (TextView) convertView
 					.findViewById(R.id.TextViewCommentsCount);
 			this.image = (ImageView) convertView.findViewById(R.id.ImageView01);
+			
+			
+			// Taille des textes (option de l'utilisateur)
+			SharedPreferences mesPrefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			// la taille par défaut est de 16
+			// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+			int tailleDefaut = 16;
+
+			// L'option selectionnée
+			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+					"list_tailleTexte", "" + tailleDefaut));
+
+			if (tailleOptionUtilisateur == tailleDefaut) {
+				// Valeur par défaut...
+			} else {
+				// On applique la taille demandée
+				this.day.setTextSize(tailleOptionUtilisateur);
+				this.title.setTextSize(tailleOptionUtilisateur);
+				this.value2.setTextSize(tailleOptionUtilisateur);
+				this.coms.setTextSize(tailleOptionUtilisateur);
+			}
 		}
 	}
 
