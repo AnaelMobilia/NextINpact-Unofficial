@@ -328,9 +328,11 @@ public class HtmlParser {
 				site = "dailymotion";
 			} else if (laSrc.startsWith("//player.vimeo.com/video/")) {
 				site = "vimeo";
+			} else if(laSrc.startsWith("http://static.videos.gouv.fr/player/video/")) {
+				site = "videosGouvFr";
 			}
 
-			// Vidéo youtube ou dailmotion
+			// Vidéos intégrées avec leur player dans l'article
 			if (site != null) {
 				// Je récupère le <p> parent de l'iframe
 				TagNode parentIframe = iframe.getParent();
@@ -373,7 +375,16 @@ public class HtmlParser {
 									+ idVideo
 									+ "\">Voir la vidéo sur Vimeo</a>");
 					break;
+
+				case "videosGouvFr" :
+					// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
+					monContenu = new ContentNode(
+							"<br /><a href=\"http://static.videos.gouv.fr/player/video/"
+									+ idVideo
+									+ "\">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</a>");
+					break;
 				}
+					
 
 				// j'injecte mon texte dans le parent
 				parentIframe.addChild(monContenu);
