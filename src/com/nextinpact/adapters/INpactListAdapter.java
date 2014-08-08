@@ -111,8 +111,7 @@ public class INpactListAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Article dans la liste principale
-	 * Make a view to hold each row.
+	 * Article dans la liste principale Make a view to hold each row.
 	 * 
 	 * @see android.widget.ListAdapter#getView(int, android.view.View,
 	 *      android.view.ViewGroup)
@@ -136,7 +135,7 @@ public class INpactListAdapter extends BaseAdapter {
 			holder.container.setVisibility(View.VISIBLE);
 			// Titre de l'article
 			holder.title.setText(entry.article.title);
-			// Date de l'article + sous titre de l'article 
+			// Date de l'article + sous titre de l'article
 			SpannableString text = new SpannableString(entry.article.date
 					+ entry.article.subTitle);
 			// On les affiche
@@ -147,6 +146,12 @@ public class INpactListAdapter extends BaseAdapter {
 			holder.coms.setText(entry.article.numberOfComs);
 			// Image associée à l'article
 			fillImageView(holder.image, entry.article.getID());
+
+			// Badge abonné
+			if (entry.article.badgeAbonne) {
+				holder.imageAbonne.setImageDrawable(context.getResources()
+						.getDrawable(R.drawable.badge_abonne));
+			}
 		}
 
 		else {
@@ -181,6 +186,9 @@ public class INpactListAdapter extends BaseAdapter {
 		TextView coms;
 		ImageView image;
 
+		// Badge abonné
+		ImageView imageAbonne;
+
 		public ViewHolder(View convertView) {
 			this.container = (LinearLayout) convertView
 					.findViewById(R.id.LinearLayoutForArticle);
@@ -191,8 +199,9 @@ public class INpactListAdapter extends BaseAdapter {
 			this.coms = (TextView) convertView
 					.findViewById(R.id.TextViewCommentsCount);
 			this.image = (ImageView) convertView.findViewById(R.id.ImageView01);
-			
-			
+			this.imageAbonne = (ImageView) convertView
+					.findViewById(R.id.ImageBadgeAbonne);
+
 			// Taille des textes (option de l'utilisateur)
 			SharedPreferences mesPrefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
@@ -223,7 +232,8 @@ public class INpactListAdapter extends BaseAdapter {
 		Integer section = -1;
 
 		for (INpactArticleDescription article : this.articles) {
-			// Si on est dans une autre journée que l'actuelle, on crée une nouvelle section
+			// Si on est dans une autre journée que l'actuelle, on crée une
+			// nouvelle section
 			if (section != article.section) {
 				section = article.section;
 				mData.add(new ViewEntry(section, article.day));

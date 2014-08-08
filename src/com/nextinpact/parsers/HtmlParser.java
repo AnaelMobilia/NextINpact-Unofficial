@@ -328,7 +328,8 @@ public class HtmlParser {
 				site = "dailymotion";
 			} else if (laSrc.startsWith("//player.vimeo.com/video/")) {
 				site = "vimeo";
-			} else if(laSrc.startsWith("http://static.videos.gouv.fr/player/video/")) {
+			} else if (laSrc
+					.startsWith("http://static.videos.gouv.fr/player/video/")) {
 				site = "videosGouvFr";
 			}
 
@@ -371,12 +372,11 @@ public class HtmlParser {
 
 				case "vimeo":
 					monContenu = new ContentNode(
-							"<br /><a href=\"http://www.vimeo.com/"
-									+ idVideo
+							"<br /><a href=\"http://www.vimeo.com/" + idVideo
 									+ "\">Voir la vidéo sur Vimeo</a>");
 					break;
 
-				case "videosGouvFr" :
+				case "videosGouvFr":
 					// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
 					monContenu = new ContentNode(
 							"<br /><a href=\"http://static.videos.gouv.fr/player/video/"
@@ -384,7 +384,6 @@ public class HtmlParser {
 									+ "\">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</a>");
 					break;
 				}
-					
 
 				// j'injecte mon texte dans le parent
 				parentIframe.addChild(monContenu);
@@ -491,6 +490,13 @@ public class HtmlParser {
 			if (p == null)
 				continue;
 
+			// Gestion des badges "abonnés"
+			TagNode imgAbonne = getFirstElementByName(p, "img");
+			boolean badgeAbonne = false;
+			if (imgAbonne != null) {
+				badgeAbonne = true;
+			}
+
 			TagNode notif_link = getFirstElementByAttValue(htmlArticle,
 					"class", "notif_link ui-link");
 			if (notif_link == null) {
@@ -537,6 +543,7 @@ public class HtmlParser {
 			article.date = date;
 			article.subTitle = subTitle;
 			article.numberOfComs = coms;
+			article.badgeAbonne = badgeAbonne;
 
 			TempClass t = getDayForArticle(childIndex, days);
 			if (t != null) {
