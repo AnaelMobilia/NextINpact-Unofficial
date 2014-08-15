@@ -490,13 +490,6 @@ public class HtmlParser {
 			if (p == null)
 				continue;
 
-			// Gestion des badges "abonnés"
-			TagNode imgAbonne = getFirstElementByName(p, "img");
-			boolean badgeAbonne = false;
-			if (imgAbonne != null) {
-				badgeAbonne = true;
-			}
-
 			TagNode notif_link = getFirstElementByAttValue(htmlArticle,
 					"class", "notif_link ui-link");
 			if (notif_link == null) {
@@ -543,7 +536,6 @@ public class HtmlParser {
 			article.date = date;
 			article.subTitle = subTitle;
 			article.numberOfComs = coms;
-			article.badgeAbonne = badgeAbonne;
 
 			TempClass t = getDayForArticle(childIndex, days);
 			if (t != null) {

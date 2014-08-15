@@ -17,7 +17,6 @@ public class INpactArticleDescription implements Serializable {
 	public String subTitle;// imagine {get;set;}
 	public String numberOfComs;// imagine {get;set;}
 	public String imgURL;// imagine {get;set;}
-	public boolean badgeAbonne; // badge "abonné"
 
 	public String day;
 

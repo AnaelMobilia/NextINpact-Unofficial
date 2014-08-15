@@ -146,12 +146,6 @@ public class INpactListAdapter extends BaseAdapter {
 			holder.coms.setText(entry.article.numberOfComs);
 			// Image associée à l'article
 			fillImageView(holder.image, entry.article.getID());
-
-			// Badge abonné
-			if (entry.article.badgeAbonne) {
-				holder.imageAbonne.setImageDrawable(context.getResources()
-						.getDrawable(R.drawable.badge_abonne));
-			}
 		}
 
 		else {
@@ -186,9 +180,6 @@ public class INpactListAdapter extends BaseAdapter {
 		TextView coms;
 		ImageView image;
 
-		// Badge abonné
-		ImageView imageAbonne;
-
 		public ViewHolder(View convertView) {
 			this.container = (LinearLayout) convertView
 					.findViewById(R.id.LinearLayoutForArticle);
@@ -199,8 +190,6 @@ public class INpactListAdapter extends BaseAdapter {
 			this.coms = (TextView) convertView
 					.findViewById(R.id.TextViewCommentsCount);
 			this.image = (ImageView) convertView.findViewById(R.id.ImageView01);
-			this.imageAbonne = (ImageView) convertView
-					.findViewById(R.id.ImageBadgeAbonne);
 
 			// Taille des textes (option de l'utilisateur)
 			SharedPreferences mesPrefs = PreferenceManager
