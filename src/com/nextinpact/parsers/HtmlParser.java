@@ -393,6 +393,21 @@ public class HtmlParser {
 			if (laSrc.startsWith("//")) {
 				iframe.setAttribute("src", "http:" + laSrc);
 			}
+
+			// Gestion des liens relatifs (récap des bons plans)
+			if (laSrc.startsWith("../bonplan/")) {
+				// Les liens "bons plans" ne marchent pas (redirections $$ ?)
+				// iframe.setAttribute("src", NextInpact.NEXT_INPACT_URL + "/" +
+				// laSrc);
+
+				// Je récupère le <p> parent de l'iframe
+				TagNode parentIframe = iframe.getParent();
+
+				parentIframe.addChild(new ContentNode("<br /><a href=\""
+						+ NextInpact.NEXT_INPACT_URL + "/" + laSrc
+						+ "\">Voir les bons plans dans le navigateur</a>"));
+				parentIframe.removeChild(iframe);
+			}
 		}
 
 		try {
