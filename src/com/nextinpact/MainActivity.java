@@ -253,7 +253,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		// Formatage de la date de dernière mise à jour des news
 		DateFormat monFormatDate = DateFormat.getDateTimeInstance();
 		Date maDate = Calendar.getInstance().getTime();
-		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = monFormatDate.format(maDate);
+		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " " + monFormatDate.format(maDate);
 		
 		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
 		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
