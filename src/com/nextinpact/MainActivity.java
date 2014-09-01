@@ -20,7 +20,9 @@ package com.nextinpact;
 
 import java.io.ByteArrayInputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.nextinpact.adapters.INpactListAdapter;
 import com.nextinpact.connection.HtmlConnector;
@@ -248,8 +250,11 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			return;
 		}
 
-		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = Calendar
-				.getInstance().getTime().toLocaleString();
+		// Formatage de la date de dernière mise à jour des news
+		DateFormat monFormatDate = DateFormat.getDateTimeInstance();
+		Date maDate = Calendar.getInstance().getTime();
+		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = monFormatDate.format(maDate);
+		
 		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
 		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
 				.getArticlesWrapper());
