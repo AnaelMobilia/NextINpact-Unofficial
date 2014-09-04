@@ -138,39 +138,17 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		final SharedPreferences mesPrefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean("premiereUtilisation", true);
+		Boolean premiereUtilisation = mesPrefs.getBoolean(
+				"premiereUtilisation", true);
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
-			builder.setTitle("NextINpact (Unofficial)");
+			builder.setTitle(getResources().getString(R.string.app_name));
 			// Contenu
-			StringBuilder sb = new StringBuilder();
-			sb.append("L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("Les contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l'équipe de développement de cette application !");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("Cette application n'est pas développée par Next INpact (INpact Mediagroup).");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("Si vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !");
-			sb.append("\n");
-			sb.append("=> http://www.nextinpact.com/abonnement");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("Bonne lecture !");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("\n");
-			sb.append("Ce message ne s'affiche qu'au premier lancement de l'application.");
-			
-			builder.setMessage(sb.toString());
+			builder.setMessage(getResources().getString(
+					R.string.disclaimerContent));
 			// Bouton d'action
 			builder.setCancelable(false);
 			builder.setPositiveButton("Ok",
@@ -184,7 +162,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 					});
 			// On crée & affiche
 			builder.create().show();
-
 		}
 	}
 
@@ -213,8 +190,17 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			// Menu Options
 		case 1:
 			// Je lance l'activité options
-			Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
-			startActivity(intent);
+			Intent intentOptions = new Intent(MainActivity.this,
+					OptionsActivity.class);
+			startActivity(intentOptions);
+
+			return true;
+
+			// A propos
+		case 2:
+			Intent intentAbout = new Intent(MainActivity.this,
+					AboutActivity.class);
+			startActivity(intentAbout);
 
 			return true;
 		}
@@ -237,6 +223,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 		// Menu des paramètres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);
+
+		// A propos (ID = 2)
+		menu.add(0, 2, 0, R.string.about);
 
 		return true;
 	}

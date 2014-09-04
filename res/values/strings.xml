@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!-- 
+<!--
 /*
  * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
  * 
@@ -17,8 +17,8 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
- -->
+ */
+-->
 <resources>
 
     <string name="hello">Hello World</string>
@@ -31,6 +31,45 @@
     <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
+    <string name="about">A propos</string>
+    <!-- Disclaimer -->
+    <string name="disclaimerContent">			L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
+			\n
+			\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
+			\n
+			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup).
+			\n
+			\n
+			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
+			\n=> http://www.nextinpact.com/abonnement
+			\n
+			\n
+			\nBonne lecture !
+			\n
+			\n
+			\n
+			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
+    <!-- A propos -->
+    <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs assidus de NextINpact !
+        \n
+        \n
+        \nSi vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
+        \nhttps://github.com/AnaelMobilia/NextINpact-Unofficial
+        \ncontrib@anael.eu
+        \n
+        \n
+        \nContributeurs de l\'application
+        \nSami Ferhah (mainteneur de la v1 à la v1.7.1)
+        \nAnael Mobilia (mainteneur depuis la v1.7.2)
+        \nGuillaume Bour (contributeur v1.7.2)
+        \n
+        \n
+        \nPropriété des contenus
+        \nL\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
+		\n
+		\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
+		\n
+		\nL\'application est développée dans le cadre d\'une licence libre GNU GPLv3 : toute personne peut accéder au code source !	</string>
     <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
     <string name="buttonOkError">Fermer</string>
