@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import com.nextinpact.adapters.INpactListAdapter;
 import com.nextinpact.connection.HtmlConnector;
 import com.nextinpact.connection.IConnectable;
@@ -36,17 +37,18 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -130,6 +132,53 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			loadArticlesListFromServer();
 		}
 
+		// Message d'accueil pour la première utilisation
+
+		// Chargement des préférences de l'utilisateur
+		final SharedPreferences mesPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		// Est-ce la premiere utilisation de l'application ?
+		Boolean premiereUtilisation = mesPrefs.getBoolean("premiereUtilisation", true);
+
+		// Si première utilisation : on affiche un disclaimer
+		if (premiereUtilisation) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			// Titre
+			builder.setTitle("NextINpact (Unoficial) - Disclaimer");
+			// Contenu
+			StringBuilder sb = new StringBuilder();
+			sb.append("L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com");
+			sb.append("\n");
+			sb.append("Les contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l'équipe de développement de cette application !");
+			sb.append("\n");
+			sb.append("Cette application n'est pas développée par Next INpact (INpact Mediagroup).");
+			sb.append("\n");
+			sb.append("\n");
+			sb.append("Si vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !");
+			sb.append("\n");
+			sb.append("\n");
+			sb.append("Bonne lecture !");
+			sb.append("\n");
+			sb.append("\n");
+			sb.append("\n");
+			sb.append("Ce message ne s'affiche qu'au premier lancement de l'application.");
+			
+			builder.setMessage(sb.toString());
+			// Bouton d'action
+			builder.setCancelable(false);
+			builder.setPositiveButton("Ok",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// Enregistrement que le message a déjà été affiché
+							Editor editor = mesPrefs.edit();
+							editor.putBoolean("premiereUtilisation", false);
+							editor.commit();
+						}
+					});
+			// On crée & affiche
+			builder.create().show();
+
+		}
 	}
 
 	@Override
@@ -253,8 +302,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		// Formatage de la date de dernière mise à jour des news
 		DateFormat monFormatDate = DateFormat.getDateTimeInstance();
 		Date maDate = Calendar.getInstance().getTime();
-		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " " + monFormatDate.format(maDate);
-		
+		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " "
+				+ monFormatDate.format(maDate);
+
 		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
 		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
 				.getArticlesWrapper());
