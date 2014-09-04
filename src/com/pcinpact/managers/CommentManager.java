@@ -43,13 +43,11 @@ public class CommentManager {
 			comments = hh.getComments(context);
 			l_Stream.close();
 		} catch (FileNotFoundException e) {
-			Log.e("CommentManager WTF #1", "" + e.getMessage(), e);
+			// Log.e("CommentManager WTF #1", "" + e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e("CommentManager WTF #2", "" + e.getMessage(), e);
-		}
-
-		catch (Exception e) {
-			Log.e("CommentManager WTF #3", "" + e.getMessage(), e);
+			// Log.e("CommentManager WTF #2", "" + e.getMessage(), e);
+		} catch (Exception e) {
+			// Log.e("CommentManager WTF #3", "" + e.getMessage(), e);
 		}
 
 		if (comments == null)
@@ -65,12 +63,13 @@ public class CommentManager {
 					+ "_comms.html", Context.MODE_PRIVATE);
 			l_Stream.write(result);
 		} catch (Exception e) {
-			Log.e("CommentManager WTFException", "" + e.getMessage(), e);
+			// Log.e("CommentManager WTFException", "" + e.getMessage(), e);
 		}
 
 	}
 
-	public static List<INPactComment> getCommentsFromBytes(Context context, byte[] result) {
+	public static List<INPactComment> getCommentsFromBytes(Context context,
+			byte[] result) {
 
 		InputStream is = null;
 		try {

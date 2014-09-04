@@ -57,7 +57,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 
 		comments = CommentManager.getCommentsFromFile(this, url);
-		Log.d("NiN", "Comments: " + comments.size() + " in db");
 
 		listView = (ListView) this.findViewById(R.id.listview_comment);
 		adapter = new INpactListAdapter2(this, comments)
@@ -71,8 +70,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID
 					+ "&commId=0";
-			Log.d("NiN", "Comments: query " + data + " to "
-					+ NextInpact.NEXT_INPACT_URL + "/comment/");
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/",
 					"POST", data, null);
 		}
@@ -132,8 +129,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(
 				this, result);
 
-		Log.d("NiN", "Comments: retrieved " + newComments.size()
-				+ " new comments");
 		if (newComments.size() == 0) {
 			moreCommentsAvailabe = false;
 			adapter.refreshData(comments, moreCommentsAvailabe);
@@ -145,9 +140,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			comments.addAll(newComments);
 			adapter.refreshData(comments, moreCommentsAvailabe);
 		}
-
-		Log.i("COMMS", "page: " + page + " size :" + newComments.size());
-
 	}
 
 	public void didFailWithError(final String error, final int state) {
@@ -163,8 +155,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		loadingMoreComments = false;
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
-		Log.i("COMMS", "safeDidFailWithError " + error);
-
 	}
 
 	public void setDownloadProgress(int i) {
@@ -189,12 +179,10 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			return;
 
 		if (!moreCommentsAvailabe) {
-			Log.i("COMMS", "NO MORE COMMENTS");
 			return;
 		}
 
 		if (loadingMoreComments) {
-			Log.i("COMMS", "ALREADY LOADING");
 			return;
 		}
 

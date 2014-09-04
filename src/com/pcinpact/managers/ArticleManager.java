@@ -71,29 +71,29 @@ public class ArticleManager {
 		try {
 			fis = context.openFileInput(FILE_NAME_ARTICLES);
 		} catch (FileNotFoundException e) {
-			Log.e("ArticleManager WTF #3", "" + e.getMessage());
-			e.printStackTrace();
+//			Log.e("ArticleManager WTF #3", "" + e.getMessage());
+//			e.printStackTrace();
 			return null;
 		}
 		ObjectInputStream is = null;
 		try {
 			is = new ObjectInputStream(fis);
 		} catch (StreamCorruptedException e) {
-			Log.e("ArticleManager WTF #4", "" + e.getMessage(), e);
+//			Log.e("ArticleManager WTF #4", "" + e.getMessage(), e);
 			return null;
 		} catch (IOException e) {
-			Log.e("ArticleManager WTF #5", "" + e.getMessage(), e);
+//			Log.e("ArticleManager WTF #5", "" + e.getMessage(), e);
 			return null;
 		}
 		ArticlesWrapper simpleClass = null;
 		try {
 			simpleClass = (ArticlesWrapper) is.readObject();
 		} catch (OptionalDataException e) {
-			Log.e("ArticleManager WTF #6", "" + e.getMessage(), e);
+//			Log.e("ArticleManager WTF #6", "" + e.getMessage(), e);
 		} catch (ClassNotFoundException e) {
-			Log.e("ArticleManager WTF #7", "" + e.getMessage(), e);
+//			Log.e("ArticleManager WTF #7", "" + e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e("ArticleManager WTF #8", "" + e.getMessage(), e);
+//			Log.e("ArticleManager WTF #8", "" + e.getMessage(), e);
 		} finally {
 			try {
 				is.close();

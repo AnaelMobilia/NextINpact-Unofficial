@@ -403,8 +403,7 @@ public class HtmlParser {
 									+ idVideo
 									+ "\">"
 									+ "<img src=\"file:///android_res/drawable/video_vimeo.png\" />"
-									+ "<br />Voir la vidéo sur Vimeo"
-									+ "</a>");
+									+ "<br />Voir la vidéo sur Vimeo" + "</a>");
 					break;
 
 				case "videosGouvFr":
@@ -421,7 +420,7 @@ public class HtmlParser {
 
 				// Je supprime l'iframe du lecteur vidéo
 				parentIframe.removeChild(iframe);
-				
+
 				// j'injecte mon image + texte dans le parent
 				parentIframe.addChild(monContenu);
 			}
@@ -453,12 +452,11 @@ public class HtmlParser {
 			content.Content = htmlSerializer.getAsString(article);
 			return content;
 		} catch (IOException e) {
-
-			Log.e("HtmlParser WTF #1", "" + e.getMessage(), e);
+			// Log.e("HtmlParser WTF #1", "" + e.getMessage(), e);
 		}
 
 		catch (Exception e) {
-			Log.e("HtmlParser WTF #2", "" + e.getMessage(), e);
+			// Log.e("HtmlParser WTF #2", "" + e.getMessage(), e);
 		}
 		return null;
 

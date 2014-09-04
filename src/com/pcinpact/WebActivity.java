@@ -85,7 +85,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			l_Stream = l_Context.openFileInput(url);
 			// headerTextView.setText(article.Title);
 		} catch (FileNotFoundException e) {
-			Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
+//			Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
 
 			INpactArticleDescription article = NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticle(articleID);
@@ -107,7 +107,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		}
 
 		catch (Exception e) {
-			Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
+//			Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
 			e.printStackTrace();
 		}
 
@@ -115,7 +115,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			if (l_Stream != null)
 				l_Stream.close();
 		} catch (IOException e) {
-			Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
+//			Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
 		}
 
 		if (data == null)
@@ -218,11 +218,8 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	}
 
 	protected void safeDidFailWithError(String error, int state) {
-
-		Log.i("WebActivity", "didFailWithErrorOnUiThread " + error);
 		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
-
 	}
 
 	public void setDownloadProgress(int i) {

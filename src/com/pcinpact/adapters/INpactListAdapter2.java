@@ -96,8 +96,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 			try {
 				return Html.fromHtml(content, imageGetter, new TagHandler());
 			} catch (Exception e) {
-				e.printStackTrace();
-				Log.d("NXI", content);
+//				e.printStackTrace();
+//				Log.d("NXI", content);
 			}
 
 			return new SpannedString("*ERROR*");
@@ -110,10 +110,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 		private Hashtable<String, Drawable> cache = new Hashtable<String, Drawable>();
 
 		public Drawable getDrawable(String source) {
-			Log.i("NXI", "draw " + source);
 
 			if (cache.containsKey(source)) {
-				Log.i("NXI", "fetched from cache");
 				return (Drawable) cache.get(source);
 			}
 

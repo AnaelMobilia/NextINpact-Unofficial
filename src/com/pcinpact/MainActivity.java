@@ -120,8 +120,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 		ArticlesWrapper w = NextInpact.getInstance(this).getArticlesWrapper();
 
-		Log.i("OnCreate", "SIZE : " + w.getArticles().size());
-
 		if (w.getArticles().size() > 0) {
 			loadArticles();
 			headerTextView.setText(getString(R.string.lastUpdate)
@@ -180,7 +178,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	}
 
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		Log.i("MainAct", "onOptionsItemSelected");
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
 		case 0:
@@ -237,9 +234,9 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	}
 
 	void showCache() {
-		String[] SavedFiles = getApplicationContext().fileList();
-		for (String file : SavedFiles)
-			Log.e("CACHE", file);
+//		String[] SavedFiles = getApplicationContext().fileList();
+//		for (String file : SavedFiles)
+//			Log.e("CACHE", file);
 	}
 
 	void deleteCache() {
@@ -282,7 +279,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	private ProgressDialog progressDialog;
 
 	public void loadArticlesListFromServer() {
-		Log.i("MainAct", "loadArticlesListFromServer");
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
 		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
@@ -320,7 +316,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			INpactArticleDescription article = articles.get(i);
 
 			if (fileExists(article.getID() + ".html")) {
-				Log.i("MainAct", "ArticleSaved: " + article.getID());
 				numberOfPendingArticles.decrementAndGet();
 				stopRefreshingIfNeeded();
 				continue;
@@ -340,7 +335,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			INpactArticleDescription article = articles.get(i);
 
 			if (fileExists(article.getID() + ".jpg")) {
-				Log.i("MainAct", "JPEG Saved: " + article.getID());
 				numberOfPendingImages.decrementAndGet();
 				stopRefreshingIfNeeded();
 				continue;
@@ -432,7 +426,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		}
 
 		else if (state == DL_LIST) {
-			Log.e("TEMP", "didConnectionResultOnUiThread : DL_LIST");
 			List<INpactArticleDescription> articles = null;
 			try {
 				HtmlParser hh = new HtmlParser(new ByteArrayInputStream(result));
@@ -466,7 +459,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	}
 
 	public void didFailWithErrorOnUiThread(final String error, final int state) {
-		Log.i("MainAct", "didFailWithErrorOnUiThread " + error);
 
 		if (state == DL_ARTICLE) {
 			numberOfPendingArticles.decrementAndGet();
@@ -484,9 +476,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 		} else if (state == DL_COMMS) {
 
-		} else
-			Log.e("didFailWithErrorOnUiThread", "state: " + state + " error :"
-					+ error + "");// error is nil!
+		}
 	}
 
 	public void setDownloadProgress(int i) {
