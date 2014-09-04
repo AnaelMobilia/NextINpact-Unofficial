@@ -19,9 +19,9 @@
 package com.nextinpact;
 
 import android.content.Context;
-
 import com.nextinpact.managers.ArticleManager;
 import com.nextinpact.models.ArticlesWrapper;
+import com.pcinpact.R;
 
 public class NextInpact {
 	public static boolean DL_COMMENTS = true;

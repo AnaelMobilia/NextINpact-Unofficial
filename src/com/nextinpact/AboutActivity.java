@@ -20,6 +20,7 @@ package com.nextinpact;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.pcinpact.R;
 
 /**
  * A propos...

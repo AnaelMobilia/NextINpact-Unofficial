@@ -20,6 +20,7 @@ package com.nextinpact;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import com.pcinpact.R;
 
 /**
  * Options de l'application

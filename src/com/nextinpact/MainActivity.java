@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.nextinpact.adapters.INpactListAdapter;
 import com.nextinpact.connection.HtmlConnector;
 import com.nextinpact.connection.IConnectable;
@@ -33,6 +32,7 @@ import com.nextinpact.managers.CommentManager;
 import com.nextinpact.models.ArticlesWrapper;
 import com.nextinpact.models.INpactArticleDescription;
 import com.nextinpact.parsers.HtmlParser;
+import com.pcinpact.R;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -40,7 +40,6 @@ import com.actionbarsherlock.view.Window;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

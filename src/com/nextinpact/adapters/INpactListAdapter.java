@@ -22,7 +22,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nextinpact.R;
+import com.pcinpact.R;
 import com.nextinpact.models.INpactArticleDescription;
 
 import android.content.Context;

@@ -26,7 +26,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedInputStream;
 
-import com.nextinpact.R;
+import com.pcinpact.R;
 import com.nextinpact.models.INPactComment;
 
 import android.util.Log;

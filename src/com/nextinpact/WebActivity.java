@@ -21,7 +21,6 @@ package com.nextinpact;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -31,7 +30,7 @@ import com.nextinpact.managers.ArticleManager;
 import com.nextinpact.models.INpactArticle;
 import com.nextinpact.models.INpactArticleDescription;
 import com.nextinpact.parsers.HtmlParser;
-
+import com.pcinpact.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

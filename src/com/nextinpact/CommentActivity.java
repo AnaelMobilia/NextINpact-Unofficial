@@ -19,7 +19,6 @@
 package com.nextinpact;
 
 import java.util.List;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -28,6 +27,7 @@ import com.nextinpact.connection.HtmlConnector;
 import com.nextinpact.connection.IConnectable;
 import com.nextinpact.managers.CommentManager;
 import com.nextinpact.models.INPactComment;
+import com.pcinpact.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
