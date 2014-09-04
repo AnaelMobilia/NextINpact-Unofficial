@@ -349,6 +349,8 @@ public class HtmlParser {
 			} else if (laSrc
 					.startsWith("http://static.videos.gouv.fr/player/video/")) {
 				site = "videosGouvFr";
+			} else if (laSrc.startsWith("//www.youtube-nocookie.com/embed/")) {
+				site = "youtubeNoCookie";
 			}
 
 			// Vidéos intégrées avec leur player dans l'article
@@ -374,6 +376,7 @@ public class HtmlParser {
 				// Je crée l'élément de texte correspondant au site
 				ContentNode monContenu = new ContentNode("");
 				switch (site) {
+				case "youtubeNoCookie":
 				case "youtube":
 					monContenu = new ContentNode(
 							"<br /><a href=\"http://www.youtube.com/watch?v="
