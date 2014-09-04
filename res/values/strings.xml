@@ -33,11 +33,12 @@
     <string name="home">Accueil</string>
     <string name="about">A propos</string>
     <!-- Disclaimer -->
-    <string name="disclaimerContent">			L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
+    <string name="disclaimerContent">
+			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup) mais par des lecteurs (passionnés) !
+			\n
+        	L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
 			\n
 			\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
-			\n
-			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup).
 			\n
 			\n
 			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
@@ -50,7 +51,7 @@
 			\n
 			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
     <!-- A propos -->
-    <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs assidus de NextINpact !
+    <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs passionnés de NextINpact !
         \n
         \n
         \nSi vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
