@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.pcinpact.models.INPactComment;
 import com.pcinpact.parsers.HtmlParser;

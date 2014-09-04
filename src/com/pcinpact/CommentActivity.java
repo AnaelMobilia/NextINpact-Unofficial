@@ -32,7 +32,6 @@ import com.pcinpact.models.INPactComment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;

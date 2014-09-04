@@ -39,7 +39,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 
 public class HtmlParser {
 	TagNode rootNode;
