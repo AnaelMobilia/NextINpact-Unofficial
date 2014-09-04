@@ -379,34 +379,50 @@ public class HtmlParser {
 				case "youtubeNoCookie":
 				case "youtube":
 					monContenu = new ContentNode(
-							"<br /><a href=\"http://www.youtube.com/watch?v="
+							"<a href=\"http://www.youtube.com/watch?v="
 									+ idVideo
-									+ "\">Voir la vidéo sur Youtube</a>");
+									+ "\">"
+									+ "<img src=\"file:///android_res/drawable/video_youtube.png\" />"
+									+ "<br />Voir la vidéo sur YouTube"
+									+ "</a>");
 					break;
 
 				case "dailymotion":
 					monContenu = new ContentNode(
-							"<br /><a href=\"http://www.dailymotion.com/video/"
+							"<a href=\"http://www.dailymotion.com/video/"
 									+ idVideo
-									+ "\">Voir la vidéo sur Dailymotion</a>");
+									+ "\">"
+									+ "<img src=\"file:///android_res/drawable/video_dailymotion.png\" />"
+									+ "<br />Voir la vidéo sur Dailymotion"
+									+ "</a>");
 					break;
 
 				case "vimeo":
 					monContenu = new ContentNode(
-							"<br /><a href=\"http://www.vimeo.com/" + idVideo
-									+ "\">Voir la vidéo sur Vimeo</a>");
+							"<a href=\"http://www.vimeo.com/"
+									+ idVideo
+									+ "\">"
+									+ "<img src=\"file:///android_res/drawable/video_vimeo.png\" />"
+									+ "<br />Voir la vidéo sur Vimeo"
+									+ "</a>");
 					break;
 
 				case "videosGouvFr":
 					// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
 					monContenu = new ContentNode(
-							"<br /><a href=\"http://static.videos.gouv.fr/player/video/"
+							"<a href=\"http://static.videos.gouv.fr/player/video/"
 									+ idVideo
-									+ "\">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</a>");
+									+ "\">"
+									+ "<img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" />"
+									+ "<br />Voir la vidéo sur la Plateforme Vidéo Gouvernementale"
+									+ "</a>");
 					break;
 				}
 
-				// j'injecte mon texte dans le parent
+				// Je supprime l'iframe du lecteur vidéo
+				parentIframe.removeChild(iframe);
+				
+				// j'injecte mon image + texte dans le parent
 				parentIframe.addChild(monContenu);
 			}
 
