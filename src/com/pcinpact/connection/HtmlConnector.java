@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.connection;
+package com.pcinpact.connection;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

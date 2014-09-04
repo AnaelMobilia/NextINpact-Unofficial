@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah
+ * Copyright 2013, 2014 Sami Ferhah, Guillaume Bour
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,16 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.connection;
+package com.pcinpact.models;
 
-public interface IConnectable {
-
-	public void didConnectionResult(byte[] result, int state, String tag);
-
-	public void didFailWithError(String error, int state);
-
-	public void setDownloadProgress(int i);
-
-	public void setUploadProgress(int i);
-
+public class INPactComment {
+	public String author;// imagine {get;set;}
+	public String content;// imagine {get;set;}
+	public String commentID;
+	public String commentDate;
 }

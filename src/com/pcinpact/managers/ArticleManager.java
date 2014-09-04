@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.managers;
+package com.pcinpact.managers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -27,13 +27,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
-import com.nextinpact.models.ArticlesWrapper;
+import com.pcinpact.models.ArticlesWrapper;
 
 public class ArticleManager {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Guillaume Bour
+ * Copyright 2013, 2014 Sami Ferhah
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.models;
+package com.pcinpact.models;
 
-public class INPactComment {
-	public String author;// imagine {get;set;}
-	public String content;// imagine {get;set;}
-	public String commentID;
-	public String commentDate;
+public class INpactArticle {
+	public String Title;
+	public String Content;
+	public String UrlComms;
+
 }

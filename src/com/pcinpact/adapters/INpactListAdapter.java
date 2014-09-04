@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.adapters;
+package com.pcinpact.adapters;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.pcinpact.R;
-import com.nextinpact.models.INpactArticleDescription;
+import com.pcinpact.models.INpactArticleDescription;
 
 import android.content.Context;
 import android.content.SharedPreferences;

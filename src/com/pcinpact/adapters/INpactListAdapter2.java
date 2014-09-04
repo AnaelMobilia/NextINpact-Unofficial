@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.adapters;
+package com.pcinpact.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.net.URLConnection;
 import java.io.BufferedInputStream;
 
 import com.pcinpact.R;
-import com.nextinpact.models.INPactComment;
+import com.pcinpact.models.INPactComment;
 
 import android.util.Log;
 import android.content.Context;
@@ -56,6 +56,7 @@ import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
+
 import org.xml.sax.XMLReader;
 
 public class INpactListAdapter2 extends BaseAdapter {

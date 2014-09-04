@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.parsers;
+package com.pcinpact.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +30,10 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
-import com.nextinpact.NextInpact;
-import com.nextinpact.models.INPactComment;
-import com.nextinpact.models.INpactArticle;
-import com.nextinpact.models.INpactArticleDescription;
+import com.pcinpact.NextInpact;
+import com.pcinpact.models.INPactComment;
+import com.pcinpact.models.INpactArticle;
+import com.pcinpact.models.INpactArticleDescription;
 
 import android.content.Context;
 import android.content.SharedPreferences;

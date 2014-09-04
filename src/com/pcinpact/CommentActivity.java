@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact;
+package com.pcinpact;
 
 import java.util.List;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.nextinpact.adapters.INpactListAdapter2;
-import com.nextinpact.connection.HtmlConnector;
-import com.nextinpact.connection.IConnectable;
-import com.nextinpact.managers.CommentManager;
-import com.nextinpact.models.INPactComment;
 import com.pcinpact.R;
+import com.pcinpact.adapters.INpactListAdapter2;
+import com.pcinpact.connection.HtmlConnector;
+import com.pcinpact.connection.IConnectable;
+import com.pcinpact.managers.CommentManager;
+import com.pcinpact.models.INPactComment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

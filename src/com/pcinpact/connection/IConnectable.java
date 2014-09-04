@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2013, 2014 Sami Ferhah
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,27 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact;
+package com.pcinpact.connection;
 
-import android.app.Activity;
-import android.os.Bundle;
-import com.pcinpact.R;
+public interface IConnectable {
 
-/**
- * A propos...
- * 
- * @author Anael
- * 
- */
-public class AboutActivity extends Activity {
+	public void didConnectionResult(byte[] result, int state, String tag);
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
-		setTheme(NextInpact.THEME);
-		super.onCreate(savedInstanceState);
+	public void didFailWithError(String error, int state);
 
-		setContentView(R.layout.a_propos);
-	}
+	public void setDownloadProgress(int i);
+
+	public void setUploadProgress(int i);
 
 }

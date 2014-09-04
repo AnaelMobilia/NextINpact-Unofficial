@@ -16,28 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact;
+package com.pcinpact;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import com.pcinpact.R;
 
 /**
- * Options de l'application
+ * A propos...
  * 
  * @author Anael
  * 
  */
-public class OptionsActivity extends PreferenceActivity {
+public class AboutActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
 		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
-		// TODO : 2014-07-21 - Anael - PreferenceActivity est partiellement
-		// deprecated. PreferenceFragment serait mieux, mais API v11.
-		addPreferencesFromResource(R.xml.options);
+
+		setContentView(R.layout.a_propos);
 	}
 
 }

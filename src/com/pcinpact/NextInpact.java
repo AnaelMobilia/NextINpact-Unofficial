@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact;
+package com.pcinpact;
 
 import android.content.Context;
-import com.nextinpact.managers.ArticleManager;
-import com.nextinpact.models.ArticlesWrapper;
+
 import com.pcinpact.R;
+import com.pcinpact.managers.ArticleManager;
+import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
 	public static boolean DL_COMMENTS = true;

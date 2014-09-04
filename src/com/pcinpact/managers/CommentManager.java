@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.nextinpact.managers;
+package com.pcinpact.managers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -30,8 +30,8 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
-import com.nextinpact.models.INPactComment;
-import com.nextinpact.parsers.HtmlParser;
+import com.pcinpact.models.INPactComment;
+import com.pcinpact.parsers.HtmlParser;
 
 public class CommentManager {
 	public static List<INPactComment> getCommentsFromFile(Context context,
