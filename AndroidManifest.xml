@@ -27,6 +27,8 @@
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
 
+
+    <!-- Gestion des tablettes -->
     <supports-screens
         android:largeScreens="true"
         android:xlargeScreens="true" >
