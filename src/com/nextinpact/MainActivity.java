@@ -141,8 +141,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Boolean premiereUtilisation = mesPrefs.getBoolean("premiereUtilisation", true);
 
 		// Si première utilisation : on affiche un disclaimer
-//		if (premiereUtilisation) {
-		if (true) {
+		if (premiereUtilisation) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
 			builder.setTitle("NextINpact (Unofficial)");
