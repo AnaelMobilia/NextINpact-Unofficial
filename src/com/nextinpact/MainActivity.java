@@ -141,23 +141,31 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Boolean premiereUtilisation = mesPrefs.getBoolean("premiereUtilisation", true);
 
 		// Si première utilisation : on affiche un disclaimer
-		if (premiereUtilisation) {
+//		if (premiereUtilisation) {
+		if (true) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
-			builder.setTitle("NextINpact (Unoficial) - Disclaimer");
+			builder.setTitle("NextINpact (Unofficial)");
 			// Contenu
 			StringBuilder sb = new StringBuilder();
 			sb.append("L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com");
 			sb.append("\n");
+			sb.append("\n");
 			sb.append("Les contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l'équipe de développement de cette application !");
+			sb.append("\n");
 			sb.append("\n");
 			sb.append("Cette application n'est pas développée par Next INpact (INpact Mediagroup).");
 			sb.append("\n");
 			sb.append("\n");
+			sb.append("\n");
 			sb.append("Si vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !");
+			sb.append("\n");
+			sb.append("=> http://www.nextinpact.com/abonnement");
+			sb.append("\n");
 			sb.append("\n");
 			sb.append("\n");
 			sb.append("Bonne lecture !");
+			sb.append("\n");
 			sb.append("\n");
 			sb.append("\n");
 			sb.append("\n");
