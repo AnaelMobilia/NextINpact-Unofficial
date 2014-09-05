@@ -34,23 +34,23 @@
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles" >
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"
             android:summary="@string/activerLiensArticleDetail"
-            android:title="@string/activerLiensArticle"
-            android:defaultValue="@bool/defautOptionLiensDansArticles" />
+            android:title="@string/activerLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires" >
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionTelechargerCommentaires"
             android:key="@string/idOptionTelechargerCommentaires"
             android:summary="@string/telechargerCommentairesDetail"
-            android:title="@string/telechargerCommentaires"
-            android:defaultValue="@bool/defautOptionTelechargerCommentaires" />
+            android:title="@string/telechargerCommentaires" />
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
             android:summary="@string/activerLiensCommentaireDetail"
-            android:title="@string/activerLiensCommentaire"
-            android:defaultValue="@bool/defautOptionLiensDansCommentaires" />
+            android:title="@string/activerLiensCommentaire" />
     </PreferenceCategory>
 
 </PreferenceScreen>

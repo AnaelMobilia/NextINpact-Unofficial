@@ -86,9 +86,11 @@
     <string name="optionsCommentaires">Options des commentaires</string>
     <string name="activerLiensCommentaire">Liens hypertextes</string>
     <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
-    <string name="telechargerCommentaires">Télécharger les 10 premiers commentaires</string>
-    <string name="telechargerCommentairesDetail">Si vous ne lisez pas les commentaires, décochez cette case</string>
+    <string name="telechargerCommentaires">Télécharger</string>
+    <string name="telechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
+    <string name="optionsFermer">Fermer</string>
     <!-- Options - ID des clefs -->
+    <string name="idOptionFermer">0</string>
     <string name="idOptionLiensDansArticles">1</string>
     <string name="idOptionLiensDansCommentaires">2</string>
     <string name="idOptionZoomTexte">3</string>

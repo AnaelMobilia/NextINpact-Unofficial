@@ -20,6 +20,11 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+
 import com.pcinpact.R;
 
 /**
@@ -35,9 +40,24 @@ public class OptionsActivity extends PreferenceActivity {
 		// Je lance l'activité
 		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
+
 		// TODO : 2014-07-21 - Anael - PreferenceActivity est partiellement
 		// deprecated. PreferenceFragment serait mieux, mais API v11.
 		addPreferencesFromResource(R.xml.options);
-	}
 
+		// Bouton fermant la vue "Options"
+		Button monBouton = new Button(this);
+		monBouton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// fin de l'activité -> retour à la fenêtre précédente
+				finish();
+			}
+		});
+		
+		monBouton.setText(getResources().getString(R.string.optionsFermer));
+
+		ListView v = getListView();
+		v.addFooterView(monBouton);
+	}
 }
