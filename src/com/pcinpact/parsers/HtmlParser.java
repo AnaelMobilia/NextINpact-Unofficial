@@ -278,6 +278,21 @@ public class HtmlParser {
 		if (actu_content == null)
 			return null;
 
+		// Suppression des liens sur les images
+		for (TagNode img : actu_content.getElementsByName("img", true)) {
+			TagNode parentImg = img.getParent();
+			if (parentImg.hasAttribute("href")) {
+				// Une balise <a> est présente sur l'image
+				// On remonte au dessus
+				TagNode grandParentImg = parentImg.getParent();
+
+				// Je rajoute l'image en tant qu'enfant direct
+				grandParentImg.addChild(img);
+				// Suppression de la balise <a>
+				grandParentImg.removeChild(parentImg);
+			}
+		}
+
 		// Gestion des liens hypertextes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(contextParent);
 		if (mesPrefs.getBoolean(contextParent.getString(R.string.idOptionLiensDansArticles), contextParent.getResources()
