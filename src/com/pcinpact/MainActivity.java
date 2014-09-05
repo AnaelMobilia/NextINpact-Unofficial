@@ -19,9 +19,11 @@
 package com.pcinpact;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -233,49 +235,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 				.getArticles());
 	}
 
-	void showCache() {
-//		String[] SavedFiles = getApplicationContext().fileList();
-//		for (String file : SavedFiles)
-//			Log.e("CACHE", file);
-	}
-
-	void deleteCache() {
-
-	}
-
-	void deleteOldArticles() {
-
-		String[] SavedFiles = getApplicationContext().fileList();
-
-		for (String file : SavedFiles) {
-			if (file.equals(ArticleManager.FILE_NAME_ARTICLES))
-				continue;
-
-			if (file.endsWith(".jpg"))
-				continue;
-
-			if (file.endsWith("_comms.html"))
-				continue;
-
-			boolean newArticle = false;
-			String articleID = null;
-
-			for (INpactArticleDescription article : NextInpact
-					.getInstance(this).getArticlesWrapper().getArticles()) {
-				if ((article.getID() + ".html").equals(file)) {
-					newArticle = true;
-					articleID = article.getID();
-				}
-
-			}
-			if (!newArticle) {
-				this.deleteFile(file);
-				this.deleteFile(articleID + ".jpg");
-				this.deleteFile(articleID + "_comms.html");
-			}
-		}
-	}
-
 	private ProgressDialog progressDialog;
 
 	public void loadArticlesListFromServer() {
@@ -310,6 +269,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
 				.getArticlesWrapper());
 
+		// On récupère le contenu des articles
 		numberOfPendingArticles.set(articles.size());
 
 		for (int i = 0; i < articles.size(); i++) {
@@ -329,6 +289,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 					0, null);
 		}
 
+		// On récupère les images des articles
 		numberOfPendingImages.set(articles.size());
 
 		for (int i = 0; i < articles.size(); i++) {
@@ -346,6 +307,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			connector.sendRequest(article.imgURL, "GET", null, 0, null);
 		}
 
+		// On récupère les commentaires des articles
 		for (int i = 0; i < articles.size(); i++) {
 			if (NextInpact.DL_COMMENTS) {
 				INpactArticleDescription article = articles.get(i);
@@ -363,6 +325,35 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			}
 		}
 
+
+		// On nettoye le cache des articles qui ne sont plus utilisés
+		// Création des variations des noms de fichiers pour les articles
+		ArrayList<String> fichiersLegitimes = new ArrayList<String>();
+
+		// création d'un listIterator sur la liste d'articles
+		ListIterator<INpactArticleDescription> it = articles.listIterator();
+		while (it.hasNext()) {
+			// id de l'article
+			String idArticle = String.valueOf(it.next().getID());
+			// Article
+			fichiersLegitimes.add(idArticle + ".html");
+			// Miniature
+			fichiersLegitimes.add(idArticle + ".jpg");
+			// Commentaires
+			fichiersLegitimes.add(idArticle + "_comms.html");
+		}
+		// Liste des articles -> à conserver
+		fichiersLegitimes.add(ArticleManager.FILE_NAME_ARTICLES);
+
+		// Les fichiers sur stockés en local
+		String[] SavedFiles = getApplicationContext().fileList();
+
+		for (String file : SavedFiles) {
+			if (!fichiersLegitimes.contains(file)) {
+				// Article à effacer
+				getApplicationContext().deleteFile(file);
+			}
+		}
 	}
 
 	public boolean fileExists(String articleID) {
@@ -377,6 +368,8 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		return false;
 	}
 
+	// Iconnectable - callback une fois que le chargement de la liste des
+	// articles est effectué
 	public void didConnectionResult(final byte[] result, final int state,
 			final String tag) {
 		runOnUiThread(new Runnable() {
@@ -393,7 +386,6 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		if (numberOfPendingArticles.get() == 0
 				&& numberOfPendingImages.get() == 0) {
 			stopRefreshing();
-			deleteOldArticles();
 		}
 	}
 
@@ -413,6 +405,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Log.i("MainAct", "stopRefreshing");
 	}
 
+	// Le parser final qui est appelé en cas de succès du téléchargement
 	public void didConnectionResultOnUiThread(final byte[] result,
 			final int state, final String tag) {
 		if (state == DL_ARTICLE) {

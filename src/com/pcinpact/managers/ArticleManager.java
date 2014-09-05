@@ -32,7 +32,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
-import android.util.Log;
 
 import com.pcinpact.models.ArticlesWrapper;
 
@@ -40,6 +39,12 @@ public class ArticleManager {
 
 	public final static String FILE_NAME_ARTICLES = "articles";
 
+	/**
+	 * Enregistre une image
+	 * @param context
+	 * @param result
+	 * @param tag
+	 */
 	public static void saveImage(Context context, byte[] result, String tag) {
 		try {
 			final Bitmap bm = BitmapFactory
@@ -49,11 +54,17 @@ public class ArticleManager {
 			bm.compress(CompressFormat.JPEG, 90, fos);
 
 		} catch (Exception e) {
-			Log.e("ArticleManager WTF #1", "" + e.getMessage());
-			e.printStackTrace();
+//			Log.e("ArticleManager WTF #1", "" + e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Enregistre le contenu d'un article
+	 * @param context
+	 * @param result
+	 * @param tag
+	 */
 	public static void saveArticle(Context context, byte[] result, String tag) {
 		try {
 			FileOutputStream l_Stream = context.openFileOutput(tag + ".html",
@@ -61,11 +72,16 @@ public class ArticleManager {
 			l_Stream.write(result);
 
 		} catch (Exception e) {
-			Log.e("ArticleManager WTF #2", "" + e.getMessage());
-			e.printStackTrace();
+//			Log.e("ArticleManager WTF #2", "" + e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Récupère en local le contenu d'un article
+	 * @param context
+	 * @return
+	 */
 	public static ArticlesWrapper getSavedArticlesWrapper(Context context) {
 		FileInputStream fis = null;
 		try {
@@ -104,6 +120,11 @@ public class ArticleManager {
 
 	}
 
+	/**
+	 * Enregistre la liste des articles
+	 * @param context
+	 * @param wrapper
+	 */
 	public static void saveArticlesWrapper(Context context,
 			ArticlesWrapper wrapper) {
 		FileOutputStream fos = null;
