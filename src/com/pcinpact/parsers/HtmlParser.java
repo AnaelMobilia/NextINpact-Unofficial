@@ -30,6 +30,7 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
+import com.pcinpact.R;
 import com.pcinpact.NextInpact;
 import com.pcinpact.models.INPactComment;
 import com.pcinpact.models.INpactArticle;
@@ -127,8 +128,10 @@ public class HtmlParser {
 
 				SharedPreferences mesPrefs = PreferenceManager
 						.getDefaultSharedPreferences(monContext);
-				if (mesPrefs.getBoolean("checkbox_activerLiensCommentaire",
-						false)) {
+				if (mesPrefs
+						.getBoolean(String
+								.valueOf(R.id.optionLiensDansCommentaires),
+								false)) {
 					// On laisse les liens...
 				} else {
 					// Suppression des liens
@@ -323,7 +326,8 @@ public class HtmlParser {
 		// Gestion des liens hypertextes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager
 				.getDefaultSharedPreferences(contextParent);
-		if (mesPrefs.getBoolean("checkbox_activerLiensArticle", false)) {
+		if (mesPrefs.getBoolean(String
+				.valueOf(R.id.optionLiensDansArticles), false)) {
 			// On laisse les liens...
 		} else {
 			// Suppression des liens

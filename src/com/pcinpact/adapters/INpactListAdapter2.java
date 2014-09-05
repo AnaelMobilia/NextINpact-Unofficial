@@ -29,7 +29,6 @@ import java.io.BufferedInputStream;
 import com.pcinpact.R;
 import com.pcinpact.models.INPactComment;
 
-import android.util.Log;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -96,8 +95,6 @@ public class INpactListAdapter2 extends BaseAdapter {
 			try {
 				return Html.fromHtml(content, imageGetter, new TagHandler());
 			} catch (Exception e) {
-//				e.printStackTrace();
-//				Log.d("NXI", content);
 			}
 
 			return new SpannedString("*ERROR*");
@@ -129,8 +126,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 				drawable = new BitmapDrawable(null, bis);
 
 				// Auto-définition de la taille de l'image
-//				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-//						drawable.getIntrinsicHeight());
+				// drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+				// drawable.getIntrinsicHeight());
 				// Taille des textes (option de l'utilisateur)
 				SharedPreferences mesPrefs = PreferenceManager
 						.getDefaultSharedPreferences(ctx);
@@ -139,21 +136,27 @@ public class INpactListAdapter2 extends BaseAdapter {
 				int tailleDefaut = 16;
 
 				// L'option selectionnée
-				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-						"list_tailleTexte", "" + tailleDefaut));
-				
-				if (tailleOptionUtilisateur == tailleDefaut) {
-					// Valeur par défaut... (doublage de la taille sinon les smileys sont vraiment trop petits)
-					drawable.setBounds(0, 0, drawable.getIntrinsicWidth()*2,
-							drawable.getIntrinsicHeight()*2);
-				} else {
-					// On applique la taille demandée (doublage du zoom sinon les smileys sont vraiment trop petits)
-					drawable.setBounds(0, 0, drawable.getIntrinsicWidth()*(2*tailleOptionUtilisateur/tailleDefaut),
-							drawable.getIntrinsicHeight()*(2*tailleOptionUtilisateur/tailleDefaut));
-				}
-				
+				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs
+						.getString(String.valueOf(R.id.optionZoomTexte), ""
+								+ tailleDefaut));
 
-				
+				if (tailleOptionUtilisateur == tailleDefaut) {
+					// Valeur par défaut... (doublage de la taille sinon les
+					// smileys sont vraiment trop petits)
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth() * 2,
+							drawable.getIntrinsicHeight() * 2);
+				} else {
+					// On applique la taille demandée (doublage du zoom sinon
+					// les smileys sont vraiment trop petits)
+					drawable.setBounds(
+							0,
+							0,
+							drawable.getIntrinsicWidth()
+									* (2 * tailleOptionUtilisateur / tailleDefaut),
+							drawable.getIntrinsicHeight()
+									* (2 * tailleOptionUtilisateur / tailleDefaut));
+				}
+
 				cache.put(source, drawable);
 
 			} catch (Exception e) {
@@ -396,7 +399,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 					.findViewById(R.id.CommTextViewloadMore);
 			this.progressView = (ProgressBar) convertView
 					.findViewById(R.id.CommProgressBar);
-			
+
 			// Taille des textes (option de l'utilisateur)
 			SharedPreferences mesPrefs = PreferenceManager
 					.getDefaultSharedPreferences(ctx);
@@ -406,7 +409,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 
 			// L'option selectionnée
 			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-					"list_tailleTexte", "" + tailleDefaut));
+					String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
 
 			if (tailleOptionUtilisateur == tailleDefaut) {
 				// Valeur par défaut...

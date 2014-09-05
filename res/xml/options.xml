@@ -27,21 +27,21 @@
             android:defaultValue="16"
             android:entries="@array/tailleTexteLiteral"
             android:entryValues="@array/tailleTexteValeur"
-            android:key="list_tailleTexte"
+            android:key="@id/optionZoomTexte"
             android:summary="@string/tailleTexteDetail"
             android:title="@string/tailleTexte" />
     </PreferenceCategory>
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles" >
         <CheckBoxPreference
-            android:key="checkbox_activerLiensArticle"
+            android:key="@id/optionLiensDansArticles"
             android:summary="@string/activerLiensArticleDetail"
             android:title="@string/activerLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires" >
         <CheckBoxPreference
-            android:key="checkbox_activerLiensCommentaire"
+            android:key="@id/optionLiensDansCommentaires"
             android:summary="@string/activerLiensCommentaireDetail"
             android:title="@string/activerLiensCommentaire" />
     </PreferenceCategory>

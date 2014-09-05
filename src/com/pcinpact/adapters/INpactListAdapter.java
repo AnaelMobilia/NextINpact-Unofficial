@@ -218,7 +218,7 @@ public class INpactListAdapter extends BaseAdapter {
 
 			// L'option selectionnée
 			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-					"list_tailleTexte", "" + tailleDefaut));
+					String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
 
 			if (tailleOptionUtilisateur == tailleDefaut) {
 				// Valeur par défaut...

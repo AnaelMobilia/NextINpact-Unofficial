@@ -56,8 +56,7 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class MainActivity extends SherlockActivity implements IConnectable,
-		OnItemClickListener {
+public class MainActivity extends SherlockActivity implements IConnectable, OnItemClickListener {
 
 	PullToRefreshListView listView;
 	INpactListAdapter adapter;
@@ -122,23 +121,19 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 		if (w.getArticles().size() > 0) {
 			loadArticles();
-			headerTextView.setText(getString(R.string.lastUpdate)
-					+ w.LastUpdate);
+			headerTextView.setText(getString(R.string.lastUpdate) + w.LastUpdate);
 		} else {
 			listView.setRefreshing();
-			progressDialog = ProgressDialog.show(this, "Chargement...",
-					"Veuillez patienter", true, false);
+			progressDialog = ProgressDialog.show(this, "Chargement...", "Veuillez patienter", true, false);
 			loadArticlesListFromServer();
 		}
 
 		// Message d'accueil pour la première utilisation
 
 		// Chargement des préférences de l'utilisateur
-		final SharedPreferences mesPrefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean(
-				"premiereUtilisation", true);
+		Boolean premiereUtilisation = mesPrefs.getBoolean(String.valueOf(R.id.optionPremierLancementApplication), true);
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
@@ -146,19 +141,17 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			// Titre
 			builder.setTitle(getResources().getString(R.string.app_name));
 			// Contenu
-			builder.setMessage(getResources().getString(
-					R.string.disclaimerContent));
+			builder.setMessage(getResources().getString(R.string.disclaimerContent));
 			// Bouton d'action
 			builder.setCancelable(false);
-			builder.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							// Enregistrement que le message a déjà été affiché
-							Editor editor = mesPrefs.edit();
-							editor.putBoolean("premiereUtilisation", false);
-							editor.commit();
-						}
-					});
+			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// Enregistrement que le message a déjà été affiché
+					Editor editor = mesPrefs.edit();
+					editor.putBoolean(String.valueOf(R.id.optionPremierLancementApplication), false);
+					editor.commit();
+				}
+			});
 			// On crée & affiche
 			builder.create().show();
 		}
@@ -188,16 +181,14 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			// Menu Options
 		case 1:
 			// Je lance l'activité options
-			Intent intentOptions = new Intent(MainActivity.this,
-					OptionsActivity.class);
+			Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 			startActivity(intentOptions);
 
 			return true;
 
 			// A propos
 		case 2:
-			Intent intentAbout = new Intent(MainActivity.this,
-					AboutActivity.class);
+			Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
 			startActivity(intentAbout);
 
 			return true;
@@ -215,8 +206,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		// Ecran principal : bouton en haut à  droite de rafraichissement des
 		// news
 		// Ou dans le menu d'options de l'application
-		menu.add(0, 0, 0, getResources().getString(R.string.refresh))
-				.setIcon(R.drawable.ic_refresh)
+		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		// Menu des paramètres (ID = 1)
@@ -229,14 +219,13 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 	}
 
 	void loadArticles() {
-		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper()
-				.getArticles());
+		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
 	}
 
 	void showCache() {
-//		String[] SavedFiles = getApplicationContext().fileList();
-//		for (String file : SavedFiles)
-//			Log.e("CACHE", file);
+		// String[] SavedFiles = getApplicationContext().fileList();
+		// for (String file : SavedFiles)
+		// Log.e("CACHE", file);
 	}
 
 	void deleteCache() {
@@ -260,8 +249,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			boolean newArticle = false;
 			String articleID = null;
 
-			for (INpactArticleDescription article : NextInpact
-					.getInstance(this).getArticlesWrapper().getArticles()) {
+			for (INpactArticleDescription article : NextInpact.getInstance(this).getArticlesWrapper().getArticles()) {
 				if ((article.getID() + ".html").equals(file)) {
 					newArticle = true;
 					articleID = article.getID();
@@ -295,20 +283,16 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		// Formatage de la date de dernière mise à jour des news
 		DateFormat monFormatDate = DateFormat.getDateTimeInstance();
 		Date maDate = Calendar.getInstance().getTime();
-		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " "
-				+ monFormatDate.format(maDate);
+		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " " + monFormatDate.format(maDate);
 
 		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
-		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
-				.getArticlesWrapper());
+		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
 
 		loadArticles();
 
-		headerTextView.setText(getString(R.string.lastUpdate)
-				+ NextInpact.getInstance(this).getArticlesWrapper().LastUpdate);
+		headerTextView.setText(getString(R.string.lastUpdate) + NextInpact.getInstance(this).getArticlesWrapper().LastUpdate);
 
-		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this)
-				.getArticlesWrapper());
+		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
 
 		numberOfPendingArticles.set(articles.size());
 
@@ -324,9 +308,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.state = DL_ARTICLE;
 			connector.tag = article.getID();
-			connector.sendRequest(
-					NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null,
-					0, null);
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
 		}
 
 		numberOfPendingImages.set(articles.size());
@@ -358,8 +340,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 				connector.state = DL_COMMS;
 				connector.tag = article.getID();
 				String data = "page=1&newsId=" + article.getID() + "&commId=0";
-				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/",
-						"POST", data, null);
+				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
 			}
 		}
 
@@ -377,8 +358,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		return false;
 	}
 
-	public void didConnectionResult(final byte[] result, final int state,
-			final String tag) {
+	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				didConnectionResultOnUiThread(result, state, tag);
@@ -388,10 +368,8 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 
 	public void stopRefreshingIfNeeded() {
 
-		Log.i("MainAct", numberOfPendingArticles.get() + " "
-				+ numberOfPendingImages.get());
-		if (numberOfPendingArticles.get() == 0
-				&& numberOfPendingImages.get() == 0) {
+		Log.i("MainAct", numberOfPendingArticles.get() + " " + numberOfPendingImages.get());
+		if (numberOfPendingArticles.get() == 0 && numberOfPendingImages.get() == 0) {
 			stopRefreshing();
 			deleteOldArticles();
 		}
@@ -413,8 +391,7 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		Log.i("MainAct", "stopRefreshing");
 	}
 
-	public void didConnectionResultOnUiThread(final byte[] result,
-			final int state, final String tag) {
+	public void didConnectionResultOnUiThread(final byte[] result, final int state, final String tag) {
 		if (state == DL_ARTICLE) {
 			ArticleManager.saveArticle(this, result, tag);
 			numberOfPendingArticles.decrementAndGet();
@@ -490,21 +467,18 @@ public class MainActivity extends SherlockActivity implements IConnectable,
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getString(R.string.titleError));
 		builder.setMessage(error);
-		builder.setPositiveButton(getString(R.string.buttonOkError),
-				new DialogInterface.OnClickListener() {
-					public void onClick(final DialogInterface pDialog,
-							final int pWhich) {
-						pDialog.dismiss();
-					}
-				});
+		builder.setPositiveButton(getString(R.string.buttonOkError), new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface pDialog, final int pWhich) {
+				pDialog.dismiss();
+			}
+		});
 		builder.create().show();
 	}
 
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		int _index = arg2 - 1;
 
-		INpactArticleDescription article = this.adapter
-				.getInpactArticleDescription(_index);
+		INpactArticleDescription article = this.adapter.getInpactArticleDescription(_index);
 		if (article == null)
 			return;
 

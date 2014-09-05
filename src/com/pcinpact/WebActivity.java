@@ -84,7 +84,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			l_Stream = l_Context.openFileInput(url);
 			// headerTextView.setText(article.Title);
 		} catch (FileNotFoundException e) {
-//			Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
+			// Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
 
 			INpactArticleDescription article = NextInpact.getInstance(this)
 					.getArticlesWrapper().getArticle(articleID);
@@ -106,7 +106,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		}
 
 		catch (Exception e) {
-//			Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
+			// Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
 			e.printStackTrace();
 		}
 
@@ -114,7 +114,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			if (l_Stream != null)
 				l_Stream.close();
 		} catch (IOException e) {
-//			Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
+			// Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
 		}
 
 		if (data == null)
@@ -131,8 +131,8 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 		// L'option selectionnée
 		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-				"list_tailleTexte", "" + tailleDefaut));
-		
+				String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
+
 		if (tailleOptionUtilisateur == tailleDefaut) {
 			// Valeur par défaut...
 		} else {
