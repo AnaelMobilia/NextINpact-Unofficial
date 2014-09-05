@@ -33,8 +33,7 @@ import com.pcinpact.models.INPactComment;
 import com.pcinpact.parsers.HtmlParser;
 
 public class CommentManager {
-	public static List<INPactComment> getCommentsFromFile(Context context,
-			String path) {
+	public static List<INPactComment> getCommentsFromFile(Context context, String path) {
 		List<INPactComment> comments = null;
 		try {
 			FileInputStream l_Stream = context.openFileInput(path);
@@ -58,8 +57,7 @@ public class CommentManager {
 	public static void saveComments(Context context, byte[] result, String tag) {
 
 		try {
-			FileOutputStream l_Stream = context.openFileOutput(tag
-					+ "_comms.html", Context.MODE_PRIVATE);
+			FileOutputStream l_Stream = context.openFileOutput(tag + "_comms.html", Context.MODE_PRIVATE);
 			l_Stream.write(result);
 		} catch (Exception e) {
 			// Log.e("CommentManager WTFException", "" + e.getMessage(), e);
@@ -67,14 +65,13 @@ public class CommentManager {
 
 	}
 
-	public static List<INPactComment> getCommentsFromBytes(Context context,
-			byte[] result) {
+	public static List<INPactComment> getCommentsFromBytes(Context context, byte[] result) {
 
 		InputStream is = null;
 		try {
 			is = new ByteArrayInputStream(result);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			return new ArrayList<INPactComment>();
 		}
 
@@ -82,7 +79,7 @@ public class CommentManager {
 		try {
 			parser = new HtmlParser(is);
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			return new ArrayList<INPactComment>();
 		}
 

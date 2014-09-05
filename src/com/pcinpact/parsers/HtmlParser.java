@@ -71,50 +71,43 @@ public class HtmlParser {
 		/*
 		 * <div class="actu_comm" id="c4500881">
 		 * 
-		 * <span class="actu_comm_author"> DarKCallistO <span>le 17/03/2013 à
-		 * 14:12:55</span> <span class="actu_comm_num">#1</span> </span>
+		 * <span class="actu_comm_author"> DarKCallistO <span>le 17/03/2013 à 14:12:55</span> <span
+		 * class="actu_comm_num">#1</span> </span>
 		 * 
-		 * <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br> M'enfin <br>
-		 * <br> (Indice : elles viennent bien De quelque part..) </div>
+		 * <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br> M'enfin <br> <br> (Indice : elles viennent bien De quelque
+		 * part..) </div>
 		 * 
 		 * </div>
 		 */
 
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 
-		for (TagNode htmlComment : rootNode.getElementsByAttValue("class",
-				"actu_comm ", true, true)) {
+		for (TagNode htmlComment : rootNode.getElementsByAttValue("class", "actu_comm ", true, true)) {
 
-			TagNode actu_comm_author = getFirstElementByAttValue(htmlComment,
-					"class", "actu_comm_author");
+			TagNode actu_comm_author = getFirstElementByAttValue(htmlComment, "class", "actu_comm_author");
 			if (actu_comm_author == null)
 				continue;
 
-			TagNode actu_comm_content = getFirstElementByAttValue(htmlComment,
-					"class", "actu_comm_content");
+			TagNode actu_comm_content = getFirstElementByAttValue(htmlComment, "class", "actu_comm_content");
 			if (actu_comm_content == null)
 				continue;
 
 			String commentDate = null;
 			TagNode span = getFirstElementByName(actu_comm_author, "span");
 			if (span != null) {
-				commentDate = Html.fromHtml(span.getText().toString())
-						.toString();
+				commentDate = Html.fromHtml(span.getText().toString()).toString();
 			}
 
 			String commentID = null;
-			TagNode actu_comm_num = getFirstElementByAttValue(actu_comm_author,
-					"class", "actu_comm_num");
+			TagNode actu_comm_num = getFirstElementByAttValue(actu_comm_author, "class", "actu_comm_num");
 			if (actu_comm_num != null) {
-				commentID = Html.fromHtml(actu_comm_num.getText().toString())
-						.toString();
+				commentID = Html.fromHtml(actu_comm_num.getText().toString()).toString();
 			}
 
 			for (TagNode child : actu_comm_author.getChildTags()) {
 				actu_comm_author.removeChild(child);
 			}
-			String auth = Html.fromHtml(actu_comm_author.getText().toString())
-					.toString();
+			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
 
 			// comment :: content
 			// Gestion des liens hypertextes (option de l'utilisateur)
@@ -126,12 +119,8 @@ public class HtmlParser {
 					link.removeAttribute("href");
 				}
 
-				SharedPreferences mesPrefs = PreferenceManager
-						.getDefaultSharedPreferences(monContext);
-				if (mesPrefs
-						.getBoolean(String
-								.valueOf(R.id.optionLiensDansCommentaires),
-								false)) {
+				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
+				if (mesPrefs.getBoolean(String.valueOf(R.id.optionLiensDansCommentaires), false)) {
 					// On laisse les liens...
 				} else {
 					// Suppression des liens
@@ -151,8 +140,7 @@ public class HtmlParser {
 			}
 
 			// 3. replace 'quote_bloc' div by 'xquote' tag to format citations
-			for (TagNode quotes : htmlComment.getElementsByAttValue("class",
-					"quote_bloc", true, true)) {
+			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
 				TagNode xquote = new TagNode("xquote");
 				xquote.addChildren(quotes.getAllElementsList(false));
 
@@ -194,8 +182,7 @@ public class HtmlParser {
 		}
 		content = content.replaceAll("<br />", "____");
 		content = Html.fromHtml(content).toString();
-		content = content.replaceAll("____",
-				System.getProperty("line.separator"));
+		content = content.replaceAll("____", System.getProperty("line.separator"));
 
 		return content;
 
@@ -213,83 +200,54 @@ public class HtmlParser {
 		 * 
 		 * <header class="actu_title">
 		 * 
-		 * <div class="actu_title_icons_collumn"> <img class="actu_icons"
-		 * title="Hadopi" alt="Hadopi" width="32px" height="32px"
+		 * <div class="actu_title_icons_collumn"> <img class="actu_icons" title="Hadopi" alt="Hadopi" width="32px" height="32px"
 		 * src="/images/clair/categories/droit/hadopi@2x.png"/> </div>
 		 * 
-		 * <div class="actu_title_collumn"> <h1>Les coûts de la Hadopi à
-		 * l’honneur de Capital sur M6</h1> <span class="actu_sub_title">Argent,
-		 * trop cher ?</span> </div>
+		 * <div class="actu_title_collumn"> <h1>Les coûts de la Hadopi à l’honneur de Capital sur M6</h1> <span
+		 * class="actu_sub_title">Argent, trop cher ?</span> </div>
 		 * 
 		 * </header>
 		 * 
-		 * <div class="actu_content" data_id="78299"> <p class="actu_chapeau">Ce
-		 * soir l&rsquo;&eacute;mission&nbsp;<a
-		 * href="http://www.m6.fr/emission-capital/" target="_blank">Capital sur
-		 * M6</a>&nbsp;concentre son attention sur le gaspillage de l'argent
-		 * public. &Agrave; cette occasion, l&rsquo;&eacute;mission va aborder
-		 * le sujet de la loi Hadopi.</p><p><a class="fancyimg"
-		 * href="http://static.nextinpact.com/images/bd/news/129249.png"
-		 * rel="group_fancy"><img
+		 * <div class="actu_content" data_id="78299"> <p class="actu_chapeau">Ce soir l&rsquo;&eacute;mission&nbsp;<a
+		 * href="http://www.m6.fr/emission-capital/" target="_blank">Capital sur M6</a>&nbsp;concentre son attention sur le
+		 * gaspillage de l'argent public. &Agrave; cette occasion, l&rsquo;&eacute;mission va aborder le sujet de la loi
+		 * Hadopi.</p><p><a class="fancyimg" href="http://static.nextinpact.com/images/bd/news/129249.png" rel="group_fancy"><img
 		 * style="display: block; margin-left: auto; margin-right: auto;"
 		 * src="http://static.nextinpact.com/images/bd/news/medium-129249.png"
-		 * alt="capital M6"/></a></p><p>&nbsp;</p><p>L&rsquo;&eacute;mission
-		 * Capital sur M6 se penche ce soir sur l&rsquo;utilisation de
-		 * l&rsquo;argent public. &laquo;<em> L'&Eacute;tat d&eacute;pense-t-il
-		 * correctement l'argent de nos imp&ocirc;ts ? C'est une question que
-		 * nous nous posons tous tr&egrave;s r&eacute;guli&egrave;rement. Alors
-		 * que le gouvernement demande de gros efforts aux Fran&ccedil;ais, la
-		 * r&eacute;daction de Capital a voulu savoir comment sont
-		 * utilis&eacute;es les sommes r&eacute;colt&eacute;es aupr&egrave;s des
-		 * contribuables. L'argent est-il jet&eacute; par les fen&ecirc;tres ?
-		 * L'administration fait-elle les m&ecirc;mes efforts que nous ?</em>
-		 * &raquo; se demande l&rsquo;&eacute;quipe de
-		 * Capital.</p><p>&nbsp;</p><p>&Agrave; cette occasion,
-		 * l&rsquo;&eacute;mission pr&eacute;sent&eacute;e par Thomas Sotto va
-		 * consacrer une dizaine de minutes &agrave; la loi Hadopi. Celle-ci a
-		 * mobilis&eacute; plus de 30 millions d&rsquo;euros de subventions
-		 * publiques.&nbsp;Pour 2013, la Hadopi devrait percevoir 8,5 millions
-		 * d'euros, mais elle anticipe toujours <a href=
+		 * alt="capital M6"/></a></p><p>&nbsp;</p><p>L&rsquo;&eacute;mission Capital sur M6 se penche ce soir sur
+		 * l&rsquo;utilisation de l&rsquo;argent public. &laquo;<em> L'&Eacute;tat d&eacute;pense-t-il correctement l'argent de
+		 * nos imp&ocirc;ts ? C'est une question que nous nous posons tous tr&egrave;s r&eacute;guli&egrave;rement. Alors que le
+		 * gouvernement demande de gros efforts aux Fran&ccedil;ais, la r&eacute;daction de Capital a voulu savoir comment sont
+		 * utilis&eacute;es les sommes r&eacute;colt&eacute;es aupr&egrave;s des contribuables. L'argent est-il jet&eacute; par
+		 * les fen&ecirc;tres ? L'administration fait-elle les m&ecirc;mes efforts que nous ?</em> &raquo; se demande
+		 * l&rsquo;&eacute;quipe de Capital.</p><p>&nbsp;</p><p>&Agrave; cette occasion, l&rsquo;&eacute;mission
+		 * pr&eacute;sent&eacute;e par Thomas Sotto va consacrer une dizaine de minutes &agrave; la loi Hadopi. Celle-ci a
+		 * mobilis&eacute; plus de 30 millions d&rsquo;euros de subventions publiques.&nbsp;Pour 2013, la Hadopi devrait percevoir
+		 * 8,5 millions d'euros, mais elle anticipe toujours <a href=
 		 * "http://www.nextinpact.com/news/77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013.htm"
-		 * itemprop="news" rel=
-		 * "77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013"
-		 * class="pci_ref" target="_blank">plus de 10 millions d'euros de
-		 * d&eacute;penses</a>. Un budget que le minist&egrave;re de la Culture
+		 * itemprop="news" rel= "77239-hadopi-103-millions-deuros-charges-pour-85-m-subvention-en-2013" class="pci_ref"
+		 * target="_blank">plus de 10 millions d'euros de d&eacute;penses</a>. Un budget que le minist&egrave;re de la Culture
 		 * avoue &ecirc;tre dans l'<a href=
-		 * "http://www.nextinpact.com/news/77913-le-ministere-culture-incapable-detailler-budget-hadopi.htm"
-		 * itemprop="news"
-		 * rel="77913-le-ministere-culture-incapable-detailler-budget-hadopi"
-		 * class="pci_ref" target="_blank">incapacit&eacute; de
-		 * d&eacute;tailler</a>, et qui pourrait m&ecirc;me exploser si on y
-		 * ajoute<a href=
-		 * "http://www.nextinpact.com/news/77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais.htm"
-		 * itemprop="news"
-		 * rel="77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais"
-		 * class="pci_ref" target="_blank">l'indemnisation des fournisseurs
-		 * d'acc&egrave;s</a>.</p><p>&nbsp;</p><p>En tout, seuls trois jugements
-		 * ont &eacute;t&eacute; prononc&eacute;s : <a href=
-		 * "http://www.nextinpact.com/news/76967-hadopi-premier-jugement-relaxe.htm"
-		 * itemprop="news" rel="76967-hadopi-premier-jugement-relaxe"
-		 * class="pci_ref" target="_blank">une relaxe</a>, une <a href=
-		 * "http://www.nextinpact.com/news/77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois.htm"
-		 * itemprop="news"
-		 * rel="77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois"
-		 * class="pci_ref" target="_blank">dispense de peine</a> et <a href=
-		 * "http://www.nextinpact.com/news/74364-hadopi-condamne-pour-seul-titre-flashe-150-fois.htm"
-		 * itemprop="news"
-		 * rel="74364-hadopi-condamne-pour-seul-titre-flashe-150-fois"
-		 * class="pci_ref" target="_blank">150 euros de contravention</a>. Une
-		 * loi aux effets suppos&eacute;s toujours bien maigres puisque la
-		 * Hadopi a expliqu&eacute; - <a
-		 * href="http://www.laquadrature.net/wiki/Etudes_sur_le_partage_de_fichiers"
-		 * target="_blank">comme d&rsquo;autres &eacute;tudes</a> - que ceux qui
-		 * t&eacute;l&eacute;chargent le plus sont aussi ceux qui
-		 * ach&egrave;tent le plus de biens culturels. Le reportage, dans lequel
-		 * nous intervenons, est programm&eacute; en fin
-		 * d&rsquo;&eacute;mission.</p> </div>
+		 * "http://www.nextinpact.com/news/77913-le-ministere-culture-incapable-detailler-budget-hadopi.htm" itemprop="news"
+		 * rel="77913-le-ministere-culture-incapable-detailler-budget-hadopi" class="pci_ref" target="_blank">incapacit&eacute; de
+		 * d&eacute;tailler</a>, et qui pourrait m&ecirc;me exploser si on y ajoute<a href=
+		 * "http://www.nextinpact.com/news/77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais.htm" itemprop="news"
+		 * rel="77743-hadopi-free-veut-savoir-qui-doit-indemniser-ses-frais" class="pci_ref" target="_blank">l'indemnisation des
+		 * fournisseurs d'acc&egrave;s</a>.</p><p>&nbsp;</p><p>En tout, seuls trois jugements ont &eacute;t&eacute;
+		 * prononc&eacute;s : <a href= "http://www.nextinpact.com/news/76967-hadopi-premier-jugement-relaxe.htm" itemprop="news"
+		 * rel="76967-hadopi-premier-jugement-relaxe" class="pci_ref" target="_blank">une relaxe</a>, une <a href=
+		 * "http://www.nextinpact.com/news/77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois.htm" itemprop="news"
+		 * rel="77604-hadopi-condamne-pour-seul-film-flashe-plus-100-fois" class="pci_ref" target="_blank">dispense de peine</a>
+		 * et <a href= "http://www.nextinpact.com/news/74364-hadopi-condamne-pour-seul-titre-flashe-150-fois.htm" itemprop="news"
+		 * rel="74364-hadopi-condamne-pour-seul-titre-flashe-150-fois" class="pci_ref" target="_blank">150 euros de
+		 * contravention</a>. Une loi aux effets suppos&eacute;s toujours bien maigres puisque la Hadopi a expliqu&eacute; - <a
+		 * href="http://www.laquadrature.net/wiki/Etudes_sur_le_partage_de_fichiers" target="_blank">comme d&rsquo;autres
+		 * &eacute;tudes</a> - que ceux qui t&eacute;l&eacute;chargent le plus sont aussi ceux qui ach&egrave;tent le plus de
+		 * biens culturels. Le reportage, dans lequel nous intervenons, est programm&eacute; en fin d&rsquo;&eacute;mission.</p>
+		 * </div>
 		 * 
-		 * <footer class="actu_footer"> Rédigé par <a href="#">Marc Rees</a> (6
-		 * 695 lectures) <br/> Le dimanche 17 mars 2013 à 14:06 </footer>
+		 * <footer class="actu_footer"> Rédigé par <a href="#">Marc Rees</a> (6 695 lectures) <br/> Le dimanche 17 mars 2013 à
+		 * 14:06 </footer>
 		 * 
 		 * <div class="actu_social"> </div>
 		 * 
@@ -300,16 +258,13 @@ public class HtmlParser {
 		if (article == null)
 			return null;
 
-		TagNode actu_title_collumn = getFirstElementByAttValue(article,
-				"class", "actu_title_collumn");
+		TagNode actu_title_collumn = getFirstElementByAttValue(article, "class", "actu_title_collumn");
 		if (actu_title_collumn == null)
 			return null;
 
-		TagNode actu_title_icons_collumn = getFirstElementByAttValue(article,
-				"class", "actu_title_icons_collumn");
+		TagNode actu_title_icons_collumn = getFirstElementByAttValue(article, "class", "actu_title_icons_collumn");
 		if (actu_title_icons_collumn != null) {
-			actu_title_icons_collumn.getParent().removeChild(
-					actu_title_icons_collumn);
+			actu_title_icons_collumn.getParent().removeChild(actu_title_icons_collumn);
 		}
 
 		TagNode htmlH1Element = getFirstElementByName(actu_title_collumn, "h1");
@@ -318,16 +273,13 @@ public class HtmlParser {
 
 		String title = htmlH1Element.getText().toString();
 
-		TagNode actu_content = getFirstElementByAttValue(rootNode, "class",
-				"actu_content");
+		TagNode actu_content = getFirstElementByAttValue(rootNode, "class", "actu_content");
 		if (actu_content == null)
 			return null;
 
 		// Gestion des liens hypertextes (option de l'utilisateur)
-		SharedPreferences mesPrefs = PreferenceManager
-				.getDefaultSharedPreferences(contextParent);
-		if (mesPrefs.getBoolean(String
-				.valueOf(R.id.optionLiensDansArticles), false)) {
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(contextParent);
+		if (mesPrefs.getBoolean(String.valueOf(R.id.optionLiensDansArticles), false)) {
 			// On laisse les liens...
 		} else {
 			// Suppression des liens
@@ -349,8 +301,7 @@ public class HtmlParser {
 				site = "dailymotion";
 			} else if (laSrc.startsWith("//player.vimeo.com/video/")) {
 				site = "vimeo";
-			} else if (laSrc
-					.startsWith("http://static.videos.gouv.fr/player/video/")) {
+			} else if (laSrc.startsWith("http://static.videos.gouv.fr/player/video/")) {
 				site = "videosGouvFr";
 			} else if (laSrc.startsWith("//www.youtube-nocookie.com/embed/")) {
 				site = "youtubeNoCookie";
@@ -367,58 +318,41 @@ public class HtmlParser {
 				// (//www.youtube.com/embed/AEl_myyA21w?rel=0)
 				if (laSrc.contains("?")) {
 					// Je ne prends pas les paramètres (partie ?xxxx=nnn)
-					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1,
-							laSrc.lastIndexOf("?"));
+					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.lastIndexOf("?"));
 				}
 				// URL sans paramètres
 				else {
-					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1,
-							laSrc.length());
+					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.length());
 				}
 
 				// Je crée l'élément de texte correspondant au site
 				ContentNode monContenu = new ContentNode("");
 				switch (site) {
-				case "youtubeNoCookie":
-				case "youtube":
-					monContenu = new ContentNode(
-							"<a href=\"http://www.youtube.com/watch?v="
-									+ idVideo
-									+ "\">"
-									+ "<img src=\"file:///android_res/drawable/video_youtube.png\" />"
-									+ "<br />Voir la vidéo sur YouTube"
-									+ "</a>");
-					break;
+					case "youtubeNoCookie":
+					case "youtube":
+						monContenu = new ContentNode("<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\">"
+								+ "<img src=\"file:///android_res/drawable/video_youtube.png\" />"
+								+ "<br />Voir la vidéo sur YouTube" + "</a>");
+						break;
 
-				case "dailymotion":
-					monContenu = new ContentNode(
-							"<a href=\"http://www.dailymotion.com/video/"
-									+ idVideo
-									+ "\">"
-									+ "<img src=\"file:///android_res/drawable/video_dailymotion.png\" />"
-									+ "<br />Voir la vidéo sur Dailymotion"
-									+ "</a>");
-					break;
+					case "dailymotion":
+						monContenu = new ContentNode("<a href=\"http://www.dailymotion.com/video/" + idVideo + "\">"
+								+ "<img src=\"file:///android_res/drawable/video_dailymotion.png\" />"
+								+ "<br />Voir la vidéo sur Dailymotion" + "</a>");
+						break;
 
-				case "vimeo":
-					monContenu = new ContentNode(
-							"<a href=\"http://www.vimeo.com/"
-									+ idVideo
-									+ "\">"
-									+ "<img src=\"file:///android_res/drawable/video_vimeo.png\" />"
-									+ "<br />Voir la vidéo sur Vimeo" + "</a>");
-					break;
+					case "vimeo":
+						monContenu = new ContentNode("<a href=\"http://www.vimeo.com/" + idVideo + "\">"
+								+ "<img src=\"file:///android_res/drawable/video_vimeo.png\" />"
+								+ "<br />Voir la vidéo sur Vimeo" + "</a>");
+						break;
 
-				case "videosGouvFr":
-					// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
-					monContenu = new ContentNode(
-							"<a href=\"http://static.videos.gouv.fr/player/video/"
-									+ idVideo
-									+ "\">"
-									+ "<img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" />"
-									+ "<br />Voir la vidéo sur la Plateforme Vidéo Gouvernementale"
-									+ "</a>");
-					break;
+					case "videosGouvFr":
+						// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
+						monContenu = new ContentNode("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\">"
+								+ "<img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" />"
+								+ "<br />Voir la vidéo sur la Plateforme Vidéo Gouvernementale" + "</a>");
+						break;
 				}
 
 				// Je supprime l'iframe du lecteur vidéo
@@ -442,8 +376,7 @@ public class HtmlParser {
 				// Je récupère le <p> parent de l'iframe
 				TagNode parentIframe = iframe.getParent();
 
-				parentIframe.addChild(new ContentNode("<br /><a href=\""
-						+ NextInpact.NEXT_INPACT_URL + "/" + laSrc
+				parentIframe.addChild(new ContentNode("<br /><a href=\"" + NextInpact.NEXT_INPACT_URL + "/" + laSrc
 						+ "\">Voir les bons plans dans le navigateur</a>"));
 				parentIframe.removeChild(iframe);
 			}
@@ -472,45 +405,29 @@ public class HtmlParser {
 	 */
 	public List<INpactArticleDescription> getArticles() {
 		/*
-		 * <article> <div> <div> <a
-		 * href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm">
-		 * <img
+		 * <article> <div> <div> <a href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm"> <img
 		 * data-src="http://static.nextinpact.com/images/bd/dedicated/78299.jpg"
 		 * alt="Les coûts de la Hadopi à l’honneur de Capital sur M6" src=
-		 * "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-		 * onload="lzld(this)" onerror="lzld(this)" class=""/> </a> </div> <div>
-		 * <h1> <a
-		 * href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm">
-		 * Les coûts de la Hadopi à l’honneur de Capital sur M6</a> </h1> <p>
-		 * <span class="date_pub">14:06</span> - Argent, trop cher ? </p> <a
-		 * class="notif_link"
-		 * href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm?vc=1"
-		 * > <span>35</span> <span class="sprite sprite-ico-commentaire"></span>
-		 * </a> </div> </div> </article>***NEW*** <article
+		 * "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="lzld(this)" onerror="lzld(this)"
+		 * class=""/> </a> </div> <div> <h1> <a href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm"> Les coûts de
+		 * la Hadopi à l’honneur de Capital sur M6</a> </h1> <p> <span class="date_pub">14:06</span> - Argent, trop cher ? </p> <a
+		 * class="notif_link" href="/news/78299-les-couts-hadopi-a-l-honneur-capital-sur-m6.htm?vc=1" > <span>35</span> <span
+		 * class="sprite sprite-ico-commentaire"></span> </a> </div> </div> </article>***NEW*** <article
 		 * data-datePubli="04/05/2013 15:33:13"> <div> <div> <a href=
-		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm"
-		 * > <img
-		 * data-src="http://static.nextinpact.com/images/bd/dedicated/79579.jpg"
-		 * alt=
-		 * "Il y a 35 ans, le premier spam de l'histoire n'avait que 600 destinataires"
-		 * src=
-		 * "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-		 * onload="lzld(this)" onerror="lzld(this)" class=""/> </a> </div> <div>
-		 * <h1> <a href=
-		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm"
-		 * class="ui-link"> Il y a 35 ans, le premier spam de l'histoire n'avait
-		 * que 600 destinataires</a> </h1> <p> <span
-		 * class="date_pub">15:33</span> - Dire que certains pensent encore que
-		 * le champ CC c&#39;est... Copie Cach&#233;e </p> <a class="notif_link"
-		 * class="ui-link" href=
-		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm?vc=1"
-		 * > <span>33</span> <span class="sprite sprite-ico-commentaire"></span>
-		 * </a> </div> </div> </article> <article>
+		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm" > <img
+		 * data-src="http://static.nextinpact.com/images/bd/dedicated/79579.jpg" alt=
+		 * "Il y a 35 ans, le premier spam de l'histoire n'avait que 600 destinataires" src=
+		 * "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="lzld(this)" onerror="lzld(this)"
+		 * class=""/> </a> </div> <div> <h1> <a href=
+		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm" class="ui-link"> Il y a 35 ans, le
+		 * premier spam de l'histoire n'avait que 600 destinataires</a> </h1> <p> <span class="date_pub">15:33</span> - Dire que
+		 * certains pensent encore que le champ CC c&#39;est... Copie Cach&#233;e </p> <a class="notif_link" class="ui-link" href=
+		 * "/news/79579-il-y-a-35-ans-premier-spam-histoire-navait-que-600-destinataires.htm?vc=1" > <span>33</span> <span
+		 * class="sprite sprite-ico-commentaire"></span> </a> </div> </div> </article> <article>
 		 */
 
 		List<TempClass> days = new ArrayList<TempClass>();
-		for (TagNode htmlSpan : rootNode.getElementsByAttValue("class",
-				"actu_separator_date", true, true)) {
+		for (TagNode htmlSpan : rootNode.getElementsByAttValue("class", "actu_separator_date", true, true)) {
 
 			TempClass temp = new TempClass();
 			temp.index = htmlSpan.getParent().getChildIndex(htmlSpan);
@@ -543,11 +460,9 @@ public class HtmlParser {
 			if (p == null)
 				continue;
 
-			TagNode notif_link = getFirstElementByAttValue(htmlArticle,
-					"class", "notif_link ui-link");
+			TagNode notif_link = getFirstElementByAttValue(htmlArticle, "class", "notif_link ui-link");
 			if (notif_link == null) {
-				TagNode temp = getFirstElementByAttValue(htmlArticle, "class",
-						"sprite sprite-ico-commentaire");
+				TagNode temp = getFirstElementByAttValue(htmlArticle, "class", "sprite sprite-ico-commentaire");
 				notif_link = (TagNode) temp.getParent().getChildren().get(0);
 			}
 
@@ -572,15 +487,13 @@ public class HtmlParser {
 
 			if (subTitleWithDate.length() > 7) {
 				date = subTitleWithDate.substring(0, 5);
-				subTitle = subTitleWithDate.substring(5,
-						subTitleWithDate.length());
+				subTitle = subTitleWithDate.substring(5, subTitleWithDate.length());
 			}
 
 			else
 				subTitle = subTitleWithDate;
 
-			String coms = notif_link == null ? "0" : notif_link.getText()
-					.toString().trim();
+			String coms = notif_link == null ? "0" : notif_link.getText().toString().trim();
 
 			INpactArticleDescription article = new INpactArticleDescription();
 			article.imgURL = imgUrl;
@@ -609,8 +522,7 @@ public class HtmlParser {
 		String value;
 	}
 
-	public static TempClass getDayForArticle(int articleIndex,
-			List<TempClass> days) {
+	public static TempClass getDayForArticle(int articleIndex, List<TempClass> days) {
 		TempClass value = null;
 
 		for (int i = days.size() - 1; i > -1; i--) {
@@ -638,10 +550,8 @@ public class HtmlParser {
 	 *            Valeur de l'attribut
 	 * @return Tagnode
 	 */
-	public static TagNode getFirstElementByAttValue(TagNode node,
-			String attrName, String attrValue) {
-		TagNode[] nodes = node.getElementsByAttValue(attrName, attrValue, true,
-				true);
+	public static TagNode getFirstElementByAttValue(TagNode node, String attrName, String attrValue) {
+		TagNode[] nodes = node.getElementsByAttValue(attrName, attrValue, true, true);
 		if (nodes.length == 0)
 			return null;
 

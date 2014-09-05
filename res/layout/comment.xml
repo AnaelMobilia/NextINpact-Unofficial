@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 /*
  * Copyright 2013, 2014 Sami Ferhah, Guillaume Bour
  * 
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
- -->
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -71,10 +71,10 @@
             android:id="@+id/CommTextViewContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:paddingBottom="5dip"
             android:paddingTop="5dip"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:clickable="true" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout
             android:id="@+id/CommLinearLayoutLoadMore"

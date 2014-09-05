@@ -59,8 +59,8 @@ public class HtmlConnector {
 		running = false;
 	}
 
-	public void sendRequest(final String _url, final String httpMethodType,
-			final String postData, final Map<String, String> headers) {
+	public void sendRequest(final String _url, final String httpMethodType, final String postData,
+			final Map<String, String> headers) {
 
 		byte[] dataAsBytes = postData.getBytes();
 		final float outgoing_data_length = dataAsBytes.length;
@@ -80,46 +80,38 @@ public class HtmlConnector {
 
 			public void run() {
 				/*
-				 * try { Thread.sleep(5000); } catch (InterruptedException e) {
-				 * // TODO Auto-generated catch block e.printStackTrace(); }
+				 * try { Thread.sleep(5000); } catch (InterruptedException e) { // TODO Auto-generated catch block
+				 * e.printStackTrace(); }
 				 */
-				request(_url, httpMethodType, outgoing_is,
-						outgoing_data_length, headers);
+				request(_url, httpMethodType, outgoing_is, outgoing_data_length, headers);
 			}
 		});
 
 		t.start();
 	}
 
-	public void sendRequest(final String _url, final String httpMethodType,
-			final InputStream outgoing_is, final float outgoing_data_length,
-			final Map<String, String> headers) {
+	public void sendRequest(final String _url, final String httpMethodType, final InputStream outgoing_is,
+			final float outgoing_data_length, final Map<String, String> headers) {
 		Thread t = new Thread(new Runnable() {
 
 			public void run() {
 				/*
-				 * try { Thread.sleep(1000); } catch (InterruptedException e) {
-				 * // TODO Auto-generated catch block e.printStackTrace(); }
+				 * try { Thread.sleep(1000); } catch (InterruptedException e) { // TODO Auto-generated catch block
+				 * e.printStackTrace(); }
 				 */
-				request(_url, httpMethodType, outgoing_is,
-						outgoing_data_length, headers);
+				request(_url, httpMethodType, outgoing_is, outgoing_data_length, headers);
 			}
 		});
 
 		t.start();
 	}
 
-	public void request(String _url, String httpMethodType,
-			InputStream outgoing_is, float outgoing_data_length,
+	public void request(String _url, String httpMethodType, InputStream outgoing_is, float outgoing_data_length,
 			Map<String, String> headers) {
 
-		ConnectivityManager l_Connection = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (l_Connection.getActiveNetworkInfo() == null
-				|| !l_Connection.getActiveNetworkInfo().isConnected()) {
-			Delegate.didFailWithError(
-					"Vous n'êtes pas connecté à internet, veuillez vérifier vos paramètres de connexion",
-					state);
+		ConnectivityManager l_Connection = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (l_Connection.getActiveNetworkInfo() == null || !l_Connection.getActiveNetworkInfo().isConnected()) {
+			Delegate.didFailWithError("Vous n'êtes pas connecté à internet, veuillez vérifier vos paramètres de connexion", state);
 			return;
 		}
 
@@ -181,8 +173,7 @@ public class HtmlConnector {
 			int readBytesCount;
 			try {
 
-				while (((readBytesCount = outgoing_is.read(output_buffer, 0,
-						output_buffer.length)) > 0) && running) {
+				while (((readBytesCount = outgoing_is.read(output_buffer, 0, output_buffer.length)) > 0) && running) {
 					writer.write(output_buffer, 0, readBytesCount);
 					totalReadBytesCount += readBytesCount;
 					float progress = (float) (totalReadBytesCount * 100.0 / outgoing_data_length);
@@ -246,8 +237,7 @@ public class HtmlConnector {
 			int dataSize = connection.getContentLength();
 
 			try {
-				while (((read = incoming_is.read(buffer, 0, 128)) > 0)
-						&& running) {
+				while (((read = incoming_is.read(buffer, 0, 128)) > 0) && running) {
 					outputStream.write(buffer, 0, read);
 					float progress = ((float) outputStream.size() * 100 / dataSize);
 					Delegate.setDownloadProgress((int) progress);
@@ -265,8 +255,7 @@ public class HtmlConnector {
 			}
 
 			if (running)
-				Delegate.didConnectionResult(outputStream.toByteArray(), state,
-						tag);
+				Delegate.didConnectionResult(outputStream.toByteArray(), state, tag);
 		}
 
 	}

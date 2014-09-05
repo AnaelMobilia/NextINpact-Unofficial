@@ -86,14 +86,11 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		} catch (FileNotFoundException e) {
 			// Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
 
-			INpactArticleDescription article = NextInpact.getInstance(this)
-					.getArticlesWrapper().getArticle(articleID);
+			INpactArticleDescription article = NextInpact.getInstance(this).getArticlesWrapper().getArticle(articleID);
 
 			HtmlConnector connector = new HtmlConnector(this, this);
 			connector.tag = article.getID();
-			connector.sendRequest(
-					NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null,
-					0, null);
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
 
 			data = getString(R.string.articleNonSynchroHTML);
 
@@ -123,15 +120,14 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
 		// Taille des textes (option de l'utilisateur)
-		SharedPreferences mesPrefs = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// la taille par défaut est de 16
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 		int tailleDefaut = 16;
 
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-				String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
+		int tailleOptionUtilisateur = Integer
+				.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
 
 		if (tailleOptionUtilisateur == tailleDefaut) {
 			// Valeur par défaut...
@@ -146,15 +142,13 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		menu.add(0, 0, 0, getResources().getString(R.string.comments))
-				.setIcon(R.drawable.ic_menu_comment)
+		menu.add(0, 0, 0, getResources().getString(R.string.comments)).setIcon(R.drawable.ic_menu_comment)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		// Menu des paramètres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);
 
-		menu.add(0, 2, 1, getResources().getString(R.string.home))
-				.setIcon(R.drawable.ic_menu_home)
+		menu.add(0, 2, 1, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;
@@ -162,34 +156,32 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-		case 0:
-			if (comms_url != null) {
-				Intent intentWeb = new Intent(WebActivity.this,
-						CommentActivity.class);
-				intentWeb.putExtra("URL", comms_url);
-				intentWeb.putExtra("ARTICLE_ID", articleID);
-				startActivity(intentWeb);
-			}
-			return true;
+			case 0:
+				if (comms_url != null) {
+					Intent intentWeb = new Intent(WebActivity.this, CommentActivity.class);
+					intentWeb.putExtra("URL", comms_url);
+					intentWeb.putExtra("ARTICLE_ID", articleID);
+					startActivity(intentWeb);
+				}
+				return true;
 
-			// Menu Options
-		case 1:
-			// Je lance l'activité options
-			Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
-			startActivity(intent);
+				// Menu Options
+			case 1:
+				// Je lance l'activité options
+				Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
+				startActivity(intent);
 
-			return true;
+				return true;
 
-		case 2:
-			finish();
-			return true;
+			case 2:
+				finish();
+				return true;
 		}
 
 		return super.onOptionsItemSelected(pItem);
 	}
 
-	public void didConnectionResult(final byte[] result, final int state,
-			final String tag) {
+	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				didConnectionResultOnUiThread(result, state, tag);
@@ -198,8 +190,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 	}
 
-	protected void didConnectionResultOnUiThread(byte[] result, int state,
-			String tag) {
+	protected void didConnectionResultOnUiThread(byte[] result, int state, String tag) {
 
 		ArticleManager.saveArticle(this, result, tag);
 

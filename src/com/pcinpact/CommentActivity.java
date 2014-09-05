@@ -36,8 +36,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-public class CommentActivity extends SherlockActivity implements IConnectable,
-		OnScrollListener {
+public class CommentActivity extends SherlockActivity implements IConnectable, OnScrollListener {
 	int page = 1;
 	boolean moreCommentsAvailabe = true;
 	boolean loadingMoreComments = false;
@@ -58,8 +57,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		comments = CommentManager.getCommentsFromFile(this, url);
 
 		listView = (ListView) this.findViewById(R.id.listview_comment);
-		adapter = new INpactListAdapter2(this, comments)
-				.buildData(moreCommentsAvailabe);
+		adapter = new INpactListAdapter2(this, comments).buildData(moreCommentsAvailabe);
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(this);
 
@@ -67,10 +65,8 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 			loadingMoreComments = true;
 			adapter.refreshData(comments, moreCommentsAvailabe);
 			HtmlConnector connector = new HtmlConnector(this, this);
-			String data = "page=" + (page) + "&newsId=" + articleID
-					+ "&commId=0";
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/",
-					"POST", data, null);
+			String data = "page=" + (page) + "&newsId=" + articleID + "&commId=0";
+			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
 		}
 
 	}
@@ -79,8 +75,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Used to put dark icons on light action bar
 
-		menu.add(0, 0, 0, getResources().getString(R.string.home))
-				.setIcon(R.drawable.ic_menu_home)
+		menu.add(0, 0, 0, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		// Menu des paramètres (ID = 1)
@@ -91,29 +86,27 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-		case 0:
+			case 0:
 
-			finish();
-			Intent i = new Intent(this, MainActivity.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			this.startActivity(i);
-			return true;
+				finish();
+				Intent i = new Intent(this, MainActivity.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				this.startActivity(i);
+				return true;
 
-			// Menu Options
-		case 1:
-			// Je lance l'activité options
-			Intent intent = new Intent(CommentActivity.this,
-					OptionsActivity.class);
-			startActivity(intent);
+				// Menu Options
+			case 1:
+				// Je lance l'activité options
+				Intent intent = new Intent(CommentActivity.this, OptionsActivity.class);
+				startActivity(intent);
 
-			return true;
+				return true;
 		}
 
 		return super.onOptionsItemSelected(pItem);
 	}
 
-	public void didConnectionResult(final byte[] result, final int state,
-			final String tag) {
+	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				safeDidConnectionResult(result, state, tag);
@@ -125,8 +118,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 	protected void safeDidConnectionResult(byte[] result, int state, String tag) {
 
 		loadingMoreComments = false;
-		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(
-				this, result);
+		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(this, result);
 
 		if (newComments.size() == 0) {
 			moreCommentsAvailabe = false;
@@ -166,14 +158,12 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 
 	}
 
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 		if (comments.size() == 0)
 			return;
 
-		boolean lastcell = firstVisibleItem + visibleItemCount >= comments
-				.size();
+		boolean lastcell = firstVisibleItem + visibleItemCount >= comments.size();
 		if (!lastcell)
 			return;
 
@@ -192,8 +182,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable,
 		HtmlConnector connector = new HtmlConnector(this, this);
 		page++;
 		String data = "page=" + page + "&newsId=" + articleID + "&commId=0";
-		connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST",
-				data, null);
+		connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
 
 	}
 

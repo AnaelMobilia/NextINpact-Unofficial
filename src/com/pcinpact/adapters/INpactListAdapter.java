@@ -80,8 +80,7 @@ public class INpactListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public INpactListAdapter(Context context,
-			List<INpactArticleDescription> articles) {
+	public INpactListAdapter(Context context, List<INpactArticleDescription> articles) {
 		this.context = context;
 		mInflater = LayoutInflater.from(context);
 
@@ -108,10 +107,8 @@ public class INpactListAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Since the data comes from an array, just returning the index is
-	 * sufficient to get at the data. If we were using a more complex data
-	 * structure, we would return whatever object represents one row in the
-	 * list.
+	 * Since the data comes from an array, just returning the index is sufficient to get at the data. If we were using a more
+	 * complex data structure, we would return whatever object represents one row in the list.
 	 * 
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
@@ -131,8 +128,7 @@ public class INpactListAdapter extends BaseAdapter {
 	/**
 	 * Article dans la liste principale Make a view to hold each row.
 	 * 
-	 * @see android.widget.ListAdapter#getView(int, android.view.View,
-	 *      android.view.ViewGroup)
+	 * @see android.widget.ListAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -154,11 +150,9 @@ public class INpactListAdapter extends BaseAdapter {
 			// Titre de l'article
 			holder.title.setText(entry.article.title);
 			// Date de l'article + sous titre de l'article
-			SpannableString text = new SpannableString(entry.article.date
-					+ entry.article.subTitle);
+			SpannableString text = new SpannableString(entry.article.date + entry.article.subTitle);
 			// On les affiche
-			text.setSpan(new ForegroundColorSpan(Color.parseColor("#F06D2F")),
-					0, entry.article.date.length(), 0);
+			text.setSpan(new ForegroundColorSpan(Color.parseColor("#F06D2F")), 0, entry.article.date.length(), 0);
 			holder.value2.setText(text, BufferType.SPANNABLE);
 			// Nombre de commentaires
 			holder.coms.setText(entry.article.numberOfComs);
@@ -182,8 +176,7 @@ public class INpactListAdapter extends BaseAdapter {
 		try {
 			in = context.openFileInput(position + ".jpg");
 		} catch (FileNotFoundException e) {
-			iv.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.logo_nextinpact));
+			iv.setImageDrawable(context.getResources().getDrawable(R.drawable.logo_nextinpact));
 			return;
 		}
 		iv.setImageBitmap(BitmapFactory.decodeStream(in));
@@ -199,26 +192,22 @@ public class INpactListAdapter extends BaseAdapter {
 		ImageView image;
 
 		public ViewHolder(View convertView) {
-			this.container = (LinearLayout) convertView
-					.findViewById(R.id.LinearLayoutForArticle);
+			this.container = (LinearLayout) convertView.findViewById(R.id.LinearLayoutForArticle);
 			this.day = (TextView) convertView.findViewById(R.id.TextViewDay);
 			this.title = (TextView) convertView.findViewById(R.id.TextView01);
-			this.value2 = (TextView) convertView
-					.findViewById(R.id.TextViewSubTitle);
-			this.coms = (TextView) convertView
-					.findViewById(R.id.TextViewCommentsCount);
+			this.value2 = (TextView) convertView.findViewById(R.id.TextViewSubTitle);
+			this.coms = (TextView) convertView.findViewById(R.id.TextViewCommentsCount);
 			this.image = (ImageView) convertView.findViewById(R.id.ImageView01);
 
 			// Taille des textes (option de l'utilisateur)
-			SharedPreferences mesPrefs = PreferenceManager
-					.getDefaultSharedPreferences(context);
+			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 			// la taille par défaut est de 16
 			// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 			int tailleDefaut = 16;
 
 			// L'option selectionnée
-			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-					String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
+			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), ""
+					+ tailleDefaut));
 
 			if (tailleOptionUtilisateur == tailleDefaut) {
 				// Valeur par défaut...

@@ -88,8 +88,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		/*
-		 * format comment content: convert from HTML (tags) to Spanned (TextView
-		 * formatting)
+		 * format comment content: convert from HTML (tags) to Spanned (TextView formatting)
 		 */
 		private Spanned format(String content) {
 			try {
@@ -119,8 +118,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 				conn.connect();
 
 				// Je bufferise le gif
-				BufferedInputStream bis = new BufferedInputStream(
-						conn.getInputStream());
+				BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
 
 				// Je transforme le gif en element drawable
 				drawable = new BitmapDrawable(null, bis);
@@ -129,32 +127,24 @@ public class INpactListAdapter2 extends BaseAdapter {
 				// drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
 				// drawable.getIntrinsicHeight());
 				// Taille des textes (option de l'utilisateur)
-				SharedPreferences mesPrefs = PreferenceManager
-						.getDefaultSharedPreferences(ctx);
+				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 				// la taille par défaut est de 16
 				// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 				int tailleDefaut = 16;
 
 				// L'option selectionnée
-				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs
-						.getString(String.valueOf(R.id.optionZoomTexte), ""
-								+ tailleDefaut));
+				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), ""
+						+ tailleDefaut));
 
 				if (tailleOptionUtilisateur == tailleDefaut) {
 					// Valeur par défaut... (doublage de la taille sinon les
 					// smileys sont vraiment trop petits)
-					drawable.setBounds(0, 0, drawable.getIntrinsicWidth() * 2,
-							drawable.getIntrinsicHeight() * 2);
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth() * 2, drawable.getIntrinsicHeight() * 2);
 				} else {
 					// On applique la taille demandée (doublage du zoom sinon
 					// les smileys sont vraiment trop petits)
-					drawable.setBounds(
-							0,
-							0,
-							drawable.getIntrinsicWidth()
-									* (2 * tailleOptionUtilisateur / tailleDefaut),
-							drawable.getIntrinsicHeight()
-									* (2 * tailleOptionUtilisateur / tailleDefaut));
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth() * (2 * tailleOptionUtilisateur / tailleDefaut),
+							drawable.getIntrinsicHeight() * (2 * tailleOptionUtilisateur / tailleDefaut));
 				}
 
 				cache.put(source, drawable);
@@ -162,10 +152,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 			} catch (Exception e) {
 				e.printStackTrace();
 
-				drawable = ctx.getResources().getDrawable(
-						R.drawable.fallback_emoticon);
-				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-						drawable.getIntrinsicHeight());
+				drawable = ctx.getResources().getDrawable(R.drawable.fallback_emoticon);
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 			}
 
 			return drawable;
@@ -173,8 +161,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 
 	}
 
-	private class XQuoteSpan extends StyleSpan implements LineBackgroundSpan,
-			LeadingMarginSpan {
+	private class XQuoteSpan extends StyleSpan implements LineBackgroundSpan, LeadingMarginSpan {
 
 		public XQuoteSpan(int style) {
 			super(style);
@@ -185,8 +172,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		// inherited from LineBackgroundSpan
-		public void drawBackground(Canvas c, Paint p, int left, int right,
-				int top, int baseline, int bottom, CharSequence text,
+		public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text,
 				int start, int end, int lnum) {
 
 			Paint.Style style = p.getStyle();
@@ -205,8 +191,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 			return 20;
 		}
 
-		public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
-				int top, int baseline, int bottom, CharSequence text,
+		public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom, CharSequence text,
 				int start, int end, boolean first, Layout layout) {
 			// do nothing
 		}
@@ -218,8 +203,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	private class TagHandler implements Html.TagHandler {
 		private List<Object> _format_stack = new LinkedList<Object>();
 
-		public void handleTag(boolean opening, String tag, Editable output,
-				XMLReader reader) {
+		public void handleTag(boolean opening, String tag, Editable output, XMLReader reader) {
 			final int length = output.length();
 
 			if (tag.equals("xquote")) {
@@ -227,8 +211,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 					final Object format = new XQuoteSpan();
 					_format_stack.add(format);
 
-					output.setSpan(format, length, length,
-							Spanned.SPAN_MARK_MARK);
+					output.setSpan(format, length, length, Spanned.SPAN_MARK_MARK);
 				} else {
 					applySpan(output, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
@@ -294,10 +277,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 	}
 
 	/**
-	 * Since the data comes from an array, just returning the index is
-	 * sufficient to get at the data. If we were using a more complex data
-	 * structure, we would return whatever object represents one row in the
-	 * list.
+	 * Since the data comes from an array, just returning the index is sufficient to get at the data. If we were using a more
+	 * complex data structure, we would return whatever object represents one row in the list.
 	 * 
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
@@ -317,8 +298,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	/**
 	 * Make a view to hold each row.
 	 * 
-	 * @see android.widget.ListAdapter#getView(int, android.view.View,
-	 *      android.view.ViewGroup)
+	 * @see android.widget.ListAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -383,33 +363,25 @@ public class INpactListAdapter2 extends BaseAdapter {
 
 		public ViewHolder(View convertView) {
 
-			this.author = (TextView) convertView
-					.findViewById(R.id.CommTextViewAuthor);
-			this.commentDate = (TextView) convertView
-					.findViewById(R.id.CommTextViewDate);
-			this.commentID = (TextView) convertView
-					.findViewById(R.id.CommTextViewID);
-			this.content = (TextView) convertView
-					.findViewById(R.id.CommTextViewContent);
+			this.author = (TextView) convertView.findViewById(R.id.CommTextViewAuthor);
+			this.commentDate = (TextView) convertView.findViewById(R.id.CommTextViewDate);
+			this.commentID = (TextView) convertView.findViewById(R.id.CommTextViewID);
+			this.content = (TextView) convertView.findViewById(R.id.CommTextViewContent);
 			this.content.setMovementMethod(LinkMovementMethod.getInstance());
 
-			this.loadingWrapper = (LinearLayout) convertView
-					.findViewById(R.id.CommLinearLayoutLoadMore);
-			this.loading = (TextView) convertView
-					.findViewById(R.id.CommTextViewloadMore);
-			this.progressView = (ProgressBar) convertView
-					.findViewById(R.id.CommProgressBar);
+			this.loadingWrapper = (LinearLayout) convertView.findViewById(R.id.CommLinearLayoutLoadMore);
+			this.loading = (TextView) convertView.findViewById(R.id.CommTextViewloadMore);
+			this.progressView = (ProgressBar) convertView.findViewById(R.id.CommProgressBar);
 
 			// Taille des textes (option de l'utilisateur)
-			SharedPreferences mesPrefs = PreferenceManager
-					.getDefaultSharedPreferences(ctx);
+			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 			// la taille par défaut est de 16
 			// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 			int tailleDefaut = 16;
 
 			// L'option selectionnée
-			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-					String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
+			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), ""
+					+ tailleDefaut));
 
 			if (tailleOptionUtilisateur == tailleDefaut) {
 				// Valeur par défaut...

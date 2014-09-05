@@ -73,15 +73,15 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK: {
+			case KeyEvent.KEYCODE_BACK: {
 
-			if (progressDialog != null) {
-				progressDialog.dismiss();
-				progressDialog = null;
+				if (progressDialog != null) {
+					progressDialog.dismiss();
+					progressDialog = null;
+				}
+				finish();
+				return true;
 			}
-			finish();
-			return true;
-		}
 		}
 
 		return super.onKeyDown(keyCode, event);
@@ -173,25 +173,25 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
-		case 0:
-			if (!listView.isRefreshing())
-				listView.setRefreshing();
-			return true;
+			case 0:
+				if (!listView.isRefreshing())
+					listView.setRefreshing();
+				return true;
 
-			// Menu Options
-		case 1:
-			// Je lance l'activité options
-			Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
-			startActivity(intentOptions);
+				// Menu Options
+			case 1:
+				// Je lance l'activité options
+				Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
+				startActivity(intentOptions);
 
-			return true;
+				return true;
 
-			// A propos
-		case 2:
-			Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
-			startActivity(intentAbout);
+				// A propos
+			case 2:
+				Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
+				startActivity(intentAbout);
 
-			return true;
+				return true;
 		}
 
 		return super.onOptionsItemSelected(pItem);

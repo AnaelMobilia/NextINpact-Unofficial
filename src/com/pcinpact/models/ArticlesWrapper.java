@@ -50,8 +50,7 @@ public class ArticlesWrapper implements Serializable {
 		return null;
 	}
 
-	public List<INpactArticleDescription> getOnlyNewArticles(
-			List<INpactArticleDescription> newArticles) {
+	public List<INpactArticleDescription> getOnlyNewArticles(List<INpactArticleDescription> newArticles) {
 
 		List<INpactArticleDescription> delta = new ArrayList<INpactArticleDescription>();
 
