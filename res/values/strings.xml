@@ -17,8 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
--->
+ */-->
 <resources>
 
     <string name="hello">Hello World</string>
@@ -33,12 +32,11 @@
     <string name="home">Accueil</string>
     <string name="about">A propos</string>
     <!-- Disclaimer -->
-    <string name="disclaimerContent">
-			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup) mais par des lecteurs (passionnés) !
+    <string name="disclaimerContent">			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup) mais par des lecteurs (passionnés) !
 			\n
         	L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
 			\n
-			\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
+			\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application.
 			\n
 			\n
 			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
@@ -88,5 +86,13 @@
     <string name="optionsCommentaires">Options des commentaires</string>
     <string name="activerLiensCommentaire">Liens hypertextes</string>
     <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
+    <string name="telechargerCommentaires">Télécharger les 10 premiers commentaires</string>
+    <string name="telechargerCommentairesDetail">Si vous ne lisez pas les commentaires, décochez cette case</string>
+    <!-- Options - ID des clefs -->
+    <string name="idOptionLiensDansArticles">1</string>
+    <string name="idOptionLiensDansCommentaires">2</string>
+    <string name="idOptionZoomTexte">3</string>
+    <string name="idOptionTelechargerCommentaires">4</string>
+    <string name="idOptionPremierLancementApplication">5</string>
 
 </resources>

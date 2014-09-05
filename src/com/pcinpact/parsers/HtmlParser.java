@@ -120,7 +120,8 @@ public class HtmlParser {
 				}
 
 				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-				if (mesPrefs.getBoolean(String.valueOf(R.id.optionLiensDansCommentaires), false)) {
+				if (mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires), monContext.getResources()
+						.getBoolean(R.bool.defautOptionLiensDansCommentaires))) {
 					// On laisse les liens...
 				} else {
 					// Suppression des liens
@@ -279,7 +280,8 @@ public class HtmlParser {
 
 		// Gestion des liens hypertextes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(contextParent);
-		if (mesPrefs.getBoolean(String.valueOf(R.id.optionLiensDansArticles), false)) {
+		if (mesPrefs.getBoolean(contextParent.getString(R.string.idOptionLiensDansArticles), contextParent.getResources()
+				.getBoolean(R.bool.defautOptionLiensDansArticles))) {
 			// On laisse les liens...
 		} else {
 			// Suppression des liens

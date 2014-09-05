@@ -25,7 +25,6 @@ import com.pcinpact.managers.ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
-	public static boolean DL_COMMENTS = true;
 	public static int THEME = R.style.MyTheme;
 	// public static int THEME =R.style.Theme_Sherlock_Light;
 	// public static int THEME =R.style.Theme_Sherlock_Light_DarkActionBar;

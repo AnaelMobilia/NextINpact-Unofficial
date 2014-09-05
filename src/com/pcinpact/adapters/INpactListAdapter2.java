@@ -133,7 +133,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 				int tailleDefaut = 16;
 
 				// L'option selectionnée
-				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), ""
+				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(ctx.getString(R.string.idOptionZoomTexte), ""
 						+ tailleDefaut));
 
 				if (tailleOptionUtilisateur == tailleDefaut) {
@@ -380,7 +380,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 			int tailleDefaut = 16;
 
 			// L'option selectionnée
-			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), ""
+			int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(ctx.getString(R.string.idOptionZoomTexte), ""
 					+ tailleDefaut));
 
 			if (tailleOptionUtilisateur == tailleDefaut) {

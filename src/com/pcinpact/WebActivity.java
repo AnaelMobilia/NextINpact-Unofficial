@@ -127,7 +127,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 		// L'option selectionnée
 		int tailleOptionUtilisateur = Integer
-				.parseInt(mesPrefs.getString(String.valueOf(R.id.optionZoomTexte), "" + tailleDefaut));
+				.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), "" + tailleDefaut));
 
 		if (tailleOptionUtilisateur == tailleDefaut) {
 			// Valeur par défaut...

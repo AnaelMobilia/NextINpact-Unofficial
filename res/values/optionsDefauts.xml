@@ -17,15 +17,16 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
+ */
 -->
-<!-- ID unique pour les différentes options de l'application -->
+<!-- Valeurs par défaut des options de l'application -->
+
 <resources>
 
-    <item name="optionLiensDansArticles" type="id"/>
-    <item name="optionLiensDansCommentaires" type="id"/>
-    <item name="optionZoomTexte" type="id"/>
-    <item name="optionTelechargerCommentaires" type="id"/>
-    <item name="optionPremierLancementApplication" type="id"/>
+    <bool name="defautOptionLiensDansArticles">false</bool>
+    <bool name="defautOptionLiensDansCommentaires">false</bool>
+    <!-- <bool name="@string/idOptionZoomTexte">[true | false]</bool> -->
+    <!-- <bool name="@string/idOptionPremierLancementApplication">[true | false]</bool> -->
+    <bool name="defautOptionTelechargerCommentaires">false</bool>
 
 </resources>

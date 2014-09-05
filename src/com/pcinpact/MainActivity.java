@@ -133,7 +133,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		// Chargement des préférences de l'utilisateur
 		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean(String.valueOf(R.id.optionPremierLancementApplication), true);
+		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), true);
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
@@ -148,7 +148,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 				public void onClick(DialogInterface dialog, int id) {
 					// Enregistrement que le message a déjà été affiché
 					Editor editor = mesPrefs.edit();
-					editor.putBoolean(String.valueOf(R.id.optionPremierLancementApplication), false);
+					editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
 					editor.commit();
 				}
 			});
@@ -328,8 +328,12 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			connector.sendRequest(article.imgURL, "GET", null, 0, null);
 		}
 
-		for (int i = 0; i < articles.size(); i++) {
-			if (NextInpact.DL_COMMENTS) {
+		// Option de l'utilisateur : gestion des commentaires
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		// Sauf souhait contraire de l'utilisateur, on télécharge les commentaires
+		if (mesPrefs.getBoolean(getString(R.string.idOptionTelechargerCommentaires),
+				getResources().getBoolean(R.bool.defautOptionTelechargerCommentaires))) {
+			for (int i = 0; i < articles.size(); i++) {
 				INpactArticleDescription article = articles.get(i);
 
 				if (fileExists(article.getID() + "_comms.html")) {
@@ -343,7 +347,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
 			}
 		}
-
 	}
 
 	public boolean fileExists(String articleID) {
