@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.ContentNode;
@@ -54,12 +56,12 @@ public class HtmlParser {
 
 	public HtmlParser(InputStream htmlPage) throws IOException {
 		cleaner = new HtmlCleaner();
+		// Nettoie la page
 		rootNode = cleaner.clean(htmlPage);
-
 		HtmlCleaner cleaner = new HtmlCleaner();
+		// On récupère les propriétés de ce qui a été nettoyé (encodage par ex.)
 		CleanerProperties props = cleaner.getProperties();
 		htmlSerializer = new SimpleHtmlSerializer(props);
-
 	}
 
 	/**
@@ -74,15 +76,14 @@ public class HtmlParser {
 		 * <span class="actu_comm_author"> DarKCallistO <span>le 17/03/2013 à 14:12:55</span> <span
 		 * class="actu_comm_num">#1</span> </span>
 		 * 
-		 * <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br> M'enfin <br> <br> (Indice : elles viennent bien De quelque
+		 * <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br> M'enfin <br> <br> (Indice : elles viennent bien de quelque
 		 * part..) </div>
 		 * 
 		 * </div>
 		 */
-
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 
-		for (TagNode htmlComment : rootNode.getElementsByAttValue("class", "actu_comm ", true, true)) {
+		for (TagNode htmlComment : rootNode.getElementsByAttValue("class", "actu_comm", true, true)) {
 
 			TagNode actu_comm_author = getFirstElementByAttValue(htmlComment, "class", "actu_comm_author");
 			if (actu_comm_author == null)
@@ -136,7 +137,9 @@ public class HtmlParser {
 				// emoticons
 				if (src.startsWith("/images")) {
 					// @TODO : vérifier l'impact sur le cache de l'application
-					img.setAttribute("src", NextInpact.NEXT_INPACT_URL + src);
+					Map<String, String> mesAttribus = new HashMap<String, String>();
+					mesAttribus.put("src", NextInpact.NEXT_INPACT_URL + src);
+					img.setAttributes(mesAttribus);
 				}
 			}
 
@@ -149,14 +152,7 @@ public class HtmlParser {
 				quotes.getParent().removeChild(quotes);
 			}
 
-			String content = null;
-			try {
-				content = htmlSerializer.getAsString(actu_comm_content);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			}
+			String content = htmlSerializer.getAsString(actu_comm_content);
 
 			INPactComment comment = new INPactComment();
 
@@ -173,20 +169,12 @@ public class HtmlParser {
 	}
 
 	public String getStringWithLineBreaks(TagNode node) {
-		String content = null;
-
-		try {
-			content = htmlSerializer.getAsString(node);
-		} catch (IOException e) {
-
-			return null;
-		}
+		String content = htmlSerializer.getAsString(node);
 		content = content.replaceAll("<br />", "____");
 		content = Html.fromHtml(content).toString();
 		content = content.replaceAll("____", System.getProperty("line.separator"));
 
 		return content;
-
 	}
 
 	/**
@@ -381,7 +369,9 @@ public class HtmlParser {
 
 			// Si pas de protocole en début d'url, je l'injecte
 			if (laSrc.startsWith("//")) {
-				iframe.setAttribute("src", "http:" + laSrc);
+				Map<String, String> mesAttribus = new HashMap<String, String>();
+				mesAttribus.put("src", "http:" + laSrc);
+				iframe.setAttributes(mesAttribus);
 			}
 
 			// Gestion des liens relatifs (récap des bons plans)
@@ -399,19 +389,10 @@ public class HtmlParser {
 			}
 		}
 
-		try {
-			INpactArticle content = new INpactArticle();
-			content.Title = Html.fromHtml(title).toString();
-			content.Content = htmlSerializer.getAsString(article);
-			return content;
-		} catch (IOException e) {
-			// Log.e("HtmlParser WTF #1", "" + e.getMessage(), e);
-		}
-
-		catch (Exception e) {
-			// Log.e("HtmlParser WTF #2", "" + e.getMessage(), e);
-		}
-		return null;
+		INpactArticle content = new INpactArticle();
+		content.Title = Html.fromHtml(title).toString();
+		content.Content = htmlSerializer.getAsString(article);
+		return content;
 
 	}
 
