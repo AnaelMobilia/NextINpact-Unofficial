@@ -19,9 +19,11 @@
 package com.pcinpact;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -128,14 +130,14 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			loadArticlesListFromServer();
 		}
 
-		// Message d'accueil pour la premiËre utilisation
+		// Message d'accueil pour la premi√®re utilisation
 
-		// Chargement des prÈfÈrences de l'utilisateur
+		// Chargement des pr√©f√©rences de l'utilisateur
 		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), true);
 
-		// Si premiËre utilisation : on affiche un disclaimer
+		// Si premi√®re utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
@@ -146,17 +148,17 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			builder.setCancelable(false);
 			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					// Enregistrement que le message a dÈj‡ ÈtÈ affichÈ
+					// Enregistrement que le message a d√©j√† √©t√© affich√©
 					Editor editor = mesPrefs.edit();
 					editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
 					editor.commit();
 
-					// Affichage de l'Ècran de configuration de l'application
+					// Affichage de l'√©cran de configuration de l'application
 					Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 					startActivity(intentOptions);
 				}
 			});
-			// On crÈe & affiche
+			// On cr√©e & affiche
 			builder.create().show();
 		}
 	}
@@ -184,7 +186,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 				// Menu Options
 			case 1:
-				// Je lance l'activitÈ options
+				// Je lance l'activit√© options
 				Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 				startActivity(intentOptions);
 
@@ -207,13 +209,13 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		m_menu = menu;
-		// Ecran principal : bouton en haut ‡† droite de rafraichissement des
+		// Ecran principal : bouton en haut √†¬† droite de rafraichissement des
 		// news
 		// Ou dans le menu d'options de l'application
 		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-		// Menu des paramËtres (ID = 1)
+		// Menu des param√®tres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);
 
 		// A propos (ID = 2)
@@ -224,48 +226,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 	void loadArticles() {
 		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
-	}
-
-	void showCache() {
-		// String[] SavedFiles = getApplicationContext().fileList();
-		// for (String file : SavedFiles)
-		// Log.e("CACHE", file);
-	}
-
-	void deleteCache() {
-
-	}
-
-	void deleteOldArticles() {
-
-		String[] SavedFiles = getApplicationContext().fileList();
-
-		for (String file : SavedFiles) {
-			if (file.equals(ArticleManager.FILE_NAME_ARTICLES))
-				continue;
-
-			if (file.endsWith(".jpg"))
-				continue;
-
-			if (file.endsWith("_comms.html"))
-				continue;
-
-			boolean newArticle = false;
-			String articleID = null;
-
-			for (INpactArticleDescription article : NextInpact.getInstance(this).getArticlesWrapper().getArticles()) {
-				if ((article.getID() + ".html").equals(file)) {
-					newArticle = true;
-					articleID = article.getID();
-				}
-
-			}
-			if (!newArticle) {
-				this.deleteFile(file);
-				this.deleteFile(articleID + ".jpg");
-				this.deleteFile(articleID + "_comms.html");
-			}
-		}
 	}
 
 	private ProgressDialog progressDialog;
@@ -284,7 +244,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			return;
 		}
 
-		// Formatage de la date de derniËre mise ‡ jour des news
+		// Formatage de la date de derni√®re mise √† jour des news
 		DateFormat monFormatDate = DateFormat.getDateTimeInstance();
 		Date maDate = Calendar.getInstance().getTime();
 		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = " " + monFormatDate.format(maDate);
@@ -298,6 +258,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
 
+		// R√©cup√©ration des contenus des articles
 		numberOfPendingArticles.set(articles.size());
 
 		for (int i = 0; i < articles.size(); i++) {
@@ -315,6 +276,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
 		}
 
+		// R√©cuperation des miniatures des articles
 		numberOfPendingImages.set(articles.size());
 
 		for (int i = 0; i < articles.size(); i++) {
@@ -332,9 +294,10 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			connector.sendRequest(article.imgURL, "GET", null, 0, null);
 		}
 
+		// R√©cup√©ration des commentaires de l'article
 		// Option de l'utilisateur : gestion des commentaires
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		// Sauf souhait contraire de l'utilisateur, on tÈlÈcharge les commentaires
+		// Sauf souhait contraire de l'utilisateur, on t√©l√©charge les commentaires
 		if (mesPrefs.getBoolean(getString(R.string.idOptionTelechargerCommentaires),
 				getResources().getBoolean(R.bool.defautOptionTelechargerCommentaires))) {
 			for (int i = 0; i < articles.size(); i++) {
@@ -351,6 +314,35 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
 			}
 		}
+
+		// On nettoye le cache des articles qui ne sont plus utilis√©s
+		// Cr√©ation des variations des noms de fichiers pour les articles
+		ArrayList<String> fichiersLegitimes = new ArrayList<String>();
+
+		// cr√©ation d'un listIterator sur la liste d'articles
+		ListIterator<INpactArticleDescription> it = articles.listIterator();
+		while (it.hasNext()) {
+			// id de l'article
+			String idArticle = String.valueOf(it.next().getID());
+			// Article
+			fichiersLegitimes.add(idArticle + ".html");
+			// Miniature
+			fichiersLegitimes.add(idArticle + ".jpg");
+			// Commentaires
+			fichiersLegitimes.add(idArticle + "_comms.html");
+		}
+		// Liste des articles -> √† conserver
+		fichiersLegitimes.add(ArticleManager.FILE_NAME_ARTICLES);
+
+		// Les fichiers sur stock√©s en local
+		String[] SavedFiles = getApplicationContext().fileList();
+
+		for (String file : SavedFiles) {
+			if (!fichiersLegitimes.contains(file)) {
+				// Article √† effacer
+				getApplicationContext().deleteFile(file);
+			}
+		}
 	}
 
 	public boolean fileExists(String articleID) {
@@ -365,6 +357,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		return false;
 	}
 
+	// Callback Iconnectable  - lorsque le chargement de la liste des articles est effectu√©e
 	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
 			public void run() {
@@ -378,7 +371,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		Log.i("MainAct", numberOfPendingArticles.get() + " " + numberOfPendingImages.get());
 		if (numberOfPendingArticles.get() == 0 && numberOfPendingImages.get() == 0) {
 			stopRefreshing();
-			deleteOldArticles();
 		}
 	}
 
@@ -398,6 +390,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		Log.i("MainAct", "stopRefreshing");
 	}
 
+	// Parser appel√© en cas de succ√®s du t√©l√©chargement
 	public void didConnectionResultOnUiThread(final byte[] result, final int state, final String tag) {
 		if (state == DL_ARTICLE) {
 			ArticleManager.saveArticle(this, result, tag);
