@@ -71,7 +71,8 @@ public class HtmlConnector {
 		}
 
 		catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			Delegate.didFailWithError(e.getMessage(), state);
+			return;
 		}
 
 		final InputStream outgoing_is = is;
@@ -125,7 +126,6 @@ public class HtmlConnector {
 
 		} catch (IOException e) {
 			Delegate.didFailWithError(e.getMessage(), state);
-
 			return;
 		}
 
@@ -137,7 +137,6 @@ public class HtmlConnector {
 
 		} catch (ProtocolException e) {
 			Delegate.didFailWithError(e.getMessage(), state);
-
 			return;
 		}
 
@@ -155,7 +154,6 @@ public class HtmlConnector {
 				writer = connection.getOutputStream();
 			} catch (IOException e) {
 				Delegate.didFailWithError(e.getMessage(), state);
-
 				return;
 
 			}
@@ -170,17 +168,14 @@ public class HtmlConnector {
 
 			} catch (IOException e) {
 				Delegate.didFailWithError(e.getMessage(), state);
-
 				return;
 			}
 
 			if (outgoing_is != null) {
 				try {
 					outgoing_is.close();
-
 				} catch (IOException e) {
 					Delegate.didFailWithError(e.getMessage(), state);
-
 					return;
 				}
 			}
@@ -188,7 +183,6 @@ public class HtmlConnector {
 
 		try {
 			connection.connect();
-
 		} catch (IOException e) {
 			Delegate.didFailWithError(e.getMessage(), state);
 			return;

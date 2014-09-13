@@ -94,9 +94,8 @@ public class INpactListAdapter2 extends BaseAdapter {
 			try {
 				return Html.fromHtml(content, imageGetter, new TagHandler());
 			} catch (Exception e) {
+				return new SpannedString("* ERREUR *");
 			}
-
-			return new SpannedString("*ERROR*");
 		}
 	}
 
@@ -150,8 +149,6 @@ public class INpactListAdapter2 extends BaseAdapter {
 				cache.put(source, drawable);
 
 			} catch (Exception e) {
-				e.printStackTrace();
-
 				drawable = ctx.getResources().getDrawable(R.drawable.fallback_emoticon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 			}
@@ -346,8 +343,6 @@ public class INpactListAdapter2 extends BaseAdapter {
 	}
 
 	public void handleClick(ViewEntry entry, int index) {
-		// Log.i("Adapter", entry.Title + " " + entry.Value + " " +
-		// mData.indexOf(entry));
 	}
 
 	static class ViewHolder {

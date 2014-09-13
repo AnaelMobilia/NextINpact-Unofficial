@@ -19,8 +19,6 @@
 package com.pcinpact;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -70,7 +68,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		webview.setHorizontalScrollBarEnabled(true);
 		webview.setVerticalScrollBarEnabled(true);
 		webview.getSettings().setSupportZoom(true);
-		// webview.getSettings().setBuiltInZoomControls(true);
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		webview.getSettings().setDefaultTextEncodingName("utf-8");
 
@@ -82,10 +79,11 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		// On charge l'article depuis le cache, ou à défaut depuis le site
 		try {
 			l_Stream = l_Context.openFileInput(url);
-			// headerTextView.setText(article.Title);
-		} catch (FileNotFoundException e) {
-			// Log.e("WebActivity WTF #1", "" + e.getMessage(), e);
-
+			HtmlParser hh = new HtmlParser(l_Stream);
+			INpactArticle article = hh.getArticleContent(l_Context);
+			data = article.Content;
+			l_Stream.close();
+		} catch (Exception e) {
 			INpactArticleDescription article = NextInpact.getInstance(this).getArticlesWrapper().getArticle(articleID);
 
 			HtmlConnector connector = new HtmlConnector(this, this);
@@ -93,25 +91,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
 
 			data = getString(R.string.articleNonSynchroHTML);
-
-		}
-
-		try {
-			HtmlParser hh = new HtmlParser(l_Stream);
-			INpactArticle article = hh.getArticleContent(l_Context);
-			data = article.Content;
-		}
-
-		catch (Exception e) {
-			// Log.e("WebActivity WTF #2", "" + e.getMessage(), e);
-			e.printStackTrace();
-		}
-
-		try {
-			if (l_Stream != null)
-				l_Stream.close();
-		} catch (IOException e) {
-			// Log.e("WebActivity WTF #3", "" + e.getMessage(), e);
 		}
 
 		if (data == null)
@@ -126,8 +105,8 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		int tailleDefaut = 16;
 
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer
-				.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), "" + tailleDefaut));
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), ""
+				+ tailleDefaut));
 
 		if (tailleOptionUtilisateur == tailleDefaut) {
 			// Valeur par défaut...

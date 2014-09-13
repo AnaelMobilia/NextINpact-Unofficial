@@ -20,13 +20,9 @@ package com.pcinpact.managers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -41,6 +37,7 @@ public class ArticleManager {
 
 	/**
 	 * Enregistre une image
+	 * 
 	 * @param context
 	 * @param result
 	 * @param tag
@@ -57,6 +54,7 @@ public class ArticleManager {
 
 	/**
 	 * Enregistre le contenu d'un article
+	 * 
 	 * @param context
 	 * @param result
 	 * @param tag
@@ -72,61 +70,31 @@ public class ArticleManager {
 
 	// Récupère en local le contenu d'un article
 	public static ArticlesWrapper getSavedArticlesWrapper(Context context) {
-		FileInputStream fis = null;
 		try {
-			fis = context.openFileInput(FILE_NAME_ARTICLES);
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-		ObjectInputStream is = null;
-		try {
-			is = new ObjectInputStream(fis);
-		} catch (StreamCorruptedException e) {
-			return null;
-		} catch (IOException e) {
-			return null;
-		}
-		ArticlesWrapper simpleClass = null;
-		try {
-			simpleClass = (ArticlesWrapper) is.readObject();
-		} catch (OptionalDataException e) {
-		} catch (ClassNotFoundException e) {
-		} catch (IOException e) {
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		return simpleClass;
+			FileInputStream fis = context.openFileInput(FILE_NAME_ARTICLES);
+			ObjectInputStream is = new ObjectInputStream(fis);
+			ArticlesWrapper simpleClass = (ArticlesWrapper) is.readObject();
+			is.close();
 
+			return simpleClass;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
 	 * Enregistre la liste des articles
+	 * 
 	 * @param context
 	 * @param wrapper
 	 */
 	public static void saveArticlesWrapper(Context context, ArticlesWrapper wrapper) {
-		FileOutputStream fos = null;
 		try {
-			fos = context.openFileOutput(FILE_NAME_ARTICLES, Context.MODE_PRIVATE);
-		} catch (FileNotFoundException e) {
-		}
-		ObjectOutputStream os = null;
-		try {
-			os = new ObjectOutputStream(fos);
-		} catch (IOException e) {
-
-		}
-		try {
+			FileOutputStream fos = context.openFileOutput(FILE_NAME_ARTICLES, Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
 			os.writeObject(wrapper);
-		} catch (IOException e) {
-
-		}
-		try {
 			os.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
 	}
 
