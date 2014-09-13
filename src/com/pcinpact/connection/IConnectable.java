@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah
+ * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -23,9 +23,5 @@ public interface IConnectable {
 	public void didConnectionResult(byte[] result, int state, String tag);
 
 	public void didFailWithError(String error, int state);
-
-	public void setDownloadProgress(int i);
-
-	public void setUploadProgress(int i);
 
 }

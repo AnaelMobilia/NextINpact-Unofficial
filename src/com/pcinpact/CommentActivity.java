@@ -148,16 +148,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		adapter.refreshData(comments, moreCommentsAvailabe);
 	}
 
-	public void setDownloadProgress(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setUploadProgress(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 		if (comments.size() == 0)

@@ -463,12 +463,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		}
 	}
 
-	public void setDownloadProgress(int i) {
-	}
-
-	public void setUploadProgress(int i) {
-	}
-
 	public void showErrorDialog(final String error) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);

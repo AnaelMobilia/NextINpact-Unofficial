@@ -212,14 +212,4 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 	}
 
-	public void setDownloadProgress(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setUploadProgress(int i) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
