@@ -273,8 +273,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	public void loadArticlesListFromServer() {
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
-//		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
-		connector.sendRequest(NextInpact.NEXT_INPACT_URL+"/?page=58", "GET", null, 0, null);
+		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
 	}
 
 	List<INpactArticleDescription> newArticles;
