@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.HtmlNode;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
@@ -40,6 +43,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 
 public class HtmlParser {
 	TagNode rootNode;
@@ -54,12 +58,12 @@ public class HtmlParser {
 
 	public HtmlParser(InputStream htmlPage) throws IOException {
 		cleaner = new HtmlCleaner();
+		// Nettoie la page
 		rootNode = cleaner.clean(htmlPage);
-
 		HtmlCleaner cleaner = new HtmlCleaner();
+		// On récupère les propriétés de ce qui a été nettoyé (encodage par ex.)
 		CleanerProperties props = cleaner.getProperties();
 		htmlSerializer = new SimpleHtmlSerializer(props);
-
 	}
 
 	/**
@@ -69,20 +73,13 @@ public class HtmlParser {
 	 */
 	public List<INPactComment> getComments(Context monContext) {
 		/*
-		 * <div class="actu_comm" id="c4500881">
-		 * 
-		 * <span class="actu_comm_author"> DarKCallistO <span>le 17/03/2013 à 14:12:55</span> <span
-		 * class="actu_comm_num">#1</span> </span>
-		 * 
-		 * <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br> M'enfin <br> <br> (Indice : elles viennent bien De quelque
-		 * part..) </div>
-		 * 
-		 * </div>
+		 * <div class="actu_comm" id="c4500881"> <span class="actu_comm_author"> DarKCallistO <span>le 17/03/2013 à
+		 * 14:12:55</span> <span class="actu_comm_num">#1</span> </span> <div class="actu_comm_content"> Ah bah ENFIN ! <br> <br>
+		 * M'enfin <br> <br> (Indice : elles viennent bien de quelque part..) </div> </div>
 		 */
-
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 
-		for (TagNode htmlComment : rootNode.getElementsByAttValue("class", "actu_comm ", true, true)) {
+		for (TagNode htmlComment : rootNode.getElementsByAttValue("class", "actu_comm", true, true)) {
 
 			TagNode actu_comm_author = getFirstElementByAttValue(htmlComment, "class", "actu_comm_author");
 			if (actu_comm_author == null)
@@ -136,7 +133,9 @@ public class HtmlParser {
 				// emoticons
 				if (src.startsWith("/images")) {
 					// @TODO : vérifier l'impact sur le cache de l'application
-					img.setAttribute("src", NextInpact.NEXT_INPACT_URL + src);
+					Map<String, String> mesAttribus = new HashMap<String, String>();
+					mesAttribus.put("src", NextInpact.NEXT_INPACT_URL + src);
+					img.setAttributes(mesAttribus);
 				}
 			}
 
@@ -149,14 +148,7 @@ public class HtmlParser {
 				quotes.getParent().removeChild(quotes);
 			}
 
-			String content = null;
-			try {
-				content = htmlSerializer.getAsString(actu_comm_content);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			}
+			String content = htmlSerializer.getAsString(actu_comm_content);
 
 			INPactComment comment = new INPactComment();
 
@@ -173,20 +165,12 @@ public class HtmlParser {
 	}
 
 	public String getStringWithLineBreaks(TagNode node) {
-		String content = null;
-
-		try {
-			content = htmlSerializer.getAsString(node);
-		} catch (IOException e) {
-
-			return null;
-		}
+		String content = htmlSerializer.getAsString(node);
 		content = content.replaceAll("<br />", "____");
 		content = Html.fromHtml(content).toString();
 		content = content.replaceAll("____", System.getProperty("line.separator"));
 
 		return content;
-
 	}
 
 	/**
@@ -197,22 +181,14 @@ public class HtmlParser {
 	public INpactArticle getArticleContent(Context contextParent) {
 
 		/*
-		 * <article>
-		 * 
-		 * <header class="actu_title">
-		 * 
-		 * <div class="actu_title_icons_collumn"> <img class="actu_icons" title="Hadopi" alt="Hadopi" width="32px" height="32px"
-		 * src="/images/clair/categories/droit/hadopi@2x.png"/> </div>
-		 * 
-		 * <div class="actu_title_collumn"> <h1>Les coûts de la Hadopi à l’honneur de Capital sur M6</h1> <span
-		 * class="actu_sub_title">Argent, trop cher ?</span> </div>
-		 * 
-		 * </header>
-		 * 
-		 * <div class="actu_content" data_id="78299"> <p class="actu_chapeau">Ce soir l&rsquo;&eacute;mission&nbsp;<a
-		 * href="http://www.m6.fr/emission-capital/" target="_blank">Capital sur M6</a>&nbsp;concentre son attention sur le
-		 * gaspillage de l'argent public. &Agrave; cette occasion, l&rsquo;&eacute;mission va aborder le sujet de la loi
-		 * Hadopi.</p><p><a class="fancyimg" href="http://static.nextinpact.com/images/bd/news/129249.png" rel="group_fancy"><img
+		 * <article> <header class="actu_title"> <div class="actu_title_icons_collumn"> <img class="actu_icons" title="Hadopi"
+		 * alt="Hadopi" width="32px" height="32px" src="/images/clair/categories/droit/hadopi@2x.png"/> </div> <div
+		 * class="actu_title_collumn"> <h1>Les coûts de la Hadopi à l’honneur de Capital sur M6</h1> <span
+		 * class="actu_sub_title">Argent, trop cher ?</span> </div> </header> <div class="actu_content" data_id="78299"> <p
+		 * class="actu_chapeau">Ce soir l&rsquo;&eacute;mission&nbsp;<a href="http://www.m6.fr/emission-capital/"
+		 * target="_blank">Capital sur M6</a>&nbsp;concentre son attention sur le gaspillage de l'argent public. &Agrave; cette
+		 * occasion, l&rsquo;&eacute;mission va aborder le sujet de la loi Hadopi.</p><p><a class="fancyimg"
+		 * href="http://static.nextinpact.com/images/bd/news/129249.png" rel="group_fancy"><img
 		 * style="display: block; margin-left: auto; margin-right: auto;"
 		 * src="http://static.nextinpact.com/images/bd/news/medium-129249.png"
 		 * alt="capital M6"/></a></p><p>&nbsp;</p><p>L&rsquo;&eacute;mission Capital sur M6 se penche ce soir sur
@@ -245,14 +221,8 @@ public class HtmlParser {
 		 * href="http://www.laquadrature.net/wiki/Etudes_sur_le_partage_de_fichiers" target="_blank">comme d&rsquo;autres
 		 * &eacute;tudes</a> - que ceux qui t&eacute;l&eacute;chargent le plus sont aussi ceux qui ach&egrave;tent le plus de
 		 * biens culturels. Le reportage, dans lequel nous intervenons, est programm&eacute; en fin d&rsquo;&eacute;mission.</p>
-		 * </div>
-		 * 
-		 * <footer class="actu_footer"> Rédigé par <a href="#">Marc Rees</a> (6 695 lectures) <br/> Le dimanche 17 mars 2013 à
-		 * 14:06 </footer>
-		 * 
-		 * <div class="actu_social"> </div>
-		 * 
-		 * </article>
+		 * </div> <footer class="actu_footer"> Rédigé par <a href="#">Marc Rees</a> (6 695 lectures) <br/> Le dimanche 17 mars
+		 * 2013 à 14:06 </footer> <div class="actu_social"> </div> </article>
 		 */
 
 		TagNode article = getFirstElementByName(rootNode, "article");
@@ -343,32 +313,33 @@ public class HtmlParser {
 				}
 
 				// Je crée l'élément de texte correspondant au site
-				ContentNode monContenu = new ContentNode("");
+				TagNode monContenu = new TagNode("");
 				switch (site) {
 					case "youtubeNoCookie":
 					case "youtube":
-						monContenu = new ContentNode("<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\">"
-								+ "<img src=\"file:///android_res/drawable/video_youtube.png\" />"
-								+ "<br />Voir la vidéo sur YouTube" + "</a>");
+						// Génération de mon contenu
+						monContenu = replaceVideosIframe("http://www.youtube.com/watch?v=" + idVideo,
+								"file:///android_res/drawable/video_youtube.png", "Voir la vidéo sur YouTube");
 						break;
 
 					case "dailymotion":
-						monContenu = new ContentNode("<a href=\"http://www.dailymotion.com/video/" + idVideo + "\">"
-								+ "<img src=\"file:///android_res/drawable/video_dailymotion.png\" />"
-								+ "<br />Voir la vidéo sur Dailymotion" + "</a>");
+						// Génération de mon contenu
+						monContenu = replaceVideosIframe("http://www.dailymotion.com/video/" + idVideo,
+								"file:///android_res/drawable/video_dailymotion.png", "Voir la vidéo sur Dailymotion");
 						break;
 
 					case "vimeo":
-						monContenu = new ContentNode("<a href=\"http://www.vimeo.com/" + idVideo + "\">"
-								+ "<img src=\"file:///android_res/drawable/video_vimeo.png\" />"
-								+ "<br />Voir la vidéo sur Vimeo" + "</a>");
+						// Génération de mon contenu
+						monContenu = replaceVideosIframe("http://www.vimeo.com/" + idVideo,
+								"file:///android_res/drawable/video_vimeo.png", "Voir la vidéo sur Vimeo");
 						break;
 
 					case "videosGouvFr":
 						// http://m.nextinpact.com/news/89028-le-numerique-parmi-priorites-gouvernement-pour-rentree.htm
-						monContenu = new ContentNode("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\">"
-								+ "<img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" />"
-								+ "<br />Voir la vidéo sur la Plateforme Vidéo Gouvernementale" + "</a>");
+						// Génération de mon contenu
+						monContenu = replaceVideosIframe("http://static.videos.gouv.fr/player/video/" + idVideo,
+								"file:///android_res/drawable/video_videos_gouv_fr.png",
+								"Voir la vidéo sur la Plateforme Vidéo Gouvernementale");
 						break;
 				}
 
@@ -381,7 +352,9 @@ public class HtmlParser {
 
 			// Si pas de protocole en début d'url, je l'injecte
 			if (laSrc.startsWith("//")) {
-				iframe.setAttribute("src", "http:" + laSrc);
+				Map<String, String> mesAttribus = new HashMap<String, String>();
+				mesAttribus.put("src", "http:" + laSrc);
+				iframe.setAttributes(mesAttribus);
 			}
 
 			// Gestion des liens relatifs (récap des bons plans)
@@ -399,20 +372,47 @@ public class HtmlParser {
 			}
 		}
 
-		try {
-			INpactArticle content = new INpactArticle();
-			content.Title = Html.fromHtml(title).toString();
-			content.Content = htmlSerializer.getAsString(article);
-			return content;
-		} catch (IOException e) {
-			// Log.e("HtmlParser WTF #1", "" + e.getMessage(), e);
-		}
+		INpactArticle content = new INpactArticle();
+		content.Title = Html.fromHtml(title).toString();
+		content.Content = htmlSerializer.getAsString(article);
+		return content;
+	}
 
-		catch (Exception e) {
-			// Log.e("HtmlParser WTF #2", "" + e.getMessage(), e);
-		}
-		return null;
+	/**
+	 * Génère un lien vers le player vidéo, avec une image & un libellé
+	 * 
+	 * @param urlPlayer destination du lien
+	 * @param urlImage url de l'image
+	 * @param libelle libellé à afficher
+	 * @return TagNode tout prêt
+	 */
+	private TagNode replaceVideosIframe(String urlPlayer, String urlImage, String libelle) {
+		// Génériques
+		TagNode unTagNode = new TagNode("");
+		Map<String, String> attributesUnTagNode = new HashMap<String, String>();
 
+		// Le lien vers le player
+		TagNode monA = new TagNode("a");
+		attributesUnTagNode = new HashMap<String, String>();
+		attributesUnTagNode.put("href", urlPlayer);
+		monA.setAttributes(attributesUnTagNode);
+
+		// L'image
+		unTagNode = new TagNode("img");
+		attributesUnTagNode = new HashMap<String, String>();
+		attributesUnTagNode.put("src", urlImage);
+		unTagNode.setAttributes(attributesUnTagNode);
+		monA.addChild(unTagNode);
+
+		// <br />
+		unTagNode = new TagNode("br");
+		monA.addChild(unTagNode);
+
+		// Le texte
+		ContentNode unContentNode = new ContentNode(libelle);
+		monA.addChild(unContentNode);
+
+		return monA;
 	}
 
 	/**
@@ -561,10 +561,8 @@ public class HtmlParser {
 	 * Premier élement par valeur d'attribut
 	 * 
 	 * @param node
-	 * @param attrName
-	 *            Nom de l'attribut
-	 * @param attrValue
-	 *            Valeur de l'attribut
+	 * @param attrName Nom de l'attribut
+	 * @param attrValue Valeur de l'attribut
 	 * @return Tagnode
 	 */
 	public static TagNode getFirstElementByAttValue(TagNode node, String attrName, String attrValue) {
@@ -579,8 +577,7 @@ public class HtmlParser {
 	 * Premier élément par nom
 	 * 
 	 * @param node
-	 * @param name
-	 *            Nom
+	 * @param name Nom
 	 * @return Tagnode
 	 */
 	public static TagNode getFirstElementByName(TagNode node, String name) {
