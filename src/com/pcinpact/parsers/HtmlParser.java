@@ -29,7 +29,6 @@ import java.util.Map;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.ContentNode;
 import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.HtmlNode;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
@@ -43,7 +42,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 
 public class HtmlParser {
 	TagNode rootNode;
