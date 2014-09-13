@@ -1,8 +1,8 @@
 Librairies utilisées par le projet :
 HtmlCleaner
-	v2.2
+	v2.9
 	http://htmlcleaner.sourceforge.net
-	Nettoie le code HTML téléchargé (convertion des html entities & co)
+	Nettoie et corrige le code HTML source
 
 PullToRefreshLibrary
 	/*/*/ DEPRECATED */*/
