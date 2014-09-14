@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="5"
         android:targetSdkVersion="9" />
     <!--
     minSdkVersion est la version minimum pour faire tourner l'application (2.2)
