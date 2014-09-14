@@ -509,9 +509,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		int _index = arg2;
-
-		INpactArticleDescription article = this.adapter.getInpactArticleDescription(_index);
+		INpactArticleDescription article = this.adapter.getInpactArticleDescription(arg2);
 		if (article == null)
 			return;
 
