@@ -68,10 +68,6 @@
             android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity
-            android:name=".PullToRefreshActivity"
-            android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
-        <activity
             android:name=".OptionsActivity"
             android:screenOrientation="sensor"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
