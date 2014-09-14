@@ -44,6 +44,8 @@
 			\n
 			\n
 			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
+	<string name="chargementTitre">Chargement...</string>
+	<string name="chargementContenu">Veuillez patienter</string>
     <!-- A propos -->
     <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs passionnés de NextINpact !
         \n

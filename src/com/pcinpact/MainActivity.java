@@ -40,9 +40,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -52,17 +49,25 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends SherlockActivity implements IConnectable, OnItemClickListener {
 
-	PullToRefreshListView listView;
+	ListView monListView;
+	SwipeRefreshLayout monSwipeRefreshLayout;
 	INpactListAdapter adapter;
-
 	TextView headerTextView;
+	Menu m_menu;
+	private ProgressDialog progressDialog;
+	List<INpactArticleDescription> newArticles;
 
 	final static int DL_LIST = 0;
 	final static int DL_ARTICLE = 1;
@@ -72,6 +77,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	AtomicInteger numberOfPendingArticles = new AtomicInteger();
 	AtomicInteger numberOfPendingImages = new AtomicInteger();
 
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK: {
@@ -95,26 +101,26 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
+		// On définit la vue
 		setContentView(R.layout.main);
+		// On récupère les éléments
+		monListView = (ListView) this.findViewById(R.id.listview);
+		monSwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
+		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		setSupportProgressBarIndeterminateVisibility(false);
 
-		headerTextView = (TextView) findViewById(R.id.header_text);
-		listView = (PullToRefreshListView) this.findViewById(R.id.listview);
-
-		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-
-				loadArticlesListFromServer();
-				setSupportProgressBarIndeterminateVisibility(true);
-				if (m_menu != null)
-					m_menu.findItem(0).setVisible(false);
+		// onRefresh
+		monSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				refreshListeArticles();
 			}
 		});
 
 		adapter = new INpactListAdapter(this, null).buildData();
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(this);
+		monListView.setAdapter(adapter);
+		monListView.setOnItemClickListener(this);
 
 		ArticlesWrapper w = NextInpact.getInstance(this).getArticlesWrapper();
 
@@ -122,9 +128,11 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			loadArticles();
 			headerTextView.setText(getString(R.string.lastUpdate) + w.LastUpdate);
 		} else {
-			listView.setRefreshing();
-			progressDialog = ProgressDialog.show(this, "Chargement...", "Veuillez patienter", true, false);
-			loadArticlesListFromServer();
+			// Si pas d'articles, on lance un chargement
+			// Message spécifique pour couvrir la page blanche
+			progressDialog = ProgressDialog.show(this, getString(R.string.chargementTitre),
+					getString(R.string.chargementContenu), true, false);
+			refreshListeArticles();
 		}
 
 		// Message d'accueil pour la première utilisation
@@ -144,6 +152,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			// Bouton d'action
 			builder.setCancelable(false);
 			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					// Enregistrement que le message a déjà été affiché
 					Editor editor = mesPrefs.edit();
@@ -160,6 +169,31 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		}
 	}
 
+	/**
+	 * Rafraîchir la liste des articles
+	 */
+	private void refreshListeArticles() {
+		Log.e("NXI", "refreshListeArticles");
+		// TODO : vérifier la connexion internet avant de lancer
+
+		// Visuels
+		// Couleurs du RefreshLayout
+		monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+				getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu),
+				getResources().getColor(R.color.refreshBlanc));
+		// Animation du RefreshLayout
+		monSwipeRefreshLayout.setRefreshing(true);
+
+		// On efface le bouton rafraîchir du header
+		if (m_menu != null)
+			m_menu.findItem(0).setVisible(false);
+		// On fait tourner le bouton en cercle dans le header
+		setSupportProgressBarIndeterminateVisibility(true);
+
+		// Appel à la méthode qui va faire le boulot...
+		 loadArticlesListFromServer();
+	}
+
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -173,12 +207,12 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		m_menu = null;
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
 			case 0:
-				if (!listView.isRefreshing())
-					listView.setRefreshing();
+				refreshListeArticles();
 				return true;
 
 				// Menu Options
@@ -199,8 +233,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 		return super.onOptionsItemSelected(pItem);
 	}
-
-	Menu m_menu;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -224,15 +256,11 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
 	}
 
-	private ProgressDialog progressDialog;
-
 	public void loadArticlesListFromServer() {
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
 		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
 	}
-
-	List<INpactArticleDescription> newArticles;
 
 	public void loadArticlesFromServer(List<INpactArticleDescription> articles) {
 		if (articles.size() == 0) {
@@ -354,8 +382,10 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	}
 
 	// Callback Iconnectable - lorsque le chargement de la liste des articles est effectuée
+	@Override
 	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				didConnectionResultOnUiThread(result, state, tag);
 			}
@@ -368,18 +398,24 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		}
 	}
 
-	void stopRefreshing() {
-
+	public void stopRefreshing() {
+		// On arrête la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(false);
+		// On stoppe l'animation du SwipeRefreshLayout
+		monSwipeRefreshLayout.setRefreshing(false);
+		
+		// Affiche à nouveau l'icône dans le header
 		if (m_menu != null)
 			m_menu.findItem(0).setVisible(true);
 
+		// Cache le message de chargement
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 			progressDialog = null;
 		}
-		listView.onRefreshComplete();
-		listView.getRefreshableView().invalidateViews();
+		
+		// On force le refraichissement de la listview
+		monListView.invalidateViews();
 	}
 
 	// Parser appelé en cas de succès du téléchargement
@@ -414,8 +450,10 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		}
 	}
 
+	@Override
 	public void didFailWithError(final String error, final int state) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				didFailWithErrorOnUiThread(error, state);
 			}
@@ -450,6 +488,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		builder.setTitle(getString(R.string.titleError));
 		builder.setMessage(error);
 		builder.setPositiveButton(getString(R.string.buttonOkError), new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(final DialogInterface pDialog, final int pWhich) {
 				pDialog.dismiss();
 			}
@@ -457,15 +496,13 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		builder.create().show();
 	}
 
+	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		int _index = arg2 - 1;
 
 		INpactArticleDescription article = this.adapter.getInpactArticleDescription(_index);
 		if (article == null)
 			return;
-
-		// int index =
-		// NextInpact.getInstance(this).getArticlesWrapper().getArticles().indexOf(article);
 
 		Intent intentWeb = new Intent(this, WebActivity.class);
 		intentWeb.putExtra("URL", article.getID() + ".html");
