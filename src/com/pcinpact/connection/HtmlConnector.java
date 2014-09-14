@@ -31,6 +31,8 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.pcinpact.R;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 
@@ -106,7 +108,7 @@ public class HtmlConnector {
 
 		ConnectivityManager l_Connection = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (l_Connection.getActiveNetworkInfo() == null || !l_Connection.getActiveNetworkInfo().isConnected()) {
-			Delegate.didFailWithError("Vous n'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion", state);
+			Delegate.didFailWithError(context.getString(R.string.chargementPasInternet), state);
 			return;
 		}
 

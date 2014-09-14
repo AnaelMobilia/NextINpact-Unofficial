@@ -46,6 +46,7 @@
 			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
 	<string name="chargementTitre">Chargement...</string>
 	<string name="chargementContenu">Veuillez patienter</string>
+	<string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
     <!-- A propos -->
     <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs passionnés de NextINpact !
         \n

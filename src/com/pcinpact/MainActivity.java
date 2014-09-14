@@ -43,10 +43,12 @@ import com.actionbarsherlock.view.Window;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -58,6 +60,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends SherlockActivity implements IConnectable, OnItemClickListener {
 
@@ -173,24 +176,34 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	 * Rafraîchir la liste des articles
 	 */
 	private void refreshListeArticles() {
-		// TODO : vérifier la connexion internet avant de lancer
+		// Vérification de la connexion internet avant de lancer
+		ConnectivityManager l_Connection = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (l_Connection.getActiveNetworkInfo() == null || !l_Connection.getActiveNetworkInfo().isConnected()) {
 
-		// Visuels
-		// Couleurs du RefreshLayout
-		monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-				getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu),
-				getResources().getColor(R.color.refreshBlanc));
-		// Animation du RefreshLayout
-		monSwipeRefreshLayout.setRefreshing(true);
+			// Pas de connexion -> affichage d'un toast
+			CharSequence text = getString(R.string.chargementPasInternet);
+			int duration = Toast.LENGTH_LONG;
 
-		// On efface le bouton rafraîchir du header
-		if (m_menu != null)
-			m_menu.findItem(0).setVisible(false);
-		// On fait tourner le bouton en cercle dans le header
-		setSupportProgressBarIndeterminateVisibility(true);
+			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+			toast.show();
+		} else {
+			// Visuels
+			// Couleurs du RefreshLayout
+			monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+					getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
+							.getColor(R.color.refreshBlanc));
+			// Animation du RefreshLayout
+			monSwipeRefreshLayout.setRefreshing(true);
 
-		// Appel à la méthode qui va faire le boulot...
-		 loadArticlesListFromServer();
+			// On efface le bouton rafraîchir du header
+			if (m_menu != null)
+				m_menu.findItem(0).setVisible(false);
+			// On fait tourner le bouton en cercle dans le header
+			setSupportProgressBarIndeterminateVisibility(true);
+
+			// Appel à la méthode qui va faire le boulot...
+			loadArticlesListFromServer();
+		}
 	}
 
 	@Override
@@ -402,7 +415,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		setSupportProgressBarIndeterminateVisibility(false);
 		// On stoppe l'animation du SwipeRefreshLayout
 		monSwipeRefreshLayout.setRefreshing(false);
-		
+
 		// Affiche à nouveau l'icône dans le header
 		if (m_menu != null)
 			m_menu.findItem(0).setVisible(true);
@@ -412,7 +425,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 			progressDialog.dismiss();
 			progressDialog = null;
 		}
-		
+
 		// On force le refraichissement de la listview
 		monListView.invalidateViews();
 	}
