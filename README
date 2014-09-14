@@ -4,12 +4,6 @@ HtmlCleaner
 	http://htmlcleaner.sourceforge.net
 	Nettoie et corrige le code HTML source
 
-PullToRefreshLibrary
-	/*/*/ DEPRECATED */*/
-	v2.1.2-SNAPSHOT
-	https://github.com/chrisbanes/Android-PullToRefresh
-	Rechargement de la liste des articles au touch + pull
-		
 SherlockBarLibrary
 	v4.2.0
 	http://actionbarsherlock.com/
