@@ -81,7 +81,7 @@ public class INpactListAdapter extends BaseAdapter {
 	}
 
 	public INpactListAdapter(Context context, List<INpactArticleDescription> articles) {
-		this.context = context;
+		INpactListAdapter.context = context;
 		mInflater = LayoutInflater.from(context);
 
 		if (articles == null)
@@ -102,6 +102,7 @@ public class INpactListAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 		return mData.size();
 	}
@@ -112,6 +113,7 @@ public class INpactListAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
+	@Override
 	public ViewEntry getItem(int position) {
 		return mData.get(position);
 	}
@@ -121,6 +123,7 @@ public class INpactListAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -130,6 +133,7 @@ public class INpactListAdapter extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
+	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder;

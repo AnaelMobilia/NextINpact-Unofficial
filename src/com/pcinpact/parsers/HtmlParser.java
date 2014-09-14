@@ -408,7 +408,7 @@ public class HtmlParser {
 			TagNode notif_link = getFirstElementByAttValue(htmlArticle, "class", "notif_link ui-link");
 			if (notif_link == null) {
 				TagNode temp = getFirstElementByAttValue(htmlArticle, "class", "sprite sprite-ico-commentaire");
-				notif_link = (TagNode) temp.getParent().getChildren().get(0);
+				notif_link = temp.getParent().getChildren().get(0);
 			}
 
 			String imgUrl = img.getAttributeByName("data-src");
