@@ -24,10 +24,6 @@
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">Dernière mise à jour : </string>
     <string name="refresh">Rafraîchir</string>
-    <string name="pull_to_refresh_pull_label">Tirer pour rafraîchir...</string>
-    <string name="pull_to_refresh_release_label">Relâcher pour rafraîchir...</string>
-    <string name="pull_to_refresh_refreshing_label">Chargement...</string>
-    <string name="pull_to_refresh_tap_label">Rafraîchir...</string>
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
     <string name="about">A propos</string>
