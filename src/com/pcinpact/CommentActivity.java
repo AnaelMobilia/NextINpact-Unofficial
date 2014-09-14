@@ -84,6 +84,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		return true;
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case 0:
@@ -106,8 +107,10 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		return super.onOptionsItemSelected(pItem);
 	}
 
+	@Override
 	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				safeDidConnectionResult(result, state, tag);
 			}
@@ -133,8 +136,10 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		}
 	}
 
+	@Override
 	public void didFailWithError(final String error, final int state) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				safeDidFailWithError(error, state);
 			}
@@ -148,6 +153,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		adapter.refreshData(comments, moreCommentsAvailabe);
 	}
 
+	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 		if (comments.size() == 0)
@@ -176,6 +182,7 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 
 	}
 
+	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 

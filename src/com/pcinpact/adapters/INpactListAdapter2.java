@@ -104,10 +104,11 @@ public class INpactListAdapter2 extends BaseAdapter {
 		// Cache en mémoire
 		private Hashtable<String, Drawable> cache = new Hashtable<String, Drawable>();
 
+		@Override
 		public Drawable getDrawable(String source) {
 
 			if (cache.containsKey(source)) {
-				return (Drawable) cache.get(source);
+				return cache.get(source);
 			}
 
 			Drawable drawable = null;
@@ -169,6 +170,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		// inherited from LineBackgroundSpan
+		@Override
 		public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text,
 				int start, int end, int lnum) {
 
@@ -184,10 +186,12 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 
 		// inherited from LeadingMarginSpan
+		@Override
 		public int getLeadingMargin(boolean first) {
 			return 20;
 		}
 
+		@Override
 		public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom, CharSequence text,
 				int start, int end, boolean first, Layout layout) {
 			// do nothing
@@ -200,6 +204,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	private class TagHandler implements Html.TagHandler {
 		private List<Object> _format_stack = new LinkedList<Object>();
 
+		@Override
 		public void handleTag(boolean opening, String tag, Editable output, XMLReader reader) {
 			final int length = output.length();
 
@@ -222,7 +227,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 
 			if (spans.length != 0) {
 				for (int i = spans.length; i > 0; i--) {
-					if (text.getSpanFlags(spans[i - 1]) == Spannable.SPAN_MARK_MARK) {
+					if (text.getSpanFlags(spans[i - 1]) == Spanned.SPAN_MARK_MARK) {
 						return spans[i - 1];
 					}
 				}
@@ -269,6 +274,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 		return mData.size();
 	}
@@ -279,6 +285,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getItem(int)
 	 */
+	@Override
 	public ViewEntry getItem(int position) {
 		return mData.get(position);
 	}
@@ -288,6 +295,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(int position) {
 		return position;
 	}
@@ -297,6 +305,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	 * 
 	 * @see android.widget.ListAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
+	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder;

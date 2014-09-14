@@ -79,6 +79,7 @@ public class HtmlConnector {
 
 		Thread t = new Thread(new Runnable() {
 
+			@Override
 			public void run() {
 				request(_url, httpMethodType, outgoing_is, outgoing_data_length, headers);
 			}
@@ -91,6 +92,7 @@ public class HtmlConnector {
 			final float outgoing_data_length, final Map<String, String> headers) {
 		Thread t = new Thread(new Runnable() {
 
+			@Override
 			public void run() {
 				request(_url, httpMethodType, outgoing_is, outgoing_data_length, headers);
 			}
