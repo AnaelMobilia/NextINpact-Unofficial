@@ -173,7 +173,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	 * Rafraîchir la liste des articles
 	 */
 	private void refreshListeArticles() {
-		Log.e("NXI", "refreshListeArticles");
 		// TODO : vérifier la connexion internet avant de lancer
 
 		// Visuels
