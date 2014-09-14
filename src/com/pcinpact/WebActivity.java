@@ -39,18 +39,17 @@ import android.preference.PreferenceManager;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 public class WebActivity extends SherlockActivity implements IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
-	TextView headerTextView;
 
 	String url;
 	String comms_url;
 	String articleID;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
@@ -60,7 +59,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 
 		setContentView(R.layout.browser);
-		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(false);
@@ -71,7 +69,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		webview.getSettings().setDefaultTextEncodingName("utf-8");
 
-		final Context l_Context = (Context) this;
+		final Context l_Context = this;
 		String data = null;
 
 		FileInputStream l_Stream = null;
@@ -133,6 +131,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		return true;
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case 0:
@@ -160,8 +159,10 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		return super.onOptionsItemSelected(pItem);
 	}
 
+	@Override
 	public void didConnectionResult(final byte[] result, final int state, final String tag) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				didConnectionResultOnUiThread(result, state, tag);
 			}
@@ -178,8 +179,10 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		startActivity(intent);
 	}
 
+	@Override
 	public void didFailWithError(final String error, final int state) {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				safeDidFailWithError(error, state);
 			}
