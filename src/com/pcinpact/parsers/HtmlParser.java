@@ -158,14 +158,6 @@ public class HtmlParser {
 		return comments;
 	}
 
-	public String getStringWithLineBreaks(TagNode node) {
-		String content = htmlSerializer.getAsString(node);
-		content = content.replaceAll("<br />", "____");
-		content = Html.fromHtml(content).toString();
-		content = content.replaceAll("____", System.getProperty("line.separator"));
-
-		return content;
-	}
 
 	/**
 	 * Contenu d'un article
@@ -308,15 +300,36 @@ public class HtmlParser {
 
 			// Gestion des liens relatifs (récap des bons plans)
 			if (laSrc.startsWith("../bonplan/")) {
-				// Les liens "bons plans" ne marchent pas (redirections $$ ?)
-				// iframe.setAttribute("src", NextInpact.NEXT_INPACT_URL + "/" +
-				// laSrc);
+				TagNode monContenu = new TagNode("");
 
 				// Je récupère le <p> parent de l'iframe
 				TagNode parentIframe = iframe.getParent();
 
-				parentIframe.addChild(new ContentNode("<br /><a href=\"" + NextInpact.NEXT_INPACT_URL + "/" + laSrc
-						+ "\">Voir les bons plans dans le navigateur</a>"));
+				// Génériques
+				TagNode unTagNode = new TagNode("");
+				Map<String, String> attributesUnTagNode = new HashMap<String, String>();
+
+				// <br />
+				unTagNode = new TagNode("br");
+				monContenu.addChild(unTagNode);
+				
+				// Le lien vers la page
+				unTagNode = new TagNode("a");
+				attributesUnTagNode = new HashMap<String, String>();
+				// On corrige l'URL pour enlever ".."
+				attributesUnTagNode.put("href", NextInpact.NEXT_INPACT_URL + laSrc.substring(2));
+				unTagNode.setAttributes(attributesUnTagNode);
+
+				// Le texte
+				ContentNode unContentNode = new ContentNode("Voir les bons plans dans le navigateur");
+				unTagNode.addChild(unContentNode);
+
+				// J'attache le <a>
+				monContenu.addChild(unTagNode);
+				
+				// J'affiche le contenu de remplacement
+				parentIframe.addChild(monContenu);
+				// Et enlève le précédent
 				parentIframe.removeChild(iframe);
 			}
 		}
