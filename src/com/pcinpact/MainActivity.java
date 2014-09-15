@@ -55,6 +55,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -123,6 +124,25 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		adapter = new INpactListAdapter(this, null).buildData();
 		monListView.setAdapter(adapter);
 		monListView.setOnItemClickListener(this);
+
+		// On active le SwipeRefreshLayout uniquement si on est en haut de la listview
+		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				int topRowVerticalPosition;
+
+				if (monListView == null || monListView.getChildCount() == 0) {
+					topRowVerticalPosition = 0;
+				} else {
+					topRowVerticalPosition = monListView.getChildAt(0).getTop();
+				}
+				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+			}
+		});
 
 		ArticlesWrapper w = NextInpact.getInstance(this).getArticlesWrapper();
 
