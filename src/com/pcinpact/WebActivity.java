@@ -61,13 +61,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 		setContentView(R.layout.browser);
 
 		webview = (WebView) findViewById(R.id.webview);
-		webview.getSettings().setJavaScriptEnabled(false);
-		webview.setClickable(false);
-		webview.setHorizontalScrollBarEnabled(true);
-		webview.setVerticalScrollBarEnabled(true);
-		webview.getSettings().setSupportZoom(true);
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-		webview.getSettings().setDefaultTextEncodingName("utf-8");
 
 		final Context l_Context = this;
 		String data = null;
