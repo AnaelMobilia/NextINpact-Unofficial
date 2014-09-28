@@ -17,7 +17,8 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
+ */
+-->
 <resources>
 
     <string name="app_name">NextINpact (Unofficial)</string>
@@ -26,6 +27,7 @@
     <string name="comments">Commentaires</string>
     <string name="home">Accueil</string>
     <string name="about">A propos</string>
+
     <!-- Disclaimer -->
     <string name="disclaimerContent">			\nCette application est développée par des lecteurs (passionnés) de Next INpact (INpact Mediagroup).
 			\n
@@ -43,9 +45,10 @@
 			\n
 			\n
 			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
-	<string name="chargementTitre">Chargement...</string>
-	<string name="chargementContenu">Veuillez patienter</string>
-	<string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
+    <string name="chargementTitre">Chargement...</string>
+    <string name="chargementContenu">Veuillez patienter</string>
+    <string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
+
     <!-- A propos -->
     <string name="aboutContent">NextINpact (Unofficial) est une application développée par des lecteurs passionnés de NextINpact !
         \n
@@ -67,12 +70,21 @@
 		\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
 		\n
 		\nL\'application est développée dans le cadre d\'une licence libre GNU GPLv3 : toute personne peut accéder au code source !	</string>
+
     <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
     <string name="buttonOkError">Fermer</string>
     <string name="articleNonSynchroHTML"><html><h1>Article non synchronisé, rechargement...</h1></html></string>
     <string name="articleVideErreurHTML"><html><h1>Cet article présente une erreur, désolé.</h1></html></string>
     <string name="articleErreurHTML"><html><h1>Cet article présente une erreur grave, désolé.</h1></html></string>
+
+    <!-- Liens vers les vidéos -->
+    <string name="videosYouTube">Voir les vidéos sur YouTube</string>
+    <string name="videoYouTube">Voir la vidéo sur YouTube</string>
+    <string name="videoDailymotion">Voir la vidéo sur Dailymotion</string>
+    <string name="videoVimeo">Voir la vidéo sur Vimeo</string>
+    <string name="videoGouvFr">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</string>
+
     <!-- Vue "Options" -->
     <string name="options">Options</string>
     <string name="optionsGenerales">Options de l\'application</string>
@@ -87,6 +99,7 @@
     <string name="telechargerCommentaires">Télécharger</string>
     <string name="telechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
     <string name="optionsFermer">Fermer</string>
+
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
     <string name="idOptionLiensDansArticles">1</string>

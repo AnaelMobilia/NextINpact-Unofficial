@@ -272,25 +272,28 @@ public class HtmlParser {
 						// Playlist de plusieurs vidéos
 						{
 							monContenu = replaceVideosIframe("http://www.youtube.com/playlist?list=" + idVideo,
-									"file:///android_res/drawable/video_youtube.png", "Voir les vidéos sur YouTube");
+									"file:///android_res/drawable/video_youtube.png",
+									contextParent.getString(R.string.videosYouTube));
 						} else
 						// Une seule vidéo
 						{
 							monContenu = replaceVideosIframe("http://www.youtube.com/watch?v=" + idVideo,
-									"file:///android_res/drawable/video_youtube.png", "Voir la vidéo sur YouTube");
+									"file:///android_res/drawable/video_youtube.png",
+									contextParent.getString(R.string.videoYouTube));
 						}
 						break;
 
 					case "dailymotion":
 						// Génération de mon contenu
 						monContenu = replaceVideosIframe("http://www.dailymotion.com/video/" + idVideo,
-								"file:///android_res/drawable/video_dailymotion.png", "Voir la vidéo sur Dailymotion");
+								"file:///android_res/drawable/video_dailymotion.png",
+								contextParent.getString(R.string.videoDailymotion));
 						break;
 
 					case "vimeo":
 						// Génération de mon contenu
 						monContenu = replaceVideosIframe("http://www.vimeo.com/" + idVideo,
-								"file:///android_res/drawable/video_vimeo.png", "Voir la vidéo sur Vimeo");
+								"file:///android_res/drawable/video_vimeo.png", contextParent.getString(R.string.videoVimeo));
 						break;
 
 					case "videosGouvFr":
@@ -298,7 +301,7 @@ public class HtmlParser {
 						// Génération de mon contenu
 						monContenu = replaceVideosIframe("http://static.videos.gouv.fr/player/video/" + idVideo,
 								"file:///android_res/drawable/video_videos_gouv_fr.png",
-								"Voir la vidéo sur la Plateforme Vidéo Gouvernementale");
+								contextParent.getString(R.string.videoGouvFr));
 						break;
 				}
 
