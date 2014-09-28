@@ -158,7 +158,6 @@ public class HtmlParser {
 		return comments;
 	}
 
-
 	/**
 	 * Contenu d'un article
 	 * 
@@ -242,15 +241,25 @@ public class HtmlParser {
 
 				// je récupère l'id de la vidéo
 				String idVideo = "";
-				// URL avec des paramètres
-				// (//www.youtube.com/embed/AEl_myyA21w?rel=0)
-				if (laSrc.contains("?")) {
-					// Je ne prends pas les paramètres (partie ?xxxx=nnn)
-					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.lastIndexOf("?"));
-				}
-				// URL sans paramètres
-				else {
-					idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.length());
+
+				if (laSrc.startsWith("//www.youtube.com/embed/videoseries?"))
+				// Playlist Youtube de plusieurs vidéos
+				{
+					// www.youtube.com/embed/videoseries?list=PLvs5oKzmvTtVbWSC13dSnim9UfRnMTMob
+					idVideo = laSrc.substring(laSrc.lastIndexOf("list=") + 5, laSrc.length());
+				} else
+				// Cas pour tous les players & youtube une seule vidéo
+				{
+					// URL avec des paramètres
+					// (//www.youtube.com/embed/AEl_myyA21w?rel=0)
+					if (laSrc.contains("?")) {
+						// Je ne prends pas les paramètres (partie ?xxxx=nnn)
+						idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.lastIndexOf("?"));
+					}
+					// URL sans paramètres
+					else {
+						idVideo = laSrc.substring(laSrc.lastIndexOf("/") + 1, laSrc.length());
+					}
 				}
 
 				// Je crée l'élément de texte correspondant au site
@@ -259,8 +268,17 @@ public class HtmlParser {
 					case "youtubeNoCookie":
 					case "youtube":
 						// Génération de mon contenu
-						monContenu = replaceVideosIframe("http://www.youtube.com/watch?v=" + idVideo,
-								"file:///android_res/drawable/video_youtube.png", "Voir la vidéo sur YouTube");
+						if (laSrc.startsWith("//www.youtube.com/embed/videoseries?"))
+						// Playlist de plusieurs vidéos
+						{
+							monContenu = replaceVideosIframe("http://www.youtube.com/playlist?list=" + idVideo,
+									"file:///android_res/drawable/video_youtube.png", "Voir les vidéos sur YouTube");
+						} else
+						// Une seule vidéo
+						{
+							monContenu = replaceVideosIframe("http://www.youtube.com/watch?v=" + idVideo,
+									"file:///android_res/drawable/video_youtube.png", "Voir la vidéo sur YouTube");
+						}
 						break;
 
 					case "dailymotion":
@@ -312,7 +330,7 @@ public class HtmlParser {
 				// <br />
 				unTagNode = new TagNode("br");
 				monContenu.addChild(unTagNode);
-				
+
 				// Le lien vers la page
 				unTagNode = new TagNode("a");
 				attributesUnTagNode = new HashMap<String, String>();
@@ -326,7 +344,7 @@ public class HtmlParser {
 
 				// J'attache le <a>
 				monContenu.addChild(unTagNode);
-				
+
 				// J'affiche le contenu de remplacement
 				parentIframe.addChild(monContenu);
 				// Et enlève le précédent
