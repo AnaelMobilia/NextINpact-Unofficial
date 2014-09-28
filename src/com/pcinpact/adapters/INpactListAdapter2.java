@@ -18,29 +18,34 @@
  */
 package com.pcinpact.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Hashtable;
+import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.io.BufferedInputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.pcinpact.R;
-import com.pcinpact.models.INPactComment;
+import org.xml.sax.XMLReader;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
-import android.text.Editable;
 import android.text.SpannedString;
-import android.text.style.StyleSpan;
+import android.text.method.LinkMovementMethod;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.LineBackgroundSpan;
-import android.text.method.LinkMovementMethod;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,14 +53,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Canvas;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.BitmapDrawable;
 
-import org.xml.sax.XMLReader;
+import com.pcinpact.R;
+import com.pcinpact.models.INPactComment;
 
 public class INpactListAdapter2 extends BaseAdapter {
 

@@ -19,27 +19,13 @@
 package com.pcinpact;
 
 import java.io.ByteArrayInputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
-import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.pcinpact.R;
-import com.pcinpact.adapters.INpactListAdapter;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.managers.CommentManager;
-import com.pcinpact.models.ArticlesWrapper;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -53,8 +39,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -62,7 +52,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends SherlockActivity implements IConnectable, OnItemClickListener {
+import com.pcinpact.adapters.INpactListAdapter;
+import com.pcinpact.connection.HtmlConnector;
+import com.pcinpact.connection.IConnectable;
+import com.pcinpact.managers.ArticleManager;
+import com.pcinpact.managers.CommentManager;
+import com.pcinpact.models.ArticlesWrapper;
+import com.pcinpact.models.INpactArticleDescription;
+import com.pcinpact.parsers.HtmlParser;
+
+public class MainActivity extends ActionBarActivity implements IConnectable, OnItemClickListener {
 
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;

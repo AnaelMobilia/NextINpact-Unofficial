@@ -20,23 +20,22 @@ package com.pcinpact;
 
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.pcinpact.R;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
+
 import com.pcinpact.adapters.INpactListAdapter2;
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
 import com.pcinpact.managers.CommentManager;
 import com.pcinpact.models.INPactComment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
-
-public class CommentActivity extends SherlockActivity implements IConnectable, OnScrollListener {
+public class CommentActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
 	int page = 1;
 	boolean moreCommentsAvailabe = true;
 	boolean loadingMoreComments = false;

@@ -31,10 +31,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.pcinpact.R;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
+
+import com.pcinpact.R;
 
 public class HtmlConnector {
 

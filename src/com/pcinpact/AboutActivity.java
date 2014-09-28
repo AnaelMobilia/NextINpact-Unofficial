@@ -18,9 +18,8 @@
  */
 package com.pcinpact;
 
-import android.app.Activity;
 import android.os.Bundle;
-import com.pcinpact.R;
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * A propos...
@@ -28,7 +27,7 @@ import com.pcinpact.R;
  * @author Anael
  * 
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

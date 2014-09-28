@@ -25,8 +25,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.pcinpact.R;
-
 /**
  * Options de l'application
  * 
