@@ -27,7 +27,7 @@
     <string name="home">Accueil</string>
     <string name="about">A propos</string>
     <!-- Disclaimer -->
-    <string name="disclaimerContent">			\nCette application n\'est pas développée par Next INpact (INpact Mediagroup) mais par des lecteurs (passionnés) !
+    <string name="disclaimerContent">			\nCette application est développée par des lecteurs (passionnés) de Next INpact (INpact Mediagroup).
 			\n
         	L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
 			\n
@@ -47,7 +47,7 @@
 	<string name="chargementContenu">Veuillez patienter</string>
 	<string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
     <!-- A propos -->
-    <string name="aboutContent">NextINpact (Unofficial) est une application développée uniquement par des lecteurs passionnés de NextINpact !
+    <string name="aboutContent">NextINpact (Unofficial) est une application développée par des lecteurs passionnés de NextINpact !
         \n
         \n
         \nSi vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
