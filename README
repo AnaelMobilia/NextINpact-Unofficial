@@ -7,4 +7,4 @@ HtmlCleaner
 SherlockBarLibrary
 	v4.2.0
 	http://actionbarsherlock.com/
-	Mise en page de ... ? (permet une unification de code pour les plateformes Android 3.*)
+	Barre d'action en haut de l'application (gère les plateformes 2.* -> 4)
