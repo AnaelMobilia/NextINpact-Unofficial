@@ -74,8 +74,7 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Used to put dark icons on light action bar
 
-		menu.add(0, 0, 0, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, 0, 0, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home);
 
 		// Menu des paramètres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);

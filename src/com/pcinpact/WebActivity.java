@@ -112,14 +112,12 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		menu.add(0, 0, 0, getResources().getString(R.string.comments)).setIcon(R.drawable.ic_menu_comment)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, 0, 0, getResources().getString(R.string.comments)).setIcon(R.drawable.ic_menu_comment);
 
 		// Menu des paramètres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);
 
-		menu.add(0, 2, 1, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, 2, 1, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home);
 
 		return true;
 	}

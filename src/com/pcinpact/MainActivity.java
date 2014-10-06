@@ -270,8 +270,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		m_menu = menu;
 		// Ecran principal : bouton en haut à droite de rafraichissement des news
 		// Ou dans le menu d'options de l'application
-		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh);
 
 		// Menu des paramètres (ID = 1)
 		menu.add(0, 1, 0, R.string.options);
