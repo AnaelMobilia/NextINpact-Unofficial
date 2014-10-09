@@ -51,7 +51,6 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		url = getIntent().getExtras().getString("URL");

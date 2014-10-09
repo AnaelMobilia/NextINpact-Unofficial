@@ -47,7 +47,6 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment_main);
 

@@ -32,7 +32,6 @@ public class AboutActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.a_propos);

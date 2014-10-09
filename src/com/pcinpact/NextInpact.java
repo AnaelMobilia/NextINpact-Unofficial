@@ -24,7 +24,6 @@ import com.pcinpact.managers.ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
-	public static int THEME = R.style.NextInpactTheme;
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 
 	static private NextInpact instance;
