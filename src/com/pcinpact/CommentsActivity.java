@@ -37,7 +37,7 @@ import com.pcinpact.connection.IConnectable;
 import com.pcinpact.managers.CommentManager;
 import com.pcinpact.models.INPactComment;
 
-public class CommentActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
+public class CommentsActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
 	int page = 1;
 	boolean moreCommentsAvailabe = true;
 	boolean loadingMoreComments = false;
@@ -49,7 +49,7 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.comment_main);
+		setContentView(R.layout.comments_main);
 
 		final String url = getIntent().getExtras().getString("URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");

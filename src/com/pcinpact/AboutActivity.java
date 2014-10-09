@@ -37,7 +37,7 @@ public class AboutActivity extends ActionBarActivity {
 		// Je lance l'activité
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.a_propos);
+		setContentView(R.layout.about);
 	}
 	
 	@Override

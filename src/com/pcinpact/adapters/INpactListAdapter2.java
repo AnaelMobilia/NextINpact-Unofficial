@@ -310,7 +310,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		ViewHolder holder;
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.comment, null);
+			convertView = mInflater.inflate(R.layout.comments, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		} else

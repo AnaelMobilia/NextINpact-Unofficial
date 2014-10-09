@@ -41,7 +41,7 @@ import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
 
-public class WebActivity extends ActionBarActivity implements IConnectable {
+public class ArticleActivity extends ActionBarActivity implements IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
@@ -58,7 +58,7 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 		comms_url = getIntent().getExtras().getString("EXTRA_URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 
-		setContentView(R.layout.browser);
+		setContentView(R.layout.article);
 
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
@@ -123,7 +123,7 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 		switch (pItem.getItemId()) {
 			case R.id.action_comments:
 				if (comms_url != null) {
-					Intent intentWeb = new Intent(WebActivity.this, CommentActivity.class);
+					Intent intentWeb = new Intent(ArticleActivity.this, CommentsActivity.class);
 					intentWeb.putExtra("URL", comms_url);
 					intentWeb.putExtra("ARTICLE_ID", articleID);
 					startActivity(intentWeb);

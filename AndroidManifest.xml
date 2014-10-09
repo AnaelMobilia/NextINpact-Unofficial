@@ -60,11 +60,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WebActivity"
+            android:name=".ArticleActivity"
             android:screenOrientation="sensor"
             android:theme="@style/NextInpactTheme" />
         <activity
-            android:name=".CommentActivity"
+            android:name=".CommentsActivity"
             android:screenOrientation="sensor"
             android:theme="@style/NextInpactTheme" />
         <activity

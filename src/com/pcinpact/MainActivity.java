@@ -529,7 +529,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		if (article == null)
 			return;
 
-		Intent intentWeb = new Intent(this, WebActivity.class);
+		Intent intentWeb = new Intent(this, ArticleActivity.class);
 		intentWeb.putExtra("URL", article.getID() + ".html");
 		intentWeb.putExtra("EXTRA_URL", article.getID() + "_comms.html");
 		intentWeb.putExtra("ARTICLE_ID", article.getID());

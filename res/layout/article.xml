@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014 Sami Ferhah
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,81 +19,15 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/TextViewDay"
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#E0E0E0"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#F06D2F" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutForArticle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="9dip"
-        android:paddingRight="5dip" >
-
-        <RelativeLayout
-            android:id="@+id/RelativeLayout01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/logo_nextinpact" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingBottom="7dip"
-            android:paddingTop="5dip" >
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/TextViewSubTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#566189" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/TextViewCommentsCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:drawableRight="@drawable/small_comms"
-                android:paddingRight="5dip"
-                android:textSize="10sp" />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="fill_parent" />
 
 </LinearLayout>
