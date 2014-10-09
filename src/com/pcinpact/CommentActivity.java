@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
@@ -149,6 +150,12 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 		loadingMoreComments = false;
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
+		
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 	@Override

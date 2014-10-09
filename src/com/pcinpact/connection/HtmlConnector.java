@@ -203,7 +203,7 @@ public class HtmlConnector {
 
 		if (responseCode != HTTP_OK && running) {
 			if (running)
-				Delegate.didFailWithError("HTTP NOT OK", state);
+				Delegate.didFailWithError("HTTP NOT OK : " + String.valueOf(responseCode), state);
 
 			return;
 		} else {

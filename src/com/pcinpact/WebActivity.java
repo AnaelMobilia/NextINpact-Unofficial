@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
@@ -183,6 +184,12 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 	protected void safeDidFailWithError(String error, int state) {
 		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 }
