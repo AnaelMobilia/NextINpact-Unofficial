@@ -42,6 +42,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -240,12 +241,12 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
-			case 0:
+			case R.id.action_refresh:
 				refreshListeArticles();
 				return true;
 
 				// Menu Options
-			case 1:
+			case R.id.action_settings:
 				// Je lance l'activité options
 				Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 				startActivity(intentOptions);
@@ -253,7 +254,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				return true;
 
 				// A propos
-			case 2:
+			case R.id.action_about:
 				Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
 				startActivity(intentAbout);
 
@@ -265,19 +266,10 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		m_menu = menu;
-		// Ecran principal : bouton en haut à droite de rafraichissement des news
-		// Ou dans le menu d'options de l'application
-		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		// A propos (ID = 2)
-		menu.add(0, 2, 0, R.string.about);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	void loadArticles() {
@@ -508,11 +500,11 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		} else if (state == DL_COMMS) {
 
 		}
-		
+
 		// Affichage utilisateur du message d'erreur
 		CharSequence text = "Message d'erreur détaillé : " + error;
 		int duration = Toast.LENGTH_LONG;
-		
+
 		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
 		toast.show();
 	}

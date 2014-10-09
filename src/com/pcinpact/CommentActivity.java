@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.Toast;
@@ -72,33 +73,21 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Used to put dark icons on light action bar
-
-		menu.add(0, 0, 0, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-			case 0:
+			case R.id.action_home:
 
 				finish();
 				Intent i = new Intent(this, MainActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				this.startActivity(i);
-				return true;
-
-				// Menu Options
-			case 1:
-				// Je lance l'activité options
-				Intent intent = new Intent(CommentActivity.this, OptionsActivity.class);
-				startActivity(intent);
-
 				return true;
 		}
 

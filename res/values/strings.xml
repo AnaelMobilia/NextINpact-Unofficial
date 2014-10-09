@@ -20,13 +20,17 @@
  */
 -->
 <resources>
-
+	<!-- Action Bar -->
+    <string name="action_refresh">Rafraîchir</string>
+    <string name="action_overflow">Plus...</string>
+    <string name="action_settings">Options</string>
+    <string name="action_about">A propos</string>
+    <string name="action_comments">Commentaires</string>    
+	<string name="action_home">Accueil</string>
+    
+    <!-- Ecran d'accueil -->
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">Dernière mise à jour : </string>
-    <string name="refresh">Rafraîchir</string>
-    <string name="comments">Commentaires</string>
-    <string name="home">Accueil</string>
-    <string name="about">A propos</string>
 
     <!-- Disclaimer -->
     <string name="disclaimerContent">			\nCette application est développée par des lecteurs (passionnés) de Next INpact (INpact Mediagroup).
@@ -86,7 +90,6 @@
     <string name="videoGouvFr">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</string>
 
     <!-- Vue "Options" -->
-    <string name="options">Options</string>
     <string name="optionsGenerales">Options de l\'application</string>
     <string name="tailleTexte">Taille des textes</string>
     <string name="tailleTexteDetail">Modifier la taille des textes de l\'application</string>

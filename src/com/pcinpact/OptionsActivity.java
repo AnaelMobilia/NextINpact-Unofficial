@@ -20,6 +20,8 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -56,5 +58,13 @@ public class OptionsActivity extends PreferenceActivity {
 
 		ListView v = getListView();
 		v.addFooterView(monBouton);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 }

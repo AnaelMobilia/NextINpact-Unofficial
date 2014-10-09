@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -111,21 +112,16 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		menu.add(0, 0, 0, getResources().getString(R.string.comments)).setIcon(R.drawable.ic_menu_comment);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		menu.add(0, 2, 1, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.web_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-			case 0:
+			case R.id.action_comments:
 				if (comms_url != null) {
 					Intent intentWeb = new Intent(WebActivity.this, CommentActivity.class);
 					intentWeb.putExtra("URL", comms_url);
@@ -134,15 +130,7 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 				}
 				return true;
 
-				// Menu Options
-			case 1:
-				// Je lance l'activité options
-				Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
-				startActivity(intent);
-
-				return true;
-
-			case 2:
+			case R.id.action_home:
 				finish();
 				return true;
 		}

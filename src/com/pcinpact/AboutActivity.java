@@ -20,6 +20,9 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 /**
  * A propos...
@@ -36,5 +39,25 @@ public class AboutActivity extends ActionBarActivity {
 
 		setContentView(R.layout.a_propos);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
+	
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem pItem) {
+		switch (pItem.getItemId()) {
+			// Retour
+			case R.id.action_home:
+
+				finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(pItem);
+	}
 }
