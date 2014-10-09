@@ -32,16 +32,16 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
-import com.pcinpact.R;
-import com.pcinpact.NextInpact;
-import com.pcinpact.models.INPactComment;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Html;
+
+import com.pcinpact.NextInpact;
+import com.pcinpact.R;
+import com.pcinpact.models.INPactComment;
+import com.pcinpact.models.INpactArticle;
+import com.pcinpact.models.INpactArticleDescription;
 
 public class HtmlParser {
 	TagNode rootNode;

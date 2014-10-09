@@ -26,8 +26,8 @@ import java.io.ObjectOutputStream;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 
 import com.pcinpact.models.ArticlesWrapper;
 

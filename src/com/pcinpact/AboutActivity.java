@@ -18,9 +18,11 @@
  */
 package com.pcinpact;
 
-import android.app.Activity;
 import android.os.Bundle;
-import com.pcinpact.R;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 /**
  * A propos...
@@ -28,15 +30,34 @@ import com.pcinpact.R;
  * @author Anael
  * 
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.a_propos);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
+	
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem pItem) {
+		switch (pItem.getItemId()) {
+			// Retour
+			case R.id.action_home:
+
+				finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(pItem);
+	}
 }

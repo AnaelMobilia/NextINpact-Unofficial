@@ -22,9 +22,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pcinpact.R;
-import com.pcinpact.models.INpactArticleDescription;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -40,6 +37,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.pcinpact.R;
+import com.pcinpact.models.INpactArticleDescription;
 
 public class INpactListAdapter extends BaseAdapter {
 

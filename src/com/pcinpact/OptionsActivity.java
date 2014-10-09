@@ -20,12 +20,12 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-
-import com.pcinpact.R;
 
 /**
  * Options de l'application
@@ -38,7 +38,6 @@ public class OptionsActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		// TODO : 2014-07-21 - Anael - PreferenceActivity est partiellement
@@ -59,5 +58,13 @@ public class OptionsActivity extends PreferenceActivity {
 
 		ListView v = getListView();
 		v.addFooterView(monBouton);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 }

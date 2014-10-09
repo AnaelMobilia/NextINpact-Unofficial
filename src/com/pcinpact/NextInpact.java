@@ -20,14 +20,10 @@ package com.pcinpact;
 
 import android.content.Context;
 
-import com.pcinpact.R;
 import com.pcinpact.managers.ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
-	public static int THEME = R.style.MyTheme;
-	// public static int THEME =R.style.Theme_Sherlock_Light;
-	// public static int THEME =R.style.Theme_Sherlock_Light_DarkActionBar;
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 
 	static private NextInpact instance;

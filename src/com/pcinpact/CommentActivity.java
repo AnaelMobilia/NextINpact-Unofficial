@@ -20,23 +20,24 @@ package com.pcinpact;
 
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.pcinpact.R;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.Toast;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
+
 import com.pcinpact.adapters.INpactListAdapter2;
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
 import com.pcinpact.managers.CommentManager;
 import com.pcinpact.models.INPactComment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
-
-public class CommentActivity extends SherlockActivity implements IConnectable, OnScrollListener {
+public class CommentActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
 	int page = 1;
 	boolean moreCommentsAvailabe = true;
 	boolean loadingMoreComments = false;
@@ -47,7 +48,6 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment_main);
 
@@ -73,34 +73,21 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Used to put dark icons on light action bar
-
-		menu.add(0, 0, 0, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-			case 0:
+			case R.id.action_home:
 
 				finish();
 				Intent i = new Intent(this, MainActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				this.startActivity(i);
-				return true;
-
-				// Menu Options
-			case 1:
-				// Je lance l'activité options
-				Intent intent = new Intent(CommentActivity.this, OptionsActivity.class);
-				startActivity(intent);
-
 				return true;
 		}
 
@@ -151,6 +138,13 @@ public class CommentActivity extends SherlockActivity implements IConnectable, O
 		loadingMoreComments = false;
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
+		
+		// Affichage utilisateur du message d'erreur
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 	@Override

@@ -19,27 +19,13 @@
 package com.pcinpact;
 
 import java.io.ByteArrayInputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
-import java.text.DateFormat;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.pcinpact.R;
-import com.pcinpact.adapters.INpactListAdapter;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.managers.CommentManager;
-import com.pcinpact.models.ArticlesWrapper;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -53,8 +39,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -62,7 +53,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends SherlockActivity implements IConnectable, OnItemClickListener {
+import com.pcinpact.adapters.INpactListAdapter;
+import com.pcinpact.connection.HtmlConnector;
+import com.pcinpact.connection.IConnectable;
+import com.pcinpact.managers.ArticleManager;
+import com.pcinpact.managers.CommentManager;
+import com.pcinpact.models.ArticlesWrapper;
+import com.pcinpact.models.INpactArticleDescription;
+import com.pcinpact.parsers.HtmlParser;
+
+public class MainActivity extends ActionBarActivity implements IConnectable, OnItemClickListener {
 
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
@@ -99,7 +99,6 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -242,12 +241,12 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
-			case 0:
+			case R.id.action_refresh:
 				refreshListeArticles();
 				return true;
 
 				// Menu Options
-			case 1:
+			case R.id.action_settings:
 				// Je lance l'activité options
 				Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 				startActivity(intentOptions);
@@ -255,7 +254,7 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 				return true;
 
 				// A propos
-			case 2:
+			case R.id.action_about:
 				Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
 				startActivity(intentAbout);
 
@@ -267,20 +266,10 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		m_menu = menu;
-		// Ecran principal : bouton en haut à droite de rafraichissement des news
-		// Ou dans le menu d'options de l'application
-		menu.add(0, 0, 0, getResources().getString(R.string.refresh)).setIcon(R.drawable.ic_refresh)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		// A propos (ID = 2)
-		menu.add(0, 2, 0, R.string.about);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	void loadArticles() {
@@ -511,6 +500,13 @@ public class MainActivity extends SherlockActivity implements IConnectable, OnIt
 		} else if (state == DL_COMMS) {
 
 		}
+
+		// Affichage utilisateur du message d'erreur
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 	public void showErrorDialog(final String error) {

@@ -31,10 +31,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.pcinpact.R;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
+
+import com.pcinpact.R;
 
 public class HtmlConnector {
 
@@ -203,7 +203,7 @@ public class HtmlConnector {
 
 		if (responseCode != HTTP_OK && running) {
 			if (running)
-				Delegate.didFailWithError("HTTP NOT OK", state);
+				Delegate.didFailWithError("HTTP NOT OK : " + String.valueOf(responseCode), state);
 
 			return;
 		} else {

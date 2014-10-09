@@ -20,10 +20,20 @@ package com.pcinpact;
 
 import java.io.FileInputStream;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.pcinpact.R;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebView;
+import android.widget.Toast;
+
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
 import com.pcinpact.managers.ArticleManager;
@@ -31,16 +41,7 @@ import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-
-public class WebActivity extends SherlockActivity implements IConnectable {
+public class WebActivity extends ActionBarActivity implements IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
@@ -51,7 +52,6 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(NextInpact.THEME);
 		super.onCreate(savedInstanceState);
 
 		url = getIntent().getExtras().getString("URL");
@@ -112,23 +112,16 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		menu.add(0, 0, 0, getResources().getString(R.string.comments)).setIcon(R.drawable.ic_menu_comment)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		// Menu des paramètres (ID = 1)
-		menu.add(0, 1, 0, R.string.options);
-
-		menu.add(0, 2, 1, getResources().getString(R.string.home)).setIcon(R.drawable.ic_menu_home)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		return true;
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.web_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-			case 0:
+			case R.id.action_comments:
 				if (comms_url != null) {
 					Intent intentWeb = new Intent(WebActivity.this, CommentActivity.class);
 					intentWeb.putExtra("URL", comms_url);
@@ -137,15 +130,7 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 				}
 				return true;
 
-				// Menu Options
-			case 1:
-				// Je lance l'activité options
-				Intent intent = new Intent(WebActivity.this, OptionsActivity.class);
-				startActivity(intent);
-
-				return true;
-
-			case 2:
+			case R.id.action_home:
 				finish();
 				return true;
 		}
@@ -186,6 +171,13 @@ public class WebActivity extends SherlockActivity implements IConnectable {
 	protected void safeDidFailWithError(String error, int state) {
 		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+
+		// Affichage utilisateur du message d'erreur
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 }

@@ -1,7 +1,2 @@
-
 gen/*
 bin/*
-deps/*
-build.xml
-local.properties
-proguard-project.txt
