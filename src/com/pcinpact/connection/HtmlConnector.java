@@ -20,14 +20,12 @@ package com.pcinpact.connection;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -111,133 +109,80 @@ public class HtmlConnector {
 			Delegate.didFailWithError(context.getString(R.string.chargementPasInternet), state);
 			return;
 		}
-
-		URL url = null;
-
-		ByteArrayOutputStream outputStream = null;
 		this.running = true;
 
 		try {
-			url = new URL(_url);
-		} catch (MalformedURLException e) {
-			Delegate.didFailWithError(e.getMessage(), state);
-			return;
-		}
+			// Je gère les problèmes d'encodage pouvant survenir dans le nom des fichiers demandés (ticket #50)
+			String URLarticle = _url.substring(_url.lastIndexOf("/") + 1, _url.length());
+			String URLreste = _url.substring(0, _url.lastIndexOf("/") + 1);
+			
+			String monURL = URLreste + URLEncoder.encode(URLarticle, "UTF-8");
+			
+			URL url = new URL(monURL);
+			
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestProperty("content-type", "UTF-8");
+			
+			if (httpMethodType.equals("POST"))
+				connection.setDoOutput(true);
 
-		HttpURLConnection connection = null;
-		try {
-			connection = (HttpURLConnection) url.openConnection();
-
-		} catch (IOException e) {
-			Delegate.didFailWithError(e.getMessage(), state);
-			return;
-		}
-
-		if (httpMethodType.equals("POST"))
-			connection.setDoOutput(true);
-
-		try {
 			connection.setRequestMethod(httpMethodType);
 
-		} catch (ProtocolException e) {
-			Delegate.didFailWithError(e.getMessage(), state);
-			return;
-		}
+			if (headers != null)
+				for (Entry<String, String> entry : headers.entrySet()) {
+					String key = entry.getKey();
+					String value = entry.getValue();
 
-		if (headers != null)
-			for (Entry<String, String> entry : headers.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
+					connection.setRequestProperty(key, value);
+				}
 
-				connection.setRequestProperty(key, value);
-			}
+			if (httpMethodType.equals("POST")) {
+				OutputStream writer = connection.getOutputStream();
 
-		if (httpMethodType.equals("POST")) {
-			OutputStream writer = null;
-			try {
-				writer = connection.getOutputStream();
-			} catch (IOException e) {
-				Delegate.didFailWithError(e.getMessage(), state);
-				return;
-
-			}
-
-			byte[] output_buffer = new byte[128];
-			int readBytesCount;
-			try {
+				byte[] output_buffer = new byte[128];
+				int readBytesCount;
 
 				while (((readBytesCount = outgoing_is.read(output_buffer, 0, output_buffer.length)) > 0) && running) {
 					writer.write(output_buffer, 0, readBytesCount);
 				}
 
-			} catch (IOException e) {
-				Delegate.didFailWithError(e.getMessage(), state);
-				return;
-			}
-
-			if (outgoing_is != null) {
-				try {
+				if (outgoing_is != null) {
 					outgoing_is.close();
-				} catch (IOException e) {
-					Delegate.didFailWithError(e.getMessage(), state);
-					return;
 				}
 			}
-		}
 
-		try {
 			connection.connect();
-		} catch (IOException e) {
-			Delegate.didFailWithError(e.getMessage(), state);
-			return;
-		}
 
-		int responseCode = 0;
+			int responseCode = 0;
 
-		try {
 			responseCode = connection.getResponseCode();
-		} catch (IOException e) {
-			Delegate.didFailWithError(e.getMessage(), state);
-			return;
-		}
 
-		if (responseCode != HTTP_OK && running) {
-			if (running)
-				Delegate.didFailWithError("HTTP NOT OK : " + String.valueOf(responseCode), state);
+			if (responseCode != HTTP_OK && running) {
+				if (running)
+					Delegate.didFailWithError("HTTP NOT OK : " + String.valueOf(responseCode), state);
 
-			return;
-		} else {
-			InputStream incoming_is = null;
-			try {
-				incoming_is = connection.getInputStream();
-			} catch (IOException e) {
-				Delegate.didFailWithError(e.getMessage(), state);
 				return;
-			}
+			} else {
+				InputStream incoming_is = null;
+				incoming_is = connection.getInputStream();
 
-			outputStream = new ByteArrayOutputStream();
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-			byte[] buffer = new byte[128];
-			int read = 0;
+				byte[] buffer = new byte[128];
+				int read = 0;
 
-			try {
 				while (((read = incoming_is.read(buffer, 0, 128)) > 0) && running) {
 					outputStream.write(buffer, 0, read);
 				}
-			} catch (IOException e) {
-				Delegate.didFailWithError(e.getMessage(), state);
-				return;
-			}
 
-			try {
 				incoming_is.close();
-			} catch (IOException e) {
-				Delegate.didFailWithError(e.getMessage(), state);
-				return;
-			}
 
-			if (running)
-				Delegate.didConnectionResult(outputStream.toByteArray(), state, tag);
+				if (running)
+					Delegate.didConnectionResult(outputStream.toByteArray(), state, tag);
+			}
+		} catch (Exception e) {
+			Delegate.didFailWithError(e.getMessage(), state);
+			return;
 		}
 
 	}
