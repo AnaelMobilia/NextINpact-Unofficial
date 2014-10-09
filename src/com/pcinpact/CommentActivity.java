@@ -151,6 +151,7 @@ public class CommentActivity extends ActionBarActivity implements IConnectable, 
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
 		
+		// Affichage utilisateur du message d'erreur
 		CharSequence text = "Message d'erreur détaillé : " + error;
 		int duration = Toast.LENGTH_LONG;
 		

@@ -185,6 +185,7 @@ public class WebActivity extends ActionBarActivity implements IConnectable {
 		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
+		// Affichage utilisateur du message d'erreur
 		CharSequence text = "Message d'erreur détaillé : " + error;
 		int duration = Toast.LENGTH_LONG;
 		

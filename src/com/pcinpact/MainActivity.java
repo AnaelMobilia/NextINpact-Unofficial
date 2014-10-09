@@ -509,6 +509,13 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		} else if (state == DL_COMMS) {
 
 		}
+		
+		// Affichage utilisateur du message d'erreur
+		CharSequence text = "Message d'erreur détaillé : " + error;
+		int duration = Toast.LENGTH_LONG;
+		
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
 	}
 
 	public void showErrorDialog(final String error) {
