@@ -21,7 +21,9 @@ package com.pcinpact;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -139,12 +141,21 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
 		
-		// Affichage utilisateur du message d'erreur
-		CharSequence text = "Message d'erreur détaillé : " + error;
-		int duration = Toast.LENGTH_LONG;
-		
-		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-		toast.show();
+		// Message d'erreur, si demandé !
+		// Chargement des préférences de l'utilisateur
+		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		// Est-ce la premiere utilisation de l'application ?
+		Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug), getResources()
+				.getBoolean(R.bool.defautOptionDebug));
+
+		if (debug) {
+			// Affichage utilisateur du message d'erreur
+			CharSequence text = "Message d'erreur détaillé : " + error;
+			int duration = Toast.LENGTH_LONG;
+
+			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+			toast.show();
+		}
 	}
 
 	@Override

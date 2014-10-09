@@ -172,12 +172,21 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 		String data = getString(R.string.articleErreurHTML);
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
-		// Affichage utilisateur du message d'erreur
-		CharSequence text = "Message d'erreur détaillé : " + error;
-		int duration = Toast.LENGTH_LONG;
-		
-		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-		toast.show();
+		// Message d'erreur, si demandé !
+		// Chargement des préférences de l'utilisateur
+		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		// Est-ce la premiere utilisation de l'application ?
+		Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug), getResources()
+				.getBoolean(R.bool.defautOptionDebug));
+
+		if (debug) {
+			// Affichage utilisateur du message d'erreur
+			CharSequence text = "Message d'erreur détaillé : " + error;
+			int duration = Toast.LENGTH_LONG;
+
+			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+			toast.show();
+		}
 	}
 
 }

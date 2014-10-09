@@ -101,8 +101,11 @@
     <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
     <string name="telechargerCommentaires">Télécharger</string>
     <string name="telechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
+    <string name="optionsDeveloppement">Paramètres spéciaux</string>
+    <string name="debug">Activer le débuggage</string>
+    <string name="debugDetail">Affiche les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
     <string name="optionsFermer">Fermer</string>
-
+    
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
     <string name="idOptionLiensDansArticles">1</string>
@@ -110,5 +113,6 @@
     <string name="idOptionZoomTexte">3</string>
     <string name="idOptionTelechargerCommentaires">4</string>
     <string name="idOptionPremierLancementApplication">5</string>
+    <string name="idOptionDebug">6</string>
 
 </resources>
