@@ -3,8 +3,3 @@ HtmlCleaner
 	v2.9
 	http://htmlcleaner.sourceforge.net
 	Nettoie et corrige le code HTML source
-
-SherlockBarLibrary
-	v4.2.0
-	http://actionbarsherlock.com/
-	Barre d'action en haut de l'application (gère les plateformes 2.* -> 4)
