@@ -1,2 +1,3 @@
 gen/*
 bin/*
+deps/android-support-v7-appcompat/gen/*
