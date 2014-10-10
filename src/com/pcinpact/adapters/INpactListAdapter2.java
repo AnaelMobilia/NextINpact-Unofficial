@@ -81,7 +81,6 @@ public class INpactListAdapter2 extends BaseAdapter {
 			try {
 				return Html.fromHtml(content, imageGetter, null);
 			} catch (Exception e) {
-				android.util.Log.e("NXI", "", e);
 				return new SpannedString("* ERREUR *");
 			}
 		}
