@@ -216,7 +216,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 			// On efface le bouton rafraîchir du header
 			if (m_menu != null)
-				m_menu.findItem(0).setVisible(false);
+				m_menu.findItem(R.id.action_refresh).setVisible(false);
 			// On fait tourner le bouton en cercle dans le header
 			setSupportProgressBarIndeterminateVisibility(true);
 
@@ -267,6 +267,9 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je garde le menu pour pouvoir l'animer après
+		m_menu = menu;
+		
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
@@ -427,7 +430,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 		// Affiche à nouveau l'icône dans le header
 		if (m_menu != null)
-			m_menu.findItem(0).setVisible(true);
+			m_menu.findItem(R.id.action_refresh).setVisible(true);
 
 		// Cache le message de chargement
 		if (progressDialog != null) {
