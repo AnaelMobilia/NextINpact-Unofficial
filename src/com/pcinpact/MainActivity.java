@@ -81,9 +81,9 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	AtomicInteger numberOfPendingImages = new AtomicInteger();
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-			case KeyEvent.KEYCODE_BACK: {
+			case KeyEvent.KEYCODE_BACK:
 
 				if (progressDialog != null) {
 					progressDialog.dismiss();
@@ -91,10 +91,13 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				}
 				finish();
 				return true;
-			}
+
+			case KeyEvent.KEYCODE_MENU :
+				m_menu.performIdentifierAction(R.id.action_overflow, 0);
+				return true;
 		}
 
-		return super.onKeyDown(keyCode, event);
+		return super.onKeyUp(keyCode, event);
 	}
 
 	@Override
