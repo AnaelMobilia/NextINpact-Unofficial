@@ -61,19 +61,19 @@
         </activity>
         <activity
             android:name=".ArticleActivity"
-            android:screenOrientation="sensor"
+            android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".CommentsActivity"
-            android:screenOrientation="sensor"
+            android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".OptionsActivity"
-            android:screenOrientation="sensor"
+            android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".AboutActivity"
-            android:screenOrientation="sensor"
+            android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
     </application>
 
