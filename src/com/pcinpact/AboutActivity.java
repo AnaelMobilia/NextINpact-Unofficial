@@ -39,7 +39,7 @@ public class AboutActivity extends ActionBarActivity {
 
 		setContentView(R.layout.about);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je charge mon menu dans l'actionBar
@@ -48,16 +48,16 @@ public class AboutActivity extends ActionBarActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
-			// Retour
+		// Retour
 			case R.id.action_home:
-
 				finish();
 				return true;
+
+			default:
+				return super.onOptionsItemSelected(pItem);
 		}
-		return super.onOptionsItemSelected(pItem);
 	}
 }

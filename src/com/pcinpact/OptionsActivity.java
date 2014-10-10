@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,5 +67,18 @@ public class OptionsActivity extends PreferenceActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.default_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem pItem) {
+		switch (pItem.getItemId()) {
+		// Retour
+			case R.id.action_home:
+				finish();
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(pItem);
+		}
 	}
 }

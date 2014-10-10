@@ -85,15 +85,15 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case R.id.action_home:
-
 				finish();
 				Intent i = new Intent(this, MainActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				this.startActivity(i);
 				return true;
-		}
 
-		return super.onOptionsItemSelected(pItem);
+			default:
+				return super.onOptionsItemSelected(pItem);
+		}
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 		loadingMoreComments = false;
 		moreCommentsAvailabe = false;
 		adapter.refreshData(comments, moreCommentsAvailabe);
-		
+
 		// Message d'erreur, si demandé !
 		// Chargement des préférences de l'utilisateur
 		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);

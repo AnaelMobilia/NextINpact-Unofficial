@@ -133,9 +133,10 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 			case R.id.action_home:
 				finish();
 				return true;
-		}
 
-		return super.onOptionsItemSelected(pItem);
+			default:
+				return super.onOptionsItemSelected(pItem);
+		}
 	}
 
 	@Override

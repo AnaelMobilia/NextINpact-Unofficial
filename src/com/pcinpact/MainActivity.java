@@ -251,25 +251,24 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				// Je lance l'activité options
 				Intent intentOptions = new Intent(MainActivity.this, OptionsActivity.class);
 				startActivity(intentOptions);
-
 				return true;
 
 				// A propos
 			case R.id.action_about:
 				Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
 				startActivity(intentAbout);
-
 				return true;
-		}
 
-		return super.onOptionsItemSelected(pItem);
+			default:
+				return super.onOptionsItemSelected(pItem);
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je garde le menu pour pouvoir l'animer après
 		m_menu = menu;
-		
+
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
