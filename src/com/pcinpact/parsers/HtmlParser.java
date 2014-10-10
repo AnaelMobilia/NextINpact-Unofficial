@@ -135,7 +135,7 @@ public class HtmlParser {
 
 			// 3. replace 'quote_bloc' div by 'xquote' tag to format citations
 			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
-				TagNode xquote = new TagNode("xquote");
+				TagNode xquote = new TagNode("blockquote");
 				xquote.addChildren(quotes.getAllElementsList(false));
 
 				quotes.getParent().insertChildBefore(quotes, xquote);

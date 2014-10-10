@@ -23,29 +23,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-
-import org.xml.sax.XMLReader;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Layout;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.method.LinkMovementMethod;
-import android.text.style.LeadingMarginSpan;
-import android.text.style.LineBackgroundSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,8 +79,9 @@ public class INpactListAdapter2 extends BaseAdapter {
 		 */
 		private Spanned format(String content) {
 			try {
-				return Html.fromHtml(content, imageGetter, new TagHandler());
+				return Html.fromHtml(content, imageGetter, null);
 			} catch (Exception e) {
+				android.util.Log.e("NXI", "", e);
 				return new SpannedString("* ERREUR *");
 			}
 		}
@@ -156,99 +145,6 @@ public class INpactListAdapter2 extends BaseAdapter {
 			return drawable;
 		}
 
-	}
-
-	private class XQuoteSpan extends StyleSpan implements LineBackgroundSpan, LeadingMarginSpan {
-
-		public XQuoteSpan(int style) {
-			super(style);
-		}
-
-		public XQuoteSpan() {
-			super(Typeface.ITALIC);
-		}
-
-		// inherited from LineBackgroundSpan
-		@Override
-		public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text,
-				int start, int end, int lnum) {
-
-			Paint.Style style = p.getStyle();
-			int color = p.getColor();
-
-			p.setStyle(Paint.Style.FILL);
-			p.setColor(Color.parseColor("#f3f3f3"));
-			c.drawRect(left + 10, top, right, bottom, p);
-
-			p.setStyle(style);
-			p.setColor(color);
-		}
-
-		// inherited from LeadingMarginSpan
-		@Override
-		public int getLeadingMargin(boolean first) {
-			return 20;
-		}
-
-		@Override
-		public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom, CharSequence text,
-				int start, int end, boolean first, Layout layout) {
-			// do nothing
-		}
-
-	}
-
-	// html tag to TextView formatting spans
-	// inspired from http://stackoverflow.com/a/11476084
-	private class TagHandler implements Html.TagHandler {
-		private List<Object> _format_stack = new LinkedList<Object>();
-
-		@Override
-		public void handleTag(boolean opening, String tag, Editable output, XMLReader reader) {
-			final int length = output.length();
-
-			if (tag.equals("xquote")) {
-				if (opening) {
-					final Object format = new XQuoteSpan();
-					_format_stack.add(format);
-
-					output.setSpan(format, length, length, Spanned.SPAN_MARK_MARK);
-				} else {
-					applySpan(output, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-			}
-
-		}
-
-		private Object getLast(Editable text, Class kind) {
-			@SuppressWarnings("unchecked")
-			final Object[] spans = text.getSpans(0, text.length(), kind);
-
-			if (spans.length != 0) {
-				for (int i = spans.length; i > 0; i--) {
-					if (text.getSpanFlags(spans[i - 1]) == Spanned.SPAN_MARK_MARK) {
-						return spans[i - 1];
-					}
-				}
-			}
-
-			return null;
-		}
-
-		private void applySpan(Editable output, int length, int flags) {
-			if (_format_stack.isEmpty())
-				return;
-
-			final Object format = _format_stack.remove(0);
-			final Object span = getLast(output, format.getClass());
-			final int where = output.getSpanStart(span);
-
-			output.removeSpan(span);
-
-			if (where != length) {
-				output.setSpan(format, where, length, flags);
-			}
-		}
 	}
 
 	private LayoutInflater mInflater;
