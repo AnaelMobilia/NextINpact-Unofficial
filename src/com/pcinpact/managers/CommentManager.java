@@ -31,6 +31,12 @@ import com.pcinpact.models.INPactComment;
 import com.pcinpact.parsers.HtmlParser;
 
 public class CommentManager {
+	/**
+	 * Charge les commentaires depuis le cache
+	 * @param context
+	 * @param path
+	 * @return
+	 */
 	public static List<INPactComment> getCommentsFromFile(Context context, String path) {
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 		try {
@@ -39,13 +45,7 @@ public class CommentManager {
 			comments = hh.getComments(context);
 			l_Stream.close();
 		} catch (Exception e) {
-			// Retour utilisateur
-			INPactComment commentErreur = new INPactComment();
-			commentErreur.content = "*Erreur*";
-			commentErreur.commentDate = "*Erreur*";
-			commentErreur.commentID = "*Erreur*";
-			commentErreur.author = "*Erreur*";
-			comments.add(commentErreur);
+			// Pas de retour spécifique : les commentaires peuvent juste être non synchronisés par l'utilisateur
 		}
 
 		return comments;
