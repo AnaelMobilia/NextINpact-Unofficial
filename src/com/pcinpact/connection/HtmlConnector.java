@@ -115,14 +115,12 @@ public class HtmlConnector {
 			// Je gère les problèmes d'encodage pouvant survenir dans le nom des fichiers demandés (ticket #50)
 			String URLarticle = _url.substring(_url.lastIndexOf("/") + 1, _url.length());
 			String URLreste = _url.substring(0, _url.lastIndexOf("/") + 1);
-			
+
 			String monURL = URLreste + URLEncoder.encode(URLarticle, "UTF-8");
-			
 			URL url = new URL(monURL);
-			
+
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestProperty("content-type", "UTF-8");
-			
+
 			if (httpMethodType.equals("POST"))
 				connection.setDoOutput(true);
 
