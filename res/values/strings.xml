@@ -33,28 +33,22 @@
     <string name="lastUpdate">Dernière mise à jour : </string>
 
     <!-- Disclaimer -->
-    <string name="disclaimerContent">			\nCette application est développée par des lecteurs (passionnés) de Next INpact (INpact Mediagroup).
+    <string name="disclaimerContent">Cette application est développée par un lecteur (passionné) de Next INpact.
 			\n
-        	L\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
-			\n
-			\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application.
+			\nLes textes, images et logos affichés dans l\'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
 			\n
 			\n
 			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
 			\n=> http://www.nextinpact.com/abonnement
 			\n
 			\n
-			\nBonne lecture !
-			\n
-			\n
-			\n
-			\nCe message ne s\'affiche qu\'au premier lancement de l\'application.	</string>
+			\nBonne lecture !	</string>
     <string name="chargementTitre">Chargement...</string>
     <string name="chargementContenu">Veuillez patienter</string>
     <string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
 
     <!-- A propos -->
-    <string name="aboutContent">NextINpact (Unofficial) est une application développée par des lecteurs passionnés de NextINpact !
+    <string name="aboutContent">NextINpact (Unofficial) est une application développée par un lecteur passionné de NextINpact !
         \n
         \n
         \nSi vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
@@ -62,10 +56,10 @@
         \ncontrib@anael.eu
         \n
         \n
-        \nContributeurs de l\'application
-        \nSami Ferhah (mainteneur de la v1 à la v1.7.1)
-        \nAnael Mobilia (mainteneur depuis la v1.7.2)
-        \nGuillaume Bour (contributeur v1.7.2)
+        \nContributeurs de l\'application :
+        \n - Anael Mobilia (mainteneur depuis la v1.7.2)
+        \n - Guillaume Bour (contributeur v1.7.2) 
+        \n - Sami Ferhah (mainteneur de la v1 à la v1.7.1) 
         \n
         \n
         \nPropriété des contenus
