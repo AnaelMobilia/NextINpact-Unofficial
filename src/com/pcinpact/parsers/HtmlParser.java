@@ -232,6 +232,8 @@ public class HtmlParser {
 				site = "videosGouvFr";
 			} else if (laSrc.startsWith("//www.youtube-nocookie.com/embed/")) {
 				site = "youtubeNoCookie";
+			} else if (laSrc.startsWith("https://vid.me")) {
+				site = "vidme";
 			}
 
 			// Vidéos intégrées avec leur player dans l'article
@@ -242,8 +244,8 @@ public class HtmlParser {
 				// je récupère l'id de la vidéo
 				String idVideo = "";
 
-				if (laSrc.startsWith("//www.youtube.com/embed/videoseries?"))
 				// Playlist Youtube de plusieurs vidéos
+				if (laSrc.startsWith("//www.youtube.com/embed/videoseries?"))
 				{
 					// www.youtube.com/embed/videoseries?list=PLvs5oKzmvTtVbWSC13dSnim9UfRnMTMob
 					idVideo = laSrc.substring(laSrc.lastIndexOf("list=") + 5, laSrc.length());
@@ -302,6 +304,12 @@ public class HtmlParser {
 						monContenu = replaceVideosIframe("http://static.videos.gouv.fr/player/video/" + idVideo,
 								"file:///android_res/drawable/video_videos_gouv_fr.png",
 								contextParent.getString(R.string.videoGouvFr));
+						break;
+						
+					case "vidme":
+						// Génération de mon contenu
+						monContenu = replaceVideosIframe("https://vid.me/" + idVideo,
+								"file:///android_res/drawable/video_vidme.png", contextParent.getString(R.string.videoVidme));
 						break;
 				}
 

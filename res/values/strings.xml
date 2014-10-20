@@ -82,6 +82,7 @@
     <string name="videoDailymotion">Voir la vidéo sur Dailymotion</string>
     <string name="videoVimeo">Voir la vidéo sur Vimeo</string>
     <string name="videoGouvFr">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</string>
+    <string name="videoVidme">Voir la vidéo sur la Vidme</string>
 
     <!-- Vue "Options" -->
     <string name="optionsGenerales">Options de l\'application</string>
