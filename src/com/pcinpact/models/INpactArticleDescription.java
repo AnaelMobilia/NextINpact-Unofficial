@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah
+ * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -39,6 +39,8 @@ public class INpactArticleDescription implements Serializable {
 	public String day;
 
 	public int section;
+	
+	public Boolean isAbonne;
 
 	public String getID() {
 		return articleID;

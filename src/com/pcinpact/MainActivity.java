@@ -462,6 +462,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				HtmlParser hh = new HtmlParser(new ByteArrayInputStream(result));
 				articles = hh.getArticles();
 			} catch (Exception e) {
+				// TODO : # 59 ajouter un retour utilisateur pour l'erreur de rechargement de la liste d'articles ! 
 				stopRefreshing();
 			}
 

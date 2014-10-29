@@ -407,7 +407,7 @@ public class HtmlParser {
 	}
 
 	/**
-	 * Résumés de l'ensemble des articles (vue générale)
+	 * Liste de l'ensemble des articles
 	 * 
 	 * @return
 	 */
@@ -467,6 +467,13 @@ public class HtmlParser {
 			String title = a.getText().toString();
 			String subTitleWithDate = p.getText().toString();
 
+			// Gestion du badge abonné
+			Boolean isAbonne = false;
+			for (TagNode unTagNode : p.getElementsByAttValue("alt", "badge_abonne",	false, true))
+			{
+				isAbonne = true;
+			}
+
 			subTitleWithDate = Html.fromHtml(subTitleWithDate).toString();
 
 			String date = "";
@@ -489,6 +496,7 @@ public class HtmlParser {
 			article.date = date;
 			article.subTitle = subTitle;
 			article.numberOfComs = coms;
+			article.isAbonne = isAbonne;
 
 			TempClass t = getDayForArticle(childIndex, days);
 			if (t != null) {
