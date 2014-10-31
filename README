@@ -3,3 +3,8 @@ HtmlCleaner
 	v2.9
 	http://htmlcleaner.sourceforge.net
 	Nettoie et corrige le code HTML source
+
+================================================
+Outils pratiques :
+  - Vue des icônes existantes : http://androiddrawables.com
+  - Dépôt git des sources Android (permet de récupérer les images) : https://github.com/android/platform_frameworks_base/tree/master/core/res/res
