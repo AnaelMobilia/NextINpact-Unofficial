@@ -25,28 +25,28 @@
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
         yourapp:showAsAction="ifRoom"/>
 
     <!-- Overflow (...) -->
     <item
         android:id="@+id/action_overflow"
-        android:icon="@drawable/ic_action_overflow"
+        android:icon="@drawable/ic_menu_moreoverflow_normal_holo_dark"
         android:title="@string/action_overflow"
         yourapp:showAsAction="ifRoom">
         <menu>
             <!-- Paramètres -->
             <item
                 android:id="@+id/action_settings"
-                android:icon="@drawable/ic_action_settings"
+                android:icon="@drawable/ic_menu_preferences"
                 android:title="@string/action_settings"
                 yourapp:showAsAction="ifRoom"/>
 
             <!-- A propos -->
             <item
                 android:id="@+id/action_about"
-                android:icon="@drawable/ic_action_about"
+                android:icon="@drawable/ic_menu_info_details"
                 android:title="@string/action_about"/>
         </menu>
     </item>

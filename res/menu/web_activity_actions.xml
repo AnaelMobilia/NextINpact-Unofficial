@@ -25,14 +25,14 @@
     <!-- Commentaires -->
     <item
         android:id="@+id/action_comments"
-        android:icon="@drawable/ic_action_chat"
+        android:icon="@drawable/ic_menu_start_conversation"
         android:title="@string/action_comments"
         yourapp:showAsAction="ifRoom"/>
 
     <!-- Accueil -->
     <item
         android:id="@+id/action_home"
-        android:icon="@drawable/ic_action_undo"
+        android:icon="@drawable/ic_menu_revert"
         android:title="@string/action_home"
         yourapp:showAsAction="ifRoom"/>
 
