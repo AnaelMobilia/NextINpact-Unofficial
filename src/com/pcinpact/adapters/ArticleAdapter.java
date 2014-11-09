@@ -79,6 +79,15 @@ public class ArticleAdapter extends BaseAdapter {
 		View v = convertView;
 		final Item i = mesItems.get(position);
 
+		// Préférences de l'utilisateur : taille du texte
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
+		// la taille par défaut est de 16
+		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
+		int tailleDefaut = 16;
+		// L'option selectionnée
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
+				monContext.getString(R.string.idOptionZoomTexte), "" + tailleDefaut));
+		
 		if (i != null) {
 			if (i.getType() == Item.typeSection) {
 				// Section
@@ -91,6 +100,12 @@ public class ArticleAdapter extends BaseAdapter {
 
 				final TextView sectionView = (TextView) v.findViewById(R.id.titreSection);
 				sectionView.setText(si.getTitre());
+				
+				// Taille de texte personnalisée ?
+				if (tailleOptionUtilisateur != tailleDefaut) {
+					// On applique la taille demandée
+					sectionView.setTextSize(tailleOptionUtilisateur);
+				}
 
 			} else {
 				// Article
@@ -121,23 +136,14 @@ public class ArticleAdapter extends BaseAdapter {
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
 				}
 
-				// Taille des textes (option de l'utilisateur)
-				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-				// la taille par défaut est de 16
-				// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
-				int tailleDefaut = 16;
-
-				// L'option selectionnée
-				int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-						monContext.getString(R.string.idOptionZoomTexte), "" + tailleDefaut));
-
-				// Si ce n'est pas la taille par défaut...
+				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
 					titreArticle.setTextSize(tailleOptionUtilisateur);
 					heureArticle.setTextSize(tailleOptionUtilisateur);
 					sousTitreArticle.setTextSize(tailleOptionUtilisateur);
 					commentairesArticle.setTextSize(tailleOptionUtilisateur);
+					labelAbonne.setTextSize(tailleOptionUtilisateur);
 				}
 			}
 		}
