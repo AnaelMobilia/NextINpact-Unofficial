@@ -103,17 +103,24 @@ public class HtmlParser {
 			// comment :: content
 			// Gestion des liens hypertextes (option de l'utilisateur)
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
-				String href = link.getAttributeByName("href");
-
-				// Liens interne vers une autre citation
-				if (href.startsWith("?")) {
-					link.removeAttribute("href");
-				}
-
 				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 				if (mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires), monContext.getResources()
 						.getBoolean(R.bool.defautOptionLiensDansCommentaires))) {
-					// On laisse les liens...
+					// On laisse les liens... SAUF :
+
+					// 1) Citation - ancien système "xxx à écrit : "
+					String href = link.getAttributeByName("href");
+					if (href.startsWith("?")) {
+						link.removeAttribute("href");
+					}
+
+					// 2) Citation - nouveau système : "En réponse à xxx"
+					// Liens interne vers une autre citation
+					String linkClass = link.getAttributeByName("class");
+					if (linkClass != null && linkClass.equals("link_reply_to")) {
+						link.removeAttribute("href");
+					}
+
 				} else {
 					// Suppression des liens
 					link.removeAttribute("href");
@@ -245,8 +252,7 @@ public class HtmlParser {
 				String idVideo = "";
 
 				// Playlist Youtube de plusieurs vidéos
-				if (laSrc.startsWith("//www.youtube.com/embed/videoseries?"))
-				{
+				if (laSrc.startsWith("//www.youtube.com/embed/videoseries?")) {
 					// www.youtube.com/embed/videoseries?list=PLvs5oKzmvTtVbWSC13dSnim9UfRnMTMob
 					idVideo = laSrc.substring(laSrc.lastIndexOf("list=") + 5, laSrc.length());
 				} else
@@ -305,7 +311,7 @@ public class HtmlParser {
 								"file:///android_res/drawable/video_videos_gouv_fr.png",
 								contextParent.getString(R.string.videoGouvFr));
 						break;
-						
+
 					case "vidme":
 						// Génération de mon contenu
 						monContenu = replaceVideosIframe("https://vid.me/" + idVideo,
@@ -469,8 +475,7 @@ public class HtmlParser {
 
 			// Gestion du badge abonné
 			Boolean isAbonne = false;
-			for (TagNode unTagNode : p.getElementsByAttValue("alt", "badge_abonne",	false, true))
-			{
+			for (TagNode unTagNode : p.getElementsByAttValue("alt", "badge_abonne", false, true)) {
 				isAbonne = true;
 			}
 
