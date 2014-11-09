@@ -28,7 +28,6 @@ import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,7 +72,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	ArticleAdapter adapter;
 	TextView headerTextView;
 	Menu m_menu;
-	private ProgressDialog progressDialog;
 	List<INpactArticleDescription> newArticles;
 
 	final static int DL_LIST = 0;
@@ -87,15 +85,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-			case KeyEvent.KEYCODE_BACK:
-
-				if (progressDialog != null) {
-					progressDialog.dismiss();
-					progressDialog = null;
-				}
-				finish();
-				return true;
-
 			case KeyEvent.KEYCODE_MENU:
 				m_menu.performIdentifierAction(R.id.action_overflow, 0);
 				return true;
@@ -158,9 +147,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			headerTextView.setText(getString(R.string.lastUpdate) + w.LastUpdate);
 		} else {
 			// Si pas d'articles, on lance un chargement
-			// Message spécifique pour couvrir la page blanche
-			progressDialog = ProgressDialog.show(this, getString(R.string.chargementTitre),
-					getString(R.string.chargementContenu), true, false);
 			refreshListeArticles();
 		}
 
@@ -234,15 +220,8 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-		progressDialog = null;
-	}
-
-	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		progressDialog = null;
 		m_menu = null;
 	}
 
@@ -466,12 +445,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		if (m_menu != null)
 			m_menu.findItem(R.id.action_refresh).setVisible(true);
 
-		// Cache le message de chargement
-		if (progressDialog != null) {
-			progressDialog.dismiss();
-			progressDialog = null;
-		}
-
 		// On force le refraichissement de la listview
 		monListView.invalidateViews();
 	}
@@ -574,7 +547,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ArticleItem monArticle = (ArticleItem) adapter.getItem(position);
-		
+
 		Intent monIntent = new Intent(this, ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getID());
 		startActivity(monIntent);
