@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright 2014 Anael Mobilia
+ * 
+ * This file is part of NextINpact-Unofficial.
+ * 
+ * NextINpact-Unofficial is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * NextINpact-Unofficial is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
+ */
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingBottom="5dp"
+    android:paddingRight="?android:attr/scrollbarSize"
+    android:paddingTop="5dp" >
+
+    <ImageView
+        android:id="@+id/imageArticle"
+        android:layout_width="70dp"
+        android:layout_height="53dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/logo_nextinpact" />
+
+    <TextView
+        android:id="@+id/titreArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageArticle"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/heureArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titreArticle"
+        android:layout_marginRight="2dp"
+        android:layout_toRightOf="@id/imageArticle"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#EA8211"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/labelAbonne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titreArticle"
+        android:layout_marginRight="2dp"
+        android:layout_toRightOf="@id/heureArticle"
+        android:background="@layout/background_badge_abonne"
+        android:text="@string/badgeAbonne"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/commentairesArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/titreArticle"
+        android:drawableLeft="@drawable/small_comms"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/sousTitreArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titreArticle"
+        android:layout_marginRight="2dp"
+        android:layout_toRightOf="@id/heureArticle"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:visibility="gone" />
+
+</RelativeLayout>
