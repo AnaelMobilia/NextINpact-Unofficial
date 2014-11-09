@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
  * Copyright 2014 Anael Mobilia
  * 
@@ -17,18 +15,17 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
--->
-<!-- Valeurs par défaut des options de l'application -->
+ */
+package com.pcinpact.items;
 
-<resources>
+public interface Item {
 
-    <bool name="defautOptionLiensDansArticles">false</bool>
-    <bool name="defautOptionLiensDansCommentaires">false</bool>
-    <!-- <bool name="defautOptionZoomTexte">[true | false]</bool> -->
-<!-- 	<int name="defautOptionZoomTexte">16</int> -->
-    <bool name="defautOptionPremierLancementApplication">true</bool>
-    <bool name="defautOptionTelechargerCommentaires">false</bool>
-    <bool name="defautOptionDebug">false</bool>
-    
-</resources>
+	public final int typeArticle = 1;
+	public final int typeSection = 2;
+
+	/**
+	 * Type (Cf Item.type*) de l'item
+	 * @return
+	 */
+	public int getType();
+}

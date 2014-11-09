@@ -110,4 +110,6 @@
     <string name="idOptionPremierLancementApplication">5</string>
     <string name="idOptionDebug">6</string>
 
+    <!-- Liste des articles -->
+    <string name="badgeAbonne">" "Abonné "</string>
 </resources>

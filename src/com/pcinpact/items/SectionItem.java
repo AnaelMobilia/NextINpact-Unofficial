@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
  * Copyright 2014 Anael Mobilia
  * 
@@ -17,18 +15,36 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
--->
-<!-- Valeurs par défaut des options de l'application -->
+ */
+package com.pcinpact.items;
 
-<resources>
+import com.pcinpact.adapters.INpactListAdapter.ViewEntry;
+import com.pcinpact.models.INpactArticleDescription;
 
-    <bool name="defautOptionLiensDansArticles">false</bool>
-    <bool name="defautOptionLiensDansCommentaires">false</bool>
-    <!-- <bool name="defautOptionZoomTexte">[true | false]</bool> -->
-<!-- 	<int name="defautOptionZoomTexte">16</int> -->
-    <bool name="defautOptionPremierLancementApplication">true</bool>
-    <bool name="defautOptionTelechargerCommentaires">false</bool>
-    <bool name="defautOptionDebug">false</bool>
-    
-</resources>
+public class SectionItem implements Item {
+	private String titre;
+
+	@Override
+	public int getType() {
+		return Item.typeSection;
+	}
+	
+	public void convertOld(INpactArticleDescription uneSection)
+	{
+		titre = uneSection.day;
+	}
+	
+	public void convertOld(ViewEntry uneSection)
+	{
+		titre = uneSection.day;
+	}
+	
+
+	public String getTitre() {
+		return titre;
+	}
+
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+}

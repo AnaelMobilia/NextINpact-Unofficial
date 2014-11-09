@@ -53,9 +53,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pcinpact.adapters.INpactListAdapter;
+import com.pcinpact.adapters.ArticleAdapter;
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.Item;
+import com.pcinpact.items.SectionItem;
 import com.pcinpact.managers.ArticleManager;
 import com.pcinpact.managers.CommentManager;
 import com.pcinpact.models.ArticlesWrapper;
@@ -66,7 +69,8 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
-	INpactListAdapter adapter;
+	// INpactListAdapter adapter;
+	ArticleAdapter adapter;
 	TextView headerTextView;
 	Menu m_menu;
 	private ProgressDialog progressDialog;
@@ -92,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				finish();
 				return true;
 
-			case KeyEvent.KEYCODE_MENU :
+			case KeyEvent.KEYCODE_MENU:
 				m_menu.performIdentifierAction(R.id.action_overflow, 0);
 				return true;
 		}
@@ -109,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		// On définit la vue
 		setContentView(R.layout.main);
 		// On récupère les éléments
-		monListView = (ListView) this.findViewById(R.id.listview);
+		monListView = (ListView) this.findViewById(R.id.listeArticles);
 		monSwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
 		headerTextView = (TextView) findViewById(R.id.header_text);
 
@@ -123,7 +127,8 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			}
 		});
 
-		adapter = new INpactListAdapter(this, null).buildData();
+		// adapter = new INpactListAdapter(this, null).buildData();
+		adapter = new ArticleAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(adapter);
 		monListView.setOnItemClickListener(this);
 
@@ -279,13 +284,40 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	}
 
 	void loadArticles() {
-		adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
+		// adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
+
+		// Passage ancien système -> nouveau système
+		List<INpactArticleDescription> oldList = NextInpact.getInstance(this).getArticlesWrapper().getArticles();
+		ArrayList<Item> mesItems = new ArrayList<Item>();
+
+		Integer section = -1;
+		for (INpactArticleDescription unOldItem : oldList) {
+			// Section (calculée)
+			if (section != unOldItem.section) {
+				section = unOldItem.section;
+
+				// C'est une section
+				SectionItem maSection = new SectionItem();
+				// pas joli joli...
+				maSection.convertOld(unOldItem);
+				mesItems.add(maSection);
+			} else {
+				// C'est un article
+				ArticleItem monArticle = new ArticleItem();
+				monArticle.convertOld(unOldItem);
+				mesItems.add(monArticle);
+			}
+		}
+		// Je emt à jour les données
+		adapter.updateArticles(mesItems);
+		// Je notifie le changement pour un rafraichissement du contenu
+		adapter.notifyDataSetChanged();
 	}
 
 	public void loadArticlesListFromServer() {
 		HtmlConnector connector = new HtmlConnector(this, this);
 		connector.state = DL_LIST;
-		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
+		connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/?page=2", "GET", null, 0, null);
 	}
 
 	public void loadArticlesFromServer(List<INpactArticleDescription> articles) {
@@ -462,7 +494,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				HtmlParser hh = new HtmlParser(new ByteArrayInputStream(result));
 				articles = hh.getArticles();
 			} catch (Exception e) {
-				// TODO : # 59 ajouter un retour utilisateur pour l'erreur de rechargement de la liste d'articles ! 
+				// TODO : # 59 ajouter un retour utilisateur pour l'erreur de rechargement de la liste d'articles !
 				stopRefreshing();
 			}
 
@@ -540,16 +572,12 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		INpactArticleDescription article = this.adapter.getInpactArticleDescription(arg2);
-		if (article == null)
-			return;
-
-		Intent intentWeb = new Intent(this, ArticleActivity.class);
-		intentWeb.putExtra("URL", article.getID() + ".html");
-		intentWeb.putExtra("EXTRA_URL", article.getID() + "_comms.html");
-		intentWeb.putExtra("ARTICLE_ID", article.getID());
-		startActivity(intentWeb);
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		ArticleItem monArticle = (ArticleItem) adapter.getItem(position);
+		
+		Intent monIntent = new Intent(this, ArticleActivity.class);
+		monIntent.putExtra("ARTICLE_ID", monArticle.getID());
+		startActivity(monIntent);
 	}
 
 }

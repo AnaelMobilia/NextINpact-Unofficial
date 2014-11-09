@@ -48,7 +48,7 @@ public class INpactListAdapter extends BaseAdapter {
 	}
 
 	public class ViewEntry {
-		String day;
+		public String day;
 		INpactArticleDescription article;
 
 		ECellType CellType;

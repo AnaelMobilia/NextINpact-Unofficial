@@ -54,10 +54,13 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		url = getIntent().getExtras().getString("URL");
-		comms_url = getIntent().getExtras().getString("EXTRA_URL");
+//		url = getIntent().getExtras().getString("URL");
+//		comms_url = getIntent().getExtras().getString("EXTRA_URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
+		url = articleID + ".html";
+		comms_url = articleID + "_comms.html";
 
+		
 		setContentView(R.layout.article);
 
 		webview = (WebView) findViewById(R.id.webview);
