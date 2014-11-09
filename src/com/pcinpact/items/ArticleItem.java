@@ -35,18 +35,21 @@ public class ArticleItem implements Item {
 		return Item.typeArticle;
 	}
 
-	public void convertOld(INpactArticleDescription unArticle)
-	{
+	public void convertOld(INpactArticleDescription unArticle) {
 		ID = unArticle.getID();
 		titre = unArticle.title;
 		sousTitre = unArticle.subTitle;
 		pathImage = unArticle.imgURL;
-		isAbonne = unArticle.isAbonne;
+		try {
+			isAbonne = unArticle.isAbonne;
+		} catch (Exception e) {
+			// VS un ancien cache qui ne connaitrait pas l'attribut isAbonne => null pointer exception
+			isAbonne = false;
+		}
 		heurePublication = unArticle.date;
 		nbCommentaires = unArticle.numberOfComs;
 	}
-	
-	
+
 	public String getID() {
 		return ID;
 	}
