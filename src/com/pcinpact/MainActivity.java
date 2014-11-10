@@ -263,8 +263,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	}
 
 	void loadArticles() {
-		// adapter.refreshData(NextInpact.getInstance(this).getArticlesWrapper().getArticles());
-
 		// Passage ancien système -> nouveau système
 		List<INpactArticleDescription> oldList = NextInpact.getInstance(this).getArticlesWrapper().getArticles();
 		ArrayList<Item> mesItems = new ArrayList<Item>();
@@ -275,19 +273,17 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			if (section != unOldItem.section) {
 				section = unOldItem.section;
 
-				// C'est une section
+				// C'est une nouvelle section !
 				SectionItem maSection = new SectionItem();
-				// pas joli joli...
 				maSection.convertOld(unOldItem);
 				mesItems.add(maSection);
-			} else {
-				// C'est un article
-				ArticleItem monArticle = new ArticleItem();
-				monArticle.convertOld(unOldItem);
-				mesItems.add(monArticle);
 			}
+			// On traite l'article
+			ArticleItem monArticle = new ArticleItem();
+			monArticle.convertOld(unOldItem);
+			mesItems.add(monArticle);
 		}
-		// Je emt à jour les données
+		// Je met à jour les données
 		adapter.updateArticles(mesItems);
 		// Je notifie le changement pour un rafraichissement du contenu
 		adapter.notifyDataSetChanged();
