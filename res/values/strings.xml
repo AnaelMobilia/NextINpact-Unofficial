@@ -31,6 +31,7 @@
     <!-- Ecran d'accueil -->
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">Dernière mise à jour : </string>
+    <string name="contentDescriptionImageArticle">Illustration de l\'article</string>
 
     <!-- Disclaimer -->
     <string name="disclaimerContent">Cette application est développée par un lecteur (passionné) de Next INpact.
@@ -43,8 +44,6 @@
 			\n
 			\n
 			\nBonne lecture !	</string>
-    <string name="chargementTitre">Chargement...</string>
-    <string name="chargementContenu">Veuillez patienter</string>
     <string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
 
     <!-- A propos -->
@@ -111,5 +110,5 @@
     <string name="idOptionDebug">6</string>
 
     <!-- Liste des articles -->
-    <string name="badgeAbonne">" "Abonné "</string>
+    <string name="badgeAbonne">"  Abonné  "</string>
 </resources>
