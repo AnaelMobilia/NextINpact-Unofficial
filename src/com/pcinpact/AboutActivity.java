@@ -44,7 +44,7 @@ public class AboutActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.default_activity_actions, menu);
+		inflater.inflate(R.menu.about_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
