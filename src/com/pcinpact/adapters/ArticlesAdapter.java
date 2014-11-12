@@ -38,13 +38,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ArticleAdapter extends BaseAdapter {
+public class ArticlesAdapter extends BaseAdapter {
 
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private List<Item> mesItems;
 
-	public ArticleAdapter(Context unContext, List<Item> desItems) {
+	public ArticlesAdapter(Context unContext, List<Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
