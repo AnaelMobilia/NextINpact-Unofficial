@@ -139,7 +139,7 @@ public class INpactListAdapter extends BaseAdapter {
 		ViewHolder holder;
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.main_article, null);
+			convertView = mInflater.inflate(R.layout.aaa_to_delete_main_article, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		} else
