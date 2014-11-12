@@ -51,7 +51,7 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.comments_main);
+		setContentView(R.layout.aaa_to_delete_comments_main);
 
 		final String url = getIntent().getExtras().getString("URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
