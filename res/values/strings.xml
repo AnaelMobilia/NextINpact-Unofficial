@@ -30,7 +30,7 @@
     
     <!-- Ecran d'accueil -->
     <string name="app_name">NextINpact (Unofficial)</string>
-    <string name="lastUpdate">Dernière mise à jour : </string>
+    <string name="lastUpdate">"Dernière mise à jour : "</string>
     <string name="contentDescriptionImageArticle">Illustration de l\'article</string>
 
     <!-- Disclaimer -->
