@@ -85,6 +85,6 @@
         android:layout_alignBottom="@id/imageArticle"
         android:layout_alignParentRight="true"
         android:drawableLeft="@drawable/small_comms"
-        android:textSize="12sp" />
+        android:textAppearance="@style/textAppearanceVerySmall" />
 
 </RelativeLayout>

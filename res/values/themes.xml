@@ -17,8 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
--->
+ */-->
 <resources>
 
     <!-- the theme applied to the application or activity -->
@@ -35,6 +34,11 @@
 
         <!-- Support library compatibility -->
         <item name="background">@drawable/actionbar_background</item>
+    </style>
+
+    <!-- Style personnalisé -->
+    <style name="textAppearanceVerySmall" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>

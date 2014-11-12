@@ -78,7 +78,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/titreArticle"
         android:drawableLeft="@drawable/small_comms"
-        android:textSize="12sp" />
+        android:textAppearance="@style/textAppearanceVerySmall" />
 
     <TextView
         android:id="@+id/sousTitreArticle"
