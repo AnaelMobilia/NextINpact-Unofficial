@@ -63,7 +63,7 @@
         android:layout_below="@id/titreArticle"
         android:layout_marginRight="2dp"
         android:layout_toRightOf="@id/heureArticle"
-        android:background="@layout/background_badge_abonne"
+        android:background="@layout/main_item_article_background_badge_abonne"
         android:text="@string/badgeAbonne"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
