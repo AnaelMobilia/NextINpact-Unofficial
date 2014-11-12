@@ -52,10 +52,10 @@ public class ArticlesAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Met à jour les données de la liste des articles
+	 * Met à jour les données de la liste d'items
 	 * @param nouveauxItems
 	 */
-	public void updateArticles(List<Item> nouveauxItems) {
+	public void updateListeItems(List<Item> nouveauxItems) {
 		mesItems = nouveauxItems;
 	}
 

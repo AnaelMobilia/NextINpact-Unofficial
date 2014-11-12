@@ -284,7 +284,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			mesItems.add(monArticle);
 		}
 		// Je met à jour les données
-		adapter.updateArticles(mesItems);
+		adapter.updateListeItems(mesItems);
 		// Je notifie le changement pour un rafraichissement du contenu
 		adapter.notifyDataSetChanged();
 	}
