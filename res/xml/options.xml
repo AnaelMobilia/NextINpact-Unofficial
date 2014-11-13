@@ -40,12 +40,12 @@
             android:title="@string/activerLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
-    <PreferenceCategory android:title="@string/optionsCommentaires" >
-        <CheckBoxPreference
-            android:defaultValue="@bool/defautOptionTelechargerCommentaires"
-            android:key="@string/idOptionTelechargerCommentaires"
-            android:summary="@string/telechargerCommentairesDetail"
-            android:title="@string/telechargerCommentaires" />
+    <PreferenceCategory android:title="@string/optionsCommentaires">
+<!--         <CheckBoxPreference -->
+<!--             android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
+<!--             android:key="@string/idOptionTelechargerCommentaires" -->
+<!--             android:summary="@string/telechargerCommentairesDetail" -->
+<!--             android:title="@string/telechargerCommentaires" /> -->
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
