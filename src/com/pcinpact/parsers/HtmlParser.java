@@ -82,23 +82,10 @@ public class HtmlParser {
 			TagNode actu_comm_content = getFirstElementByAttValue(htmlComment, "class", "actu_comm_content");
 			if (actu_comm_content == null)
 				continue;
-
-			String commentDate = null;
-			TagNode span = getFirstElementByName(actu_comm_author, "span");
-			if (span != null) {
-				commentDate = Html.fromHtml(span.getText().toString()).toString();
-			}
-
-			String commentID = null;
-			TagNode actu_comm_num = getFirstElementByAttValue(actu_comm_author, "class", "actu_comm_num");
-			if (actu_comm_num != null) {
-				commentID = Html.fromHtml(actu_comm_num.getText().toString()).toString();
-			}
-
-			for (TagNode child : actu_comm_author.getChildTags()) {
-				actu_comm_author.removeChild(child);
-			}
-			String auth = Html.fromHtml(actu_comm_author.getText().toString()).toString();
+			
+			TagNode spanCommentAuteur = actu_comm_author.getElementListByAttValue("class", "author_name", false, true).get(0);
+			TagNode spanCommentDate = actu_comm_author.getElementListByAttValue("class", "date_comm", false, true).get(0);
+			TagNode spanCommentId = actu_comm_author.getElementListByAttValue("class", "actu_comm_num", false, true).get(0);
 
 			// comment :: content
 			// Gestion des liens hypertextes (option de l'utilisateur)
@@ -153,9 +140,9 @@ public class HtmlParser {
 
 			INPactComment comment = new INPactComment();
 
-			comment.author = auth;
-			comment.commentDate = commentDate;
-			comment.commentID = commentID;
+			comment.author = spanCommentAuteur.getText().toString();
+			comment.commentDate = Html.fromHtml(spanCommentDate.getText().toString()).toString();
+			comment.commentID = spanCommentId.getText().toString();
 			comment.content = content;
 
 			comments.add(comment);
