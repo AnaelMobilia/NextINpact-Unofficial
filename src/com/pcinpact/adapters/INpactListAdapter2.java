@@ -51,7 +51,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		Normal, Loading, Info
 	}
 
-	public class ViewEntry {
+	public static class ViewEntry {
 		public String Title = "";
 		public String commentDate = "";
 		public String CommentID = "";
@@ -77,7 +77,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		/*
 		 * format comment content: convert from HTML (tags) to Spanned (TextView formatting)
 		 */
-		private Spanned format(String content) {
+		public static Spanned format(String content) {
 			try {
 				return Html.fromHtml(content, imageGetter, null);
 			} catch (Exception e) {
