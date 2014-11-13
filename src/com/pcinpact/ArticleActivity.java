@@ -126,7 +126,7 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 		switch (pItem.getItemId()) {
 			case R.id.action_comments:
 				if (comms_url != null) {
-					Intent intentWeb = new Intent(ArticleActivity.this, CommentsActivity.class);
+					Intent intentWeb = new Intent(ArticleActivity.this, CommentairesActivity.class);
 					intentWeb.putExtra("URL", comms_url);
 					intentWeb.putExtra("ARTICLE_ID", articleID);
 					startActivity(intentWeb);

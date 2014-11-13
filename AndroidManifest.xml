@@ -64,7 +64,7 @@
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
         <activity
-            android:name=".CommentsActivity"
+            android:name=".CommentairesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" />
         <activity

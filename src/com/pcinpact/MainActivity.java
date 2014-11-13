@@ -52,7 +52,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pcinpact.adapters.ArticlesAdapter;
+import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
 import com.pcinpact.items.ArticleItem;
@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
 	// INpactListAdapter adapter;
-	ArticlesAdapter adapter;
+	ItemsAdapter adapter;
 	TextView headerTextView;
 	Menu m_menu;
 	List<INpactArticleDescription> newArticles;
@@ -117,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		});
 
 		// adapter = new INpactListAdapter(this, null).buildData();
-		adapter = new ArticlesAdapter(this, new ArrayList<Item>());
+		adapter = new ItemsAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(adapter);
 		monListView.setOnItemClickListener(this);
 
