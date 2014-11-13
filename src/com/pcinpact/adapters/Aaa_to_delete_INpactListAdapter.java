@@ -41,7 +41,7 @@ import android.widget.TextView.BufferType;
 import com.pcinpact.R;
 import com.pcinpact.models.INpactArticleDescription;
 
-public class INpactListAdapter extends BaseAdapter {
+public class Aaa_to_delete_INpactListAdapter extends BaseAdapter {
 
 	enum ECellType {
 		Article, Section
@@ -80,8 +80,8 @@ public class INpactListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public INpactListAdapter(Context context, List<INpactArticleDescription> articles) {
-		INpactListAdapter.context = context;
+	public Aaa_to_delete_INpactListAdapter(Context context, List<INpactArticleDescription> articles) {
+		Aaa_to_delete_INpactListAdapter.context = context;
 		mInflater = LayoutInflater.from(context);
 
 		if (articles == null)
@@ -225,7 +225,7 @@ public class INpactListAdapter extends BaseAdapter {
 		}
 	}
 
-	public INpactListAdapter buildData() {
+	public Aaa_to_delete_INpactListAdapter buildData() {
 		mData.clear();
 		sectionsCount = 0;
 

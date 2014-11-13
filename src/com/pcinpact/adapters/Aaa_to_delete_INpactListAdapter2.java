@@ -45,7 +45,7 @@ import android.widget.TextView;
 import com.pcinpact.R;
 import com.pcinpact.models.INPactComment;
 
-public class INpactListAdapter2 extends BaseAdapter {
+public class Aaa_to_delete_INpactListAdapter2 extends BaseAdapter {
 
 	enum ECellType {
 		Normal, Loading, Info
@@ -152,7 +152,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 	private static Context ctx;
 	private static ImageGetter imageGetter = null;
 
-	public INpactListAdapter2(Context context, List<INPactComment> comments) {
+	public Aaa_to_delete_INpactListAdapter2(Context context, List<INPactComment> comments) {
 		mInflater = LayoutInflater.from(context);
 		this.comments = comments;
 
@@ -205,7 +205,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		ViewHolder holder;
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.comments, null);
+			convertView = mInflater.inflate(R.layout.aaa_to_delete_comments, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		} else
@@ -294,7 +294,7 @@ public class INpactListAdapter2 extends BaseAdapter {
 		}
 	}
 
-	public INpactListAdapter2 buildData(boolean more) {
+	public Aaa_to_delete_INpactListAdapter2 buildData(boolean more) {
 		mData.clear();
 
 		for (INPactComment article : this.comments) {
