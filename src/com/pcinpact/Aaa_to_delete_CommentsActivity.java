@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -33,39 +34,48 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-import com.pcinpact.adapters.INpactListAdapter2;
+import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.connection.HtmlConnector;
 import com.pcinpact.connection.IConnectable;
+import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.Item;
 import com.pcinpact.managers.CommentManager;
 import com.pcinpact.models.INPactComment;
 
-public class CommentsActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
+public class Aaa_to_delete_CommentsActivity extends ActionBarActivity implements IConnectable, OnScrollListener {
 	int page = 1;
 	boolean moreCommentsAvailabe = true;
 	boolean loadingMoreComments = false;
 	List<INPactComment> comments;
 	String articleID;
 	ListView listView;
-	INpactListAdapter2 adapter;
+	ItemsAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.aaa_to_delete_comments_main);
+		setContentView(R.layout.commentaires);
 
 		final String url = getIntent().getExtras().getString("URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 
 		comments = CommentManager.getCommentsFromFile(this, url);
 
-		listView = (ListView) this.findViewById(R.id.listview_comment);
-		adapter = new INpactListAdapter2(this, comments).buildData(moreCommentsAvailabe);
+		listView = (ListView) this.findViewById(R.id.listeCommentaires);
+		adapter = new ItemsAdapter(this, new ArrayList<Item>());
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(this);
 
 		if (comments.size() < 10) {
 			loadingMoreComments = true;
-			adapter.refreshData(comments, moreCommentsAvailabe);
+			// Passage ancien système -> nouveau système
+			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
+
+			// Je met à jour les données
+			adapter.updateListeItems(mesItems);
+			// Je notifie le changement pour un rafraichissement du contenu
+			adapter.notifyDataSetChanged();
+
 			HtmlConnector connector = new HtmlConnector(this, this);
 			String data = "page=" + (page) + "&newsId=" + articleID + "&commId=0";
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
@@ -73,11 +83,30 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 
 	}
 
+	/**
+	 * Convertit les anciens objets vers des objets actuels
+	 * @param comments
+	 * @return
+	 */
+	public List<Item> convertOld(List<INPactComment> comments) {
+		// Passage ancien système -> nouveau système
+		ArrayList<Item> mesItems = new ArrayList<Item>();
+
+		for (INPactComment unOldItem : comments) {
+			// On traite le commentaire
+			CommentaireItem monCommentaire = new CommentaireItem();
+			monCommentaire.convertOld(unOldItem);
+			mesItems.add(monCommentaire);
+		}
+		
+		return mesItems;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.default_activity_actions, menu);
+		inflater.inflate(R.menu.about_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -114,15 +143,23 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 
 		if (newComments.size() == 0) {
 			moreCommentsAvailabe = false;
-			adapter.refreshData(comments, moreCommentsAvailabe);
+			// adapter.refreshData(comments, moreCommentsAvailabe);
 		} else if (page == 1) {
 			comments.clear();
 			comments.addAll(newComments);
-			adapter.refreshData(comments, moreCommentsAvailabe);
+			// adapter.refreshData(comments, moreCommentsAvailabe);
 		} else {
 			comments.addAll(newComments);
-			adapter.refreshData(comments, moreCommentsAvailabe);
+//			adapter.refreshData(comments, moreCommentsAvailabe);
 		}
+		
+		// Passage ancien système -> nouveau système
+		ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
+
+		// Je met à jour les données
+		adapter.updateListeItems(mesItems);
+		// Je notifie le changement pour un rafraichissement du contenu
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -139,7 +176,14 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 
 		loadingMoreComments = false;
 		moreCommentsAvailabe = false;
-		adapter.refreshData(comments, moreCommentsAvailabe);
+		// adapter.refreshData(comments, moreCommentsAvailabe);
+		// Passage ancien système -> nouveau système
+		ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
+
+		// Je met à jour les données
+		adapter.updateListeItems(mesItems);
+		// Je notifie le changement pour un rafraichissement du contenu
+		adapter.notifyDataSetChanged();
 
 		// Message d'erreur, si demandé !
 		// Chargement des préférences de l'utilisateur
@@ -178,7 +222,14 @@ public class CommentsActivity extends ActionBarActivity implements IConnectable,
 
 		loadingMoreComments = true;
 
-		adapter.refreshData(comments, moreCommentsAvailabe);
+		//adapter.refreshData(comments, moreCommentsAvailabe);
+		// Passage ancien système -> nouveau système
+		ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
+
+		// Je met à jour les données
+		adapter.updateListeItems(mesItems);
+		// Je notifie le changement pour un rafraichissement du contenu
+		adapter.notifyDataSetChanged();
 
 		HtmlConnector connector = new HtmlConnector(this, this);
 		page++;
