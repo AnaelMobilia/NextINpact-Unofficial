@@ -24,7 +24,10 @@ import com.pcinpact.managers.ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
+	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	// Nb de commentaires par page
+	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 
 	static private NextInpact instance;
 
