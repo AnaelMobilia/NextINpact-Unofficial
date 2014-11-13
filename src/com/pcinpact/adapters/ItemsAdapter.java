@@ -24,6 +24,7 @@ import java.util.List;
 
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 
@@ -38,13 +39,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ArticlesAdapter extends BaseAdapter {
+public class ItemsAdapter extends BaseAdapter {
 
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private List<Item> mesItems;
 
-	public ArticlesAdapter(Context unContext, List<Item> desItems) {
+	public ItemsAdapter(Context unContext, List<Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
@@ -53,6 +54,7 @@ public class ArticlesAdapter extends BaseAdapter {
 
 	/**
 	 * Met à jour les données de la liste d'items
+	 * 
 	 * @param nouveauxItems
 	 */
 	public void updateListeItems(List<Item> nouveauxItems) {
@@ -85,30 +87,30 @@ public class ArticlesAdapter extends BaseAdapter {
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 		int tailleDefaut = 16;
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(
-				monContext.getString(R.string.idOptionZoomTexte), "" + tailleDefaut));
-		
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte), ""
+				+ tailleDefaut));
+
 		if (i != null) {
+			// Section
 			if (i.getType() == Item.typeSection) {
-				// Section
 				SectionItem si = (SectionItem) i;
 				v = monLayoutInflater.inflate(R.layout.main_item_section, parent, false);
 
 				v.setOnClickListener(null);
 				v.setOnLongClickListener(null);
-				v.setLongClickable(false);
 
 				final TextView sectionView = (TextView) v.findViewById(R.id.titreSection);
 				sectionView.setText(si.getTitre());
-				
+
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
 					sectionView.setTextSize(tailleOptionUtilisateur);
 				}
 
-			} else {
-				// Article
+			}
+			// Article
+			else if (i.getType() == Item.typeArticle) {
 				ArticleItem ai = (ArticleItem) i;
 				v = monLayoutInflater.inflate(R.layout.main_item_article, parent, false);
 				final ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
@@ -144,6 +146,28 @@ public class ArticlesAdapter extends BaseAdapter {
 					sousTitreArticle.setTextSize(tailleOptionUtilisateur);
 					commentairesArticle.setTextSize(tailleOptionUtilisateur);
 					labelAbonne.setTextSize(tailleOptionUtilisateur);
+				}
+			}
+			// Commentaire
+			else if (i.getType() == Item.typeCommentaire) {
+				CommentaireItem ai = (CommentaireItem) i;
+				v = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
+				final TextView auteurDateCommentaire = (TextView) v.findViewById(R.id.auteurDateCommentaire);
+				final TextView numeroCommentaire = (TextView) v.findViewById(R.id.numeroCommentaire);
+				final TextView commentaire = (TextView) v.findViewById(R.id.commentaire);
+
+				// Remplissage des textview
+				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
+				numeroCommentaire.setText(ai.getID());
+				// TODO : faire un vrai parsage générique
+				commentaire.setText(INpactListAdapter2.ViewEntry.format(ai.getCommentaire()));
+
+				// Taille de texte personnalisée ?
+				if (tailleOptionUtilisateur != tailleDefaut) {
+					// On applique la taille demandée
+					auteurDateCommentaire.setTextSize(tailleOptionUtilisateur);
+					numeroCommentaire.setTextSize(tailleOptionUtilisateur);
+					commentaire.setTextSize(tailleOptionUtilisateur);
 				}
 			}
 		}

@@ -22,6 +22,7 @@ public interface Item {
 
 	public final int typeArticle = 1;
 	public final int typeSection = 2;
+	public final int typeCommentaire = 3;
 
 	/**
 	 * Type (Cf Item.type*) de l'item
