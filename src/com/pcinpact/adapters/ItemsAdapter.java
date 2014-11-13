@@ -160,7 +160,7 @@ public class ItemsAdapter extends BaseAdapter {
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(ai.getID());
 				// TODO : faire un vrai parsage générique
-				commentaire.setText(INpactListAdapter2.ViewEntry.format(ai.getCommentaire()));
+				commentaire.setText(Aaa_to_delete_INpactListAdapter2.ViewEntry.format(ai.getCommentaire()));
 
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {

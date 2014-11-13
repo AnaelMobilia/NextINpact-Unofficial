@@ -18,7 +18,7 @@
  */
 package com.pcinpact.items;
 
-import com.pcinpact.adapters.INpactListAdapter.ViewEntry;
+import com.pcinpact.adapters.Aaa_to_delete_INpactListAdapter.ViewEntry;
 import com.pcinpact.models.INpactArticleDescription;
 
 public class SectionItem implements Item {
