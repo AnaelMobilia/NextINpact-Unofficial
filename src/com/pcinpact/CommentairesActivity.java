@@ -56,19 +56,21 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// Partie graphique
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.commentaires);
-
-		final String url = getIntent().getExtras().getString("URL");
-		articleID = getIntent().getExtras().getString("ARTICLE_ID");
-		comments = CommentManager.getCommentsFromFile(this, url);
+		setSupportProgressBarIndeterminateVisibility(false);
 
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
-		setSupportProgressBarIndeterminateVisibility(false);
 
-		// On active le SwipeRefreshLayout uniquement si on est en bas de la listview
+		// Article concerné
+		final String url = getIntent().getExtras().getString("URL");
+		articleID = getIntent().getExtras().getString("ARTICLE_ID");
+		comments = CommentManager.getCommentsFromFile(this, url);
+
+		// Système de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -76,20 +78,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// ID du dernier élément affiché
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-				// Si on affiche le dernier élément connu -> rechargement
-				if ((lastInScreen == totalItemCount)) {
-//					monSwipeRefreshLayout.setEnabled(true);
-				}
 			}
 		});
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		monMenu = null;
 	}
 
 	/**
@@ -102,10 +92,10 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// Passage ancien système -> nouveau système
 		// TreeSet : pas de doublons + tri sur l'ID
 		TreeSet<Item> mesItemsSet = new TreeSet<Item>(new Comparator<Item>() {
+			// Méthode de comparaison des objets pour leur ordonnancement
 			public int compare(Item a, Item b) {
 				CommentaireItem item1 = (CommentaireItem) a;
 				CommentaireItem item2 = (CommentaireItem) b;
-
 				return ((Integer) item1.getIDNumerique()).compareTo((Integer) item2.getIDNumerique());
 			}
 		});
@@ -115,7 +105,6 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			// On traite le commentaire
 			CommentaireItem monCommentaire = new CommentaireItem();
 			monCommentaire.convertOld(unOldItem);
-
 			// Et on s'assure de ne pas avoir de doublon
 			mesItemsSet.add(monCommentaire);
 		}
@@ -130,7 +119,6 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// Vérification de la connexion internet avant de lancer
 		ConnectivityManager l_Connection = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (l_Connection.getActiveNetworkInfo() == null || !l_Connection.getActiveNetworkInfo().isConnected()) {
-
 			// Pas de connexion -> affichage d'un toast
 			CharSequence text = getString(R.string.chargementPasInternet);
 			int duration = Toast.LENGTH_LONG;
@@ -147,7 +135,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			// Appel à la méthode qui va faire le boulot...
 			HtmlConnector connector = new HtmlConnector(this, this);
 
-			// Le dernier commentaire enregistré
+			// Le dernier commentaire enregistré TODO : reprendre ça lorsque le système fournissant les datas sera refait
 			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
 
 			int idDernierCommentaire = 0;
