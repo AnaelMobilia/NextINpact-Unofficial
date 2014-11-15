@@ -41,8 +41,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -61,11 +64,26 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		setContentView(R.layout.commentaires);
 		setSupportProgressBarIndeterminateVisibility(false);
 
+
+		// Liste des commentaires
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
+		// Footer : bouton "Charger plus de commentaires"
+		Button monBouton = new Button(this);
+		monBouton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// Téléchargement de 10 commentaires en plus
+				refreshListeCommentaires();
+			}
+		});
+		monBouton.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
+		monListView.addFooterView(monBouton);		
+		
+		// Adapter pour l'affichage des données
 		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
-		// Article concerné
+		// Chargement des commentaires
 		final String url = getIntent().getExtras().getString("URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
 		comments = CommentManager.getCommentsFromFile(this, url);
