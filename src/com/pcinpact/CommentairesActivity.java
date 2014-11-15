@@ -55,6 +55,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	ListView monListView;
 	ItemsAdapter monItemsAdapter;
 	Menu monMenu;
+	Button buttonDl10Commentaires;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,21 +65,20 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		setContentView(R.layout.commentaires);
 		setSupportProgressBarIndeterminateVisibility(false);
 
-
 		// Liste des commentaires
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		// Footer : bouton "Charger plus de commentaires"
-		Button monBouton = new Button(this);
-		monBouton.setOnClickListener(new OnClickListener() {
+		buttonDl10Commentaires = new Button(this);
+		buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// Téléchargement de 10 commentaires en plus
 				refreshListeCommentaires();
 			}
 		});
-		monBouton.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
-		monListView.addFooterView(monBouton);		
-		
+		buttonDl10Commentaires.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
+		monListView.addFooterView(buttonDl10Commentaires);
+
 		// Adapter pour l'affichage des données
 		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
@@ -96,6 +96,22 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// J'affiche le dernier des commentaires en cache ?
+				if ((firstVisibleItem + visibleItemCount) == (totalItemCount - 1)) {
+					// (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
+
+					// Chargement des préférences de l'utilisateur
+					final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+					// Téléchargement automatique en continu des commentaires ?
+					Boolean telecharger = mesPrefs.getBoolean(getString(R.string.idOptionCommentairesTelechargementContinu),
+							getResources().getBoolean(R.bool.defautOptionCommentairesTelechargementContinu));
+
+					if (telecharger) {
+						// Téléchargement de 10 commentaires en plus
+						refreshListeCommentaires();
+					}
+				}
+
 			}
 		});
 	}
@@ -149,6 +165,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 				monMenu.findItem(R.id.action_refresh).setVisible(false);
 			// On fait tourner le bouton en cercle dans le header
 			setSupportProgressBarIndeterminateVisibility(true);
+			// On indique le chargement dans le bouton du footer
+			buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
 
 			// Appel à la méthode qui va faire le boulot...
 			HtmlConnector connector = new HtmlConnector(this, this);
@@ -222,6 +240,9 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		if (monMenu != null)
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
 
+		// MàJ du bouton du footer
+		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
+
 		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(this, result);
 
 		// SSi nouveaux commentaires
@@ -256,6 +277,9 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// Affiche à nouveau l'icône dans le header
 		if (monMenu != null)
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
+
+		// MàJ du bouton du footer
+		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
 
 		// Message d'erreur, si demandé !
 		// Chargement des préférences de l'utilisateur

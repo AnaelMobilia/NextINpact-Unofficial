@@ -97,8 +97,10 @@
     <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
     <string name="optionsDeveloppement">Paramètres spéciaux</string>
     <string name="optionDebug">Activer le débuggage</string>
-    <string name="optionDebugDetail">Affiche les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
+    <string name="optionDebugDetail">Afficher les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
     <string name="optionsFermer">Fermer</string>
+    <string name="optionsCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
+    <string name="optionsCommentairesTelechargementContinu">Chargement en continu</string>
     
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
@@ -108,10 +110,12 @@
     <string name="idOptionTelechargerCommentaires">4</string>
     <string name="idOptionPremierLancementApplication">5</string>
     <string name="idOptionDebug">6</string>
+    <string name="idOptionCommentairesTelechargementContinu">7</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
     
     <!-- Commentaires -->
-    <string name="commentairesPlusDeCommentaires">Charger plus de commentaires</string>
+    <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>
+    <string name="commentairesChargement">Chargement...</string>
 </resources>

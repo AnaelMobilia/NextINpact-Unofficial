@@ -51,6 +51,11 @@
             android:key="@string/idOptionLiensDansCommentaires"
             android:summary="@string/optionActiverLiensCommentaireDetail"
             android:title="@string/optionActiverLiensCommentaire" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionCommentairesTelechargementContinu"
+            android:key="@string/idOptionCommentairesTelechargementContinu"
+            android:summary="@string/optionsCommentairesTelechargementContinuDetail"
+            android:title="@string/optionsCommentairesTelechargementContinu" />
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement" >
