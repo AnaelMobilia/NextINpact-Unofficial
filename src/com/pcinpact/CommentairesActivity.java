@@ -160,13 +160,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
 			toast.show();
 		} else {
-			// On efface le bouton rafraîchir du header
-			if (monMenu != null)
-				monMenu.findItem(R.id.action_refresh).setVisible(false);
-			// On fait tourner le bouton en cercle dans le header
-			setSupportProgressBarIndeterminateVisibility(true);
-			// On indique le chargement dans le bouton du footer
-			buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
+			// MàJ des graphismes
+			lancerAnimationTelechargement();
 
 			// Appel à la méthode qui va faire le boulot...
 			HtmlConnector connector = new HtmlConnector(this, this);
@@ -233,15 +228,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	}
 
 	protected void safeDidConnectionResult(byte[] result, int state, String tag) {
-		// On arrête la rotation du logo dans le header
-		setSupportProgressBarIndeterminateVisibility(false);
-
-		// Affiche à nouveau l'icône dans le header
-		if (monMenu != null)
-			monMenu.findItem(R.id.action_refresh).setVisible(true);
-
-		// MàJ du bouton du footer
-		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
+		// MàJ des graphismes
+		arreterAnimationTelechargement();
 
 		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(this, result);
 
@@ -271,15 +259,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	}
 
 	protected void safeDidFailWithError(String error, int state) {
-		// On arrête la rotation du logo dans le header
-		setSupportProgressBarIndeterminateVisibility(false);
-
-		// Affiche à nouveau l'icône dans le header
-		if (monMenu != null)
-			monMenu.findItem(R.id.action_refresh).setVisible(true);
-
-		// MàJ du bouton du footer
-		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
+		// MàJ des graphismes
+		arreterAnimationTelechargement();
 
 		// Message d'erreur, si demandé !
 		// Chargement des préférences de l'utilisateur
@@ -296,6 +277,36 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
 			toast.show();
 		}
+	}
+
+	/**
+	 * Lance les animations indiquant un téléchargement
+	 */
+	private void lancerAnimationTelechargement() {
+		// Lance la rotation du logo dans le header
+		setSupportProgressBarIndeterminateVisibility(true);
+		
+		// Supprime l'icône refresh dans le header
+		if (monMenu != null)
+			monMenu.findItem(R.id.action_refresh).setVisible(false);
+
+		// MàJ du bouton du footer
+		buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
+	}
+
+	/**
+	 * Arrêt les animations indiquant un téléchargement
+	 */
+	private void arreterAnimationTelechargement() {
+		// Arrêt de la rotation du logo dans le header
+		setSupportProgressBarIndeterminateVisibility(false);
+
+		// Affiche l'icône refresh dans le header
+		if (monMenu != null)
+			monMenu.findItem(R.id.action_refresh).setVisible(true);
+
+		// MàJ du bouton du footer
+		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
 	}
 
 }
