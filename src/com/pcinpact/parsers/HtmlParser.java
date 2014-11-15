@@ -89,7 +89,6 @@ public class HtmlParser {
 			TagNode spanCommentDate = actu_comm_author.getElementListByAttValue("class", "date_comm", false, true).get(0);
 			TagNode spanCommentId = actu_comm_author.getElementListByAttValue("class", "actu_comm_num", false, true).get(0);
 
-			// comment :: content
 			// Gestion des liens hypertextes (option de l'utilisateur)
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
 				if (mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires), monContext.getResources()
@@ -128,7 +127,7 @@ public class HtmlParser {
 				}
 			}
 
-			// 3. replace 'quote_bloc' div by 'xquote' tag to format citations
+			// Remplacement des class="quote_bloc" par des balises blockquote
 			for (TagNode quotes : htmlComment.getElementsByAttValue("class", "quote_bloc", true, true)) {
 				TagNode xquote = new TagNode("blockquote");
 				xquote.addChildren(quotes.getAllElementsList(false));
