@@ -351,26 +351,26 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			connector.sendRequest(article.imgURL, "GET", null, 0, null);
 		}
 
-		// Récupération des commentaires de l'article
-		// Option de l'utilisateur : gestion des commentaires
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		// Sauf souhait contraire de l'utilisateur, on télécharge les commentaires
-		if (mesPrefs.getBoolean(getString(R.string.idOptionTelechargerCommentaires),
-				getResources().getBoolean(R.bool.defautOptionTelechargerCommentaires))) {
-			for (int i = 0; i < articles.size(); i++) {
-				INpactArticleDescription article = articles.get(i);
-
-				if (fileExists(article.getID() + "_comms.html")) {
-					continue;
-				}
-
-				HtmlConnector connector = new HtmlConnector(this, this);
-				connector.state = DL_COMMS;
-				connector.tag = article.getID();
-				String data = "page=1&newsId=" + article.getID() + "&commId=0";
-				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
-			}
-		}
+//		// Récupération des commentaires de l'article
+//		// Option de l'utilisateur : gestion des commentaires
+//		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+//		// Sauf souhait contraire de l'utilisateur, on télécharge les commentaires
+//		if (mesPrefs.getBoolean(getString(R.string.idOptionTelechargerCommentaires),
+//				getResources().getBoolean(R.bool.defautOptionTelechargerCommentaires))) {
+//			for (int i = 0; i < articles.size(); i++) {
+//				INpactArticleDescription article = articles.get(i);
+//
+//				if (fileExists(article.getID() + "_comms.html")) {
+//					continue;
+//				}
+//
+//				HtmlConnector connector = new HtmlConnector(this, this);
+//				connector.state = DL_COMMS;
+//				connector.tag = article.getID();
+//				String data = "page=1&newsId=" + article.getID() + "&commId=0";
+//				connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
+//			}
+//		}
 
 		// On nettoye le cache des articles qui ne sont plus utilisés
 		// Création des variations des noms de fichiers pour les articles
