@@ -70,6 +70,8 @@ public class HtmlParser {
 	 * @return
 	 */
 	public List<INPactComment> getComments(Context monContext) {
+		// Préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 
@@ -90,7 +92,6 @@ public class HtmlParser {
 			// comment :: content
 			// Gestion des liens hypertextes (option de l'utilisateur)
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
-				SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 				if (mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires), monContext.getResources()
 						.getBoolean(R.bool.defautOptionLiensDansCommentaires))) {
 					// On laisse les liens... SAUF :
@@ -158,7 +159,9 @@ public class HtmlParser {
 	 * @return
 	 */
 	public INpactArticle getArticleContent(Context contextParent) {
-
+		// Préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(contextParent);
+		
 		TagNode article = getFirstElementByName(rootNode, "article");
 		if (article == null)
 			return null;
@@ -198,7 +201,6 @@ public class HtmlParser {
 		}
 
 		// Gestion des liens hypertextes (option de l'utilisateur)
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(contextParent);
 		if (mesPrefs.getBoolean(contextParent.getString(R.string.idOptionLiensDansArticles), contextParent.getResources()
 				.getBoolean(R.bool.defautOptionLiensDansArticles))) {
 			// On laisse les liens...
