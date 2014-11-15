@@ -20,6 +20,8 @@ package com.pcinpact.adapters;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import com.pcinpact.R;
@@ -31,8 +33,11 @@ import com.pcinpact.items.SectionItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.Html.ImageGetter;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,7 +166,27 @@ public class ItemsAdapter extends BaseAdapter {
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(ai.getID());
-				commentaire.setText(Html.fromHtml(ai.getCommentaire()));
+				// commentaire.setText(Html.fromHtml(ai.getCommentaire()));
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new ImageGetter() {
+
+					@Override
+					public Drawable getDrawable(String source) {
+						Drawable d = null;
+						try {
+							URL url = new URL(source);
+							Object o = url.getContent();
+							InputStream src = (InputStream) o;
+
+							d = Drawable.createFromStream(src, "src");
+							if (d != null) {
+								d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+							}
+						} catch (Exception e) {
+						}
+						return d;
+					}
+				}, null);
+				commentaire.setText(spannedContent);
 				// Active les liens a href
 				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
 
