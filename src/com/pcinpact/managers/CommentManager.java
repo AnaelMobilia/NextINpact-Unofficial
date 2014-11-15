@@ -71,7 +71,7 @@ public class CommentManager {
 			INPactComment commentErreur = new INPactComment();
 			commentErreur.content = "*Erreur*";
 			commentErreur.commentDate = "*Erreur*";
-			commentErreur.commentID = "0";
+			commentErreur.commentID = "#0";
 			commentErreur.author = "*Erreur*";
 			ArrayList<INPactComment> monArrayListe = new ArrayList<INPactComment>();
 			monArrayListe.add(commentErreur);
