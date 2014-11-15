@@ -179,7 +179,8 @@ public class ItemsAdapter extends BaseAdapter {
 
 							d = Drawable.createFromStream(src, "src");
 							if (d != null) {
-								d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+								// TODO #56 se reglera ici !
+								d.setBounds(0, 0, d.getIntrinsicWidth()*10, d.getIntrinsicHeight()*10);
 							}
 						} catch (Exception e) {
 						}
