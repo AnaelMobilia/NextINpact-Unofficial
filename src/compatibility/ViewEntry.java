@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,35 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.items;
+package compatibility;
 
 import com.pcinpact.models.INpactArticleDescription;
-import compatibility.ViewEntry;
 
-public class SectionItem implements Item {
-	private String titre;
+/**
+ * Reste de INpactListAdapter.java non supprimable pour le moment...
+ * @author Anael
+ *
+ */
+public class ViewEntry {
+	public String day;
+	INpactArticleDescription article;
 
-	@Override
-	public int getType() {
-		return Item.typeSection;
-	}
-	
-	public void convertOld(INpactArticleDescription uneSection)
-	{
-		titre = uneSection.day;
-	}
-	
-	public void convertOld(ViewEntry uneSection)
-	{
-		titre = uneSection.day;
-	}
-	
-
-	public String getTitre() {
-		return titre;
-	}
-
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
 }

@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,7 +161,7 @@ public class ItemsAdapter extends BaseAdapter {
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(ai.getID());
-				commentaire.setText(Aaa_to_delete_INpactListAdapter2.ViewEntry.format(ai.getCommentaire()));
+				commentaire.setText(Html.fromHtml(ai.getCommentaire()));
 				// Active les liens a href
 				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
 
