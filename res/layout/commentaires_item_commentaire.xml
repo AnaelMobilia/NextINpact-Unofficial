@@ -62,5 +62,4 @@
         android:paddingLeft="5dp"
         android:paddingRight="?android:attr/scrollbarSize"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
 </RelativeLayout>

@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,8 +160,9 @@ public class ItemsAdapter extends BaseAdapter {
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(ai.getID());
-				// TODO : faire un vrai parsage générique
 				commentaire.setText(Aaa_to_delete_INpactListAdapter2.ViewEntry.format(ai.getCommentaire()));
+				// Active les liens a href
+				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
 
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
