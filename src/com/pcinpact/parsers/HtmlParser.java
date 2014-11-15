@@ -89,6 +89,23 @@ public class HtmlParser {
 			TagNode spanCommentDate = actu_comm_author.getElementListByAttValue("class", "date_comm", false, true).get(0);
 			TagNode spanCommentId = actu_comm_author.getElementListByAttValue("class", "actu_comm_num", false, true).get(0);
 
+
+			// Mise en évidence des champs "En réponse à..."
+			for(TagNode uneReponseA : actu_comm_content.getElementsByAttValue("class", "link_reply_to", true, true))
+			{
+				// Je crée une blockquote
+				TagNode monBlockQuote = new TagNode("blockquote");
+				// Je réupère le texte du a...
+				ContentNode unContentNode = new ContentNode(uneReponseA.getText().toString());
+				// Injection dans le nouveau a
+				monBlockQuote.addChild(unContentNode);
+				
+				// J'insère mon nouveau TagNode
+				uneReponseA.getParent().insertChildBefore(uneReponseA, monBlockQuote);
+				// Je vire l'ancien
+				uneReponseA.getParent().removeChild(uneReponseA);
+			}
+			
 			// Gestion des liens hypertextes (option de l'utilisateur)
 			for (TagNode link : actu_comm_content.getElementsByName("a", true)) {
 				if (mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires), monContext.getResources()
