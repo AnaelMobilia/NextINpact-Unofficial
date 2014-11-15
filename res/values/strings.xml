@@ -85,19 +85,19 @@
 
     <!-- Vue "Options" -->
     <string name="optionsGenerales">Options de l\'application</string>
-    <string name="tailleTexte">Taille des textes</string>
-    <string name="tailleTexteDetail">Modifier la taille des textes de l\'application</string>
+    <string name="optionTailleTexte">Taille des textes</string>
+    <string name="optionTailleTexteDetail">Modifier la taille des textes de l\'application</string>
     <string name="optionsArticles">Options des articles</string>
-    <string name="activerLiensArticle">Liens hypertextes</string>
-    <string name="activerLiensArticleDetail">Activer les liens externes dans les articles</string>
+    <string name="optionActiverLiensArticle">Liens hypertextes</string>
+    <string name="optionActiverLiensArticleDetail">Activer les liens externes dans les articles</string>
     <string name="optionsCommentaires">Options des commentaires</string>
-    <string name="activerLiensCommentaire">Liens hypertextes</string>
-    <string name="activerLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
-    <string name="telechargerCommentaires">Télécharger</string>
-    <string name="telechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
+    <string name="optionActiverLiensCommentaire">Liens hypertextes</string>
+    <string name="optionActiverLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
+    <string name="optionTelechargerCommentaires">Télécharger</string>
+    <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
     <string name="optionsDeveloppement">Paramètres spéciaux</string>
-    <string name="debug">Activer le débuggage</string>
-    <string name="debugDetail">Affiche les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
+    <string name="optionDebug">Activer le débuggage</string>
+    <string name="optionDebugDetail">Affiche les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
     <string name="optionsFermer">Fermer</string>
     
     <!-- Options - ID des clefs -->
@@ -110,5 +110,8 @@
     <string name="idOptionDebug">6</string>
 
     <!-- Liste des articles -->
-    <string name="badgeAbonne">"  Abonné  "</string>
+    <string name="accueilBadgeAbonne">"  Abonné  "</string>
+    
+    <!-- Commentaires -->
+    <string name="commentairesPlusDeCommentaires">Charger plus de commentaires</string>
 </resources>

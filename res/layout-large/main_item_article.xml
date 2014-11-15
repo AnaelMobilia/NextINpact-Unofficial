@@ -46,7 +46,7 @@
         android:layout_marginRight="2dp"
         android:layout_toRightOf="@id/imageArticle"
         android:background="@layout/main_item_article_background_badge_abonne"
-        android:text="@string/badgeAbonne"
+        android:text="@string/accueilBadgeAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FFFFFF"
         android:visibility="gone" />

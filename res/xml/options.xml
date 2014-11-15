@@ -28,36 +28,36 @@
             android:entries="@array/tailleTexteLiteral"
             android:entryValues="@array/tailleTexteValeur"
             android:key="@string/idOptionZoomTexte"
-            android:summary="@string/tailleTexteDetail"
-            android:title="@string/tailleTexte" />
+            android:summary="@string/optionTailleTexteDetail"
+            android:title="@string/optionTailleTexte" />
     </PreferenceCategory>
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles" >
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"
-            android:summary="@string/activerLiensArticleDetail"
-            android:title="@string/activerLiensArticle" />
+            android:summary="@string/optionActiverLiensArticleDetail"
+            android:title="@string/optionActiverLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires">
 <!--         <CheckBoxPreference -->
 <!--             android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
 <!--             android:key="@string/idOptionTelechargerCommentaires" -->
-<!--             android:summary="@string/telechargerCommentairesDetail" -->
-<!--             android:title="@string/telechargerCommentaires" /> -->
+<!--             android:summary="@string/optionTelechargerCommentairesDetail" -->
+<!--             android:title="@string/optionTelechargerCommentaires" /> -->
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
-            android:summary="@string/activerLiensCommentaireDetail"
-            android:title="@string/activerLiensCommentaire" />
+            android:summary="@string/optionActiverLiensCommentaireDetail"
+            android:title="@string/optionActiverLiensCommentaire" />
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement" >
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionDebug"
             android:key="@string/idOptionDebug"
-            android:summary="@string/debugDetail"
-            android:title="@string/debug" />
+            android:summary="@string/optionDebugDetail"
+            android:title="@string/optionDebug" />
     </PreferenceCategory>
 </PreferenceScreen>
