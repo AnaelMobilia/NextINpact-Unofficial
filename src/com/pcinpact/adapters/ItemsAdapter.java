@@ -39,12 +39,15 @@ import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ItemsAdapter extends BaseAdapter {
 
@@ -92,10 +95,10 @@ public class ItemsAdapter extends BaseAdapter {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 		// la taille par défaut est de 16
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
-		int tailleDefaut = 16;
+		final int tailleDefaut = 16;
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte), ""
-				+ tailleDefaut));
+		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
+				"" + tailleDefaut));
 
 		if (i != null) {
 			// Section
@@ -179,8 +182,34 @@ public class ItemsAdapter extends BaseAdapter {
 
 							d = Drawable.createFromStream(src, "src");
 							if (d != null) {
-								// TODO #56 se reglera ici !
-								d.setBounds(0, 0, d.getIntrinsicWidth()*10, d.getIntrinsicHeight()*10);
+								DisplayMetrics metrics = new DisplayMetrics();
+								((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+										.getMetrics(metrics);
+
+								int monCoeff;
+								float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
+								// Si on est sur la résolution par défaut, on reste à 1
+								if (metrics.densityDpi == metrics.DENSITY_DEFAULT) {
+									monCoeff = Math.round(1 * monCoeffZoom);
+								}
+								// Sinon, on calcule le zoom à appliquer (avec un coeff 2 pour éviter les images trop petites)
+								else {
+									monCoeff = Math.round(2 * (metrics.densityDpi / metrics.DENSITY_DEFAULT) * monCoeffZoom);
+								}
+								// On évite un coeff inférieur à 1 (image non affichée !)
+								if (monCoeff < 1) {
+									monCoeff = 1;
+								}
+
+								// Debug pour Gaetan
+								CharSequence text = "densityDPI : " + metrics.densityDpi + " - monCoeff : " + monCoeff;
+								int duration = Toast.LENGTH_LONG;
+
+								Toast toast = Toast.makeText(monContext, text, duration);
+								toast.show();
+
+								// On définit la taille de l'image
+								d.setBounds(0, 0, (d.getIntrinsicWidth() * monCoeff), (d.getIntrinsicHeight() * monCoeff));
 							}
 						} catch (Exception e) {
 						}
