@@ -48,7 +48,6 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ItemsAdapter extends BaseAdapter {
 
@@ -202,13 +201,6 @@ public class ItemsAdapter extends BaseAdapter {
 								if (monCoeff < 1) {
 									monCoeff = 1;
 								}
-
-								// Debug pour Gaetan
-								CharSequence text = "densityDPI : " + metrics.densityDpi + " - monCoeff : " + monCoeff;
-								int duration = Toast.LENGTH_LONG;
-
-								Toast toast = Toast.makeText(monContext, text, duration);
-								toast.show();
 
 								// On définit la taille de l'image
 								d.setBounds(0, 0, (d.getIntrinsicWidth() * monCoeff), (d.getIntrinsicHeight() * monCoeff));
