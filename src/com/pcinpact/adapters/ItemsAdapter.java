@@ -40,6 +40,7 @@ import android.text.Html.ImageGetter;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class ItemsAdapter extends BaseAdapter {
 		// L'option selectionnée
 		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				"" + tailleDefaut));
+		float monCoeffZoomTexte = (float) tailleOptionUtilisateur / (float) tailleDefaut;
 
 		if (i != null) {
 			// Section
@@ -115,7 +117,7 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					sectionView.setTextSize(tailleOptionUtilisateur);
+					appliqueZoom(sectionView, monCoeffZoomTexte);
 				}
 
 			}
@@ -151,11 +153,11 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					titreArticle.setTextSize(tailleOptionUtilisateur);
-					heureArticle.setTextSize(tailleOptionUtilisateur);
-					sousTitreArticle.setTextSize(tailleOptionUtilisateur);
-					commentairesArticle.setTextSize(tailleOptionUtilisateur);
-					labelAbonne.setTextSize(tailleOptionUtilisateur);
+					appliqueZoom(titreArticle, monCoeffZoomTexte);
+					appliqueZoom(heureArticle, monCoeffZoomTexte);
+					appliqueZoom(sousTitreArticle, monCoeffZoomTexte);
+					appliqueZoom(commentairesArticle, monCoeffZoomTexte);
+					appliqueZoom(labelAbonne, monCoeffZoomTexte);
 				}
 			}
 			// Commentaire
@@ -223,12 +225,27 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					auteurDateCommentaire.setTextSize(tailleOptionUtilisateur);
-					numeroCommentaire.setTextSize(tailleOptionUtilisateur);
-					commentaire.setTextSize(tailleOptionUtilisateur);
+					appliqueZoom(auteurDateCommentaire, monCoeffZoomTexte);
+					appliqueZoom(numeroCommentaire, monCoeffZoomTexte);
+					appliqueZoom(commentaire, monCoeffZoomTexte);
 				}
 			}
 		}
 		return v;
+	}
+	
+	/**
+	 * Applique le zoom sur la textview (respect des proportions originales)
+	 * @param uneTextView
+	 * @param unZoom
+	 */
+	public void appliqueZoom(TextView uneTextView, float unZoom)
+	{
+		float tailleOrigine = uneTextView.getTextSize();
+		float nouvelleTaille = tailleOrigine * unZoom;
+		android.util.Log.e("NXI", "" + tailleOrigine);
+		android.util.Log.e("NXI", "" + unZoom);
+		android.util.Log.e("NXI", "" + nouvelleTaille);
+		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
 	}
 }
