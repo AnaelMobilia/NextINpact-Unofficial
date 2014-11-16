@@ -235,9 +235,6 @@ public class ItemsAdapter extends BaseAdapter {
 	{
 		float tailleOrigine = uneTextView.getTextSize();
 		float nouvelleTaille = tailleOrigine * unZoom;
-		android.util.Log.e("NXI", "" + tailleOrigine);
-		android.util.Log.e("NXI", "" + unZoom);
-		android.util.Log.e("NXI", "" + nouvelleTaille);
 		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
 	}
 }
