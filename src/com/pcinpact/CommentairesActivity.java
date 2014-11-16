@@ -127,10 +127,11 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// TreeSet : pas de doublons + tri sur l'ID
 		TreeSet<Item> mesItemsSet = new TreeSet<Item>(new Comparator<Item>() {
 			// Méthode de comparaison des objets pour leur ordonnancement
+			@Override
 			public int compare(Item a, Item b) {
 				CommentaireItem item1 = (CommentaireItem) a;
 				CommentaireItem item2 = (CommentaireItem) b;
-				return ((Integer) item1.getIDNumerique()).compareTo((Integer) item2.getIDNumerique());
+				return ((Integer) item1.getIDNumerique()).compareTo(item2.getIDNumerique());
 			}
 		});
 

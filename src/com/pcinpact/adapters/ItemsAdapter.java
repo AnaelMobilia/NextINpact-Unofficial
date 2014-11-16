@@ -190,12 +190,12 @@ public class ItemsAdapter extends BaseAdapter {
 								int monCoeff;
 								float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
 								// Si on est sur la résolution par défaut, on reste à 1
-								if (metrics.densityDpi == metrics.DENSITY_DEFAULT) {
+								if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
 									monCoeff = Math.round(1 * monCoeffZoom);
 								}
 								// Sinon, on calcule le zoom à appliquer (avec un coeff 2 pour éviter les images trop petites)
 								else {
-									monCoeff = Math.round(2 * (metrics.densityDpi / metrics.DENSITY_DEFAULT) * monCoeffZoom);
+									monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
 								}
 								// On évite un coeff inférieur à 1 (image non affichée !)
 								if (monCoeff < 1) {

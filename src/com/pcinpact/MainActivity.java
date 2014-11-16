@@ -68,7 +68,6 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
-	// INpactListAdapter adapter;
 	ItemsAdapter adapter;
 	TextView headerTextView;
 	Menu m_menu;
