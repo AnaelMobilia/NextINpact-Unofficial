@@ -17,56 +17,57 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
+ */
 -->
 <resources>
-	<!-- Action Bar -->
+
+    <!-- Action Bar -->
     <string name="action_refresh">Rafraîchir</string>
     <string name="action_overflow">Plus...</string>
     <string name="action_settings">Options</string>
     <string name="action_about">A propos</string>
-    <string name="action_comments">Commentaires</string>    
-	<string name="action_home">Accueil</string>
-    
+    <string name="action_comments">Commentaires</string>
+    <string name="action_home">Accueil</string>
+
     <!-- Ecran d'accueil -->
     <string name="app_name">NextINpact (Unofficial)</string>
     <string name="lastUpdate">"Dernière mise à jour : "</string>
-    <string name="contentDescriptionImageArticle">Illustration de l\'article</string>
+    <string name="contentDescriptionImageArticle">"Illustration de l'article"</string>
 
     <!-- Disclaimer -->
-    <string name="disclaimerContent">Cette application est développée par un lecteur (passionné) de Next INpact.
+    <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next INpact.
 			\n
-			\nLes textes, images et logos affichés dans l\'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
+			\nLes textes, images et logos affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
 			\n
 			\n
 			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
 			\n=> http://www.nextinpact.com/abonnement
 			\n
 			\n
-			\nBonne lecture !	</string>
-    <string name="chargementPasInternet">Vous n\'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion.</string>
+			\nBonne lecture !"	</string>
+    <string name="chargementPasInternet">"Vous n'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion."</string>
 
     <!-- A propos -->
-    <string name="aboutContent">NextINpact (Unofficial) est une application développée par un lecteur passionné de NextINpact !
-        \n
-        \n
-        \nSi vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
-        \nhttps://github.com/AnaelMobilia/NextINpact-Unofficial
-        \ncontrib@anael.eu
-        \n
-        \n
-        \nContributeurs de l\'application :
-        \n - Anael Mobilia (mainteneur depuis la v1.7.2)
-        \n - Guillaume Bour (contributeur v1.7.2) 
-        \n - Sami Ferhah (mainteneur de la v1 à la v1.7.1) 
-        \n
-        \n
-        \nPropriété des contenus
-        \nL\'ensemble des contenus affichés dans l\'application (textes, images et logos) sont issus du site www.nextinpact.com
-		\n
-		\nLes contenus sont la pleine propriété de leurs auteurs respectifs et en aucun cas de l\'équipe de développement de cette application !
-		\n
-		\nL\'application est développée dans le cadre d\'une licence libre GNU GPLv3 : toute personne peut accéder au code source !	</string>
+    <string name="aboutContent">"NextINpact (Unofficial) est une application développée bénévolement par un lecteur passionné de NextINpact.
+
+Si vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
+https://github.com/AnaelMobilia/NextINpact-Unofficial
+contrib@anael.eu
+
+L'application est développée dans le cadre d'une licence libre GNU GPLv3 : toute personne peut accéder au code source !
+
+
+Crédits :
+ - Anael Mobilia (mainteneur depuis la v1.7.2)
+ - Guillaume Bour (contributeur v1.7.2) 
+ - Sami Ferhah (mainteneur de la v1 à la v1.7.1) 
+
+ - L'équipe de HTMLCleaner pour leur librairie (http://htmlcleaner.sourceforge.net/)
+
+
+Propriété des contenus :
+L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com
+Les contenus sont la pleine propriété de leurs auteurs respectifs."	</string>
 
     <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
@@ -84,9 +85,9 @@
     <string name="videoVidme">Voir la vidéo sur la Vidme</string>
 
     <!-- Vue "Options" -->
-    <string name="optionsGenerales">Options de l\'application</string>
+    <string name="optionsGenerales">"Options de l'application"</string>
     <string name="optionTailleTexte">Taille des textes</string>
-    <string name="optionTailleTexteDetail">Modifier la taille des textes de l\'application</string>
+    <string name="optionTailleTexteDetail">"Modifier la taille des textes de l'application"</string>
     <string name="optionsArticles">Options des articles</string>
     <string name="optionActiverLiensArticle">Liens hypertextes</string>
     <string name="optionActiverLiensArticleDetail">Activer les liens externes dans les articles</string>
@@ -97,11 +98,11 @@
     <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string>
     <string name="optionsDeveloppement">Paramètres spéciaux</string>
     <string name="optionDebug">Activer le débuggage</string>
-    <string name="optionDebugDetail">Afficher les messages d\'erreurs (requis pour rapporter une erreur dans l\'application)</string>
+    <string name="optionDebugDetail">"Afficher les messages d'erreurs (requis pour rapporter une erreur dans l'application)"</string>
     <string name="optionsFermer">Fermer</string>
     <string name="optionsCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
     <string name="optionsCommentairesTelechargementContinu">Chargement en continu</string>
-    
+
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
     <string name="idOptionLiensDansArticles">1</string>
@@ -114,8 +115,9 @@
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
-    
+
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>
     <string name="commentairesChargement">Chargement...</string>
+
 </resources>
