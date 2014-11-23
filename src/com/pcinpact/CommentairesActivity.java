@@ -97,8 +97,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// J'affiche le dernier des commentaires en cache ?
-				if ((firstVisibleItem + visibleItemCount) == (totalItemCount - 1)) {
+				// J'affiche l'avant avant dernier des commentaires en cache ? => laisse plus de temps pour le chargement
+				if ((firstVisibleItem + visibleItemCount) == ((totalItemCount - 1)) -2) {
 					// (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
 
 					// Chargement des préférences de l'utilisateur
