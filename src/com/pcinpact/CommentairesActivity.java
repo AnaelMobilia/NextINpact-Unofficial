@@ -50,12 +50,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class CommentairesActivity extends ActionBarActivity implements IConnectable {
-	List<INPactComment> comments;
-	String articleID;
-	ListView monListView;
-	ItemsAdapter monItemsAdapter;
-	Menu monMenu;
-	Button buttonDl10Commentaires;
+	private List<INPactComment> comments;
+	private String articleID;
+	private ListView monListView;
+	private ItemsAdapter monItemsAdapter;
+	private Menu monMenu;
+	private Button buttonDl10Commentaires;
+	private Boolean isLoading = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -193,6 +194,13 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.commentaires_activity_actions, menu);
+
+		// Ticket #86 : un chargement automatique a-t-il lieu (sera lancé avant de créer le menu)
+		if (isLoading) {
+			// Je fait coincider les animations avec l'état réel
+			lancerAnimationTelechargement();
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -284,9 +292,12 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	 * Lance les animations indiquant un téléchargement
 	 */
 	private void lancerAnimationTelechargement() {
+		// J'enregistre l'état
+		isLoading = true;
+
 		// Lance la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(true);
-		
+
 		// Supprime l'icône refresh dans le header
 		if (monMenu != null)
 			monMenu.findItem(R.id.action_refresh).setVisible(false);
@@ -299,6 +310,9 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	 * Arrêt les animations indiquant un téléchargement
 	 */
 	private void arreterAnimationTelechargement() {
+		// J'enregistre l'état
+		isLoading = false;
+
 		// Arrêt de la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(false);
 
