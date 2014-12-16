@@ -464,10 +464,7 @@ public class HtmlParser {
 				notif_link = temp.getParent().getChildren().get(0);
 			}
 
-			String imgUrl = img.getAttributeByName("data-src");
-			if (imgUrl == null)
-				imgUrl = img.getAttributeByName("src");
-
+			String imgUrl = img.getAttributeByName("data-frz-src");
 			// 2014-05-20: image url is incorrectly formed (missing 'http:' at
 			// the beginning)
 			if (imgUrl.startsWith("//")) {
