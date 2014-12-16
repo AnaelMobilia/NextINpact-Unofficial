@@ -68,7 +68,11 @@ public class ArticleManager {
 		}
 	}
 
-	// Récupère en local le contenu d'un article
+	/**
+	 * La liste des articles (en local)
+	 * @param context
+	 * @return
+	 */
 	public static ArticlesWrapper getSavedArticlesWrapper(Context context) {
 		try {
 			FileInputStream fis = context.openFileInput(FILE_NAME_ARTICLES);
@@ -83,7 +87,7 @@ public class ArticleManager {
 	}
 
 	/**
-	 * Enregistre la liste des articles
+	 * Enregistre la liste des articles (en local)
 	 * 
 	 * @param context
 	 * @param wrapper
