@@ -57,6 +57,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 	private Menu monMenu;
 	private Button buttonDl10Commentaires;
 	private Boolean isLoading = false;
+	private Boolean isFinCommentaires = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,8 +98,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// J'affiche l'avant avant dernier des commentaires en cache ? => laisse plus de temps pour le chargement
-				if ((firstVisibleItem + visibleItemCount) >= ((totalItemCount - 1)) -2) {
+				// J'affiche le dernier commentaire en cache ?
+				if ((firstVisibleItem + visibleItemCount) >= ((totalItemCount - 1))) {
 					// (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
 
 					// Chargement des préférences de l'utilisateur
@@ -107,7 +108,8 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 					Boolean telecharger = mesPrefs.getBoolean(getString(R.string.idOptionCommentairesTelechargementContinu),
 							getResources().getBoolean(R.bool.defautOptionCommentairesTelechargementContinu));
 
-					if (telecharger) {
+					// Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
+					if (telecharger && !isLoading && !isFinCommentaires) {
 						// Téléchargement de 10 commentaires en plus
 						refreshListeCommentaires();
 					}
@@ -179,7 +181,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			}
 
 			// Le cast en int supprime la partie après la virgule
-			int maPage = (int) Math.floor((idDernierCommentaire / 10) + 1);
+			int maPage = (int) Math.floor((idDernierCommentaire / NextInpact.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
 			String data = "page=" + maPage + "&newsId=" + articleID;
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
@@ -255,6 +257,12 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
 		}
+
+		// Reste-t-il des commentaires à télécharger ? (chargement continu automatique)
+		if (newComments.size() < NextInpact.NB_COMMENTAIRES_PAR_PAGE) {
+			isFinCommentaires = true;
+		}
+
 	}
 
 	@Override
