@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2014 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.connection;
+package com.pcinpact.managers;
 
-public interface IConnectable {
-
-	public void didConnectionResult(byte[] result, int state, String tag);
-
-	public void didFailWithError(String error, int state);
-
+public class DownloadManager {
+/**
+ * Gère le téléchargement de pages HTML et d'images
+ */
 }

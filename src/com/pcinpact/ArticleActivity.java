@@ -34,14 +34,14 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
+import com.pcinpact.connection.Old_HtmlConnector;
+import com.pcinpact.connection.Old_IConnectable;
+import com.pcinpact.managers.Old_ArticleManager;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
 
-public class ArticleActivity extends ActionBarActivity implements IConnectable {
+public class ArticleActivity extends ActionBarActivity implements Old_IConnectable {
 	/** Called when the activity is first created. */
 
 	WebView webview;
@@ -81,7 +81,7 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 		} catch (Exception e) {
 			INpactArticleDescription article = NextInpact.getInstance(this).getArticlesWrapper().getArticle(articleID);
 
-			HtmlConnector connector = new HtmlConnector(this, this);
+			Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
 			connector.tag = article.getID();
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
 
@@ -155,7 +155,7 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 
 	protected void didConnectionResultOnUiThread(byte[] result, int state, String tag) {
 
-		ArticleManager.saveArticle(this, result, tag);
+		Old_ArticleManager.saveArticle(this, result, tag);
 
 		Intent intent = getIntent();
 		finish();

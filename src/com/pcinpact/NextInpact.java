@@ -20,7 +20,7 @@ package com.pcinpact;
 
 import android.content.Context;
 
-import com.pcinpact.managers.ArticleManager;
+import com.pcinpact.managers.Old_ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
 public class NextInpact {
@@ -48,7 +48,7 @@ public class NextInpact {
 
 	public ArticlesWrapper getArticlesWrapper() {
 		if (wrapper == null)
-			wrapper = ArticleManager.getSavedArticlesWrapper(context);
+			wrapper = Old_ArticleManager.getSavedArticlesWrapper(context);
 
 		if (wrapper == null)
 			wrapper = new ArticlesWrapper();

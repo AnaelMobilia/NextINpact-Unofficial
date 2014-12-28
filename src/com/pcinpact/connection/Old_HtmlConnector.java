@@ -34,11 +34,11 @@ import android.net.ConnectivityManager;
 
 import com.pcinpact.R;
 
-public class HtmlConnector {
+public class Old_HtmlConnector {
 
 	public static final String TAG = "WCFConnector";
 
-	private IConnectable Delegate;
+	private Old_IConnectable Delegate;
 
 	private static final int HTTP_OK = 200;
 
@@ -49,7 +49,7 @@ public class HtmlConnector {
 	public int state;
 	public String tag;
 
-	public HtmlConnector(Context context, IConnectable delegate) {
+	public Old_HtmlConnector(Context context, Old_IConnectable delegate) {
 		this.context = context;
 		this.Delegate = delegate;
 		running = true;

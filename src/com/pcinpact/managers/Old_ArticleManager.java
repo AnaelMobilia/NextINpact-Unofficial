@@ -31,7 +31,7 @@ import android.graphics.BitmapFactory;
 
 import com.pcinpact.models.ArticlesWrapper;
 
-public class ArticleManager {
+public class Old_ArticleManager {
 
 	public final static String FILE_NAME_ARTICLES = "articles";
 

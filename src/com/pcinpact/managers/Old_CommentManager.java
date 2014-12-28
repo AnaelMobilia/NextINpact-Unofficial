@@ -30,7 +30,7 @@ import android.content.Context;
 import com.pcinpact.models.INPactComment;
 import com.pcinpact.parsers.HtmlParser;
 
-public class CommentManager {
+public class Old_CommentManager {
 	/**
 	 * Charge les commentaires depuis le cache
 	 * @param context

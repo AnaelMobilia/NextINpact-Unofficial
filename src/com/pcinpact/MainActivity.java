@@ -53,18 +53,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
+import com.pcinpact.connection.Old_HtmlConnector;
+import com.pcinpact.connection.Old_IConnectable;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.managers.CommentManager;
+import com.pcinpact.managers.Old_ArticleManager;
+import com.pcinpact.managers.Old_CommentManager;
 import com.pcinpact.models.ArticlesWrapper;
 import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
 
-public class MainActivity extends ActionBarActivity implements IConnectable, OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements Old_IConnectable, OnItemClickListener {
 
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
@@ -289,7 +289,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	}
 
 	public void loadArticlesListFromServer() {
-		HtmlConnector connector = new HtmlConnector(this, this);
+		Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
 		connector.state = DL_LIST;
 		connector.sendRequest(NextInpact.NEXT_INPACT_URL, "GET", null, 0, null);
 	}
@@ -306,13 +306,13 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		NextInpact.getInstance(this).getArticlesWrapper().LastUpdate = monFormatDate.format(maDate);
 
 		NextInpact.getInstance(this).getArticlesWrapper().setArticles(articles);
-		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
+		Old_ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
 
 		loadArticles();
 
 		headerTextView.setText(getString(R.string.lastUpdate) + NextInpact.getInstance(this).getArticlesWrapper().LastUpdate);
 
-		ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
+		Old_ArticleManager.saveArticlesWrapper(this, NextInpact.getInstance(this).getArticlesWrapper());
 
 		// Récupération des contenus des articles
 		numberOfPendingArticles.set(articles.size());
@@ -326,7 +326,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				continue;
 			}
 
-			HtmlConnector connector = new HtmlConnector(this, this);
+			Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
 			connector.state = DL_ARTICLE;
 			connector.tag = article.getID();
 			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
@@ -344,7 +344,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 				continue;
 			}
 
-			HtmlConnector connector = new HtmlConnector(this, this);
+			Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
 			connector.state = DL_IMG;
 			connector.tag = article.getID();
 			connector.sendRequest(article.imgURL, "GET", null, 0, null);
@@ -388,7 +388,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 			fichiersLegitimes.add(idArticle + "_comms.html");
 		}
 		// Liste des articles -> à conserver
-		fichiersLegitimes.add(ArticleManager.FILE_NAME_ARTICLES);
+		fichiersLegitimes.add(Old_ArticleManager.FILE_NAME_ARTICLES);
 
 		// Les fichiers sur stockés en local
 		String[] SavedFiles = getApplicationContext().fileList();
@@ -447,13 +447,13 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 	// Parser appelé en cas de succès du téléchargement
 	public void didConnectionResultOnUiThread(final byte[] result, final int state, final String tag) {
 		if (state == DL_ARTICLE) {
-			ArticleManager.saveArticle(this, result, tag);
+			Old_ArticleManager.saveArticle(this, result, tag);
 			numberOfPendingArticles.decrementAndGet();
 			stopRefreshingIfNeeded();
 		}
 
 		if (state == DL_COMMS) {
-			CommentManager.saveComments(this, result, tag);
+			Old_CommentManager.saveComments(this, result, tag);
 		}
 
 		else if (state == DL_LIST) {
@@ -471,7 +471,7 @@ public class MainActivity extends ActionBarActivity implements IConnectable, OnI
 		}
 
 		else if (state == DL_IMG) {
-			ArticleManager.saveImage(this, result, tag);
+			Old_ArticleManager.saveImage(this, result, tag);
 			numberOfPendingImages.decrementAndGet();
 			stopRefreshingIfNeeded();
 		}

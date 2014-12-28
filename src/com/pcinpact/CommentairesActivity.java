@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.TreeSet;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
+import com.pcinpact.connection.Old_HtmlConnector;
+import com.pcinpact.connection.Old_IConnectable;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.managers.CommentManager;
+import com.pcinpact.managers.Old_CommentManager;
 import com.pcinpact.models.INPactComment;
 
 import android.content.Context;
@@ -49,7 +49,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class CommentairesActivity extends ActionBarActivity implements IConnectable {
+public class CommentairesActivity extends ActionBarActivity implements Old_IConnectable {
 	private List<INPactComment> comments;
 	private String articleID;
 	private ListView monListView;
@@ -88,7 +88,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// Chargement des commentaires
 		final String url = getIntent().getExtras().getString("URL");
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
-		comments = CommentManager.getCommentsFromFile(this, url);
+		comments = Old_CommentManager.getCommentsFromFile(this, url);
 
 		// Système de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -168,7 +168,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 			lancerAnimationTelechargement();
 
 			// Appel à la méthode qui va faire le boulot...
-			HtmlConnector connector = new HtmlConnector(this, this);
+			Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
 
 			// Le dernier commentaire enregistré TODO : reprendre ça lorsque le système fournissant les datas sera refait
 			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
@@ -242,7 +242,7 @@ public class CommentairesActivity extends ActionBarActivity implements IConnecta
 		// MàJ des graphismes
 		arreterAnimationTelechargement();
 
-		List<INPactComment> newComments = CommentManager.getCommentsFromBytes(this, result);
+		List<INPactComment> newComments = Old_CommentManager.getCommentsFromBytes(this, result);
 
 		// SSi nouveaux commentaires
 		if (newComments.size() != 0) {
