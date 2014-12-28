@@ -16,10 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.managers;
+package com.pcinpact.downloaders;
 
-public class DownloadManager {
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+
+public class ImageDownloader extends AsyncTask<String, Void, Bitmap>{
+
+	@Override
+	protected Bitmap doInBackground(String... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 /**
- * Gère le téléchargement de pages HTML et d'images
+ * Téléchargement des images
  */
 }
