@@ -20,9 +20,11 @@ package com.pcinpact.downloaders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 import com.pcinpact.NextInpact;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -44,11 +46,13 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	// Données sur l'image
 	private String urlImage;
 	private int typeImage;
+	private Context monContext;
 	private final WeakReference<ImageView> imageViewReference;
 
-	public ImageDownloader(ImageView imageView, int unTypeImage) {
+	public ImageDownloader(ImageView imageView, int unTypeImage, Context unContext) {
 		imageViewReference = new WeakReference<ImageView>(imageView);
 		typeImage = unTypeImage;
+		monContext = unContext;
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		// Les paramètres viennent de l'appel à execute() => [0] est une URL
 		urlImage = params[0];
 
-		// Je récupère un IS sur l'image
+		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
 
 		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
@@ -65,22 +69,33 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		File monFichier = null;
 		switch (typeImage) {
 			case IMAGE_CONTENU_ARTICLE:
-				monFichier = new File(NextInpact.PATH_IMAGES_ILLUSTRATIONS, imgName);
+				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_ILLUSTRATIONS, imgName);
 				break;
 			case IMAGE_MINIATURE_ARTICLE:
-				monFichier = new File(NextInpact.PATH_IMAGES_MINIATURES, imgName);
+				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_MINIATURES, imgName);
 				break;
 			case IMAGE_SMILEY:
-				monFichier = new File(NextInpact.PATH_IMAGES_SMILEYS, imgName);
+				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_SMILEYS, imgName);
 				break;
 		}
 
 		// Ouverture d'un fichier en écrasement
-		FileWriter monFW = null;
+		FileOutputStream monFOS = null;
 		try {
-			monFW = new FileWriter(monFichier, false);
-			monFW.write(monBAOS.toString("UTF-8"));
-			monFW.close();
+
+			// Gestion de la mise à jour de l'application depuis une ancienne version
+			try {
+				monFOS = new FileOutputStream(monFichier, false);
+			} catch (FileNotFoundException e) {
+				// Création du répertoire...
+				File leParent = new File(monFichier.getParent());
+				leParent.mkdirs();
+				// On retente la même opération
+				monFOS = new FileOutputStream(monFichier, false);
+			}
+
+			monFOS.write(monBAOS.toByteArray());
+			monFOS.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.e("ImageDownloader", "Error while saving " + urlImage, e);

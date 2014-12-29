@@ -19,7 +19,6 @@
 package com.pcinpact;
 
 import android.content.Context;
-
 import com.pcinpact.managers.Old_ArticleManager;
 import com.pcinpact.models.ArticlesWrapper;
 
@@ -29,11 +28,11 @@ public class NextInpact {
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 	// Path des miniatures des articles 
-	public final static String PATH_IMAGES_MINIATURES = "./MINIATURES/";
+	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
 	// Path des images de contenu des articles
-	public final static String PATH_IMAGES_ILLUSTRATIONS = "./ILLUSTRATIONS/";
+	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
 	// Path des smileys
-	public final static String PATH_IMAGES_SMILEYS = "./SMILEYS/";
+	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
 	static private NextInpact instance;
 
