@@ -18,8 +18,80 @@
  */
 package com.pcinpact.downloaders;
 
-public class Downloader {
+import java.io.ByteArrayOutputStream;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import android.net.http.AndroidHttpClient;
+import android.util.Log;
+
 /**
- * Gère la connexion HTTP et le téléchargement de la ressource
+ * Téléchargement des ressources
+ * 
+ * @author Anael
+ *
  */
+public class Downloader {
+
+	/**
+	 * Téléchargement d'une ressource
+	 * 
+	 * @param uneURL
+	 * @return
+	 */
+	static ByteArrayOutputStream download(String uneURL) {
+		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
+		final AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
+		final HttpGet getRequest = new HttpGet(uneURL);
+
+		try {
+			// Lancement de la requête
+			HttpResponse response = client.execute(getRequest);
+			final int statusCode = response.getStatusLine().getStatusCode();
+
+			// Gestion d'un code erreur
+			if (statusCode != HttpStatus.SC_OK) {
+				// TODO : remonter l'information à l'utilisateur #77
+				Log.e("Downloader", "Error " + statusCode + " while retrieving " + uneURL);
+				return null;
+			}
+
+			// Chargement de la réponse à la requête
+			final HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				// Taille du contenu à télécharger
+				int bufferSize = (int) entity.getContentLength();
+				// Si erreur ou inconnu, on initialise à 1024
+				if (bufferSize < 0) {
+					bufferSize = 1024;
+				}
+
+				// Je crée mon buffer
+				ByteArrayOutputStream monBAOS = new ByteArrayOutputStream(bufferSize);
+
+				try {
+					// Récupération du contenu
+					entity.writeTo(monBAOS);
+
+					// Renvoi de ce dernier
+					return monBAOS;
+				} finally {
+					// if (inputStream != null) {
+					// inputStream.close();
+					// }
+					entity.consumeContent();
+				}
+			}
+		} catch (Exception e) {
+			// Could provide a more explicit error message for IOException or IllegalStateException
+			getRequest.abort();
+			Log.e("Downloader", "Error while retrieving " + uneURL, e);
+		} finally {
+			if (client != null) {
+				client.close();
+			}
+		}
+		return null;
+	}
 }
