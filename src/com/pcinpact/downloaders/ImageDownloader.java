@@ -19,10 +19,14 @@
 package com.pcinpact.downloaders;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.ref.WeakReference;
+import com.pcinpact.NextInpact;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -32,12 +36,19 @@ import android.widget.ImageView;
  *
  */
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+	// Types d'images
+	public final static int IMAGE_MINIATURE_ARTICLE = 1;
+	public final static int IMAGE_CONTENU_ARTICLE = 2;
+	public final static int IMAGE_SMILEY = 3;
 
+	// Données sur l'image
 	private String urlImage;
+	private int typeImage;
 	private final WeakReference<ImageView> imageViewReference;
 
-	public ImageDownloader(ImageView imageView) {
+	public ImageDownloader(ImageView imageView, int unTypeImage) {
 		imageViewReference = new WeakReference<ImageView>(imageView);
+		typeImage = unTypeImage;
 	}
 
 	@Override
@@ -47,6 +58,33 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 		// Je récupère un IS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
+
+		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
+		String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1, urlImage.length()).split("\\?")[0].split("#")[0];
+
+		File monFichier = null;
+		switch (typeImage) {
+			case IMAGE_CONTENU_ARTICLE:
+				monFichier = new File(NextInpact.PATH_IMAGES_ILLUSTRATIONS, imgName);
+				break;
+			case IMAGE_MINIATURE_ARTICLE:
+				monFichier = new File(NextInpact.PATH_IMAGES_MINIATURES, imgName);
+				break;
+			case IMAGE_SMILEY:
+				monFichier = new File(NextInpact.PATH_IMAGES_SMILEYS, imgName);
+				break;
+		}
+
+		// Ouverture d'un fichier en écrasement
+		FileWriter monFW = null;
+		try {
+			monFW = new FileWriter(monFichier, false);
+			monFW.write(monBAOS.toString("UTF-8"));
+			monFW.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.e("ImageDownloader", "Error while saving " + urlImage, e);
+		}
 
 		// Je décode et renvoie le bitmap
 		return BitmapFactory.decodeByteArray(monBAOS.toByteArray(), 0, monBAOS.size());
@@ -62,9 +100,6 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 				imageView.setImageBitmap(bitmap);
 			}
 		}
-
-		// TODO : l'enregistrer sur la device + dans un système de cache
-
 	}
 
 }

@@ -28,6 +28,12 @@ public class NextInpact {
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
+	// Path des miniatures des articles 
+	public final static String PATH_IMAGES_MINIATURES = "./MINIATURES/";
+	// Path des images de contenu des articles
+	public final static String PATH_IMAGES_ILLUSTRATIONS = "./ILLUSTRATIONS/";
+	// Path des smileys
+	public final static String PATH_IMAGES_SMILEYS = "./SMILEYS/";
 
 	static private NextInpact instance;
 
