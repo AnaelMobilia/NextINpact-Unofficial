@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -124,17 +125,71 @@ public class DAO extends SQLiteOpenHelper {
 		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID, new String[] { unArticle.getID() });
 	}
 
-	
-	public ArticleItem chargerArticle(int idArticle) {
+	/**
+	 * Charger un article depuis la BDD
+	 * 
+	 * @param idArticle
+	 * @return
+	 */
+	public ArticleItem chargerArticle(String[] idArticle) {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_DATE, ARTICLE_HEURE,
+				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID, idArticle, null, null, null);
+
+		// Je vais au premier (et unique) résultat
+		monCursor.moveToNext();
 		ArticleItem monArticle = new ArticleItem();
 
-		
-		
+		monArticle.setID(monCursor.getString(0));
+		monArticle.setTitre(monCursor.getString(1));
+		monArticle.setSousTitre(monCursor.getString(2));
+		monArticle.setDatePublication(monCursor.getString(3));
+		monArticle.setHeurePublication(monCursor.getString(4));
+		monArticle.setURL(monCursor.getString(5));
+		monArticle.setURLIllustration(monCursor.getString(6));
+		monArticle.setContenu(monCursor.getString(7));
+		monArticle.setNbCommentaires(monCursor.getString(8));
+		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(9)));
+
 		return monArticle;
 	}
 
+	/**
+	 * Charger tous les articles de la BDD
+	 * 
+	 * @return
+	 */
 	public ArrayList<ArticleItem> chargerArticlesTriParDate() {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_DATE, ARTICLE_HEURE,
+				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "1");
+
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+		ArticleItem monArticle;
+		// Je passe tous les résultats
+		while (monCursor.moveToNext()) {
+			// Je remplis l'article
+			monArticle = new ArticleItem();
+			monArticle.setID(monCursor.getString(0));
+			monArticle.setTitre(monCursor.getString(1));
+			monArticle.setSousTitre(monCursor.getString(2));
+			monArticle.setDatePublication(monCursor.getString(3));
+			monArticle.setHeurePublication(monCursor.getString(4));
+			monArticle.setURL(monCursor.getString(5));
+			monArticle.setURLIllustration(monCursor.getString(6));
+			monArticle.setContenu(monCursor.getString(7));
+			monArticle.setNbCommentaires(monCursor.getString(8));
+			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(9)));
+
+			// Et l'enregistre
+			mesArticles.add(monArticle);
+		}
 
 		return mesArticles;
 	}
