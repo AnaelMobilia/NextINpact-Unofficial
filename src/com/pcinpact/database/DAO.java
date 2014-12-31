@@ -20,55 +20,122 @@ package com.pcinpact.database;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pcinpact.items.ArticleItem;
 
-public class DAO extends SQLiteOpenHelper{
+/**
+ * Abstraction de la DB sqlite
+ * 
+ * @author Anael
+ *
+ */
+public class DAO extends SQLiteOpenHelper {
+	// Version de la DB (à mettre à jour à chaque changement du schéma)
+	public static final int DB_VERSION = 1;
+	// Nom de la BDD
+	public static final String DB_NAME = "nxidb";
 
-	public DAO(Context context, String name, CursorFactory factory, int version) {
-		super(context, name, factory, version);
-		// TODO Auto-generated constructor stub
+	/**
+	 * Interfacage de la DB
+	 */
+	private static final String DB_TABLE_ARTICLES = "articles";
+	private static final String ARTICLE_ID = "id";
+	private static final String ARTICLE_TITRE = "titre";
+	private static final String ARTICLE_SOUS_TITRE = "soustitre";
+	private static final String ARTICLE_DATE = "dateart";
+	private static final String ARTICLE_HEURE = "heureart";
+	private static final String ARTICLE_URL = "url";
+	private static final String ARTICLE_ILLUSTRATION_URL = "miniatureurl";
+	private static final String ARTICLE_CONTENU = "contenu";
+	private static final String ARTICLE_NB_COMMS = "nbcomms";
+	private static final String ARTICLE_IS_ABONNE = "isabonne";
+
+	private static final String DB_TABLE_COMMENTAIRES = "commentaires";
+
+	private SQLiteDatabase maDB;
+
+	/**
+	 * Création de la connexion à la DB
+	 * 
+	 * @param context
+	 */
+	public DAO(Context context) {
+		// Je crée un lien sur la base
+		super(context, DB_NAME, null, DB_VERSION);
+		// Et l'ouvre en écriture
+		maDB = this.getWritableDatabase();
 	}
 
+	/**
+	 * Création de la DB si elle n'existe pas
+	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-		
+		String reqCreate = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY," + ARTICLE_TITRE
+				+ " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_DATE + " INTEGER NOT NULL," + ARTICLE_HEURE
+				+ " INTEGER NOT NULL," + ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU
+				+ " TEXT," + ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
+
+		db.execSQL(reqCreate);
 	}
 
+	/**
+	 * Mise à jour du schéma de la DB si le DB_VERSION ne correspond plus
+	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-		
+		// Penser à passer par chaque étape de mise à jour successivement... !
+
 	}
-	
-	public boolean enregistrerArticle(ArticleItem unArticle)
-	{
+
+	/**
+	 * Enregistre (ou MàJ) un article en DB
+	 * 
+	 * @param unArticle
+	 */
+	public void enregistrerArticle(ArticleItem unArticle) {
 		supprimerArticle(unArticle);
-		
-		return false;
+
+		ContentValues insertValues = new ContentValues();
+		insertValues.put(ARTICLE_ID, unArticle.getID());
+		insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
+		insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
+		insertValues.put(ARTICLE_DATE, unArticle.getDatePublication());
+		insertValues.put(ARTICLE_HEURE, unArticle.getHeurePublication());
+		insertValues.put(ARTICLE_URL, unArticle.getURL());
+		insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getURLIllustration());
+		insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
+		insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
+		insertValues.put(ARTICLE_IS_ABONNE, unArticle.getisAbonne());
+
+		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
 	}
-	
-	public boolean supprimerArticle(ArticleItem unArticle)
-	{
-		return false;
+
+	/**
+	 * Supprimer un article de la DB
+	 * 
+	 * @param unArticle
+	 */
+	public void supprimerArticle(ArticleItem unArticle) {
+		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID, new String[] { unArticle.getID() });
 	}
+
 	
-	public ArticleItem chargerArticle(int idArticle)
-	{
+	public ArticleItem chargerArticle(int idArticle) {
 		ArticleItem monArticle = new ArticleItem();
+
+		
 		
 		return monArticle;
 	}
-	
-	public ArrayList<ArticleItem> chargerArticlesTriParDate()
-	{
+
+	public ArrayList<ArticleItem> chargerArticlesTriParDate() {
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
-		
+
 		return mesArticles;
 	}
 
