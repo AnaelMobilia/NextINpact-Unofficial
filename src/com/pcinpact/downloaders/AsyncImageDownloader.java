@@ -98,7 +98,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			monFOS.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			Log.e("ImageDownloader", "Error while saving " + urlImage, e);
+			Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
 		}
 
 		// Je décode et renvoie le bitmap

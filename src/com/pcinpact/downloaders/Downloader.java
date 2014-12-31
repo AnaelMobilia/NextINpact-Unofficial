@@ -77,14 +77,10 @@ public class Downloader {
 					// Renvoi de ce dernier
 					return monBAOS;
 				} finally {
-					// if (inputStream != null) {
-					// inputStream.close();
-					// }
 					entity.consumeContent();
 				}
 			}
 		} catch (Exception e) {
-			// Could provide a more explicit error message for IOException or IllegalStateException
 			getRequest.abort();
 			Log.e("Downloader", "Error while retrieving " + uneURL, e);
 		} finally {
