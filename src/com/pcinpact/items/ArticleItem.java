@@ -26,10 +26,14 @@ public class ArticleItem implements Item {
 	private String titre;
 	private String sousTitre;
 	private String pathImage;
-	private boolean isAbonne;
+	private boolean isAbonne = false;
 	private String heurePublication;
 	private String nbCommentaires;
-
+	private String datePublication;
+	private String URL;
+	private String URLIllustration;
+	private String contenu;
+	
 	@Override
 	public int getType() {
 		return Item.typeArticle;
@@ -104,6 +108,38 @@ public class ArticleItem implements Item {
 
 	public void setNbCommentaires(String nbCommentaires) {
 		this.nbCommentaires = nbCommentaires;
+	}
+
+	public String getDatePublication() {
+		return datePublication;
+	}
+
+	public void setDatePublication(String datePublication) {
+		this.datePublication = datePublication;
+	}
+
+	public String getURL() {
+		return URL;
+	}
+
+	public void setURL(String uRL) {
+		URL = uRL;
+	}
+
+	public String getURLIllustration() {
+		return URLIllustration;
+	}
+
+	public void setURLIllustration(String uRLIllustration) {
+		URLIllustration = uRLIllustration;
+	}
+
+	public String getContenu() {
+		return contenu;
+	}
+
+	public void setContenu(String contenu) {
+		this.contenu = contenu;
 	}
 
 }
