@@ -20,7 +20,7 @@ package com.pcinpact.downloaders;
 
 import android.os.AsyncTask;
 
-public class HTMLDownloader extends AsyncTask<String, Void, String> {
+public class AsyncHTMLDownloader extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... params) {

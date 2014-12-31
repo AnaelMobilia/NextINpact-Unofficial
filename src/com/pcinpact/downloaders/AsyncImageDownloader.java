@@ -37,7 +37,7 @@ import android.widget.ImageView;
  * @author Anael
  *
  */
-public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	// Types d'images
 	public final static int IMAGE_MINIATURE_ARTICLE = 1;
 	public final static int IMAGE_CONTENU_ARTICLE = 2;
@@ -49,7 +49,7 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	private Context monContext;
 	private final WeakReference<ImageView> imageViewReference;
 
-	public ImageDownloader(ImageView imageView, int unTypeImage, Context unContext) {
+	public AsyncImageDownloader(ImageView imageView, int unTypeImage, Context unContext) {
 		imageViewReference = new WeakReference<ImageView>(imageView);
 		typeImage = unTypeImage;
 		monContext = unContext;
