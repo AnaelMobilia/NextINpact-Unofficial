@@ -18,16 +18,44 @@
  */
 package com.pcinpact.downloaders;
 
+import java.io.ByteArrayOutputStream;
+import android.content.Context;
 import android.os.AsyncTask;
 
-public class AsyncHTMLDownloader extends AsyncTask<String, Void, String> {
+/**
+ * Téléchargement du code HTML
+ * @author Anael
+ *
+ */
+public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
+	// Types de code
+	public final static int HTML_LISTE_ARTICLES = 1;
+	public final static int HTML_ARTICLE = 2;
+	public final static int HTML_COMMENTAIRES = 3;
+
+	// Données sur l'image
+	private int typeHTML;
+	private Context monContext;
+
+	public AsyncHTMLDownloader(int unTypeHTML, Context unContext) {
+		typeHTML = unTypeHTML;
+		monContext = unContext;
+	}
 
 	@Override
-	protected String doInBackground(String... params) {
-		// TODO Auto-generated method stub
+	protected Void doInBackground(String... params) {
+		// Les paramètres viennent de l'appel à execute() => [0] est une URL
+		String urlPage = params[0];
+
+		// Je récupère un OS sur l'image
+		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
+		
+		// TODO : PARSER
+		
+		// TODO : SAVE VIA CONTENT PROVIDER SUR LA DB
+		
 		return null;
+
 	}
-/**
- * Téléchargement du code html
- */
+
 }
