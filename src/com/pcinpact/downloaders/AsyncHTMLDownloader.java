@@ -25,6 +25,8 @@ import java.util.List;
 
 import com.pcinpact.database.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.models.INPactComment;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
@@ -74,13 +76,13 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 			switch (typeHTML) {
 				case HTML_LISTE_ARTICLES:
 					// Je passe par le parser
-					List<INpactArticleDescription> oldList = monParser.getArticles();
+					List<INpactArticleDescription> oldListArticles = monParser.getArticles();
 
 					// Traitement du résultat
-					for (INpactArticleDescription unOldItem : oldList) {
+					for (INpactArticleDescription unOldArticle : oldListArticles) {
 						ArticleItem monArticle = new ArticleItem();
 						// Compatibilité
-						monArticle.convertOld(unOldItem);
+						monArticle.convertOld(unOldArticle);
 
 						// J'enregistre l'information
 						monDAO.enregistrerArticle(monArticle);
@@ -102,14 +104,23 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 					break;
 
 				case HTML_COMMENTAIRES:
-					monParser.getComments(monContext);
-					// TODO : traiter l'info
+					// Je passe par le parser
+					List<INPactComment> oldListCommentaires = monParser.getComments(monContext);
+
+					// Traitement du résultat
+					for (INPactComment unOldCommentaire : oldListCommentaires) {
+						CommentaireItem monCommentaire = new CommentaireItem();
+						// Compatibilité
+						monCommentaire.convertOld(unOldCommentaire);
+
+						// J'enregistre l'information
+						monDAO.enregistrerCommentaire(monCommentaire);
+					}
 					break;
 			}
 
-			monParser.getArticles();
 		} catch (IOException e) {
-			Log.e("AsyncHTMLDownloader", "Error while sending to parser", e);
+			Log.e("AsyncHTMLDownloader", "Error while playing with parser", e);
 		}
 
 		return null;
