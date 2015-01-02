@@ -53,6 +53,8 @@ public class ArticleItem implements Item {
 		}
 		heurePublication = unArticle.date;
 		nbCommentaires = unArticle.numberOfComs;
+		URL = unArticle.getUrl();
+		URLIllustration = unArticle.imgURL;
 	}
 	
 	public void convertOld(INpactArticle unArticle) {
