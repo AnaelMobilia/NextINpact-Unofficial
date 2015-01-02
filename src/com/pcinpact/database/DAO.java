@@ -94,7 +94,7 @@ public class DAO extends SQLiteOpenHelper {
 		String reqCreateCommentaires = "CREATE TABLE " + DB_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL,"
 				+ COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + DB_TABLE_ARTICLES + "(" + ARTICLE_ID + "),"
 				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_DATE_HEURE + " TEXT," + COMMENTAIRE_CONTENU + " TEXT,"
-				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + ");";
+				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + "));";
 		;
 		db.execSQL(reqCreateCommentaires);
 	}
