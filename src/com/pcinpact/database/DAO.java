@@ -225,7 +225,7 @@ public class DAO extends SQLiteOpenHelper {
 
 		ContentValues insertValues = new ContentValues();
 		insertValues.put(COMMENTAIRE_ID_ARTICLE, unCommentaire.getArticleID());
-		insertValues.put(COMMENTAIRE_ID, unCommentaire.getID());
+		insertValues.put(COMMENTAIRE_ID, unCommentaire.getIDNumerique());
 		insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
 		insertValues.put(COMMENTAIRE_DATE_HEURE, unCommentaire.getDatePublication());
 		insertValues.put(COMMENTAIRE_CONTENU, unCommentaire.getCommentaire());
