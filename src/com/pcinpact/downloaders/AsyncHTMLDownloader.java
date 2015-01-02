@@ -21,7 +21,13 @@ package com.pcinpact.downloaders;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.pcinpact.database.DAO;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.models.INpactArticle;
+import com.pcinpact.models.INpactArticleDescription;
 import com.pcinpact.parsers.HtmlParser;
 
 import android.content.Context;
@@ -43,10 +49,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 	// Données sur l'image
 	private int typeHTML;
 	private Context monContext;
+	private DAO monDAO;
 
-	public AsyncHTMLDownloader(int unTypeHTML, Context unContext) {
+	public AsyncHTMLDownloader(int unTypeHTML, Context unContext, DAO unDAO) {
 		typeHTML = unTypeHTML;
 		monContext = unContext;
+		monDAO = unDAO;
 	}
 
 	@Override
@@ -57,7 +65,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
 
-		// TODO : PARSER
 		// Compatibilité : je convertis mon BAOS vers un IS (requis par le parser actuel)
 		ByteArrayInputStream monBAIS = new ByteArrayInputStream(monBAOS.toByteArray());
 
@@ -67,13 +74,34 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 			switch (typeHTML) {
 				case HTML_LISTE_ARTICLES:
-					monParser.getArticles();
-					// TODO : traiter l'info
+					// Je passe par le parser
+					List<INpactArticleDescription> oldList = monParser.getArticles();
+
+					// Traitement du résultat
+					for (INpactArticleDescription unOldItem : oldList) {
+						ArticleItem monArticle = new ArticleItem();
+						// Compatibilité
+						monArticle.convertOld(unOldItem);
+
+						// J'enregistre l'information
+						monDAO.enregistrerArticle(monArticle);
+					}
 					break;
+
 				case HTML_ARTICLE:
-					monParser.getArticleContent(monContext);
-					// TODO : traiter l'info
+					// Je passe par le parser
+					INpactArticle unOldItem = monParser.getArticleContent(monContext);
+
+					// Traitement du résultat
+					ArticleItem monArticle = new ArticleItem();
+					// Compatibilité
+					monArticle.convertOld(unOldItem);
+
+					// J'enregistre l'information
+					monDAO.enregistrerArticle(monArticle);
+
 					break;
+
 				case HTML_COMMENTAIRES:
 					monParser.getComments(monContext);
 					// TODO : traiter l'info
