@@ -51,7 +51,9 @@ public class ArticleItem implements Item {
 			// VS un ancien cache qui ne connaitrait pas l'attribut isAbonne => null pointer exception
 			isAbonne = false;
 		}
+		// TODO : c'est pas bien joli...
 		heurePublication = unArticle.date;
+		datePublication = unArticle.date;
 		nbCommentaires = unArticle.numberOfComs;
 		URL = unArticle.getUrl();
 		URLIllustration = unArticle.imgURL;
