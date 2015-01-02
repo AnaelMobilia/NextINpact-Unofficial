@@ -18,6 +18,7 @@
  */
 package com.pcinpact.items;
 
+import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 
 public class ArticleItem implements Item {
@@ -52,6 +53,11 @@ public class ArticleItem implements Item {
 		}
 		heurePublication = unArticle.date;
 		nbCommentaires = unArticle.numberOfComs;
+	}
+	
+	public void convertOld(INpactArticle unArticle) {
+		titre = unArticle.Title;
+		contenu = unArticle.Content;
 	}
 
 	public String getID() {
