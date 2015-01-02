@@ -169,6 +169,9 @@ public class DAO extends SQLiteOpenHelper {
 		monArticle.setNbCommentaires(monCursor.getString(8));
 		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(9)));
 
+		// Fermeture du curseur
+		monCursor.close();
+		
 		return monArticle;
 	}
 
@@ -205,6 +208,9 @@ public class DAO extends SQLiteOpenHelper {
 			// Et l'enregistre
 			mesArticles.add(monArticle);
 		}
+
+		// Fermeture du curseur
+		monCursor.close();
 
 		return mesArticles;
 	}
@@ -263,6 +269,9 @@ public class DAO extends SQLiteOpenHelper {
 		monCommentaire.setDatePublication(monCursor.getString(3));
 		monCommentaire.setCommentaire(monCursor.getString(4));
 
+		// Fermeture du curseur
+		monCursor.close();
+		
 		return monCommentaire;
 	}
 
@@ -296,6 +305,8 @@ public class DAO extends SQLiteOpenHelper {
 			// Et l'enregistre
 			mesCommentaires.add(monCommentaire);
 		}
+		// Fermeture du curseur
+		monCursor.close();
 
 		return mesCommentaires;
 	}
