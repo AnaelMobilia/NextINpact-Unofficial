@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -23,6 +23,7 @@ import com.pcinpact.models.INPactComment;
 public class CommentaireItem implements Item {
 
 	private String ID;
+	private String articleID;
 	private String auteur;
 	private String commentaire;
 	private String datePublication;
@@ -53,6 +54,14 @@ public class CommentaireItem implements Item {
 		return ID;
 	}
 
+	public String getArticleID() {
+		return articleID;
+	}
+
+	public void setArticleID(String articleID) {
+		this.articleID = articleID;
+	}
+	
 	public void setID(String iD) {
 		ID = iD;
 	}
