@@ -18,12 +18,19 @@
  */
 package com.pcinpact.downloaders;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import com.pcinpact.parsers.HtmlParser;
+
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * Téléchargement du code HTML
+ * 
  * @author Anael
  *
  */
@@ -49,13 +56,35 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
-		
+
 		// TODO : PARSER
-		
-		// TODO : SAVE VIA CONTENT PROVIDER SUR LA DB
-		
+		// Compatibilité : je convertis mon BAOS vers un IS (requis par le parser actuel)
+		ByteArrayInputStream monBAIS = new ByteArrayInputStream(monBAOS.toByteArray());
+
+		try {
+			// J'ouvre une instance du parser
+			HtmlParser monParser = new HtmlParser(monBAIS);
+
+			switch (typeHTML) {
+				case HTML_LISTE_ARTICLES:
+					monParser.getArticles();
+					// TODO : traiter l'info
+					break;
+				case HTML_ARTICLE:
+					monParser.getArticleContent(monContext);
+					// TODO : traiter l'info
+					break;
+				case HTML_COMMENTAIRES:
+					monParser.getComments(monContext);
+					// TODO : traiter l'info
+					break;
+			}
+
+			monParser.getArticles();
+		} catch (IOException e) {
+			Log.e("AsyncHTMLDownloader", "Error while sending to parser", e);
+		}
+
 		return null;
-
 	}
-
 }
