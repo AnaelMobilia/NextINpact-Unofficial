@@ -27,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
 
 /**
  * Abstraction de la DB sqlite
@@ -136,7 +137,7 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param unArticle
 	 */
 	public void supprimerArticle(ArticleItem unArticle) {
-		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID, new String[] { unArticle.getID() });
+		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID + "=?", new String[] { unArticle.getID() });
 	}
 
 	/**
@@ -151,7 +152,7 @@ public class DAO extends SQLiteOpenHelper {
 				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID, idArticle, null, null, null);
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idArticle, null, null, null);
 
 		// Je vais au premier (et unique) résultat
 		monCursor.moveToNext();
@@ -206,6 +207,97 @@ public class DAO extends SQLiteOpenHelper {
 		}
 
 		return mesArticles;
+	}
+
+	/**
+	 * Enregistre (ou MàJ) un commentaire en DB
+	 * 
+	 * @param unCommentaire
+	 */
+	public void enregistrerCommentaire(CommentaireItem unCommentaire) {
+		supprimerCommentaire(unCommentaire);
+
+		ContentValues insertValues = new ContentValues();
+		insertValues.put(COMMENTAIRE_ID_ARTICLE, unCommentaire.getArticleID());
+		insertValues.put(COMMENTAIRE_ID, unCommentaire.getID());
+		insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
+		insertValues.put(COMMENTAIRE_DATE_HEURE, unCommentaire.getDatePublication());
+		insertValues.put(COMMENTAIRE_CONTENU, unCommentaire.getCommentaire());
+
+		maDB.insert(DB_TABLE_COMMENTAIRES, null, insertValues);
+	}
+
+	/**
+	 * Supprimer un commentaire de la DB
+	 * 
+	 * @param unCommentaire
+	 */
+	public void supprimerCommentaire(CommentaireItem unCommentaire) {
+		String[] mesParams = { unCommentaire.getArticleID(), unCommentaire.getID() };
+
+		maDB.delete(DB_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID + "=?", mesParams);
+	}
+
+	/**
+	 * Charger un commentaire depuis la BDD
+	 * 
+	 * @param idArticleEtCommentaire
+	 * @return
+	 */
+	public CommentaireItem chargerCommentaire(String[] idArticleEtCommentaire) {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_DATE_HEURE,
+				COMMENTAIRE_CONTENU };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID
+				+ "=?", idArticleEtCommentaire, null, null, null);
+
+		// Je vais au premier (et unique) résultat
+		monCursor.moveToNext();
+		CommentaireItem monCommentaire = new CommentaireItem();
+
+		monCommentaire.setArticleID(monCursor.getString(0));
+		monCommentaire.setID(monCursor.getString(1));
+		monCommentaire.setAuteur(monCursor.getString(2));
+		monCommentaire.setDatePublication(monCursor.getString(3));
+		monCommentaire.setCommentaire(monCursor.getString(4));
+
+		return monCommentaire;
+	}
+
+	/**
+	 * Charger tous les commentaires d'un article
+	 * 
+	 * @param articleID
+	 * @return
+	 */
+	public ArrayList<CommentaireItem> chargerCommentairesTriParDate(String[] articleID) {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_DATE_HEURE,
+				COMMENTAIRE_CONTENU };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?", articleID, null, null,
+				"1");
+
+		ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
+		CommentaireItem monCommentaire;
+		// Je passe tous les résultats
+		while (monCursor.moveToNext()) {
+			// Je remplis l'article
+			monCommentaire = new CommentaireItem();
+			monCommentaire.setArticleID(monCursor.getString(0));
+			monCommentaire.setID(monCursor.getString(1));
+			monCommentaire.setAuteur(monCursor.getString(2));
+			monCommentaire.setDatePublication(monCursor.getString(3));
+			monCommentaire.setCommentaire(monCursor.getString(4));
+
+			// Et l'enregistre
+			mesCommentaires.add(monCommentaire);
+		}
+
+		return mesCommentaires;
 	}
 
 }
