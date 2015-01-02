@@ -56,6 +56,11 @@ public class DAO extends SQLiteOpenHelper {
 	private static final String ARTICLE_IS_ABONNE = "isabonne";
 
 	private static final String DB_TABLE_COMMENTAIRES = "commentaires";
+	private static final String COMMENTAIRE_ID = "id";
+	private static final String COMMENTAIRE_ID_ARTICLE = "idarticle";
+	private static final String COMMENTAIRE_AUTEUR = "auteur";
+	private static final String COMMENTAIRE_DATE_HEURE = "dateheure";
+	private static final String COMMENTAIRE_CONTENU = "contenu";
 
 	private SQLiteDatabase maDB;
 
@@ -76,12 +81,21 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String reqCreate = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY," + ARTICLE_TITRE
-				+ " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_DATE + " INTEGER NOT NULL," + ARTICLE_HEURE
-				+ " INTEGER NOT NULL," + ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU
-				+ " TEXT," + ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
+		// Table des articles
+		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
+				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_DATE + " INTEGER NOT NULL,"
+				+ ARTICLE_HEURE + " INTEGER NOT NULL," + ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT,"
+				+ ARTICLE_CONTENU + " TEXT," + ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
 
-		db.execSQL(reqCreate);
+		db.execSQL(reqCreateArticles);
+
+		// Table des commentaires
+		String reqCreateCommentaires = "CREATE TABLE " + DB_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL,"
+				+ COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + DB_TABLE_ARTICLES + "(" + ARTICLE_ID + ")"
+				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_DATE_HEURE + " TEXT," + COMMENTAIRE_CONTENU + " TEXT,"
+				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + ");";
+		;
+		db.execSQL(reqCreateCommentaires);
 	}
 
 	/**
