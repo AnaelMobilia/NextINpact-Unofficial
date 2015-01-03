@@ -21,11 +21,14 @@ package com.pcinpact.downloaders;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.pcinpact.database.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.Item;
 import com.pcinpact.models.INPactComment;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
@@ -41,25 +44,32 @@ import android.util.Log;
  * @author Anael
  *
  */
-public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
+public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>> {
 	// Types de code
 	public final static int HTML_LISTE_ARTICLES = 1;
 	public final static int HTML_ARTICLE = 2;
 	public final static int HTML_COMMENTAIRES = 3;
 
-	// Données sur l'image
+	// Type de ressource
 	private int typeHTML;
+	// Contexte parent
 	private Context monContext;
+	// Accès sur la DB
 	private DAO monDAO;
+	// Callback : parent + ref
+	RefreshDisplayInterface monParent;
+	UUID monUUID;
 
-	public AsyncHTMLDownloader(int unTypeHTML, Context unContext, DAO unDAO) {
+	public AsyncHTMLDownloader(int unTypeHTML, Context unContext, DAO unDAO, UUID unUUID, RefreshDisplayInterface parent) {
 		typeHTML = unTypeHTML;
 		monContext = unContext;
 		monDAO = unDAO;
+		monUUID = unUUID;
+		monParent = parent;
 	}
 
 	@Override
-	protected Void doInBackground(String... params) {
+	protected ArrayList<Item> doInBackground(String... params) {
 		// Les paramètres viennent de l'appel à execute() => [0] est une URL
 		String urlPage = params[0];
 
@@ -68,6 +78,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 		// Compatibilité : je convertis mon BAOS vers un IS (requis par le parser actuel)
 		ByteArrayInputStream monBAIS = new ByteArrayInputStream(monBAOS.toByteArray());
+
+		// Retour
+		ArrayList<Item> mesItems = new ArrayList<Item>();
 
 		try {
 			// J'ouvre une instance du parser
@@ -86,6 +99,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 						// J'enregistre l'information
 						monDAO.enregistrerArticle(monArticle);
+						// Et la stocke pour le retour
+						mesItems.add(monArticle);
 					}
 					break;
 
@@ -100,6 +115,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 					// J'enregistre l'information
 					monDAO.enregistrerArticle(monArticle);
+					// Et la stocke pour le retour
+					mesItems.add(monArticle);
 
 					break;
 
@@ -115,6 +132,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 
 						// J'enregistre l'information
 						monDAO.enregistrerCommentaire(monCommentaire);
+						// Et la stocke pour le retour
+						mesItems.add(monCommentaire);
 					}
 					break;
 			}
@@ -123,6 +142,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, Void> {
 			Log.e("AsyncHTMLDownloader", "Error while playing with parser", e);
 		}
 
-		return null;
+		return mesItems;
+	}
+
+	@Override
+	protected void onPostExecute(ArrayList<Item> result) {
+		monParent.downloadHTMLFini(monUUID, result);
 	}
 }

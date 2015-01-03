@@ -22,14 +22,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.lang.ref.WeakReference;
+import java.util.UUID;
 import com.pcinpact.NextInpact;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
 /**
  * Téléchargement asynchrone d'images
@@ -43,22 +42,24 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	public final static int IMAGE_CONTENU_ARTICLE = 2;
 	public final static int IMAGE_SMILEY = 3;
 
-	// Données sur l'image
-	private String urlImage;
+	// Type de ressource
 	private int typeImage;
+	// Contexte parent
 	private Context monContext;
-	private final WeakReference<ImageView> imageViewReference;
+	// Callback : parent + ref
+	RefreshDisplayInterface monParent;
+	UUID monUUID;
 
-	public AsyncImageDownloader(ImageView imageView, int unTypeImage, Context unContext) {
-		imageViewReference = new WeakReference<ImageView>(imageView);
+	public AsyncImageDownloader(int unTypeImage, Context unContext, UUID unUUID, RefreshDisplayInterface parent) {
 		typeImage = unTypeImage;
 		monContext = unContext;
+		monUUID = unUUID;
+		monParent = parent;
 	}
 
 	@Override
 	protected Bitmap doInBackground(String... params) {
-		// Les paramètres viennent de l'appel à execute() => [0] est une URL
-		urlImage = params[0];
+		String urlImage = params[0];
 
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
@@ -108,13 +109,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	@Override
 	// Post exécution
 	protected void onPostExecute(Bitmap bitmap) {
-		// J'affiche l'image dans son imageView
-		if (imageViewReference != null) {
-			ImageView imageView = imageViewReference.get();
-			if (imageView != null) {
-				imageView.setImageBitmap(bitmap);
-			}
-		}
+		monParent.downloadImageFini(monUUID, bitmap);
 	}
 
 }
