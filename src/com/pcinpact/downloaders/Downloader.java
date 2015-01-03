@@ -40,7 +40,7 @@ public class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	static ByteArrayOutputStream download(String uneURL) {
+	public static ByteArrayOutputStream download(String uneURL) {
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
 		final AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
 		final HttpGet getRequest = new HttpGet(uneURL);
