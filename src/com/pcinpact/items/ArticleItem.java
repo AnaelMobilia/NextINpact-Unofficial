@@ -30,7 +30,6 @@ public class ArticleItem implements Item {
 	private String ID;
 	private String titre;
 	private String sousTitre;
-	private String pathImage;
 	private boolean isAbonne = false;
 	private String nbCommentaires;
 	private String URL;
@@ -59,7 +58,6 @@ public class ArticleItem implements Item {
 		ID = unArticle.getID();
 		titre = unArticle.title;
 		sousTitre = unArticle.subTitle;
-		pathImage = unArticle.imgURL;
 		try {
 			isAbonne = unArticle.isAbonne;
 		} catch (Exception e) {
@@ -100,14 +98,6 @@ public class ArticleItem implements Item {
 
 	public void setSousTitre(String sousTitre) {
 		this.sousTitre = sousTitre;
-	}
-
-	public String getPathImage() {
-		return pathImage;
-	}
-
-	public void setPathImage(String pathImage) {
-		this.pathImage = pathImage;
 	}
 
 	public boolean isAbonne() {
