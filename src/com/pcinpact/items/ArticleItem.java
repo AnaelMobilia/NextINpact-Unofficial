@@ -18,6 +18,10 @@
  */
 package com.pcinpact.items;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 
@@ -28,16 +32,27 @@ public class ArticleItem implements Item {
 	private String sousTitre;
 	private String pathImage;
 	private boolean isAbonne = false;
-	private String heurePublication;
 	private String nbCommentaires;
-	private String datePublication;
 	private String URL;
 	private String URLIllustration;
 	private String contenu;
-	
+	private long timeStampPublication;
+
 	@Override
 	public int getType() {
 		return Item.typeArticle;
+	}
+
+	/**
+	 * Heure et minute de la publication sous forme textuelle
+	 * @return
+	 */
+	public String getHeureMinutePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+		return dfm.format(maDate);
 	}
 
 	public void convertOld(INpactArticleDescription unArticle) {
@@ -52,13 +67,12 @@ public class ArticleItem implements Item {
 			isAbonne = false;
 		}
 		// TODO : c'est pas bien joli...
-		heurePublication = unArticle.date;
-		datePublication = unArticle.date;
+		timeStampPublication = Long.valueOf(unArticle.date);
 		nbCommentaires = unArticle.numberOfComs;
 		URL = unArticle.getUrl();
 		URLIllustration = unArticle.imgURL;
 	}
-	
+
 	public void convertOld(INpactArticle unArticle) {
 		titre = unArticle.Title;
 		contenu = unArticle.Content;
@@ -96,20 +110,12 @@ public class ArticleItem implements Item {
 		this.pathImage = pathImage;
 	}
 
-	public boolean getisAbonne() {
+	public boolean isAbonne() {
 		return isAbonne;
 	}
 
 	public void setAbonne(boolean isAbonne) {
 		this.isAbonne = isAbonne;
-	}
-
-	public String getHeurePublication() {
-		return heurePublication;
-	}
-
-	public void setHeurePublication(String heurePublication) {
-		this.heurePublication = heurePublication;
 	}
 
 	public String getNbCommentaires() {
@@ -118,14 +124,6 @@ public class ArticleItem implements Item {
 
 	public void setNbCommentaires(String nbCommentaires) {
 		this.nbCommentaires = nbCommentaires;
-	}
-
-	public String getDatePublication() {
-		return datePublication;
-	}
-
-	public void setDatePublication(String datePublication) {
-		this.datePublication = datePublication;
 	}
 
 	public String getURL() {
@@ -150,6 +148,14 @@ public class ArticleItem implements Item {
 
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
+	}
+
+	public long getTimeStampPublication() {
+		return timeStampPublication;
+	}
+
+	public void setTimeStampPublication(long timeStampPublication) {
+		this.timeStampPublication = timeStampPublication;
 	}
 
 }

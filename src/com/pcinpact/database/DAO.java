@@ -48,8 +48,7 @@ public class DAO extends SQLiteOpenHelper {
 	private static final String ARTICLE_ID = "id";
 	private static final String ARTICLE_TITRE = "titre";
 	private static final String ARTICLE_SOUS_TITRE = "soustitre";
-	private static final String ARTICLE_DATE = "dateart";
-	private static final String ARTICLE_HEURE = "heureart";
+	private static final String ARTICLE_TIMESTAMP = "timestamp";
 	private static final String ARTICLE_URL = "url";
 	private static final String ARTICLE_ILLUSTRATION_URL = "miniatureurl";
 	private static final String ARTICLE_CONTENU = "contenu";
@@ -84,9 +83,9 @@ public class DAO extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		// Table des articles
 		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
-				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_DATE + " INTEGER NOT NULL,"
-				+ ARTICLE_HEURE + " INTEGER NOT NULL," + ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT,"
-				+ ARTICLE_CONTENU + " TEXT," + ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
+				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
+				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
+				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
 
 		db.execSQL(reqCreateArticles);
 
@@ -120,13 +119,12 @@ public class DAO extends SQLiteOpenHelper {
 		insertValues.put(ARTICLE_ID, unArticle.getID());
 		insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
 		insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
-		insertValues.put(ARTICLE_DATE, unArticle.getDatePublication());
-		insertValues.put(ARTICLE_HEURE, unArticle.getHeurePublication());
+		insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
 		insertValues.put(ARTICLE_URL, unArticle.getURL());
 		insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getURLIllustration());
 		insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
 		insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
-		insertValues.put(ARTICLE_IS_ABONNE, unArticle.getisAbonne());
+		insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
 
 		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
 	}
@@ -148,7 +146,7 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public ArticleItem chargerArticle(String[] idArticle) {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_DATE, ARTICLE_HEURE,
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP,
 				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
@@ -161,17 +159,16 @@ public class DAO extends SQLiteOpenHelper {
 		monArticle.setID(monCursor.getString(0));
 		monArticle.setTitre(monCursor.getString(1));
 		monArticle.setSousTitre(monCursor.getString(2));
-		monArticle.setDatePublication(monCursor.getString(3));
-		monArticle.setHeurePublication(monCursor.getString(4));
-		monArticle.setURL(monCursor.getString(5));
-		monArticle.setURLIllustration(monCursor.getString(6));
-		monArticle.setContenu(monCursor.getString(7));
-		monArticle.setNbCommentaires(monCursor.getString(8));
-		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(9)));
+		monArticle.setTimeStampPublication(monCursor.getLong(4));
+		monArticle.setURL(monCursor.getString(4));
+		monArticle.setURLIllustration(monCursor.getString(5));
+		monArticle.setContenu(monCursor.getString(6));
+		monArticle.setNbCommentaires(monCursor.getString(7));
+		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
 
 		// Fermeture du curseur
 		monCursor.close();
-		
+
 		return monArticle;
 	}
 
@@ -182,7 +179,7 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public ArrayList<ArticleItem> chargerArticlesTriParDate() {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_DATE, ARTICLE_HEURE,
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP,
 				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
@@ -197,13 +194,12 @@ public class DAO extends SQLiteOpenHelper {
 			monArticle.setID(monCursor.getString(0));
 			monArticle.setTitre(monCursor.getString(1));
 			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setDatePublication(monCursor.getString(3));
-			monArticle.setHeurePublication(monCursor.getString(4));
-			monArticle.setURL(monCursor.getString(5));
-			monArticle.setURLIllustration(monCursor.getString(6));
-			monArticle.setContenu(monCursor.getString(7));
-			monArticle.setNbCommentaires(monCursor.getString(8));
-			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(9)));
+			monArticle.setTimeStampPublication(monCursor.getLong(4));
+			monArticle.setURL(monCursor.getString(4));
+			monArticle.setURLIllustration(monCursor.getString(5));
+			monArticle.setContenu(monCursor.getString(6));
+			monArticle.setNbCommentaires(monCursor.getString(7));
+			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -271,7 +267,7 @@ public class DAO extends SQLiteOpenHelper {
 
 		// Fermeture du curseur
 		monCursor.close();
-		
+
 		return monCommentaire;
 	}
 

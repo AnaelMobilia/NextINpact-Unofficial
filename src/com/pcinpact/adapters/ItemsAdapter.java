@@ -132,12 +132,12 @@ public class ItemsAdapter extends BaseAdapter {
 				final TextView commentairesArticle = (TextView) v.findViewById(R.id.commentairesArticle);
 
 				// Gestion du badge abonné
-				if (ai.getisAbonne()) {
+				if (ai.isAbonne()) {
 					labelAbonne.setVisibility(View.VISIBLE);
 				}
 				// Remplissage des textview
 				titreArticle.setText(ai.getTitre());
-				heureArticle.setText(ai.getHeurePublication());
+				heureArticle.setText(ai.getHeureMinutePublication());
 				sousTitreArticle.setText(ai.getSousTitre());
 				commentairesArticle.setText(ai.getNbCommentaires());
 				// Gestion de l'image
