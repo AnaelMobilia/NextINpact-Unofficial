@@ -27,7 +27,7 @@ import com.pcinpact.models.INPactComment;
 
 public class CommentaireItem implements Item {
 
-	private String ID;
+	private int ID;
 	// TODO #98
 	private int articleID = 0;
 	private String auteur;
@@ -48,7 +48,8 @@ public class CommentaireItem implements Item {
 	}
 
 	public void convertOld(INPactComment unCommentaire) {
-		ID = unCommentaire.commentID;
+		// Le premier commentaire est un # dans l'ancien parser
+		ID = Integer.valueOf(unCommentaire.commentID.substring(1));
 		auteur = unCommentaire.author;
 		commentaire = unCommentaire.content;
 		timeStampPublication = Long.valueOf(unCommentaire.commentDate);
@@ -59,12 +60,7 @@ public class CommentaireItem implements Item {
 		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
 	
-	public int getIDNumerique()
-	{
-		return Integer.valueOf(this.getID().substring(1));
-	}
-	
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
@@ -76,7 +72,7 @@ public class CommentaireItem implements Item {
 		this.articleID = articleID;
 	}
 	
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 

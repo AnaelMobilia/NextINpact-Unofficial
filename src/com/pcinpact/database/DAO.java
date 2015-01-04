@@ -59,7 +59,7 @@ public class DAO extends SQLiteOpenHelper {
 	private static final String COMMENTAIRE_ID = "id";
 	private static final String COMMENTAIRE_ID_ARTICLE = "idarticle";
 	private static final String COMMENTAIRE_AUTEUR = "auteur";
-	private static final String COMMENTAIRE_DATE_HEURE = "dateheure";
+	private static final String COMMENTAIRE_TIMESTAMP = "timestamp";
 	private static final String COMMENTAIRE_CONTENU = "contenu";
 
 	private SQLiteDatabase maDB;
@@ -92,7 +92,7 @@ public class DAO extends SQLiteOpenHelper {
 		// Table des commentaires
 		String reqCreateCommentaires = "CREATE TABLE " + DB_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL,"
 				+ COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + DB_TABLE_ARTICLES + "(" + ARTICLE_ID + "),"
-				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_DATE_HEURE + " TEXT," + COMMENTAIRE_CONTENU + " TEXT,"
+				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_TIMESTAMP + " INTEGER," + COMMENTAIRE_CONTENU + " TEXT,"
 				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + "));";
 		;
 		db.execSQL(reqCreateCommentaires);
@@ -221,9 +221,9 @@ public class DAO extends SQLiteOpenHelper {
 
 		ContentValues insertValues = new ContentValues();
 		insertValues.put(COMMENTAIRE_ID_ARTICLE, unCommentaire.getArticleID());
-		insertValues.put(COMMENTAIRE_ID, unCommentaire.getIDNumerique());
+		insertValues.put(COMMENTAIRE_ID, unCommentaire.getID());
 		insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
-		insertValues.put(COMMENTAIRE_DATE_HEURE, unCommentaire.getDatePublication());
+		insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimeStampPublication());
 		insertValues.put(COMMENTAIRE_CONTENU, unCommentaire.getCommentaire());
 
 		maDB.insert(DB_TABLE_COMMENTAIRES, null, insertValues);
@@ -235,7 +235,7 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param unCommentaire
 	 */
 	public void supprimerCommentaire(CommentaireItem unCommentaire) {
-		String[] mesParams = { unCommentaire.getArticleID(), unCommentaire.getID() };
+		String[] mesParams = { String.valueOf(unCommentaire.getArticleID()), String.valueOf(unCommentaire.getID()) };
 
 		maDB.delete(DB_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID + "=?", mesParams);
 	}
@@ -248,7 +248,7 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public CommentaireItem chargerCommentaire(String[] idArticleEtCommentaire) {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_DATE_HEURE,
+		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
 
 		// Requête sur la DB
@@ -259,10 +259,10 @@ public class DAO extends SQLiteOpenHelper {
 		monCursor.moveToNext();
 		CommentaireItem monCommentaire = new CommentaireItem();
 
-		monCommentaire.setArticleID(monCursor.getString(0));
-		monCommentaire.setID(monCursor.getString(1));
+		monCommentaire.setArticleID(monCursor.getInt(0));
+		monCommentaire.setID(monCursor.getInt(1));
 		monCommentaire.setAuteur(monCursor.getString(2));
-		monCommentaire.setDatePublication(monCursor.getString(3));
+		monCommentaire.setTimeStampPublication(monCursor.getLong(3));
 		monCommentaire.setCommentaire(monCursor.getString(4));
 
 		// Fermeture du curseur
@@ -279,7 +279,7 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public ArrayList<CommentaireItem> chargerCommentairesTriParDate(String[] articleID) {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_DATE_HEURE,
+		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
 
 		// Requête sur la DB
@@ -292,10 +292,10 @@ public class DAO extends SQLiteOpenHelper {
 		while (monCursor.moveToNext()) {
 			// Je remplis l'article
 			monCommentaire = new CommentaireItem();
-			monCommentaire.setArticleID(monCursor.getString(0));
-			monCommentaire.setID(monCursor.getString(1));
+			monCommentaire.setArticleID(monCursor.getInt(0));
+			monCommentaire.setID(monCursor.getInt(1));
 			monCommentaire.setAuteur(monCursor.getString(2));
-			monCommentaire.setDatePublication(monCursor.getString(3));
+			monCommentaire.setTimeStampPublication(monCursor.getLong(3));
 			monCommentaire.setCommentaire(monCursor.getString(4));
 
 			// Et l'enregistre
