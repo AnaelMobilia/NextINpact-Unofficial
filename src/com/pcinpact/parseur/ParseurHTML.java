@@ -244,7 +244,6 @@ public class ParseurHTML {
 
 			// ID de l'article
 			monCommentaireItem.setArticleID(idArticle);
-			;
 
 			// Auteur
 			Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
