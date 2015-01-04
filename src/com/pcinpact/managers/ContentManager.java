@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,7 +18,27 @@
  */
 package com.pcinpact.managers;
 
-public class ContentManager {
+import java.util.ArrayList;
+import java.util.UUID;
+
+import android.graphics.Bitmap;
+
+import com.pcinpact.downloaders.RefreshDisplayInterface;
+import com.pcinpact.items.Item;
+
+public class ContentManager implements RefreshDisplayInterface{
+
+	@Override
+	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+		// TODO Auto-generated method stub
+		
+	}
 /**
  * Recoit les demandes de fichiers HTML et d'images.
  * Sait les fournir depuis le cache ou sinon lance un DL par le downloadManager
