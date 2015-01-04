@@ -28,8 +28,7 @@ import com.pcinpact.models.INPactComment;
 public class CommentaireItem implements Item {
 
 	private int ID;
-	// TODO #98
-	private int articleID = 0;
+	private int articleID;
 	private String auteur;
 	private String commentaire;
 	private long timeStampPublication;
