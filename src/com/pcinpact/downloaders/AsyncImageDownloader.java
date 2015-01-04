@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -42,25 +42,27 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	public final static int IMAGE_CONTENU_ARTICLE = 2;
 	public final static int IMAGE_SMILEY = 3;
 
-	// Type de ressource
-	private int typeImage;
 	// Contexte parent
 	private Context monContext;
 	// Callback : parent + ref
 	RefreshDisplayInterface monParent;
 	UUID monUUID;
 
-	public AsyncImageDownloader(int unTypeImage, Context unContext, UUID unUUID, RefreshDisplayInterface parent) {
-		typeImage = unTypeImage;
+	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent) {
 		monContext = unContext;
-		monUUID = unUUID;
 		monParent = parent;
 	}
 
 	@Override
 	protected Bitmap doInBackground(String... params) {
+		// URL de l'image
 		String urlImage = params[0];
-
+		// Type d'image
+		int typeImage = Integer.valueOf(params[1]);
+		// UUID
+		monUUID = UUID.fromString(params[3]);
+		
+		
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
 

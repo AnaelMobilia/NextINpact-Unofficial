@@ -41,8 +41,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	public final static int HTML_ARTICLE = 2;
 	public final static int HTML_COMMENTAIRES = 3;
 
-	// Type de ressource
-	private int typeHTML;
 	// Contexte parent
 	private Context monContext;
 	// Accès sur la DB
@@ -51,11 +49,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	RefreshDisplayInterface monParent;
 	UUID monUUID;
 
-	public AsyncHTMLDownloader(int unTypeHTML, Context unContext, DAO unDAO, UUID unUUID, RefreshDisplayInterface parent) {
-		typeHTML = unTypeHTML;
+	public AsyncHTMLDownloader(Context unContext, DAO unDAO, RefreshDisplayInterface parent) {
 		monContext = unContext;
 		monDAO = unDAO;
-		monUUID = unUUID;
 		monParent = parent;
 	}
 
@@ -63,6 +59,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	protected ArrayList<Item> doInBackground(String... params) {
 		// Les paramètres viennent de l'appel à execute() => [0] est une URL
 		String urlPage = params[0];
+		// [1] est le type d'action
+		int typeHTML = Integer.valueOf(params[1]);
+		// [2] est l'UUID de la requête
+		monUUID = UUID.fromString(params[2]);
 
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
