@@ -135,7 +135,7 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param unArticle
 	 */
 	public void supprimerArticle(ArticleItem unArticle) {
-		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID + "=?", new String[] { unArticle.getID() });
+		maDB.delete(DB_TABLE_ARTICLES, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getID()) });
 	}
 
 	/**
@@ -156,14 +156,14 @@ public class DAO extends SQLiteOpenHelper {
 		monCursor.moveToNext();
 		ArticleItem monArticle = new ArticleItem();
 
-		monArticle.setID(monCursor.getString(0));
+		monArticle.setID(monCursor.getInt(0));
 		monArticle.setTitre(monCursor.getString(1));
 		monArticle.setSousTitre(monCursor.getString(2));
 		monArticle.setTimeStampPublication(monCursor.getLong(4));
 		monArticle.setURL(monCursor.getString(4));
 		monArticle.setURLIllustration(monCursor.getString(5));
 		monArticle.setContenu(monCursor.getString(6));
-		monArticle.setNbCommentaires(monCursor.getString(7));
+		monArticle.setNbCommentaires(monCursor.getInt(7));
 		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
 
 		// Fermeture du curseur
@@ -191,14 +191,14 @@ public class DAO extends SQLiteOpenHelper {
 		while (monCursor.moveToNext()) {
 			// Je remplis l'article
 			monArticle = new ArticleItem();
-			monArticle.setID(monCursor.getString(0));
+			monArticle.setID(monCursor.getInt(0));
 			monArticle.setTitre(monCursor.getString(1));
 			monArticle.setSousTitre(monCursor.getString(2));
 			monArticle.setTimeStampPublication(monCursor.getLong(4));
 			monArticle.setURL(monCursor.getString(4));
 			monArticle.setURLIllustration(monCursor.getString(5));
 			monArticle.setContenu(monCursor.getString(6));
-			monArticle.setNbCommentaires(monCursor.getString(7));
+			monArticle.setNbCommentaires(monCursor.getInt(7));
 			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
 
 			// Et l'enregistre

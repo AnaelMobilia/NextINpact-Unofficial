@@ -27,11 +27,11 @@ import com.pcinpact.models.INpactArticleDescription;
 
 public class ArticleItem implements Item {
 
-	private String ID;
+	private int ID;
 	private String titre;
 	private String sousTitre;
 	private boolean isAbonne = false;
-	private String nbCommentaires;
+	private int nbCommentaires;
 	private String URL;
 	private String URLIllustration;
 	private String contenu;
@@ -55,7 +55,7 @@ public class ArticleItem implements Item {
 	}
 
 	public void convertOld(INpactArticleDescription unArticle) {
-		ID = unArticle.getID();
+		ID = Integer.valueOf(unArticle.getID());
 		titre = unArticle.title;
 		sousTitre = unArticle.subTitle;
 		try {
@@ -66,7 +66,7 @@ public class ArticleItem implements Item {
 		}
 		// TODO : c'est pas bien joli...
 		timeStampPublication = Long.valueOf(unArticle.date);
-		nbCommentaires = unArticle.numberOfComs;
+		nbCommentaires = Integer.valueOf(unArticle.numberOfComs);
 		URL = unArticle.getUrl();
 		URLIllustration = unArticle.imgURL;
 	}
@@ -76,11 +76,11 @@ public class ArticleItem implements Item {
 		contenu = unArticle.Content;
 	}
 
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -108,11 +108,11 @@ public class ArticleItem implements Item {
 		this.isAbonne = isAbonne;
 	}
 
-	public String getNbCommentaires() {
+	public int getNbCommentaires() {
 		return nbCommentaires;
 	}
 
-	public void setNbCommentaires(String nbCommentaires) {
+	public void setNbCommentaires(int nbCommentaires) {
 		this.nbCommentaires = nbCommentaires;
 	}
 
