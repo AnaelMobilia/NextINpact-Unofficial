@@ -261,6 +261,10 @@ public class ParseurHTML {
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(input);
 
+		// ID de l'article concerné
+		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
+		int idArticle = Integer.valueOf(refArticle.attr("data-relnews"));
+		
 		// Les commentaires
 		Elements lesCommentaires = pageNXI
 				.select("div[class=actu_comm]");
@@ -271,7 +275,7 @@ public class ParseurHTML {
 			monCommentaireItem = new CommentaireItem();
 
 			// ID de l'article
-//			monCommentaireItem.setArticleID(idArticle);;
+			monCommentaireItem.setArticleID(idArticle);;
 			
 			// Auteur
 			Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
