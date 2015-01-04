@@ -18,25 +18,16 @@
  */
 package com.pcinpact.downloaders;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import com.pcinpact.database.DAO;
-import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.models.INPactComment;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.Old_HtmlParser;
+import com.pcinpact.parseur.ParseurHTML;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 /**
  * Téléchargement du code HTML
@@ -75,73 +66,37 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
-
-		// Compatibilité : je convertis mon BAOS vers un IS (requis par le parser actuel)
-		ByteArrayInputStream monBAIS = new ByteArrayInputStream(monBAOS.toByteArray());
+		// Je le converti en String pour la suite...
+		String monInput = monBAOS.toString();
 
 		// Retour
 		ArrayList<Item> mesItems = new ArrayList<Item>();
 
-		try {
-			// J'ouvre une instance du parser
-			Old_HtmlParser monParser = new Old_HtmlParser(monBAIS);
+		// J'ouvre une instance du parser
+		ParseurHTML monParser = new ParseurHTML(monContext);
 
-			switch (typeHTML) {
-				case HTML_LISTE_ARTICLES:
-					// Je passe par le parser
-					List<INpactArticleDescription> oldListArticles = monParser.getArticles();
+		switch (typeHTML) {
+			case HTML_LISTE_ARTICLES:
+				// Je passe par le parser
+				mesItems.addAll(monParser.getListeArticles(monInput));
 
-					// Traitement du résultat
-					for (INpactArticleDescription unOldArticle : oldListArticles) {
-						ArticleItem monArticle = new ArticleItem();
-						// Compatibilité
-						monArticle.convertOld(unOldArticle);
+				break;
 
-						// J'enregistre l'information
-						monDAO.enregistrerArticle(monArticle);
-						// Et la stocke pour le retour
-						mesItems.add(monArticle);
-					}
-					break;
+			case HTML_ARTICLE:
+				// Je passe par le parser
+				mesItems.add(monParser.getArticle(monInput));
 
-				case HTML_ARTICLE:
-					// Je passe par le parser
-					INpactArticle unOldItem = monParser.getArticleContent(monContext);
+				break;
 
-					// Traitement du résultat
-					ArticleItem monArticle = new ArticleItem();
-					// Compatibilité
-					monArticle.convertOld(unOldItem);
-
-					// J'enregistre l'information
-					monDAO.enregistrerArticle(monArticle);
-					// Et la stocke pour le retour
-					mesItems.add(monArticle);
-
-					break;
-
-				case HTML_COMMENTAIRES:
-					// Je passe par le parser
-					List<INPactComment> oldListCommentaires = monParser.getComments(monContext);
-
-					// Traitement du résultat
-					for (INPactComment unOldCommentaire : oldListCommentaires) {
-						CommentaireItem monCommentaire = new CommentaireItem();
-						// Compatibilité
-						monCommentaire.convertOld(unOldCommentaire);
-
-						// J'enregistre l'information
-						monDAO.enregistrerCommentaire(monCommentaire);
-						// Et la stocke pour le retour
-						mesItems.add(monCommentaire);
-					}
-					break;
-			}
-
-		} catch (IOException e) {
-			Log.e("AsyncHTMLDownloader", "Error while playing with parser", e);
+			case HTML_COMMENTAIRES:
+				// Je passe par le parser
+				mesItems.addAll(monParser.getCommentaires(monInput));
+				break;
 		}
 
+		// TODO : store in DB
+
+		
 		return mesItems;
 	}
 
