@@ -48,6 +48,7 @@ public class ParseurHTML {
 
 	/**
 	 * Parse la liste des articles
+	 * 
 	 * @param monInput
 	 * @return
 	 */
@@ -58,8 +59,7 @@ public class ParseurHTML {
 		Document pageNXI = Jsoup.parse(monInput);
 
 		// Les articles
-		Elements lesArticles = pageNXI
-				.select("article[data-acturowid][data-datepubli]");
+		Elements lesArticles = pageNXI.select("article[data-acturowid][data-datepubli]");
 
 		ArticleItem monArticleItem;
 		// Pour chaque article
@@ -85,15 +85,13 @@ public class ParseurHTML {
 			monArticleItem.setTitre(url.text());
 
 			// Sous titre
-			Element sousTitre = unArticle.select("span[class=soustitre]")
-					.get(0);
+			Element sousTitre = unArticle.select("span[class=soustitre]").get(0);
 			// Je supprime le "- " en début du sous titre
 			String monSousTitre = sousTitre.text().substring(1);
 			monArticleItem.setSousTitre(monSousTitre);
 
 			// Nombre de commentaires
-			Element commentaires = unArticle.select("span[class=nbcomment]")
-					.get(0);
+			Element commentaires = unArticle.select("span[class=nbcomment]").get(0);
 			monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
 
 			// Statut abonné
@@ -114,6 +112,7 @@ public class ParseurHTML {
 
 	/**
 	 * Parse le contenu d'un article (retour en texte)
+	 * 
 	 * @param monArticleItem
 	 * @return
 	 */
@@ -123,7 +122,7 @@ public class ParseurHTML {
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
-		
+
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImages = lArticle.select("a[href] > img");
 		// Pour chaque image
@@ -143,9 +142,8 @@ public class ParseurHTML {
 			// URL du lecteur
 			String urlLecteur = uneIframe.attr("src");
 			// ID de la vidéo
-			String idVideo = urlLecteur.substring(
-					urlLecteur.lastIndexOf("/") + 1, urlLecteur.length())
-					.split("\\?")[0].split("#")[0];
+			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1, urlLecteur.length()).split("\\?")[0]
+					.split("#")[0];
 
 			// Ma substitution
 			Element monRemplacement = new Element(Tag.valueOf("div"), "");
@@ -154,79 +152,50 @@ public class ParseurHTML {
 			// Liste de lecture Youtube
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
 				// Recalcul de l'ID de la vidéo (cas particulier)
-				idVideo = urlLecteur.substring(
-						urlLecteur.lastIndexOf("list=") + 5,
-						urlLecteur.length()).split("\\?")[0].split("#")[0];
-				monRemplacement
-						.html("<a href=\"http://www.youtube.com/playlist?list="
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
-								+ contextParent
-										.getString(R.string.videosYouTube)
-								+ "</p></a>");
+				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5, urlLecteur.length()).split("\\?")[0]
+						.split("#")[0];
+				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videosYouTube) + "</p></a>");
 
 			}
 			// Youtube
 			else if (urlLecteur.startsWith("//www.youtube.com/embed/")
-					|| urlLecteur
-							.startsWith("//www.youtube-nocookie.com/embed/")) {
-				monRemplacement
-						.html("<a href=\"http://www.youtube.com/watch?v="
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
-								+ contextParent
-										.getString(R.string.videoYouTube)
-								+ "</p></a>");
+					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
+				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoYouTube) + "</p></a>");
 
 			}
 			// Dailymotion
-			else if (urlLecteur
-					.startsWith("//www.dailymotion.com/embed/video/")) {
-				monRemplacement
-						.html("<a href=\"http://www.dailymotion.com/video/"
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /><br /><p>"
-								+ contextParent
-										.getString(R.string.videoDailymotion)
-								+ "</p></a>");
+			else if (urlLecteur.startsWith("//www.dailymotion.com/embed/video/")) {
+				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoDailymotion) + "</p></a>");
 			}
 			// Vimeo
 			else if (urlLecteur.startsWith("//player.vimeo.com/video/")) {
-				monRemplacement
-						.html("<a href=\"http://www.vimeo.com/"
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /><br /><p>"
-								+ contextParent.getString(R.string.videoVimeo)
-								+ "</p></a>");
+				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoVimeo) + "</p></a>");
 			}
 			// Videos.gouv.fr
-			else if (urlLecteur
-					.startsWith("http://static.videos.gouv.fr/player/video/")) {
-				monRemplacement
-						.html("<a href=\"http://static.videos.gouv.fr/player/video/"
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /><br /><p>"
-								+ contextParent.getString(R.string.videoGouvFr)
-								+ "</p></a>");
+			else if (urlLecteur.startsWith("http://static.videos.gouv.fr/player/video/")) {
+				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoGouvFr) + "</p></a>");
 			}
 			// Vidme
 			else if (urlLecteur.startsWith("https://vid.me")) {
-				monRemplacement
-						.html("<a href=\"https://vid.me/"
-								+ idVideo
-								+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /><br /><p>"
-								+ contextParent.getString(R.string.videoVidme)
-								+ "</p></a>");
+				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoVidme) + "</p></a>");
 			}
 			// Déchet
 			else {
-				monRemplacement
-						.html("<a href=\""
-								+ uneIframe.absUrl("src")
-								+ "\"><img src=\"file:///android_res/drawable/video_non_supporte.png\" /><br /><p>"
-								+ contextParent
-										.getString(R.string.videoNonSupporte)
-								+ "</p></a>");
+				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
+						+ "\"><img src=\"file:///android_res/drawable/video_non_supporte.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoNonSupporte) + "</p></a>");
 			}
 
 			// Je remplace l'iframe par mon contenu
@@ -244,13 +213,13 @@ public class ParseurHTML {
 		// Mon objet
 		ArticleItem monArticleItem = new ArticleItem();
 		monArticleItem.setContenu(lArticle.toString());
-		
+
 		return monArticleItem;
 	}
 
-	
 	/**
 	 * Parse les commentaires
+	 * 
 	 * @param idArticle id de l'article concerné
 	 * @param numPage numéro de page
 	 * @return
@@ -264,10 +233,9 @@ public class ParseurHTML {
 		// ID de l'article concerné
 		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
 		int idArticle = Integer.valueOf(refArticle.attr("data-relnews"));
-		
+
 		// Les commentaires
-		Elements lesCommentaires = pageNXI
-				.select("div[class=actu_comm]");
+		Elements lesCommentaires = pageNXI.select("div[class=actu_comm]");
 
 		CommentaireItem monCommentaireItem;
 		// Pour chaque commentaire
@@ -275,12 +243,13 @@ public class ParseurHTML {
 			monCommentaireItem = new CommentaireItem();
 
 			// ID de l'article
-			monCommentaireItem.setArticleID(idArticle);;
-			
+			monCommentaireItem.setArticleID(idArticle);
+			;
+
 			// Auteur
 			Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
 			monCommentaireItem.setAuteur(monAuteur.text());
-			
+
 			// Date
 			Element maDate = unCommentaire.select("span[class=date_comm]").get(0);
 			String laDate = maDate.text();
@@ -291,18 +260,17 @@ public class ParseurHTML {
 			// Le premier caractère est un "#"
 			String lID = monID.text().substring(1);
 			monCommentaireItem.setID(Integer.valueOf(lID));
-			
-			// Contenu
 
+			// Contenu
 			// Supprimer les liens internes (<a> => <div>)
 			// "En réponse à ...", "... à écrit"
 			Elements lesLiensInternes = unCommentaire.select("a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
 			lesLiensInternes.tagName("div");
-			
-			//Blockquote
+
+			// Blockquote
 			Elements lesCitations = unCommentaire.select("div[class=link_reply_to], div[class=quote_bloc]");
 			lesCitations.tagName("blockquote");
-			
+
 			// Gestion des URL relatives
 			Elements lesLiens = unCommentaire.select("a[href]");
 			// Pour chaque lien
@@ -310,7 +278,7 @@ public class ParseurHTML {
 				// Assignation de son URL absolue
 				unLien.attr("href", unLien.absUrl("href"));
 			}
-			
+
 			// Et je le stocke
 			mesCommentairesItem.add(monCommentaireItem);
 		}
@@ -325,8 +293,7 @@ public class ParseurHTML {
 	 * @return
 	 */
 	private long convertToTimeStamp(String uneDate, String unFormatDate) {
-		DateFormat dfm = new SimpleDateFormat(unFormatDate,
-				Locale.getDefault());
+		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {
 			// Récupération du timestamp
