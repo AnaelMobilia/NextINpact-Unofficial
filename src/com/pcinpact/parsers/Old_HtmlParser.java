@@ -43,18 +43,18 @@ import com.pcinpact.models.INPactComment;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 
-public class HtmlParser {
+public class Old_HtmlParser {
 	TagNode rootNode;
 	HtmlCleaner cleaner;
 	SimpleHtmlSerializer htmlSerializer;
 
-	public HtmlParser(URL htmlPage) throws IOException {
+	public Old_HtmlParser(URL htmlPage) throws IOException {
 
 		cleaner = new HtmlCleaner();
 		rootNode = cleaner.clean(htmlPage);
 	}
 
-	public HtmlParser(InputStream htmlPage) throws IOException {
+	public Old_HtmlParser(InputStream htmlPage) throws IOException {
 		cleaner = new HtmlCleaner();
 		// Nettoie la page
 		rootNode = cleaner.clean(htmlPage);

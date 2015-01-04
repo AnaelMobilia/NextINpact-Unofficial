@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -134,7 +134,7 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 			public int compare(Item a, Item b) {
 				CommentaireItem item1 = (CommentaireItem) a;
 				CommentaireItem item2 = (CommentaireItem) b;
-				return ((Integer) item1.getIDNumerique()).compareTo(item2.getIDNumerique());
+				return ((Integer) item1.getID()).compareTo(item2.getID());
 			}
 		});
 
@@ -177,7 +177,7 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 			// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
 			if (mesItems.size() > 0) {
 				CommentaireItem lastCommentaire = (CommentaireItem) mesItems.get(mesItems.size() - 1);
-				idDernierCommentaire = lastCommentaire.getIDNumerique();
+				idDernierCommentaire = lastCommentaire.getID();
 			}
 
 			// Le cast en int supprime la partie après la virgule

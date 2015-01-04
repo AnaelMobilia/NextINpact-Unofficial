@@ -18,52 +18,60 @@
  */
 package com.pcinpact.items;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import com.pcinpact.models.INPactComment;
 
 public class CommentaireItem implements Item {
 
-	private String ID;
-	// TODO #98
-	private String articleID = "0";
+	private int ID;
+	private int articleID;
 	private String auteur;
 	private String commentaire;
-	private String datePublication;
+	private long timeStampPublication;
 
 	@Override
 	public int getType() {
 		return Item.typeCommentaire;
 	}
+	
+	public String getFullDatePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat("le dd/MM/yyyy à HH:mm:ss", Locale.getDefault());
+
+		return dfm.format(maDate);
+	}
 
 	public void convertOld(INPactComment unCommentaire) {
-		ID = unCommentaire.commentID;
+		// Le premier commentaire est un # dans l'ancien parser
+		ID = Integer.valueOf(unCommentaire.commentID.substring(1));
 		auteur = unCommentaire.author;
 		commentaire = unCommentaire.content;
-		datePublication = unCommentaire.commentDate;
+		timeStampPublication = Long.valueOf(unCommentaire.commentDate);
 	}
 
 	public String getAuteurDateCommentaire()
 	{
-		return this.getAuteur() + " " + this.getDatePublication();
+		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
 	
-	public int getIDNumerique()
-	{
-		return Integer.valueOf(this.getID().substring(1));
-	}
-	
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public String getArticleID() {
+	public int getArticleID() {
 		return articleID;
 	}
 
-	public void setArticleID(String articleID) {
+	public void setArticleID(int articleID) {
 		this.articleID = articleID;
 	}
 	
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -83,12 +91,12 @@ public class CommentaireItem implements Item {
 		this.commentaire = commentaire;
 	}
 
-	public String getDatePublication() {
-		return datePublication;
+	public long getTimeStampPublication() {
+		return timeStampPublication;
 	}
 
-	public void setDatePublication(String datePublication) {
-		this.datePublication = datePublication;
+	public void setTimeStampPublication(long timeStampPublication) {
+		this.timeStampPublication = timeStampPublication;
 	}
 
 }

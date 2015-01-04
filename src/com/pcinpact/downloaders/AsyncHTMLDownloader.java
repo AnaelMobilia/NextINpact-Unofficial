@@ -32,7 +32,7 @@ import com.pcinpact.items.Item;
 import com.pcinpact.models.INPactComment;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
+import com.pcinpact.parsers.Old_HtmlParser;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -84,7 +84,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 		try {
 			// J'ouvre une instance du parser
-			HtmlParser monParser = new HtmlParser(monBAIS);
+			Old_HtmlParser monParser = new Old_HtmlParser(monBAIS);
 
 			switch (typeHTML) {
 				case HTML_LISTE_ARTICLES:

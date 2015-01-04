@@ -18,33 +18,46 @@
  */
 package com.pcinpact.items;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
 
 public class ArticleItem implements Item {
 
-	private String ID;
+	private int ID;
 	private String titre;
 	private String sousTitre;
-	private String pathImage;
 	private boolean isAbonne = false;
-	private String heurePublication;
-	private String nbCommentaires;
-	private String datePublication;
+	private int nbCommentaires;
 	private String URL;
 	private String URLIllustration;
 	private String contenu;
-	
+	private long timeStampPublication;
+
 	@Override
 	public int getType() {
 		return Item.typeArticle;
 	}
 
+	/**
+	 * Heure et minute de la publication sous forme textuelle
+	 * @return
+	 */
+	public String getHeureMinutePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+		return dfm.format(maDate);
+	}
+
 	public void convertOld(INpactArticleDescription unArticle) {
-		ID = unArticle.getID();
+		ID = Integer.valueOf(unArticle.getID());
 		titre = unArticle.title;
 		sousTitre = unArticle.subTitle;
-		pathImage = unArticle.imgURL;
 		try {
 			isAbonne = unArticle.isAbonne;
 		} catch (Exception e) {
@@ -52,23 +65,22 @@ public class ArticleItem implements Item {
 			isAbonne = false;
 		}
 		// TODO : c'est pas bien joli...
-		heurePublication = unArticle.date;
-		datePublication = unArticle.date;
-		nbCommentaires = unArticle.numberOfComs;
+		timeStampPublication = Long.valueOf(unArticle.date);
+		nbCommentaires = Integer.valueOf(unArticle.numberOfComs);
 		URL = unArticle.getUrl();
 		URLIllustration = unArticle.imgURL;
 	}
-	
+
 	public void convertOld(INpactArticle unArticle) {
 		titre = unArticle.Title;
 		contenu = unArticle.Content;
 	}
 
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -88,15 +100,7 @@ public class ArticleItem implements Item {
 		this.sousTitre = sousTitre;
 	}
 
-	public String getPathImage() {
-		return pathImage;
-	}
-
-	public void setPathImage(String pathImage) {
-		this.pathImage = pathImage;
-	}
-
-	public boolean getisAbonne() {
+	public boolean isAbonne() {
 		return isAbonne;
 	}
 
@@ -104,28 +108,12 @@ public class ArticleItem implements Item {
 		this.isAbonne = isAbonne;
 	}
 
-	public String getHeurePublication() {
-		return heurePublication;
-	}
-
-	public void setHeurePublication(String heurePublication) {
-		this.heurePublication = heurePublication;
-	}
-
-	public String getNbCommentaires() {
+	public int getNbCommentaires() {
 		return nbCommentaires;
 	}
 
-	public void setNbCommentaires(String nbCommentaires) {
+	public void setNbCommentaires(int nbCommentaires) {
 		this.nbCommentaires = nbCommentaires;
-	}
-
-	public String getDatePublication() {
-		return datePublication;
-	}
-
-	public void setDatePublication(String datePublication) {
-		this.datePublication = datePublication;
 	}
 
 	public String getURL() {
@@ -150,6 +138,14 @@ public class ArticleItem implements Item {
 
 	public void setContenu(String contenu) {
 		this.contenu = contenu;
+	}
+
+	public long getTimeStampPublication() {
+		return timeStampPublication;
+	}
+
+	public void setTimeStampPublication(long timeStampPublication) {
+		this.timeStampPublication = timeStampPublication;
 	}
 
 }
