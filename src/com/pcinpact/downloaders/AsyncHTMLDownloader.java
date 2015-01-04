@@ -22,7 +22,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.pcinpact.database.DAO;
 import com.pcinpact.items.Item;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.parseur.ParseurHTML;
 
 import android.content.Context;
@@ -48,14 +51,18 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	// Type & URL du code HTML
 	String urlPage;
 	int typeHTML;
+	// Accès sur la DB
+	DAO monDAO;
 
-	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL) {
+	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL,
+			DAO unDAO) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;
 		urlPage = uneURL;
 		typeHTML = unType;
 		monUUID = unUUID;
+		monDAO = unDAO;
 	}
 
 	@Override
@@ -76,17 +83,37 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				// Je passe par le parser
 				mesItems.addAll(monParser.getListeArticles(monInput));
 
+				// Stockage en BDD
+				for (Item unItem : mesItems) {
+					monDAO.enregistrerArticle((ArticleItem) unItem);
+				}
 				break;
 
 			case HTML_ARTICLE:
 				// Je passe par le parser
-				mesItems.add(monParser.getArticle(monInput));
+				ArticleItem articleParser = monParser.getArticle(monInput);
 
+				// Chargement de l'article depuis la BDD
+				ArticleItem articleDB = monDAO.chargerArticle(new String[] { String.valueOf(articleParser.getID()) });
+
+				// Ajout du contenu à l'objet chargé
+				articleDB.setContenu(articleParser.getContenu());
+
+				// Enregistrement de l'objet complet
+				monDAO.enregistrerArticle(articleDB);
+
+				// Pour le retour à l'utilisateur...
+				mesItems.add(articleDB);
 				break;
 
 			case HTML_COMMENTAIRES:
 				// Je passe par le parser
 				mesItems.addAll(monParser.getCommentaires(monInput));
+
+				// Stockage en BDD
+				for (Item unItem : mesItems) {
+					monDAO.enregistrerCommentaire((CommentaireItem) unItem);
+				}
 				break;
 		}
 		return mesItems;
