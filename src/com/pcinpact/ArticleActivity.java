@@ -39,7 +39,7 @@ import com.pcinpact.connection.Old_IConnectable;
 import com.pcinpact.managers.Old_ArticleManager;
 import com.pcinpact.models.INpactArticle;
 import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
+import com.pcinpact.parsers.Old_HtmlParser;
 
 public class ArticleActivity extends ActionBarActivity implements Old_IConnectable {
 	/** Called when the activity is first created. */
@@ -74,7 +74,7 @@ public class ArticleActivity extends ActionBarActivity implements Old_IConnectab
 		// On charge l'article depuis le cache, ou à défaut depuis le site
 		try {
 			l_Stream = l_Context.openFileInput(url);
-			HtmlParser hh = new HtmlParser(l_Stream);
+			Old_HtmlParser hh = new Old_HtmlParser(l_Stream);
 			INpactArticle article = hh.getArticleContent(l_Context);
 			data = article.Content;
 			l_Stream.close();

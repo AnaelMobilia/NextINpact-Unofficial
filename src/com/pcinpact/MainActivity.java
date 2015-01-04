@@ -62,7 +62,7 @@ import com.pcinpact.managers.Old_ArticleManager;
 import com.pcinpact.managers.Old_CommentManager;
 import com.pcinpact.models.ArticlesWrapper;
 import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
+import com.pcinpact.parsers.Old_HtmlParser;
 
 public class MainActivity extends ActionBarActivity implements Old_IConnectable, OnItemClickListener {
 
@@ -459,7 +459,7 @@ public class MainActivity extends ActionBarActivity implements Old_IConnectable,
 		else if (state == DL_LIST) {
 			List<INpactArticleDescription> articles = null;
 			try {
-				HtmlParser hh = new HtmlParser(new ByteArrayInputStream(result));
+				Old_HtmlParser hh = new Old_HtmlParser(new ByteArrayInputStream(result));
 				articles = hh.getArticles();
 			} catch (Exception e) {
 				// TODO : # 59 ajouter un retour utilisateur pour l'erreur de rechargement de la liste d'articles !

@@ -28,7 +28,7 @@ import java.util.List;
 import android.content.Context;
 
 import com.pcinpact.models.INPactComment;
-import com.pcinpact.parsers.HtmlParser;
+import com.pcinpact.parsers.Old_HtmlParser;
 
 public class Old_CommentManager {
 	/**
@@ -41,7 +41,7 @@ public class Old_CommentManager {
 		List<INPactComment> comments = new ArrayList<INPactComment>();
 		try {
 			FileInputStream l_Stream = context.openFileInput(path);
-			HtmlParser hh = new HtmlParser(l_Stream);
+			Old_HtmlParser hh = new Old_HtmlParser(l_Stream);
 			comments = hh.getComments(context);
 			l_Stream.close();
 		} catch (Exception e) {
@@ -64,7 +64,7 @@ public class Old_CommentManager {
 	public static List<INPactComment> getCommentsFromBytes(Context context, byte[] result) {
 		try {
 			InputStream is = new ByteArrayInputStream(result);
-			HtmlParser parser = new HtmlParser(is);
+			Old_HtmlParser parser = new Old_HtmlParser(is);
 			return parser.getComments(context);
 		} catch (Exception e) {
 			// Retour utilisateur
