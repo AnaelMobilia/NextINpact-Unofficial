@@ -40,7 +40,6 @@ import com.pcinpact.items.CommentaireItem;
 public class ParseurHTML {
 	final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
 	final String FORMAT_DATE_COMMENTAIRE = "le  dd/MM/yyyy à HH:mm:ss";
-	final String URL_COMMENTAIRES = "http://m.nextinpact.com/comment/";
 	Context contextParent;
 
 	public ParseurHTML(Context unContext) {
@@ -114,17 +113,17 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Parse le contenu d'un article
+	 * Parse le contenu d'un article (retour en texte)
 	 * @param monArticleItem
 	 * @return
 	 */
-	public ArticleItem getArticle(ArticleItem monArticleItem) {
+	public ArticleItem getArticle(String monInput) {
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(monArticleItem.getURL());
+		Document pageNXI = Jsoup.parse(monInput);
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
-
+		
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImages = lArticle.select("a[href] > img");
 		// Pour chaque image
@@ -242,6 +241,10 @@ public class ParseurHTML {
 			unLien.attr("href", unLien.absUrl("href"));
 		}
 
+		// Mon objet
+		ArticleItem monArticleItem = new ArticleItem();
+		monArticleItem.setContenu(lArticle.toString());
+		
 		return monArticleItem;
 	}
 
@@ -252,11 +255,11 @@ public class ParseurHTML {
 	 * @param numPage numéro de page
 	 * @return
 	 */
-	public ArrayList<CommentaireItem> getCommentaires(int idArticle, int numPage) {
+	public ArrayList<CommentaireItem> getCommentaires(String input) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(URL_COMMENTAIRES + "?newsId=" + idArticle + "&page=" + numPage);
+		Document pageNXI = Jsoup.parse(input);
 
 		// Les commentaires
 		Elements lesCommentaires = pageNXI
@@ -268,7 +271,7 @@ public class ParseurHTML {
 			monCommentaireItem = new CommentaireItem();
 
 			// ID de l'article
-			monCommentaireItem.setArticleID(idArticle);;
+//			monCommentaireItem.setArticleID(idArticle);;
 			
 			// Auteur
 			Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
