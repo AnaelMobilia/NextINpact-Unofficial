@@ -117,12 +117,19 @@ public class ParseurHTML {
 	 * @return
 	 */
 	public ArticleItem getArticle(String monInput) {
+		ArticleItem monArticleItem = new ArticleItem();
+		
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(monInput);
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
 
+		// L'ID de l'article
+		Element articleID = pageNXI.select("div[class=actu_content][data-id]").get(0);
+		int unID = Integer.valueOf(articleID.attr("data-id"));
+		monArticleItem.setID(unID);
+		
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImages = lArticle.select("a[href] > img");
 		// Pour chaque image
@@ -210,8 +217,7 @@ public class ParseurHTML {
 			unLien.attr("href", unLien.absUrl("href"));
 		}
 
-		// Mon objet
-		ArticleItem monArticleItem = new ArticleItem();
+		// J'enregistre le contenu
 		monArticleItem.setContenu(lArticle.toString());
 
 		return monArticleItem;
