@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.pcinpact.database.DAO;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 
@@ -43,27 +42,24 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	// Contexte parent
 	private Context monContext;
-	// Accès sur la DB
-	private DAO monDAO;
 	// Callback : parent + ref
 	RefreshDisplayInterface monParent;
 	UUID monUUID;
+	// Type & URL du code HTML
+	String urlPage;
+	int typeHTML;
 
-	public AsyncHTMLDownloader(Context unContext, DAO unDAO, RefreshDisplayInterface parent) {
+	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL) {
+		// Mappage des attributs de cette requête
 		monContext = unContext;
-		monDAO = unDAO;
 		monParent = parent;
+		urlPage = uneURL;
+		typeHTML = unType;
+		monUUID = unUUID;
 	}
 
 	@Override
 	protected ArrayList<Item> doInBackground(String... params) {
-		// Les paramètres viennent de l'appel à execute() => [0] est une URL
-		String urlPage = params[0];
-		// [1] est le type d'action
-		int typeHTML = Integer.valueOf(params[1]);
-		// [2] est l'UUID de la requête
-		monUUID = UUID.fromString(params[2]);
-
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
 		// Je le converti en String pour la suite...
@@ -93,10 +89,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				mesItems.addAll(monParser.getCommentaires(monInput));
 				break;
 		}
-
-		// TODO : store in DB
-
-		
 		return mesItems;
 	}
 

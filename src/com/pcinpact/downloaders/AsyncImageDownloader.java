@@ -47,22 +47,21 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	// Callback : parent + ref
 	RefreshDisplayInterface monParent;
 	UUID monUUID;
+	// Type d'image & URL
+	String urlImage;
+	int typeImage;
 
-	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent) {
+	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL) {
+		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;
+		urlImage = uneURL;
+		typeImage = unType;
+		monUUID = unUUID;
 	}
 
 	@Override
 	protected Bitmap doInBackground(String... params) {
-		// URL de l'image
-		String urlImage = params[0];
-		// Type d'image
-		int typeImage = Integer.valueOf(params[1]);
-		// UUID
-		monUUID = UUID.fromString(params[3]);
-		
-		
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
 
