@@ -23,8 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.pcinpact.models.INPactComment;
-
 public class CommentaireItem implements Item {
 
 	private int ID;
@@ -44,14 +42,6 @@ public class CommentaireItem implements Item {
 		DateFormat dfm = new SimpleDateFormat("le dd/MM/yyyy à HH:mm:ss", Locale.getDefault());
 
 		return dfm.format(maDate);
-	}
-
-	public void convertOld(INPactComment unCommentaire) {
-		// Le premier commentaire est un # dans l'ancien parser
-		ID = Integer.valueOf(unCommentaire.commentID.substring(1));
-		auteur = unCommentaire.author;
-		commentaire = unCommentaire.content;
-		timeStampPublication = Long.valueOf(unCommentaire.commentDate);
 	}
 
 	public String getAuteurDateCommentaire()

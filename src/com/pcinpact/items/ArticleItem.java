@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -22,8 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
 
 public class ArticleItem implements Item {
 
@@ -52,28 +50,6 @@ public class ArticleItem implements Item {
 		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 		return dfm.format(maDate);
-	}
-
-	public void convertOld(INpactArticleDescription unArticle) {
-		ID = Integer.valueOf(unArticle.getID());
-		titre = unArticle.title;
-		sousTitre = unArticle.subTitle;
-		try {
-			isAbonne = unArticle.isAbonne;
-		} catch (Exception e) {
-			// VS un ancien cache qui ne connaitrait pas l'attribut isAbonne => null pointer exception
-			isAbonne = false;
-		}
-		// TODO : c'est pas bien joli...
-		timeStampPublication = Long.valueOf(unArticle.date);
-		nbCommentaires = Integer.valueOf(unArticle.numberOfComs);
-		URL = unArticle.getUrl();
-		URLIllustration = unArticle.imgURL;
-	}
-
-	public void convertOld(INpactArticle unArticle) {
-		titre = unArticle.Title;
-		contenu = unArticle.Content;
 	}
 
 	public int getID() {
