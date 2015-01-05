@@ -65,7 +65,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	TextView headerTextView;
 	// La BDD
 	DAO monDAO;
-	// Chargement en cours ?
+	// Nombre de DL en cours
 	int DLinProgress = 0;
 
 	@Override
@@ -213,7 +213,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Arrêt les animations indiquant un téléchargement
+	 * Arrête les animations indiquant un téléchargement
 	 */
 	private void arreterAnimationTelechargement() {
 		// On stoppe l'animation du SwipeRefreshLayout
@@ -253,6 +253,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		return super.onKeyUp(keyCode, event);
 	}
 
+	/**
+	 * Gestion des clic dans le menu d'options de l'activité
+	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
