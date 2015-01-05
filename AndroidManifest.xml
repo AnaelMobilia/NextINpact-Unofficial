@@ -50,7 +50,7 @@
         android:icon="@drawable/logo_nextinpact"
         android:label="@string/app_name" >
         <activity
-            android:name=".MainActivity"
+            android:name=".ListeArticlesActivity"
             android:label="@string/app_name"
             android:theme="@style/NextInpactTheme" >
             <intent-filter>
