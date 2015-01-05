@@ -45,6 +45,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -155,11 +156,22 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Je garde le menu pour pouvoir l'animer après
+		monMenu = menu;
+
+		// Je charge mon menu dans l'actionBar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
 	@SuppressLint("NewApi")
 	void refreshListeArticles() {
 		// GUI : téléchargement en cours
 		lancerAnimationTelechargement();
-		
+
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
 				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
@@ -170,7 +182,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			monAHD.execute();
 		}
 	}
-	
+
 	/**
 	 * Lance les animations indiquant un téléchargement
 	 */
@@ -200,7 +212,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		if (monMenu != null)
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
 	}
-	
 
 	/**
 	 * Gestion du clic sur un article => l'ouvrir
@@ -238,7 +249,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monItemsAdapter.updateListeItems(mesItems);
 		// Je notifie le changement pour un rafraichissement du contenu
 		monItemsAdapter.notifyDataSetChanged();
-		
+
 		// GUI : fin DL (pas tout à fait vrai...)
 		// TODO : gérer l'ensemble des DL pour arrêter le rafraichissement GUI
 		arreterAnimationTelechargement();
