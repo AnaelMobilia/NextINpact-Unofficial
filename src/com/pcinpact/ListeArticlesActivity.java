@@ -66,7 +66,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	// La BDD
 	DAO monDAO;
 	// Chargement en cours ?
-	Boolean isLoading;
+	int DLinProgress = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -165,11 +165,20 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
+
+		// Je lance l'animation si un DL est déjà en cours
+		if (DLinProgress != 0) {
+			lancerAnimationTelechargement();
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@SuppressLint("NewApi")
 	void refreshListeArticles() {
+		// Je note le téléchargement en cours
+		DLinProgress++;
+
 		// GUI : téléchargement en cours
 		lancerAnimationTelechargement();
 
@@ -188,9 +197,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * Lance les animations indiquant un téléchargement
 	 */
 	private void lancerAnimationTelechargement() {
-		// J'enregistre l'état
-		isLoading = true;
-
 		// Couleurs du RefreshLayout
 		monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
 				getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
@@ -210,9 +216,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * Arrêt les animations indiquant un téléchargement
 	 */
 	private void arreterAnimationTelechargement() {
-		// J'enregistre l'état
-		isLoading = false;
-
 		// On stoppe l'animation du SwipeRefreshLayout
 		monSwipeRefreshLayout.setRefreshing(false);
 
@@ -276,17 +279,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@Override
 	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
 		// TODO : pour chaque article reçu
-		// 1: dl miniature (avec gestion de l'imageView à callback ... mais ça je ne l'aurais que plus tard :/)
+		// Faire un peu de tri, sections toussa dans l'arraylist reçue
 		// 2: dl contenu article
+		// 3 : l'itemAdapter se charge des images (il touche les imageview !)
 
 		// Je met à jour les données
 		monItemsAdapter.updateListeItems(mesItems);
 		// Je notifie le changement pour un rafraichissement du contenu
 		monItemsAdapter.notifyDataSetChanged();
 
-		// GUI : fin DL (pas tout à fait vrai...)
-		// TODO : gérer l'ensemble des DL pour arrêter le rafraichissement GUI
-		arreterAnimationTelechargement();
+		// Si plus aucun DL en cours, stop l'animation
+		if (DLinProgress == 0) {
+			arreterAnimationTelechargement();
+		}
 	}
 
 	@Override
