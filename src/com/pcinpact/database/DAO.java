@@ -171,20 +171,20 @@ public class DAO extends SQLiteOpenHelper {
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
 
-		// Je vais au premier (et unique) résultat
-		monCursor.moveToNext();
 		ArticleItem monArticle = new ArticleItem();
 
-		monArticle.setID(monCursor.getInt(0));
-		monArticle.setTitre(monCursor.getString(1));
-		monArticle.setSousTitre(monCursor.getString(2));
-		monArticle.setTimeStampPublication(monCursor.getLong(4));
-		monArticle.setURL(monCursor.getString(4));
-		monArticle.setURLIllustration(monCursor.getString(5));
-		monArticle.setContenu(monCursor.getString(6));
-		monArticle.setNbCommentaires(monCursor.getInt(7));
-		monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
-
+		// Je vais au premier (et unique) résultat
+		if (monCursor.moveToNext()) {
+			monArticle.setID(monCursor.getInt(0));
+			monArticle.setTitre(monCursor.getString(1));
+			monArticle.setSousTitre(monCursor.getString(2));
+			monArticle.setTimeStampPublication(monCursor.getLong(4));
+			monArticle.setURL(monCursor.getString(4));
+			monArticle.setURLIllustration(monCursor.getString(5));
+			monArticle.setContenu(monCursor.getString(6));
+			monArticle.setNbCommentaires(monCursor.getInt(7));
+			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
+		}
 		// Fermeture du curseur
 		monCursor.close();
 
