@@ -18,7 +18,6 @@
  */
 package com.pcinpact.downloaders;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -62,10 +61,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	@Override
 	protected ArrayList<Item> doInBackground(String... params) {
-		// Je récupère un OS sur l'image
-		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
-		// Je le converti en String pour la suite...
-		String monInput = monBAOS.toString();
+		// Je récupère mon contenu HTML
+		String monInput = Downloader.download(urlPage).toString();
 
 		// Retour
 		ArrayList<Item> mesItems = new ArrayList<Item>();
