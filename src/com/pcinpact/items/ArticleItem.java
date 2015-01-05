@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ArticleItem implements Item {
+public class ArticleItem implements Item, Comparable<ArticleItem> {
 
 	private int ID;
 	private String titre;
@@ -51,6 +51,17 @@ public class ArticleItem implements Item {
 		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 		return dfm.format(maDate);
+	}
+
+	@Override
+	/**
+	 * Comparaison entre objets
+	 */
+	public int compareTo(ArticleItem unArticleItem) {
+		Long unTimestamp = unArticleItem.getTimeStampPublication();
+		Long monTimestamp = this.getTimeStampPublication();
+
+		return monTimestamp.compareTo(unTimestamp);
 	}
 
 	public int getID() {
