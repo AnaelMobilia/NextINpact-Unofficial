@@ -19,6 +19,7 @@
 package com.pcinpact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.pcinpact.adapters.ItemsAdapter;
@@ -57,7 +58,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
 	// les articles
-	ArrayList<Item> mesArticles = new ArrayList<Item>();
+	ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 	// itemAdapter
 	ItemsAdapter monItemsAdapter;
 	// La BDD
@@ -90,7 +91,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				refreshListeArticles();
+				telechargeListeArticles();
 			}
 		});
 
@@ -122,7 +123,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Je charge mes articles
 		mesArticles.addAll(monDAO.chargerArticlesTriParDate());
 		// Mise à jour de l'affichage
-		monItemsAdapter.updateListeItems(prepareAffichage(mesArticles));
+		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Message d'accueil pour la première utilisation
 
@@ -158,14 +159,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			builder.create().show();
 
 			// Lancement d'un téléchargement des articles
-			refreshListeArticles();
+			telechargeListeArticles();
 		}
 	}
 
-	public ArrayList<Item> prepareAffichage(ArrayList<Item> desArticles) {
-		// 1 : Tri par timestamp
-		// 2 : insertion des sectionItems
-		return null;
+	private ArrayList<Item> prepareAffichage() {
+		// Tri des Articles par timestamp
+		Collections.sort(mesArticles);
+
+		ArrayList<Item> monRetour = new ArrayList<Item>();
+		// TODO : Insertion des sectionItems + ArticleItem correctement
+
+		return monRetour;
 	}
 
 	@Override
@@ -175,7 +180,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_activity_actions, menu);
+		inflater.inflate(R.menu.main_activity_actions, monMenu);
 
 		// Je lance l'animation si un DL est déjà en cours
 		if (DLinProgress != 0) {
@@ -184,11 +189,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			nouveauChargementGUI();
 		}
 
-		return super.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(monMenu);
 	}
 
 	@SuppressLint("NewApi")
-	void refreshListeArticles() {
+	private void telechargeListeArticles() {
 		// Le retour en GUI
 		nouveauChargementGUI();
 
@@ -204,7 +209,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@SuppressLint("NewApi")
-	void telechargeUnArticle(ArticleItem unArticle) {
+	private void telechargeUnArticle(ArticleItem unArticle) {
 		// Le retour en GUI
 		nouveauChargementGUI();
 
@@ -299,7 +304,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		switch (pItem.getItemId()) {
 		// Rafraichir la liste des articles
 			case R.id.action_refresh:
-				refreshListeArticles();
+				telechargeListeArticles();
 				return true;
 				// Menu Options
 			case R.id.action_settings:
@@ -321,17 +326,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> desItems) {
 		// Je supprime les articles que je possède déjà
 		desItems.removeAll(mesArticles);
-		// Je stocke dans ma liste d'article en mémoire
-		mesArticles.addAll(desItems);
 
-		// Je lance le téléchargement du contenu de chaque nouvel article
+		// Pour chaque nouvel article :
 		for (Item unItem : desItems) {
+			// Je lance le téléchargement de son contenu
 			telechargeUnArticle((ArticleItem) unItem);
+			// Je l'ajoute à ma liste d'articles en mémoire
+			mesArticles.add((ArticleItem) unItem);
 		}
 		// TODO : l'itemAdapter se chargera des images (il touche les imageview !)
 
 		// Je met à jour les données
-		monItemsAdapter.updateListeItems(prepareAffichage(mesArticles));
+		monItemsAdapter.updateListeItems(prepareAffichage());
 		// Je notifie le changement pour un rafraichissement du contenu
 		monItemsAdapter.notifyDataSetChanged();
 
