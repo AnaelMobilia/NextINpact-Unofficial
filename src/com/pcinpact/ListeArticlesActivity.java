@@ -56,17 +56,20 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
-	// mesItems
+	// les articles
+	ArrayList<Item> mesArticles = new ArrayList<Item>();
+	// itemAdapter
 	ItemsAdapter monItemsAdapter;
+	// La BDD
+	DAO monDAO;
+	// Nombre de DL en cours
+	int DLinProgress = 0;
+
 	// Ressources sur les éléments graphiques
 	Menu monMenu;
 	ListView monListView;
 	SwipeRefreshLayout monSwipeRefreshLayout;
 	TextView headerTextView;
-	// La BDD
-	DAO monDAO;
-	// Nombre de DL en cours
-	int DLinProgress = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		});
 
-		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
+		monItemsAdapter = new ItemsAdapter(this, mesArticles);
 		monListView.setAdapter(monItemsAdapter);
 		monListView.setOnItemClickListener(this);
 
@@ -117,7 +120,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// J'active la BDD
 		monDAO = new DAO(getApplicationContext());
 		// Je charge mes articles
-		monItemsAdapter.updateListeItems(monDAO.chargerArticlesTriParDate());
+		mesArticles.addAll(monDAO.chargerArticlesTriParDate());
+		// Mise à jour de l'affichage
+		monItemsAdapter.updateListeItems(prepareAffichage(mesArticles));
 
 		// Message d'accueil pour la première utilisation
 
@@ -157,6 +162,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
+	public ArrayList<Item> prepareAffichage(ArrayList<Item> desArticles) {
+		// 1 : Tri par timestamp
+		// 2 : insertion des sectionItems
+		return null;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je garde le menu pour pouvoir l'animer après
@@ -185,6 +196,25 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
 				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
+		// Parallèlisation des téléchargements pour l'ensemble de l'application
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			monAHD.execute();
+		}
+	}
+
+	@SuppressLint("NewApi")
+	void telechargeUnArticle(ArticleItem unArticle) {
+		// Je note le téléchargement en cours
+		DLinProgress++;
+
+		// GUI : téléchargement en cours
+		lancerAnimationTelechargement();
+
+		// Ma tâche de DL
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
+				Downloader.HTML_ARTICLE, unArticle.getURL(), monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -280,14 +310,20 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
-		// TODO : pour chaque article reçu
-		// Faire un peu de tri, sections toussa dans l'arraylist reçue
-		// 2: dl contenu article
-		// 3 : l'itemAdapter se charge des images (il touche les imageview !)
+	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> desItems) {
+		// Je supprime les articles que je possède déjà
+		desItems.removeAll(mesArticles);
+		// Je stocke dans ma liste d'article en mémoire
+		mesArticles.addAll(desItems);
+
+		// Je lance le téléchargement du contenu de chaque nouvel article
+		for (Item unItem : desItems) {
+			telechargeUnArticle((ArticleItem) unItem);
+		}
+		// TODO : l'itemAdapter se chargera des images (il touche les imageview !)
 
 		// Je met à jour les données
-		monItemsAdapter.updateListeItems(mesItems);
+		monItemsAdapter.updateListeItems(prepareAffichage(mesArticles));
 		// Je notifie le changement pour un rafraichissement du contenu
 		monItemsAdapter.notifyDataSetChanged();
 
