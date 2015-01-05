@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
@@ -53,9 +53,9 @@ public class ItemsAdapter extends BaseAdapter {
 
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
-	private List<Item> mesItems;
+	private ArrayList<? extends Item> mesItems;
 
-	public ItemsAdapter(Context unContext, List<Item> desItems) {
+	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
@@ -67,7 +67,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 * 
 	 * @param nouveauxItems
 	 */
-	public void updateListeItems(List<Item> nouveauxItems) {
+	public void updateListeItems(ArrayList<? extends Item> nouveauxItems) {
 		mesItems = nouveauxItems;
 	}
 
