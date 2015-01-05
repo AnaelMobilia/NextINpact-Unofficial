@@ -33,13 +33,13 @@ import org.jsoup.select.Elements;
 import android.content.Context;
 import android.util.Log;
 
+import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
 public class ParseurHTML {
-	final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-	final String FORMAT_DATE_COMMENTAIRE = "le  dd/MM/yyyy à HH:mm:ss";
+
 	Context contextParent;
 
 	public ParseurHTML(Context unContext) {
@@ -52,11 +52,11 @@ public class ParseurHTML {
 	 * @param monInput
 	 * @return
 	 */
-	public ArrayList<ArticleItem> getListeArticles(String monInput) {
+	public ArrayList<ArticleItem> getListeArticles(String monInput, String urlPage) {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(monInput);
+		Document pageNXI = Jsoup.parse(monInput, urlPage);
 
 		// Les articles
 		Elements lesArticles = pageNXI.select("article[data-acturowid][data-datepubli]");
@@ -71,11 +71,11 @@ public class ParseurHTML {
 
 			// Date de publication de l'article
 			String laDate = unArticle.attr("data-datepubli");
-			monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, FORMAT_DATE_ARTICLE));
+			monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_ARTICLE));
 
 			// URL de l'illustration
 			Element image = unArticle.select("img[class=ded-image]").get(0);
-			monArticleItem.setURLIllustration(image.absUrl("src"));
+			monArticleItem.setURLIllustration(image.absUrl("data-frz-src"));
 
 			// URL de l'article
 			Element url = unArticle.select("h1 > a[href]").get(0);
@@ -116,7 +116,7 @@ public class ParseurHTML {
 	 * @param monArticleItem
 	 * @return
 	 */
-	public ArticleItem getArticle(String monInput) {
+	public ArticleItem getArticle(String monInput, String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
 		
 		// Lancement du parseur sur la page
@@ -230,7 +230,7 @@ public class ParseurHTML {
 	 * @param numPage numéro de page
 	 * @return
 	 */
-	public ArrayList<CommentaireItem> getCommentaires(String input) {
+	public ArrayList<CommentaireItem> getCommentaires(String input, String urlPage) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
@@ -258,7 +258,7 @@ public class ParseurHTML {
 			// Date
 			Element maDate = unCommentaire.select("span[class=date_comm]").get(0);
 			String laDate = maDate.text();
-			monCommentaireItem.setTimeStampPublication(convertToTimeStamp(laDate, FORMAT_DATE_COMMENTAIRE));
+			monCommentaireItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_COMMENTAIRE));
 
 			// Id du commentaire
 			Element monID = unCommentaire.select("span[class=actu_comm_num]").get(0);

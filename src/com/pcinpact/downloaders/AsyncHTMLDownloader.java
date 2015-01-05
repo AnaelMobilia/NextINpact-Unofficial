@@ -76,7 +76,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		switch (typeHTML) {
 			case Downloader.HTML_LISTE_ARTICLES:
 				// Je passe par le parser
-				mesItems.addAll(monParser.getListeArticles(monInput));
+				mesItems.addAll(monParser.getListeArticles(monInput, urlPage));
 
 				// Stockage en BDD
 				for (Item unItem : mesItems) {
@@ -86,7 +86,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 			case Downloader.HTML_ARTICLE:
 				// Je passe par le parser
-				ArticleItem articleParser = monParser.getArticle(monInput);
+				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
 
 				// Chargement de l'article depuis la BDD
 				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getID());
@@ -103,7 +103,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 			case Downloader.HTML_COMMENTAIRES:
 				// Je passe par le parser
-				mesItems.addAll(monParser.getCommentaires(monInput));
+				mesItems.addAll(monParser.getCommentaires(monInput, urlPage));
 
 				// Stockage en BDD
 				for (Item unItem : mesItems) {

@@ -20,19 +20,34 @@ package com.pcinpact;
 
 /**
  * Constantes de l'application (onfiguration des URL, ...)
+ * 
  * @author Anael
  *
  */
 public class Constantes {
+	/**
+	 * PARAMETRES GENERAUX
+	 */
 	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
+
+	/**
+	 * FORMATS DU SITE POUR LE PARSEUR
+	 */
+	// Format des dates des articles sur le site
+	public final static String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
+	// Format des dates des commentaires sur le site
+	public final static String FORMAT_DATE_COMMENTAIRE = "le  dd/MM/yyyy à HH:mm:ss";
+
+	/**
+	 * PATH DES FICHIERS LOCAUX
+	 */
 	// Path des miniatures des articles
 	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
 	// Path des images de contenu des articles
 	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
 	// Path des smileys
 	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
-
 }
