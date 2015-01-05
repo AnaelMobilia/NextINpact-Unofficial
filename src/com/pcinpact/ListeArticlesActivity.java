@@ -46,6 +46,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -196,7 +197,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 						.getColor(R.color.refreshBlanc));
 		// Animation du RefreshLayout
 		monSwipeRefreshLayout.setRefreshing(true);
-		
+
 		// Lance la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(true);
 
@@ -214,7 +215,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// On stoppe l'animation du SwipeRefreshLayout
 		monSwipeRefreshLayout.setRefreshing(false);
-		
+
 		// Arrêt de la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(false);
 
@@ -247,6 +248,29 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 
 		return super.onKeyUp(keyCode, event);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem pItem) {
+		switch (pItem.getItemId()) {
+		// Rafraichir la liste des articles
+			case R.id.action_refresh:
+				refreshListeArticles();
+				return true;
+				// Menu Options
+			case R.id.action_settings:
+				// Je lance l'activité options
+				Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
+				startActivity(intentOptions);
+				return true;
+				// A propos
+			case R.id.action_about:
+				Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
+				startActivity(intentAbout);
+				return true;
+			default:
+				return super.onOptionsItemSelected(pItem);
+		}
 	}
 
 	@Override
