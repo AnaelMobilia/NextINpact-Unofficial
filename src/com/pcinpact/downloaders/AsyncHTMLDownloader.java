@@ -77,7 +77,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 				// Stockage en BDD
 				for (Item unItem : mesItems) {
-					monDAO.enregistrerArticle((ArticleItem) unItem);
+					monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem);
 				}
 				break;
 

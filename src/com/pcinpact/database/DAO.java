@@ -130,6 +130,23 @@ public class DAO extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * Enregistre un article en DB uniquement s'il n'existe pas déjà
+	 * 
+	 * @param unArticle
+	 */
+	public void enregistrerArticleSiNouveau(ArticleItem unArticle) {
+		// J'essaye de charger l'article depuis la DB
+		ArticleItem testItem = this.chargerArticle(unArticle.getID());
+
+		// Vérif du timestamp couvrant les cas :
+		// - l'article n'est pas encore en BDD
+		// - l'article est déjà en BDD, mais il s'agit d'une mise à jour de l'article
+		if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication()) {
+			this.enregistrerArticle(unArticle);
+		}
+	}
+
+	/**
 	 * Supprimer un article de la DB
 	 * 
 	 * @param unArticle
@@ -146,11 +163,11 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public ArticleItem chargerArticle(int idArticle) {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP,
-				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
-		String[] idString = {String.valueOf(idArticle)};
-		
+		String[] idString = { String.valueOf(idArticle) };
+
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
 
@@ -181,8 +198,8 @@ public class DAO extends SQLiteOpenHelper {
 	 */
 	public ArrayList<ArticleItem> chargerArticlesTriParDate() {
 		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP,
-				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC");
@@ -253,8 +270,8 @@ public class DAO extends SQLiteOpenHelper {
 		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
 
-		String[] idArticleEtCommentaire = {String.valueOf(idArticle), String.valueOf(idCommentaire)};
-		
+		String[] idArticleEtCommentaire = { String.valueOf(idArticle), String.valueOf(idCommentaire) };
+
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID
 				+ "=?", idArticleEtCommentaire, null, null, null);
