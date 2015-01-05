@@ -27,15 +27,15 @@ public class CommentaireItem implements Item {
 
 	private int ID;
 	private int articleID;
-	private String auteur;
-	private String commentaire;
-	private long timeStampPublication;
+	private String auteur = "";
+	private String commentaire = "";
+	private long timeStampPublication = 0;
 
 	@Override
 	public int getType() {
 		return Item.typeCommentaire;
 	}
-	
+
 	public String getFullDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
@@ -44,11 +44,10 @@ public class CommentaireItem implements Item {
 		return dfm.format(maDate);
 	}
 
-	public String getAuteurDateCommentaire()
-	{
+	public String getAuteurDateCommentaire() {
 		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
-	
+
 	public int getID() {
 		return ID;
 	}
@@ -60,7 +59,7 @@ public class CommentaireItem implements Item {
 	public void setArticleID(int articleID) {
 		this.articleID = articleID;
 	}
-	
+
 	public void setID(int iD) {
 		ID = iD;
 	}

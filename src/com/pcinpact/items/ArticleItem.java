@@ -27,12 +27,12 @@ public class ArticleItem implements Item {
 
 	private int ID;
 	private String titre;
-	private String sousTitre;
+	private String sousTitre = "";
 	private boolean isAbonne = false;
-	private int nbCommentaires;
+	private int nbCommentaires = 0;
 	private String URL;
-	private String URLIllustration;
-	private String contenu;
+	private String URLIllustration = "";
+	private String contenu = "";
 	private long timeStampPublication;
 
 	@Override
@@ -42,6 +42,7 @@ public class ArticleItem implements Item {
 
 	/**
 	 * Heure et minute de la publication sous forme textuelle
+	 * 
 	 * @return
 	 */
 	public String getHeureMinutePublication() {
