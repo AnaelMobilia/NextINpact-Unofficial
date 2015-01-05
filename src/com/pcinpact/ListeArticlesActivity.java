@@ -179,7 +179,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je lance l'animation si un DL est déjà en cours
 		if (DLinProgress != 0) {
-			lancerAnimationTelechargement();
+			// Hack : il n'y avait pas d'accès à la GUI sur onCreate
+			DLinProgress--;
+			nouveauChargementGUI();
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -187,11 +189,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@SuppressLint("NewApi")
 	void refreshListeArticles() {
-		// Je note le téléchargement en cours
-		DLinProgress++;
-
-		// GUI : téléchargement en cours
-		lancerAnimationTelechargement();
+		// Le retour en GUI
+		nouveauChargementGUI();
 
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
@@ -206,11 +205,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@SuppressLint("NewApi")
 	void telechargeUnArticle(ArticleItem unArticle) {
-		// Je note le téléchargement en cours
-		DLinProgress++;
-
-		// GUI : téléchargement en cours
-		lancerAnimationTelechargement();
+		// Le retour en GUI
+		nouveauChargementGUI();
 
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
@@ -224,37 +220,49 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Lance les animations indiquant un téléchargement
+	 * Gère les animations de téléchargement
 	 */
-	private void lancerAnimationTelechargement() {
-		// Couleurs du RefreshLayout
-		monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-				getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
-						.getColor(R.color.refreshBlanc));
-		// Animation du RefreshLayout
-		monSwipeRefreshLayout.setRefreshing(true);
+	private void nouveauChargementGUI() {
+		// Si c'est le premier => activation des gri-gri GUI
+		if (DLinProgress == 0) {
+			// Couleurs du RefreshLayout
+			monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+					getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
+							.getColor(R.color.refreshBlanc));
+			// Animation du RefreshLayout
+			monSwipeRefreshLayout.setRefreshing(true);
 
-		// Lance la rotation du logo dans le header
-		setSupportProgressBarIndeterminateVisibility(true);
+			// Lance la rotation du logo dans le header
+			setSupportProgressBarIndeterminateVisibility(true);
 
-		// Supprime l'icône refresh dans le header
-		if (monMenu != null)
-			monMenu.findItem(R.id.action_refresh).setVisible(false);
+			// Supprime l'icône refresh dans le header
+			if (monMenu != null)
+				monMenu.findItem(R.id.action_refresh).setVisible(false);
+		}
+
+		// Je note le téléchargement en cours
+		DLinProgress++;
 	}
 
 	/**
-	 * Arrête les animations indiquant un téléchargement
+	 * Gère les animations de téléchargement
 	 */
-	private void arreterAnimationTelechargement() {
-		// On stoppe l'animation du SwipeRefreshLayout
-		monSwipeRefreshLayout.setRefreshing(false);
+	private void finChargementGUI() {
+		// Je note la fin du téléchargement
+		DLinProgress--;
 
-		// Arrêt de la rotation du logo dans le header
-		setSupportProgressBarIndeterminateVisibility(false);
+		// Si c'est le premier => activation des gri-gri GUI
+		if (DLinProgress == 0) {
+			// On stoppe l'animation du SwipeRefreshLayout
+			monSwipeRefreshLayout.setRefreshing(false);
 
-		// Affiche l'icône refresh dans le header
-		if (monMenu != null)
-			monMenu.findItem(R.id.action_refresh).setVisible(true);
+			// Arrêt de la rotation du logo dans le header
+			setSupportProgressBarIndeterminateVisibility(false);
+
+			// Affiche l'icône refresh dans le header
+			if (monMenu != null)
+				monMenu.findItem(R.id.action_refresh).setVisible(true);
+		}
 	}
 
 	/**
@@ -327,10 +335,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Je notifie le changement pour un rafraichissement du contenu
 		monItemsAdapter.notifyDataSetChanged();
 
-		// Si plus aucun DL en cours, stop l'animation
-		if (DLinProgress == 0) {
-			arreterAnimationTelechargement();
-		}
+		// gestion deu téléchargement GUI
+		finChargementGUI();
 	}
 
 	@Override
