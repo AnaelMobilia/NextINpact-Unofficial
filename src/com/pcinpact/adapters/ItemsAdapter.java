@@ -105,7 +105,7 @@ public class ItemsAdapter extends BaseAdapter {
 			// Section
 			if (i.getType() == Item.typeSection) {
 				SectionItem si = (SectionItem) i;
-				v = monLayoutInflater.inflate(R.layout.main_item_section, parent, false);
+				v = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
 
 				v.setOnClickListener(null);
 				v.setOnLongClickListener(null);
@@ -123,7 +123,7 @@ public class ItemsAdapter extends BaseAdapter {
 			// Article
 			else if (i.getType() == Item.typeArticle) {
 				ArticleItem ai = (ArticleItem) i;
-				v = monLayoutInflater.inflate(R.layout.main_item_article, parent, false);
+				v = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 				final ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
 				final TextView labelAbonne = (TextView) v.findViewById(R.id.labelAbonne);
 				final TextView titreArticle = (TextView) v.findViewById(R.id.titreArticle);

@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity implements Old_IConnectable,
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		// On définit la vue
-		setContentView(R.layout.main);
+		setContentView(R.layout.liste_articles);
 		// On récupère les éléments
 		monListView = (ListView) this.findViewById(R.id.listeArticles);
 		monSwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
