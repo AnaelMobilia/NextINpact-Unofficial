@@ -38,11 +38,6 @@ import android.os.AsyncTask;
  *
  */
 public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>> {
-	// Types de code
-	public final static int HTML_LISTE_ARTICLES = 1;
-	public final static int HTML_ARTICLE = 2;
-	public final static int HTML_COMMENTAIRES = 3;
-
 	// Contexte parent
 	private Context monContext;
 	// Callback : parent + ref
@@ -79,7 +74,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		ParseurHTML monParser = new ParseurHTML(monContext);
 
 		switch (typeHTML) {
-			case HTML_LISTE_ARTICLES:
+			case Downloader.HTML_LISTE_ARTICLES:
 				// Je passe par le parser
 				mesItems.addAll(monParser.getListeArticles(monInput));
 
@@ -89,7 +84,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 				break;
 
-			case HTML_ARTICLE:
+			case Downloader.HTML_ARTICLE:
 				// Je passe par le parser
 				ArticleItem articleParser = monParser.getArticle(monInput);
 
@@ -106,7 +101,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				mesItems.add(articleDB);
 				break;
 
-			case HTML_COMMENTAIRES:
+			case Downloader.HTML_COMMENTAIRES:
 				// Je passe par le parser
 				mesItems.addAll(monParser.getCommentaires(monInput));
 

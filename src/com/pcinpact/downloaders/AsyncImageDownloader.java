@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.UUID;
+
 import com.pcinpact.NextInpact;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,11 +39,6 @@ import android.util.Log;
  *
  */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
-	// Types d'images
-	public final static int IMAGE_MINIATURE_ARTICLE = 1;
-	public final static int IMAGE_CONTENU_ARTICLE = 2;
-	public final static int IMAGE_SMILEY = 3;
-
 	// Contexte parent
 	private Context monContext;
 	// Callback : parent + ref
@@ -70,13 +67,13 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 		File monFichier = null;
 		switch (typeImage) {
-			case IMAGE_CONTENU_ARTICLE:
+			case Downloader.IMAGE_CONTENU_ARTICLE:
 				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_ILLUSTRATIONS, imgName);
 				break;
-			case IMAGE_MINIATURE_ARTICLE:
+			case Downloader.IMAGE_MINIATURE_ARTICLE:
 				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_MINIATURES, imgName);
 				break;
-			case IMAGE_SMILEY:
+			case Downloader.IMAGE_SMILEY:
 				monFichier = new File(monContext.getFilesDir() + NextInpact.PATH_IMAGES_SMILEYS, imgName);
 				break;
 		}
