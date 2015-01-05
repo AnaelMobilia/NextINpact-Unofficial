@@ -190,6 +190,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// J'enregistre l'état
 		isLoading = true;
 
+		// Couleurs du RefreshLayout
+		monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+				getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
+						.getColor(R.color.refreshBlanc));
+		// Animation du RefreshLayout
+		monSwipeRefreshLayout.setRefreshing(true);
+		
 		// Lance la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(true);
 
@@ -205,6 +212,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// J'enregistre l'état
 		isLoading = false;
 
+		// On stoppe l'animation du SwipeRefreshLayout
+		monSwipeRefreshLayout.setRefreshing(false);
+		
 		// Arrêt de la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(false);
 
