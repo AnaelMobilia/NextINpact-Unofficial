@@ -37,7 +37,7 @@ public class ArticleActivity extends ActionBarActivity {
 	// La webview
 	WebView webview;
 	// ID de l'article
-	String articleID;
+	int articleID;
 	// Accès à la DB
 	DAO monDAO;
 	// Article
@@ -47,7 +47,7 @@ public class ArticleActivity extends ActionBarActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		articleID = getIntent().getExtras().getString("ARTICLE_ID");
+		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
 		setContentView(R.layout.article);
 
@@ -56,7 +56,7 @@ public class ArticleActivity extends ActionBarActivity {
 
 		// Chargement de la DB
 		monDAO = new DAO(this.getApplicationContext());
-		monArticle = monDAO.chargerArticle(new String[] { articleID });
+		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
 		if (data == null)
