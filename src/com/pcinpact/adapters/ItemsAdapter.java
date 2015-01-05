@@ -139,7 +139,7 @@ public class ItemsAdapter extends BaseAdapter {
 				titreArticle.setText(ai.getTitre());
 				heureArticle.setText(ai.getHeureMinutePublication());
 				sousTitreArticle.setText(ai.getSousTitre());
-				commentairesArticle.setText(ai.getNbCommentaires());
+				commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
 				// Gestion de l'image
 				FileInputStream in;
 				try {
