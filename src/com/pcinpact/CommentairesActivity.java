@@ -22,18 +22,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.connection.Old_HtmlConnector;
-import com.pcinpact.connection.Old_IConnectable;
+import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.managers.Old_CommentManager;
-import com.pcinpact.models.INPactComment;
+import com.pcinpact.parseur.ParseurHTML;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -49,8 +49,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class CommentairesActivity extends ActionBarActivity implements Old_IConnectable {
-	private List<INPactComment> comments;
+public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
+	private ArrayList<CommentaireItem> lesCommentaires;
 	private String articleID;
 	private ListView monListView;
 	private ItemsAdapter monItemsAdapter;
@@ -85,11 +85,12 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
-		// Chargement des commentaires
-		final String url = getIntent().getExtras().getString("URL");
+		// ID de l'article concerné
 		articleID = getIntent().getExtras().getString("ARTICLE_ID");
-		comments = Old_CommentManager.getCommentsFromFile(this, url);
-
+		
+		// TODO : chargement des commentaires déjà existants
+		
+		
 		// Système de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
@@ -120,37 +121,6 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 	}
 
 	/**
-	 * Convertit les anciens objets vers des objets actuels + gestion des doublons
-	 * 
-	 * @param comments
-	 * @return
-	 */
-	public List<Item> convertOld(List<INPactComment> comments) {
-		// Passage ancien système -> nouveau système
-		// TreeSet : pas de doublons + tri sur l'ID
-		TreeSet<Item> mesItemsSet = new TreeSet<Item>(new Comparator<Item>() {
-			// Méthode de comparaison des objets pour leur ordonnancement
-			@Override
-			public int compare(Item a, Item b) {
-				CommentaireItem item1 = (CommentaireItem) a;
-				CommentaireItem item2 = (CommentaireItem) b;
-				return ((Integer) item1.getID()).compareTo(item2.getID());
-			}
-		});
-
-		// Conversion
-		for (INPactComment unOldItem : comments) {
-			// On traite le commentaire
-			CommentaireItem monCommentaire = new CommentaireItem();
-			monCommentaire.convertOld(unOldItem);
-			// Et on s'assure de ne pas avoir de doublon
-			mesItemsSet.add(monCommentaire);
-		}
-
-		return new ArrayList<Item>(mesItemsSet);
-	}
-
-	/**
 	 * Charge les commentaires suivants
 	 */
 	private void refreshListeCommentaires() {
@@ -167,24 +137,17 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 			// MàJ des graphismes
 			lancerAnimationTelechargement();
 
-			// Appel à la méthode qui va faire le boulot...
-			Old_HtmlConnector connector = new Old_HtmlConnector(this, this);
-
-			// Le dernier commentaire enregistré TODO : reprendre ça lorsque le système fournissant les datas sera refait
-			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
-
 			int idDernierCommentaire = 0;
 			// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
-			if (mesItems.size() > 0) {
-				CommentaireItem lastCommentaire = (CommentaireItem) mesItems.get(mesItems.size() - 1);
+			if (lesCommentaires.size() > 0) {
+				CommentaireItem lastCommentaire = lesCommentaires.get(lesCommentaires.size() - 1);
 				idDernierCommentaire = lastCommentaire.getID();
 			}
 
 			// Le cast en int supprime la partie après la virgule
-			int maPage = (int) Math.floor((idDernierCommentaire / NextInpact.NB_COMMENTAIRES_PAR_PAGE) + 1);
+			int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
-			String data = "page=" + maPage + "&newsId=" + articleID;
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + "/comment/", "POST", data, null);
+			
 		}
 	}
 
@@ -212,7 +175,7 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 		// Retour
 			case R.id.action_home:
 				finish();
-				Intent i = new Intent(this, MainActivity.class);
+				Intent i = new Intent(this, ListeArticlesActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				this.startActivity(i);
 				return true;
@@ -227,52 +190,31 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 		}
 	}
 
-	@Override
-	public void didConnectionResult(final byte[] result, final int state, final String tag) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				safeDidConnectionResult(result, state, tag);
-			}
-		});
-
-	}
-
 	protected void safeDidConnectionResult(byte[] result, int state, String tag) {
-		// MàJ des graphismes
-		arreterAnimationTelechargement();
+//		// MàJ des graphismes
+//		arreterAnimationTelechargement();
+//
+//		List<INPactComment> newComments = Old_CommentManager.getCommentsFromBytes(this, result);
+//
+//		// SSi nouveaux commentaires
+//		if (newComments.size() != 0) {
+//			// j'ajoute les commentaires juste téléchargés
+//			comments.addAll(newComments);
+//
+//			// Passage ancien système -> nouveau système
+//			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
+//
+//			// Je met à jour les données
+//			monItemsAdapter.updateListeItems(mesItems);
+//			// Je notifie le changement pour un rafraichissement du contenu
+//			monItemsAdapter.notifyDataSetChanged();
+//		}
+//
+//		// Reste-t-il des commentaires à télécharger ? (chargement continu automatique)
+//		if (newComments.size() < NextInpact.NB_COMMENTAIRES_PAR_PAGE) {
+//			isFinCommentaires = true;
+//		}
 
-		List<INPactComment> newComments = Old_CommentManager.getCommentsFromBytes(this, result);
-
-		// SSi nouveaux commentaires
-		if (newComments.size() != 0) {
-			// j'ajoute les commentaires juste téléchargés
-			comments.addAll(newComments);
-
-			// Passage ancien système -> nouveau système
-			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
-
-			// Je met à jour les données
-			monItemsAdapter.updateListeItems(mesItems);
-			// Je notifie le changement pour un rafraichissement du contenu
-			monItemsAdapter.notifyDataSetChanged();
-		}
-
-		// Reste-t-il des commentaires à télécharger ? (chargement continu automatique)
-		if (newComments.size() < NextInpact.NB_COMMENTAIRES_PAR_PAGE) {
-			isFinCommentaires = true;
-		}
-
-	}
-
-	@Override
-	public void didFailWithError(final String error, final int state) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				safeDidFailWithError(error, state);
-			}
-		});
 	}
 
 	protected void safeDidFailWithError(String error, int state) {
@@ -330,6 +272,18 @@ public class CommentairesActivity extends ActionBarActivity implements Old_IConn
 
 		// MàJ du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
+	}
+
+	@Override
+	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

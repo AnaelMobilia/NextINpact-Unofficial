@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
+import java.util.ArrayList;
 
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
@@ -53,9 +53,9 @@ public class ItemsAdapter extends BaseAdapter {
 
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
-	private List<Item> mesItems;
+	private ArrayList<? extends Item> mesItems;
 
-	public ItemsAdapter(Context unContext, List<Item> desItems) {
+	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
@@ -67,7 +67,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 * 
 	 * @param nouveauxItems
 	 */
-	public void updateListeItems(List<Item> nouveauxItems) {
+	public void updateListeItems(ArrayList<? extends Item> nouveauxItems) {
 		mesItems = nouveauxItems;
 	}
 
@@ -105,7 +105,7 @@ public class ItemsAdapter extends BaseAdapter {
 			// Section
 			if (i.getType() == Item.typeSection) {
 				SectionItem si = (SectionItem) i;
-				v = monLayoutInflater.inflate(R.layout.main_item_section, parent, false);
+				v = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
 
 				v.setOnClickListener(null);
 				v.setOnLongClickListener(null);
@@ -123,7 +123,7 @@ public class ItemsAdapter extends BaseAdapter {
 			// Article
 			else if (i.getType() == Item.typeArticle) {
 				ArticleItem ai = (ArticleItem) i;
-				v = monLayoutInflater.inflate(R.layout.main_item_article, parent, false);
+				v = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 				final ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
 				final TextView labelAbonne = (TextView) v.findViewById(R.id.labelAbonne);
 				final TextView titreArticle = (TextView) v.findViewById(R.id.titreArticle);
@@ -139,7 +139,7 @@ public class ItemsAdapter extends BaseAdapter {
 				titreArticle.setText(ai.getTitre());
 				heureArticle.setText(ai.getHeureMinutePublication());
 				sousTitreArticle.setText(ai.getSousTitre());
-				commentairesArticle.setText(ai.getNbCommentaires());
+				commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
 				// Gestion de l'image
 				FileInputStream in;
 				try {

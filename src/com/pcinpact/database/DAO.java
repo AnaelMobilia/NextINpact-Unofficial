@@ -144,13 +144,15 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param idArticle
 	 * @return
 	 */
-	public ArticleItem chargerArticle(String[] idArticle) {
+	public ArticleItem chargerArticle(int idArticle) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP,
 				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
+		String[] idString = {String.valueOf(idArticle)};
+		
 		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idArticle, null, null, null);
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
 
 		// Je vais au premier (et unique) résultat
 		monCursor.moveToNext();
@@ -183,7 +185,7 @@ public class DAO extends SQLiteOpenHelper {
 				ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "1");
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4");
 
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;
@@ -246,11 +248,13 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param idArticleEtCommentaire
 	 * @return
 	 */
-	public CommentaireItem chargerCommentaire(String[] idArticleEtCommentaire) {
+	public CommentaireItem chargerCommentaire(int idArticle, int idCommentaire) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
 
+		String[] idArticleEtCommentaire = {String.valueOf(idArticle), String.valueOf(idCommentaire)};
+		
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID
 				+ "=?", idArticleEtCommentaire, null, null, null);

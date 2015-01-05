@@ -23,21 +23,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.pcinpact.models.INPactComment;
-
 public class CommentaireItem implements Item {
 
 	private int ID;
 	private int articleID;
-	private String auteur;
-	private String commentaire;
-	private long timeStampPublication;
+	private String auteur = "";
+	private String commentaire = "";
+	private long timeStampPublication = 0;
 
 	@Override
 	public int getType() {
 		return Item.typeCommentaire;
 	}
-	
+
 	public String getFullDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
@@ -46,19 +44,10 @@ public class CommentaireItem implements Item {
 		return dfm.format(maDate);
 	}
 
-	public void convertOld(INPactComment unCommentaire) {
-		// Le premier commentaire est un # dans l'ancien parser
-		ID = Integer.valueOf(unCommentaire.commentID.substring(1));
-		auteur = unCommentaire.author;
-		commentaire = unCommentaire.content;
-		timeStampPublication = Long.valueOf(unCommentaire.commentDate);
-	}
-
-	public String getAuteurDateCommentaire()
-	{
+	public String getAuteurDateCommentaire() {
 		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
-	
+
 	public int getID() {
 		return ID;
 	}
@@ -70,7 +59,7 @@ public class CommentaireItem implements Item {
 	public void setArticleID(int articleID) {
 		this.articleID = articleID;
 	}
-	
+
 	public void setID(int iD) {
 		ID = iD;
 	}

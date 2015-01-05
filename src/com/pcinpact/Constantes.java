@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package compatibility;
-
-import com.pcinpact.models.INpactArticleDescription;
+package com.pcinpact;
 
 /**
- * Reste de INpactListAdapter.java non supprimable pour le moment...
+ * Constantes de l'application (onfiguration des URL, ...)
  * @author Anael
  *
  */
-public class ViewEntry {
-	public String day;
-	INpactArticleDescription article;
+public class Constantes {
+	// URL de téléchargement
+	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	// Nb de commentaires par page
+	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
+	// Path des miniatures des articles
+	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
+	// Path des images de contenu des articles
+	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
+	// Path des smileys
+	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
 }
