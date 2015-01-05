@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia, Guillaume Bour
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,47 +18,21 @@
  */
 package com.pcinpact;
 
-import android.content.Context;
-import com.pcinpact.managers.Old_ArticleManager;
-import com.pcinpact.models.ArticlesWrapper;
-
-public class NextInpact {
+/**
+ * Constantes de l'application (onfiguration des URL, ...)
+ * @author Anael
+ *
+ */
+public class Constantes {
 	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
-	// Path des miniatures des articles 
+	// Path des miniatures des articles
 	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
 	// Path des images de contenu des articles
 	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
 	// Path des smileys
 	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
-
-	static private NextInpact instance;
-
-	ArticlesWrapper wrapper;
-	Context context;
-
-	private NextInpact(Context context) {
-		this.context = context;
-	}
-
-	static public NextInpact getInstance(Context context) {
-		if (instance == null || instance.context == null)
-			instance = new NextInpact(context);
-
-		instance.context = context;
-		return instance;
-	}
-
-	public ArticlesWrapper getArticlesWrapper() {
-		if (wrapper == null)
-			wrapper = Old_ArticleManager.getSavedArticlesWrapper(context);
-
-		if (wrapper == null)
-			wrapper = new ArticlesWrapper();
-
-		return wrapper;
-	}
 
 }
