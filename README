@@ -1,8 +1,8 @@
 Librairies utilisées par le projet :
-HtmlCleaner
-	v2.9
-	http://htmlcleaner.sourceforge.net
-	Nettoie et corrige le code HTML source
+jsoup
+	v1.8.1a
+	http://jsoup.org/
+	Parsage du code HTML
 
 ================================================
 Outils pratiques :

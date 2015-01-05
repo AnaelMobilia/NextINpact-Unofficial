@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -25,7 +25,9 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:paddingBottom="5dp"
+    android:paddingStart="5dp"
     android:paddingLeft="5dp"
+    android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingRight="?android:attr/scrollbarSize"
     android:paddingTop="5dp" >
 
@@ -33,17 +35,34 @@
         android:id="@+id/imageArticle"
         android:layout_width="70dp"
         android:layout_height="53dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:contentDescription="@string/contentDescriptionImageArticle"
         android:src="@drawable/logo_nextinpact" />
 
     <TextView
+        android:id="@+id/labelAbonne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_toEndOf="@id/imageArticle"
+        android:layout_toRightOf="@id/imageArticle"
+        android:background="@layout/liste_articles_item_article_background_badge_abonne"
+        android:text="@string/accueilBadgeAbonne"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/titreArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imageArticle"
+        android:layout_toEndOf="@id/labelAbonne"
+        android:layout_toRightOf="@id/labelAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
@@ -52,43 +71,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
-        android:layout_marginRight="2dp"
+        android:layout_toEndOf="@id/imageArticle"
         android:layout_toRightOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#EA8211"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/labelAbonne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titreArticle"
-        android:layout_marginRight="2dp"
-        android:layout_toRightOf="@id/heureArticle"
-        android:background="@layout/main_item_article_background_badge_abonne"
-        android:text="@string/accueilBadgeAbonne"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/commentairesArticle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/titreArticle"
-        android:drawableLeft="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceVerySmall" />
+        android:textColor="#EA8211" />
 
     <TextView
         android:id="@+id/sousTitreArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
+        android:layout_marginEnd="2dp"
         android:layout_marginRight="2dp"
+        android:layout_toEndOf="@id/heureArticle"
         android:layout_toRightOf="@id/heureArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone" />
+        android:textColor="?android:attr/textColorSecondary" />
+
+    <TextView
+        android:id="@+id/commentairesArticle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageArticle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:drawableStart="@drawable/small_comms"
+        android:drawableLeft="@drawable/small_comms"
+        android:textAppearance="@style/textAppearanceVerySmall" />
 
 </RelativeLayout>

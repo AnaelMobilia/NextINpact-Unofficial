@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,12 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.connection;
+-->
 
-public interface IConnectable {
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
 
-	public void didConnectionResult(byte[] result, int state, String tag);
+    <corners android:radius="5dp" />
 
-	public void didFailWithError(String error, int state);
+    <solid android:color="#da7012" />
 
-}
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFF" />
+
+</shape>

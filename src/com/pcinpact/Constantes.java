@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
--->
+package com.pcinpact;
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle" >
+/**
+ * Constantes de l'application (onfiguration des URL, ...)
+ * @author Anael
+ *
+ */
+public class Constantes {
+	// URL de téléchargement
+	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	// Nb de commentaires par page
+	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
+	// Path des miniatures des articles
+	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
+	// Path des images de contenu des articles
+	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
+	// Path des smileys
+	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
-    <corners android:radius="5dp" />
-
-    <solid android:color="#da7012" />
-
-    <stroke
-        android:width="2dp"
-        android:color="#FFFFFF" />
-
-</shape>
+}

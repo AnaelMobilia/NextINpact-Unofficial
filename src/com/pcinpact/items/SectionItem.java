@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,9 +18,6 @@
  */
 package com.pcinpact.items;
 
-import com.pcinpact.models.INpactArticleDescription;
-import compatibility.ViewEntry;
-
 public class SectionItem implements Item {
 	private String titre;
 
@@ -28,17 +25,6 @@ public class SectionItem implements Item {
 	public int getType() {
 		return Item.typeSection;
 	}
-	
-	public void convertOld(INpactArticleDescription uneSection)
-	{
-		titre = uneSection.day;
-	}
-	
-	public void convertOld(ViewEntry uneSection)
-	{
-		titre = uneSection.day;
-	}
-	
 
 	public String getTitre() {
 		return titre;

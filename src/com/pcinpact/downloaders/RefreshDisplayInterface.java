@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,17 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package compatibility;
+package com.pcinpact.downloaders;
 
-import com.pcinpact.models.INpactArticleDescription;
+import java.util.ArrayList;
+import java.util.UUID;
 
-/**
- * Reste de INpactListAdapter.java non supprimable pour le moment...
- * @author Anael
- *
- */
-public class ViewEntry {
-	public String day;
-	INpactArticleDescription article;
+import android.graphics.Bitmap;
 
+import com.pcinpact.items.Item;
+
+public interface RefreshDisplayInterface {
+
+	/**
+	 * Une ressource HTML à été téléchargée
+	 * @param unUUID
+	 * @param mesItems
+	 */
+	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems);
+	
+	/**
+	 * Une ressource image a été téléchargée
+	 * @param unUUID
+	 * @param uneImage
+	 */
+	public void downloadImageFini(UUID unUUID, Bitmap uneImage);
+	
 }

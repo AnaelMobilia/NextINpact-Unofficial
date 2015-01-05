@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,43 +18,46 @@
  */
 package com.pcinpact.items;
 
-import com.pcinpact.models.INpactArticleDescription;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class ArticleItem implements Item {
 
-	private String ID;
+	private int ID;
 	private String titre;
-	private String sousTitre;
-	private String pathImage;
-	private boolean isAbonne;
-	private String heurePublication;
-	private String nbCommentaires;
+	private String sousTitre = "";
+	private boolean isAbonne = false;
+	private int nbCommentaires = 0;
+	private String URL;
+	private String URLIllustration = "";
+	private String contenu = "";
+	private long timeStampPublication;
 
 	@Override
 	public int getType() {
 		return Item.typeArticle;
 	}
 
-	public void convertOld(INpactArticleDescription unArticle) {
-		ID = unArticle.getID();
-		titre = unArticle.title;
-		sousTitre = unArticle.subTitle;
-		pathImage = unArticle.imgURL;
-		try {
-			isAbonne = unArticle.isAbonne;
-		} catch (Exception e) {
-			// VS un ancien cache qui ne connaitrait pas l'attribut isAbonne => null pointer exception
-			isAbonne = false;
-		}
-		heurePublication = unArticle.date;
-		nbCommentaires = unArticle.numberOfComs;
+	/**
+	 * Heure et minute de la publication sous forme textuelle
+	 * 
+	 * @return
+	 */
+	public String getHeureMinutePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+		return dfm.format(maDate);
 	}
 
-	public String getID() {
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(String iD) {
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -74,15 +77,7 @@ public class ArticleItem implements Item {
 		this.sousTitre = sousTitre;
 	}
 
-	public String getPathImage() {
-		return pathImage;
-	}
-
-	public void setPathImage(String pathImage) {
-		this.pathImage = pathImage;
-	}
-
-	public boolean getisAbonne() {
+	public boolean isAbonne() {
 		return isAbonne;
 	}
 
@@ -90,20 +85,44 @@ public class ArticleItem implements Item {
 		this.isAbonne = isAbonne;
 	}
 
-	public String getHeurePublication() {
-		return heurePublication;
-	}
-
-	public void setHeurePublication(String heurePublication) {
-		this.heurePublication = heurePublication;
-	}
-
-	public String getNbCommentaires() {
+	public int getNbCommentaires() {
 		return nbCommentaires;
 	}
 
-	public void setNbCommentaires(String nbCommentaires) {
+	public void setNbCommentaires(int nbCommentaires) {
 		this.nbCommentaires = nbCommentaires;
+	}
+
+	public String getURL() {
+		return URL;
+	}
+
+	public void setURL(String uRL) {
+		URL = uRL;
+	}
+
+	public String getURLIllustration() {
+		return URLIllustration;
+	}
+
+	public void setURLIllustration(String uRLIllustration) {
+		URLIllustration = uRLIllustration;
+	}
+
+	public String getContenu() {
+		return contenu;
+	}
+
+	public void setContenu(String contenu) {
+		this.contenu = contenu;
+	}
+
+	public long getTimeStampPublication() {
+		return timeStampPublication;
+	}
+
+	public void setTimeStampPublication(long timeStampPublication) {
+		this.timeStampPublication = timeStampPublication;
 	}
 
 }

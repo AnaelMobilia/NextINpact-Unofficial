@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014, 2015 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,9 +18,9 @@
  */
 package com.pcinpact;
 
-import java.io.FileInputStream;
+import com.pcinpact.database.DAO;
+import com.pcinpact.items.ArticleItem;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,61 +32,32 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import com.pcinpact.connection.HtmlConnector;
-import com.pcinpact.connection.IConnectable;
-import com.pcinpact.managers.ArticleManager;
-import com.pcinpact.models.INpactArticle;
-import com.pcinpact.models.INpactArticleDescription;
-import com.pcinpact.parsers.HtmlParser;
-
-public class ArticleActivity extends ActionBarActivity implements IConnectable {
-	/** Called when the activity is first created. */
-
+public class ArticleActivity extends ActionBarActivity {
+	// La webview
 	WebView webview;
-
-	String url;
-	String comms_url;
-	String articleID;
+	// ID de l'article
+	int articleID;
+	// Accès à la DB
+	DAO monDAO;
+	// Article
+	ArticleItem monArticle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-//		url = getIntent().getExtras().getString("URL");
-//		comms_url = getIntent().getExtras().getString("EXTRA_URL");
-		articleID = getIntent().getExtras().getString("ARTICLE_ID");
-		url = articleID + ".html";
-		comms_url = articleID + "_comms.html";
+		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
-		
 		setContentView(R.layout.article);
 
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		final Context l_Context = this;
-		String data = null;
-
-		FileInputStream l_Stream = null;
-
-		// On charge l'article depuis le cache, ou à défaut depuis le site
-		try {
-			l_Stream = l_Context.openFileInput(url);
-			HtmlParser hh = new HtmlParser(l_Stream);
-			INpactArticle article = hh.getArticleContent(l_Context);
-			data = article.Content;
-			l_Stream.close();
-		} catch (Exception e) {
-			INpactArticleDescription article = NextInpact.getInstance(this).getArticlesWrapper().getArticle(articleID);
-
-			HtmlConnector connector = new HtmlConnector(this, this);
-			connector.tag = article.getID();
-			connector.sendRequest(NextInpact.NEXT_INPACT_URL + article.getUrl(), "GET", null, 0, null);
-
-			data = getString(R.string.articleNonSynchroHTML);
-		}
+		// Chargement de la DB
+		monDAO = new DAO(this.getApplicationContext());
+		monArticle = monDAO.chargerArticle(articleID);
+		String data = monArticle.getContenu();
 
 		if (data == null)
 			data = getString(R.string.articleVideErreurHTML);
@@ -125,12 +96,10 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case R.id.action_comments:
-				if (comms_url != null) {
-					Intent intentWeb = new Intent(ArticleActivity.this, CommentairesActivity.class);
-					intentWeb.putExtra("URL", comms_url);
-					intentWeb.putExtra("ARTICLE_ID", articleID);
-					startActivity(intentWeb);
-				}
+				Intent intentWeb = new Intent(ArticleActivity.this, CommentairesActivity.class);
+				intentWeb.putExtra("ARTICLE_ID", articleID);
+				startActivity(intentWeb);
+
 				return true;
 
 			case R.id.action_home:
@@ -141,56 +110,4 @@ public class ArticleActivity extends ActionBarActivity implements IConnectable {
 				return super.onOptionsItemSelected(pItem);
 		}
 	}
-
-	@Override
-	public void didConnectionResult(final byte[] result, final int state, final String tag) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				didConnectionResultOnUiThread(result, state, tag);
-			}
-		});
-
-	}
-
-	protected void didConnectionResultOnUiThread(byte[] result, int state, String tag) {
-
-		ArticleManager.saveArticle(this, result, tag);
-
-		Intent intent = getIntent();
-		finish();
-		startActivity(intent);
-	}
-
-	@Override
-	public void didFailWithError(final String error, final int state) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				safeDidFailWithError(error, state);
-			}
-		});
-	}
-
-	protected void safeDidFailWithError(String error, int state) {
-		String data = getString(R.string.articleErreurHTML);
-		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
-
-		// Message d'erreur, si demandé !
-		// Chargement des préférences de l'utilisateur
-		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		// Est-ce la premiere utilisation de l'application ?
-		Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug), getResources()
-				.getBoolean(R.bool.defautOptionDebug));
-
-		if (debug) {
-			// Affichage utilisateur du message d'erreur
-			CharSequence text = "Message d'erreur détaillé : " + error;
-			int duration = Toast.LENGTH_LONG;
-
-			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-			toast.show();
-		}
-	}
-
 }

@@ -17,15 +17,16 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
+ */
+-->
 <resources>
 
-    <!-- Thème Android v8 à v10 -->
+    <!-- Thème Android v11 à v... -->
 
-    
+
     <!-- the theme applied to the application or activity -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-<!--         <item name="android:actionBarStyle">@style/NextInpactActionBar</item> -->
+        <item name="android:actionBarStyle">@style/NextInpactActionBar</item>
 
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar</item>

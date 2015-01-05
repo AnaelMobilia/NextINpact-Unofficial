@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,42 +18,49 @@
  */
 package com.pcinpact.items;
 
-import com.pcinpact.models.INPactComment;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CommentaireItem implements Item {
 
-	private String ID;
-	private String auteur;
-	private String commentaire;
-	private String datePublication;
+	private int ID;
+	private int articleID;
+	private String auteur = "";
+	private String commentaire = "";
+	private long timeStampPublication = 0;
 
 	@Override
 	public int getType() {
 		return Item.typeCommentaire;
 	}
 
-	public void convertOld(INPactComment unCommentaire) {
-		ID = unCommentaire.commentID;
-		auteur = unCommentaire.author;
-		commentaire = unCommentaire.content;
-		datePublication = unCommentaire.commentDate;
+	public String getFullDatePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat("le dd/MM/yyyy à HH:mm:ss", Locale.getDefault());
+
+		return dfm.format(maDate);
 	}
 
-	public String getAuteurDateCommentaire()
-	{
-		return this.getAuteur() + " " + this.getDatePublication();
+	public String getAuteurDateCommentaire() {
+		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
-	
-	public int getIDNumerique()
-	{
-		return Integer.valueOf(this.getID().substring(1));
-	}
-	
-	public String getID() {
+
+	public int getID() {
 		return ID;
 	}
 
-	public void setID(String iD) {
+	public int getArticleID() {
+		return articleID;
+	}
+
+	public void setArticleID(int articleID) {
+		this.articleID = articleID;
+	}
+
+	public void setID(int iD) {
 		ID = iD;
 	}
 
@@ -73,12 +80,12 @@ public class CommentaireItem implements Item {
 		this.commentaire = commentaire;
 	}
 
-	public String getDatePublication() {
-		return datePublication;
+	public long getTimeStampPublication() {
+		return timeStampPublication;
 	}
 
-	public void setDatePublication(String datePublication) {
-		this.datePublication = datePublication;
+	public void setTimeStampPublication(long timeStampPublication) {
+		this.timeStampPublication = timeStampPublication;
 	}
 
 }

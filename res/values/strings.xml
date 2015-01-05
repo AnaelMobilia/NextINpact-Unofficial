@@ -83,6 +83,7 @@ Les contenus sont la pleine propriété de leurs auteurs respectifs."	</string>
     <string name="videoVimeo">Voir la vidéo sur Vimeo</string>
     <string name="videoGouvFr">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</string>
     <string name="videoVidme">Voir la vidéo sur la Vidme</string>
+    <string name="videoNonSupporte">Visualiser ce contenu sur le site internet</string>
 
     <!-- Vue "Options" -->
     <string name="optionsGenerales">"Options de l'application"</string>
