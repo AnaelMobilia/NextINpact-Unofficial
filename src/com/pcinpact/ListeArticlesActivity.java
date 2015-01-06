@@ -166,28 +166,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
-	private ArrayList<Item> prepareAffichage() {
-		// Tri des Articles par timestamp
-		Collections.sort(mesArticles);
-
-		ArrayList<Item> monRetour = new ArrayList<Item>();
-		String jourActuel = "";
-		for (ArticleItem article : mesArticles) {
-			// Si ce n'est pas la même journée que l'article précédent
-			if (!article.getDatePublication().equals(jourActuel)) {
-				// Je met à jour ma date
-				jourActuel = article.getDatePublication();
-				// J'ajoute un sectionItem
-				monRetour.add(new SectionItem(jourActuel));
-			}
-
-			// J'ajoute mon article
-			monRetour.add(article);
-		}
-
-		return monRetour;
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je garde le menu pour pouvoir l'animer après
@@ -205,84 +183,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 
 		return super.onCreateOptionsMenu(monMenu);
-	}
-
-	@SuppressLint("NewApi")
-	private void telechargeListeArticles() {
-		// Le retour en GUI
-		nouveauChargementGUI();
-
-		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, DLlisteArticles,
-				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
-		// Parallèlisation des téléchargements pour l'ensemble de l'application
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			monAHD.execute();
-		}
-	}
-
-	@SuppressLint("NewApi")
-	private void telechargeUnArticle(ArticleItem unArticle) {
-		// Le retour en GUI
-		nouveauChargementGUI();
-
-		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
-				Downloader.HTML_ARTICLE, unArticle.getURL(), monDAO);
-		// Parallèlisation des téléchargements pour l'ensemble de l'application
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			monAHD.execute();
-		}
-	}
-
-	/**
-	 * Gère les animations de téléchargement
-	 */
-	private void nouveauChargementGUI() {
-		// Si c'est le premier => activation des gri-gri GUI
-		if (DLinProgress == 0) {
-			// Couleurs du RefreshLayout
-			monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-					getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
-							.getColor(R.color.refreshBlanc));
-			// Animation du RefreshLayout
-			monSwipeRefreshLayout.setRefreshing(true);
-
-			// Lance la rotation du logo dans le header
-			setSupportProgressBarIndeterminateVisibility(true);
-
-			// Supprime l'icône refresh dans le header
-			if (monMenu != null)
-				monMenu.findItem(R.id.action_refresh).setVisible(false);
-		}
-
-		// Je note le téléchargement en cours
-		DLinProgress++;
-	}
-
-	/**
-	 * Gère les animations de téléchargement
-	 */
-	private void finChargementGUI() {
-		// Je note la fin du téléchargement
-		DLinProgress--;
-
-		// Si c'est le premier => activation des gri-gri GUI
-		if (DLinProgress == 0) {
-			// On stoppe l'animation du SwipeRefreshLayout
-			monSwipeRefreshLayout.setRefreshing(false);
-
-			// Arrêt de la rotation du logo dans le header
-			setSupportProgressBarIndeterminateVisibility(false);
-
-			// Affiche l'icône refresh dans le header
-			if (monMenu != null)
-				monMenu.findItem(R.id.action_refresh).setVisible(true);
-		}
 	}
 
 	/**
@@ -337,6 +237,38 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
+	@SuppressLint("NewApi")
+	private void telechargeListeArticles() {
+		// Le retour en GUI
+		nouveauChargementGUI();
+
+		// Ma tâche de DL
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, DLlisteArticles,
+				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
+		// Parallèlisation des téléchargements pour l'ensemble de l'application
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			monAHD.execute();
+		}
+	}
+
+	@SuppressLint("NewApi")
+	private void telechargeUnArticle(ArticleItem unArticle) {
+		// Le retour en GUI
+		nouveauChargementGUI();
+
+		// Ma tâche de DL
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
+				Downloader.HTML_ARTICLE, unArticle.getURL(), monDAO);
+		// Parallèlisation des téléchargements pour l'ensemble de l'application
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			monAHD.execute();
+		}
+	}
+
 	@Override
 	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> desItems) {
 		// Rafraichissement GUI SSI DL liste articles
@@ -365,6 +297,79 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@Override
 	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+	}
+
+	/**
+	 * Fournit une liste d'articles triés par date + sections
+	 * 
+	 * @return
+	 */
+	private ArrayList<Item> prepareAffichage() {
+		// Tri des Articles par timestamp
+		Collections.sort(mesArticles);
+
+		ArrayList<Item> monRetour = new ArrayList<Item>();
+		String jourActuel = "";
+		for (ArticleItem article : mesArticles) {
+			// Si ce n'est pas la même journée que l'article précédent
+			if (!article.getDatePublication().equals(jourActuel)) {
+				// Je met à jour ma date
+				jourActuel = article.getDatePublication();
+				// J'ajoute un sectionItem
+				monRetour.add(new SectionItem(jourActuel));
+			}
+
+			// J'ajoute mon article
+			monRetour.add(article);
+		}
+
+		return monRetour;
+	}
+
+	/**
+	 * Gère les animations de téléchargement
+	 */
+	private void nouveauChargementGUI() {
+		// Si c'est le premier => activation des gri-gri GUI
+		if (DLinProgress == 0) {
+			// Couleurs du RefreshLayout
+			monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+					getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
+							.getColor(R.color.refreshBlanc));
+			// Animation du RefreshLayout
+			monSwipeRefreshLayout.setRefreshing(true);
+
+			// Lance la rotation du logo dans le header
+			setSupportProgressBarIndeterminateVisibility(true);
+
+			// Supprime l'icône refresh dans le header
+			if (monMenu != null)
+				monMenu.findItem(R.id.action_refresh).setVisible(false);
+		}
+
+		// Je note le téléchargement en cours
+		DLinProgress++;
+	}
+
+	/**
+	 * Gère les animations de téléchargement
+	 */
+	private void finChargementGUI() {
+		// Je note la fin du téléchargement
+		DLinProgress--;
+
+		// Si c'est le premier => activation des gri-gri GUI
+		if (DLinProgress == 0) {
+			// On stoppe l'animation du SwipeRefreshLayout
+			monSwipeRefreshLayout.setRefreshing(false);
+
+			// Arrêt de la rotation du logo dans le header
+			setSupportProgressBarIndeterminateVisibility(false);
+
+			// Affiche l'icône refresh dans le header
+			if (monMenu != null)
+				monMenu.findItem(R.id.action_refresh).setVisible(true);
+		}
 	}
 
 }
