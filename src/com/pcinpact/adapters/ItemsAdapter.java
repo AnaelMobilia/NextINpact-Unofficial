@@ -24,25 +24,18 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
-import com.pcinpact.downloaders.AsyncImageDownloader;
-import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Html.ImageGetter;
@@ -58,13 +51,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface {
+public class ItemsAdapter extends BaseAdapter {
 	// Ressources graphique
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
-	// Images en cours de DL
-	private HashMap<String, ImageView> imgEnDL = new HashMap<String, ImageView>();
 
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
@@ -97,7 +88,6 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 		return arg0;
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
@@ -105,9 +95,9 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 
 		// Préférences de l'utilisateur : taille du texte
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-		// la taille par défaut est de 16
+		// Taile par défaut
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
-		final int tailleDefaut = 16;
+		final int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
 		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				"" + tailleDefaut));
@@ -156,24 +146,12 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 				FileInputStream in;
 				try {
 					// Ouverture du fichier en cache
-					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS
-							+ ai.getImageName());
+					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES + ai.getImageName());
 					in = new FileInputStream(monFichier);
 					imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
 				} catch (FileNotFoundException e) {
 					// Si le fichier n'est pas trouvé, je fournis une image par défaut
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
-					// Note les éléments à lier pour le retour
-					imgEnDL.put(ai.getURLIllustration(), imageArticle);
-					// Lance le DL de l'image
-					AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this,
-							Constantes.IMAGE_MINIATURE_ARTICLE, ai.getURLIllustration());
-					// Parallèlisation des téléchargements pour l'ensemble de l'application
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-						monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					} else {
-						monAID.execute();
-					}
 				}
 
 				// Taille de texte personnalisée ?
@@ -264,20 +242,6 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 		float tailleOrigine = uneTextView.getTextSize();
 		float nouvelleTaille = tailleOrigine * unZoom;
 		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
-	}
-
-	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems) {
-	}
-
-	@Override
-	public void downloadImageFini(String uneURL, Bitmap uneImage) {
-		// Je récupère l'imageView
-		ImageView monImageView = imgEnDL.get(uneURL);
-		// Lui donne l'image
-		monImageView.setImageBitmap(uneImage);
-		// Et l'enlève de la liste d'attente
-		imgEnDL.remove(uneURL);
 	}
 
 }
