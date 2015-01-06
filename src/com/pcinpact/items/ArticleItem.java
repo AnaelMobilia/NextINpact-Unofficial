@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.pcinpact.Constantes;
+
 public class ArticleItem implements Item, Comparable<ArticleItem> {
 
 	private int ID;
@@ -48,8 +50,21 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 	public String getHeureMinutePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
-		DateFormat dfm = new SimpleDateFormat("HH:mm", Locale.getDefault());
+		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Locale.getDefault());
 
+		return dfm.format(maDate);
+	}
+	
+	/**
+	 * Date de la publication sous forme textuelle
+	 * 
+	 * @return
+	 */
+	public String getDatePublication() {
+		Date maDate = new Date(this.getTimeStampPublication());
+		// Format souhaité
+		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
+		
 		return dfm.format(maDate);
 	}
 

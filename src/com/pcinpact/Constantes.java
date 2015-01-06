@@ -34,6 +34,14 @@ public class Constantes {
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 
 	/**
+	 * FORMAT d'AFFICHAGE
+	 */
+	// Date des sections sur la listeArticlesActivity
+	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MM yyyy";
+	// Heure de publication des articles sur la listeArticlesActivity
+	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
+	
+	/**
 	 * FORMATS DU SITE POUR LE PARSEUR
 	 */
 	// Format des dates des articles sur le site
