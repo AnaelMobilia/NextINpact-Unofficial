@@ -17,7 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
+ */
 -->
 <resources>
 
@@ -36,14 +36,8 @@
 
     <!-- Disclaimer -->
     <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next INpact.
-			\n
-			\nLes textes, images et logos affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
-			\n
-			\n
-			\nSi vous appréciez Next INpact, abonnez-vous à Next INpact pour soutenir leur indépendance !
-			\n=> http://www.nextinpact.com/abonnement
-			\n
-			\n
+			\nLes contenus affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
+			\nSi vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"	</string>
     <string name="chargementPasInternet">"Vous n'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion."</string>
 
@@ -62,12 +56,15 @@ Crédits :
  - Guillaume Bour (contributeur v1.7.2) 
  - Sami Ferhah (mainteneur de la v1 à la v1.7.1) 
 
- - L'équipe de HTMLCleaner pour leur librairie (http://htmlcleaner.sourceforge.net/)
+ - L'équipe de Jsoup pour leur librairie (http://jsoup.org/)
 
 
 Propriété des contenus :
 L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com
-Les contenus sont la pleine propriété de leurs auteurs respectifs."	</string>
+Les contenus sont la pleine propriété de leurs auteurs respectifs.
+
+Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
+http://www.nextinpact.com/abonnement"	</string>
 
     <!-- Message d'erreur -->
     <string name="titleError">Erreur</string>
