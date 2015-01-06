@@ -134,7 +134,7 @@ public class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @param unArticle
 	 */
-	public void enregistrerArticleSiNouveau(ArticleItem unArticle) {
+	public boolean enregistrerArticleSiNouveau(ArticleItem unArticle) {
 		// J'essaye de charger l'article depuis la DB
 		ArticleItem testItem = this.chargerArticle(unArticle.getID());
 
@@ -143,7 +143,9 @@ public class DAO extends SQLiteOpenHelper {
 		// - l'article est déjà en BDD, mais il s'agit d'une mise à jour de l'article
 		if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication()) {
 			this.enregistrerArticle(unArticle);
+			return true;
 		}
+		return false;
 	}
 
 	/**
