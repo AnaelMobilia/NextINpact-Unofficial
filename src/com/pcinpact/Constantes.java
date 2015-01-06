@@ -58,4 +58,20 @@ public class Constantes {
 	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
 	// Path des smileys
 	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
+	
+	/**
+	 * TYPES DE TELECHARGEMENTS
+	 */
+	// Type : liste des articles
+	public final static int HTML_LISTE_ARTICLES = 1;
+	// Type : contenu d'un article
+	public final static int HTML_ARTICLE = 2;
+	// Type : commentaires d'un article
+	public final static int HTML_COMMENTAIRES = 3;
+	// Type : image -> miniature
+	public final static int IMAGE_MINIATURE_ARTICLE = 4;
+	// Type : image -> du contenu d'un article
+	public final static int IMAGE_CONTENU_ARTICLE = 5;
+	// Type : image -> smiley des commentaires
+	public final static int IMAGE_SMILEY = 6;
 }

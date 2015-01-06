@@ -33,14 +33,6 @@ import android.util.Log;
  *
  */
 public class Downloader {
-	// Type de la ressource
-	public final static int HTML_LISTE_ARTICLES = 1;
-	public final static int HTML_ARTICLE = 2;
-	public final static int HTML_COMMENTAIRES = 3;
-	public final static int IMAGE_MINIATURE_ARTICLE = 4;
-	public final static int IMAGE_CONTENU_ARTICLE = 5;
-	public final static int IMAGE_SMILEY = 6;
-	
 	/**
 	 * Téléchargement d'une ressource
 	 * 

@@ -25,7 +25,6 @@ import java.util.UUID;
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
 import com.pcinpact.downloaders.AsyncHTMLDownloader;
-import com.pcinpact.downloaders.Downloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
@@ -244,7 +243,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, DLlisteArticles,
-				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
+				Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -260,7 +259,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Ma tâche de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
-				Downloader.HTML_ARTICLE, unArticle.getURL(), monDAO);
+				Constantes.HTML_ARTICLE, unArticle.getURL(), monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -283,7 +282,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				// Je l'ajoute à ma liste d'articles en mémoire
 				mesArticles.add((ArticleItem) unItem);
 			}
-			// TODO : l'itemAdapter se chargera des images (il touche les imageview !)
 
 			// Je met à jour les données
 			monItemsAdapter.updateListeItems(prepareAffichage());

@@ -67,13 +67,13 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 		File monFichier = null;
 		switch (typeImage) {
-			case Downloader.IMAGE_CONTENU_ARTICLE:
+			case Constantes.IMAGE_CONTENU_ARTICLE:
 				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, imgName);
 				break;
-			case Downloader.IMAGE_MINIATURE_ARTICLE:
+			case Constantes.IMAGE_MINIATURE_ARTICLE:
 				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, imgName);
 				break;
-			case Downloader.IMAGE_SMILEY:
+			case Constantes.IMAGE_SMILEY:
 				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, imgName);
 				break;
 		}

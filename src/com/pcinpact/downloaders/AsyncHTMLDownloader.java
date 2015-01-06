@@ -21,6 +21,7 @@ package com.pcinpact.downloaders;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.pcinpact.Constantes;
 import com.pcinpact.database.DAO;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.ArticleItem;
@@ -71,7 +72,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		ParseurHTML monParser = new ParseurHTML(monContext);
 
 		switch (typeHTML) {
-			case Downloader.HTML_LISTE_ARTICLES:
+			case Constantes.HTML_LISTE_ARTICLES:
 				// Je passe par le parser
 				mesItems.addAll(monParser.getListeArticles(monInput, urlPage));
 
@@ -81,7 +82,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 				break;
 
-			case Downloader.HTML_ARTICLE:
+			case Constantes.HTML_ARTICLE:
 				// Je passe par le parser
 				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
 
@@ -98,7 +99,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				mesItems.add(articleDB);
 				break;
 
-			case Downloader.HTML_COMMENTAIRES:
+			case Constantes.HTML_COMMENTAIRES:
 				// Je passe par le parser
 				mesItems.addAll(monParser.getCommentaires(monInput, urlPage));
 
