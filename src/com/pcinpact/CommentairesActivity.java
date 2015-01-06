@@ -19,16 +19,11 @@
 package com.pcinpact;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.UUID;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.parseur.ParseurHTML;
 
 import android.content.Context;
 import android.content.Intent;
@@ -275,13 +270,13 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL, Bitmap uneImage) {
 		// TODO Auto-generated method stub
 		
 	}

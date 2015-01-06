@@ -18,13 +18,14 @@
  */
 package com.pcinpact.adapters;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
+
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.downloaders.AsyncImageDownloader;
@@ -33,6 +34,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -62,7 +64,7 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
 	// Images en cours de DL
-	private HashMap<UUID, ImageView> imgEnDL = new HashMap<UUID, ImageView>();
+	private HashMap<String, ImageView> imgEnDL = new HashMap<String, ImageView>();
 
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
@@ -154,18 +156,17 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 				FileInputStream in;
 				try {
 					// Ouverture du fichier en cache
-					in = monContext.openFileInput(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS
+					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS
 							+ ai.getImageName());
+					in = new FileInputStream(monFichier);
 					imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
 				} catch (FileNotFoundException e) {
 					// Si le fichier n'est pas trouvé, je fournis une image par défaut
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
-					// Je crée un marqueur
-					UUID monUUID = UUID.randomUUID();
 					// Note les éléments à lier pour le retour
-					imgEnDL.put(monUUID, imageArticle);
+					imgEnDL.put(ai.getURLIllustration(), imageArticle);
 					// Lance le DL de l'image
-					AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, monUUID,
+					AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this,
 							Constantes.IMAGE_MINIATURE_ARTICLE, ai.getURLIllustration());
 					// Parallèlisation des téléchargements pour l'ensemble de l'application
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -266,17 +267,17 @@ public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface
 	}
 
 	@Override
-	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems) {
 	}
 
 	@Override
-	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL, Bitmap uneImage) {
 		// Je récupère l'imageView
-		ImageView monImageView = imgEnDL.get(unUUID);
+		ImageView monImageView = imgEnDL.get(uneURL);
 		// Lui donne l'image
 		monImageView.setImageBitmap(uneImage);
 		// Et l'enlève de la liste d'attente
-		imgEnDL.remove(unUUID);
+		imgEnDL.remove(uneURL);
 	}
 
 }

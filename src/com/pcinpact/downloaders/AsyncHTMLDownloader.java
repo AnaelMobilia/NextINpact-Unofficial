@@ -19,7 +19,6 @@
 package com.pcinpact.downloaders;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.database.DAO;
@@ -42,21 +41,19 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	private Context monContext;
 	// Callback : parent + ref
 	RefreshDisplayInterface monParent;
-	UUID monUUID;
 	// Type & URL du code HTML
 	String urlPage;
 	int typeHTML;
 	// Accès sur la DB
 	DAO monDAO;
 
-	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL,
+	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL,
 			DAO unDAO) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;
 		urlPage = uneURL;
 		typeHTML = unType;
-		monUUID = unUUID;
 		monDAO = unDAO;
 	}
 
@@ -114,6 +111,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	@Override
 	protected void onPostExecute(ArrayList<Item> result) {
-		monParent.downloadHTMLFini(monUUID, result);
+		monParent.downloadHTMLFini(urlPage, result);
 	}
 }

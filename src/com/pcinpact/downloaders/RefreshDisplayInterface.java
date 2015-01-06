@@ -19,7 +19,6 @@
 package com.pcinpact.downloaders;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import android.graphics.Bitmap;
 
@@ -32,13 +31,13 @@ public interface RefreshDisplayInterface {
 	 * @param unUUID
 	 * @param mesItems
 	 */
-	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems);
+	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems);
 	
 	/**
 	 * Une ressource image a été téléchargée
 	 * @param unUUID
 	 * @param uneImage
 	 */
-	public void downloadImageFini(UUID unUUID, Bitmap uneImage);
+	public void downloadImageFini(String uneURL, Bitmap uneImage);
 	
 }

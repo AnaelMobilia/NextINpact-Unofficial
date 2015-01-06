@@ -20,7 +20,6 @@ package com.pcinpact;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.UUID;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
@@ -65,8 +64,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	DAO monDAO;
 	// Nombre de DL en cours
 	int DLinProgress = 0;
-	// UUID lié au DL de la liste des articles
-	UUID DLlisteArticles = UUID.randomUUID();
 
 	// Ressources sur les éléments graphiques
 	Menu monMenu;
@@ -242,8 +239,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		nouveauChargementGUI();
 
 		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, DLlisteArticles,
-				Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_LISTE_ARTICLES,
+				Constantes.NEXT_INPACT_URL, monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -258,8 +255,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		nouveauChargementGUI();
 
 		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
-				Constantes.HTML_ARTICLE, unArticle.getURL(), monDAO);
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
+				unArticle.getURL(), monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -269,9 +266,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> desItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Rafraichissement GUI SSI DL liste articles
-		if (unUUID.equals(DLlisteArticles)) {
+		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
 			// Je supprime les articles que je possède déjà
 			desItems.removeAll(mesArticles);
 
@@ -294,7 +291,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL, Bitmap uneImage) {
 	}
 
 	/**

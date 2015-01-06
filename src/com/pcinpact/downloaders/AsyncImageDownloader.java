@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.UUID;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
@@ -44,18 +43,16 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	private Context monContext;
 	// Callback : parent + ref
 	RefreshDisplayInterface monParent;
-	UUID monUUID;
 	// Type d'image & URL
 	String urlImage;
 	int typeImage;
 
-	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, UUID unUUID, int unType, String uneURL) {
+	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;
 		urlImage = uneURL;
 		typeImage = unType;
-		monUUID = unUUID;
 	}
 
 	@Override
@@ -119,7 +116,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	@Override
 	// Post exécution
 	protected void onPostExecute(Bitmap bitmap) {
-		monParent.downloadImageFini(monUUID, bitmap);
+		monParent.downloadImageFini(urlImage, bitmap);
 	}
 
 }
