@@ -29,6 +29,7 @@ import com.pcinpact.downloaders.Downloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
+import com.pcinpact.items.SectionItem;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -168,7 +169,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		Collections.sort(mesArticles);
 
 		ArrayList<Item> monRetour = new ArrayList<Item>();
-		// TODO : Insertion des sectionItems + ArticleItem correctement
+		String jourActuel = "";
+		for (ArticleItem article : mesArticles) {
+			// Si ce n'est pas la même journée que l'article précédent
+			if (!article.getDatePublication().equals(jourActuel)) {
+				// Je met à jour ma date
+				jourActuel = article.getDatePublication();
+				// J'ajoute un sectionItem
+				monRetour.add(new SectionItem(jourActuel));
+			}
+
+			// J'ajoute mon article
+			monRetour.add(article);
+		}
 
 		return monRetour;
 	}
