@@ -47,8 +47,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	// Accès sur la DB
 	DAO monDAO;
 
-	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL,
-			DAO unDAO) {
+	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;
