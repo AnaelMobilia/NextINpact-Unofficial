@@ -26,6 +26,10 @@ public class SectionItem implements Item {
 		return Item.typeSection;
 	}
 
+	public SectionItem(String unTitre) {
+		setTitre(unTitre);
+	}
+
 	public String getTitre() {
 		return titre;
 	}
