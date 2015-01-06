@@ -149,7 +149,7 @@ public class ParseurHTML {
 			// URL du lecteur
 			String urlLecteur = uneIframe.attr("src");
 			// ID de la vidéo
-			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1, urlLecteur.length()).split("\\?")[0]
+			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0]
 					.split("#")[0];
 
 			// Ma substitution
@@ -159,7 +159,7 @@ public class ParseurHTML {
 			// Liste de lecture Youtube
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
 				// Recalcul de l'ID de la vidéo (cas particulier)
-				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5, urlLecteur.length()).split("\\?")[0]
+				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0]
 						.split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"

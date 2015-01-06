@@ -63,7 +63,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
 
 		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
-		String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1, urlImage.length()).split("\\?")[0].split("#")[0];
+		String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
 		File monFichier = null;
 		switch (typeImage) {
