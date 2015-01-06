@@ -66,6 +66,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	DAO monDAO;
 	// Nombre de DL en cours
 	int DLinProgress = 0;
+	// UUID lié au DL de la liste des articles
+	UUID DLlisteArticles = UUID.randomUUID();
 
 	// Ressources sur les éléments graphiques
 	Menu monMenu;
@@ -211,7 +213,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		nouveauChargementGUI();
 
 		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, UUID.randomUUID(),
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, DLlisteArticles,
 				Downloader.HTML_LISTE_ARTICLES, Constantes.NEXT_INPACT_URL, monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -337,31 +339,32 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@Override
 	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> desItems) {
-		// Je supprime les articles que je possède déjà
-		desItems.removeAll(mesArticles);
+		// Rafraichissement GUI SSI DL liste articles
+		if (unUUID.equals(DLlisteArticles)) {
+			// Je supprime les articles que je possède déjà
+			desItems.removeAll(mesArticles);
 
-		// Pour chaque nouvel article :
-		for (Item unItem : desItems) {
-			// Je lance le téléchargement de son contenu
-			telechargeUnArticle((ArticleItem) unItem);
-			// Je l'ajoute à ma liste d'articles en mémoire
-			mesArticles.add((ArticleItem) unItem);
+			// Pour chaque nouvel article :
+			for (Item unItem : desItems) {
+				// Je lance le téléchargement de son contenu
+				telechargeUnArticle((ArticleItem) unItem);
+				// Je l'ajoute à ma liste d'articles en mémoire
+				mesArticles.add((ArticleItem) unItem);
+			}
+			// TODO : l'itemAdapter se chargera des images (il touche les imageview !)
+
+			// Je met à jour les données
+			monItemsAdapter.updateListeItems(prepareAffichage());
+			// Je notifie le changement pour un rafraichissement du contenu
+			monItemsAdapter.notifyDataSetChanged();
 		}
-		// TODO : l'itemAdapter se chargera des images (il touche les imageview !)
 
-		// Je met à jour les données
-		monItemsAdapter.updateListeItems(prepareAffichage());
-		// Je notifie le changement pour un rafraichissement du contenu
-		monItemsAdapter.notifyDataSetChanged();
-
-		// gestion deu téléchargement GUI
+		// gestion du téléchargement GUI
 		finChargementGUI();
 	}
 
 	@Override
 	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
