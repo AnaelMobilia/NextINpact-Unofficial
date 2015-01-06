@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.util.UUID;
 
 import com.pcinpact.Constantes;
+import com.pcinpact.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -61,6 +62,17 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	protected Bitmap doInBackground(String... params) {
 		// Je récupère un OS sur l'image
 		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
+
+		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
+		if (monBAOS == null) {
+			Bitmap monRetour = BitmapFactory.decodeResource(monContext.getResources(), R.drawable.logo_nextinpact);
+			if (typeImage == Constantes.IMAGE_SMILEY) {
+				// Je réduit la taille du logo pour les smileys
+				monRetour = Bitmap.createScaledBitmap(monRetour, 10, 10, false);
+			}
+			
+			return monRetour;
+		}
 
 		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
 		String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
