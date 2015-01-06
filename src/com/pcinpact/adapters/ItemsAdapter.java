@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -23,17 +23,24 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.UUID;
+import com.pcinpact.Constantes;
 import com.pcinpact.R;
+import com.pcinpact.downloaders.AsyncImageDownloader;
+import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Html.ImageGetter;
@@ -49,11 +56,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ItemsAdapter extends BaseAdapter {
-
+public class ItemsAdapter extends BaseAdapter implements RefreshDisplayInterface {
+	// Ressources graphique
 	private static Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
+	// Images en cours de DL
+	private HashMap<UUID, ImageView> imgEnDL = new HashMap<UUID, ImageView>();
 
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
@@ -86,6 +95,7 @@ public class ItemsAdapter extends BaseAdapter {
 		return arg0;
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
@@ -143,10 +153,26 @@ public class ItemsAdapter extends BaseAdapter {
 				// Gestion de l'image
 				FileInputStream in;
 				try {
-					in = monContext.openFileInput(ai.getID() + ".jpg");
+					// Ouverture du fichier en cache
+					in = monContext.openFileInput(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS
+							+ ai.getImageName());
 					imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
 				} catch (FileNotFoundException e) {
+					// Si le fichier n'est pas trouvé, je fournis une image par défaut
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+					// Je crée un marqueur
+					UUID monUUID = UUID.randomUUID();
+					// Note les éléments à lier pour le retour
+					imgEnDL.put(monUUID, imageArticle);
+					// Lance le DL de l'image
+					AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, monUUID,
+							Constantes.IMAGE_MINIATURE_ARTICLE, ai.getURLIllustration());
+					// Parallèlisation des téléchargements pour l'ensemble de l'application
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+						monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					} else {
+						monAID.execute();
+					}
 				}
 
 				// Taille de texte personnalisée ?
@@ -195,7 +221,8 @@ public class ItemsAdapter extends BaseAdapter {
 								}
 								// Sinon, on calcule le zoom à appliquer (avec un coeff 2 pour éviter les images trop petites)
 								else {
-									monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
+									monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
+											* monCoeffZoom);
 								}
 								// On évite un coeff inférieur à 1 (image non affichée !)
 								if (monCoeff < 1) {
@@ -225,16 +252,31 @@ public class ItemsAdapter extends BaseAdapter {
 		}
 		return v;
 	}
-	
+
 	/**
 	 * Applique le zoom sur la textview (respect des proportions originales)
+	 * 
 	 * @param uneTextView
 	 * @param unZoom
 	 */
-	public void appliqueZoom(TextView uneTextView, float unZoom)
-	{
+	private void appliqueZoom(TextView uneTextView, float unZoom) {
 		float tailleOrigine = uneTextView.getTextSize();
 		float nouvelleTaille = tailleOrigine * unZoom;
 		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
 	}
+
+	@Override
+	public void downloadHTMLFini(UUID unUUID, ArrayList<Item> mesItems) {
+	}
+
+	@Override
+	public void downloadImageFini(UUID unUUID, Bitmap uneImage) {
+		// Je récupère l'imageView
+		ImageView monImageView = imgEnDL.get(unUUID);
+		// Lui donne l'image
+		monImageView.setImageBitmap(uneImage);
+		// Et l'enlève de la liste d'attente
+		imgEnDL.remove(unUUID);
+	}
+
 }

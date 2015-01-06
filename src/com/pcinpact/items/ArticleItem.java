@@ -72,6 +72,15 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 		return laDate;
 	}
 
+	/**
+	 * image.ext
+	 * @return
+	 */
+	public String getImageName() {
+		String urlImage = this.getURLIllustration();
+		return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+	}
+
 	@Override
 	/**
 	 * Comparaison entre objets
