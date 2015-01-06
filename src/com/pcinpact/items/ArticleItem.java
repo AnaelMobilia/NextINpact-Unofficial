@@ -54,7 +54,7 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 
 		return dfm.format(maDate);
 	}
-	
+
 	/**
 	 * Date de la publication sous forme textuelle
 	 * 
@@ -64,8 +64,12 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
 		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
-		
-		return dfm.format(maDate);
+		String laDate = dfm.format(maDate);
+
+		// Première lettre en majuscule
+		laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Locale.getDefault()) + laDate.substring(1);
+
+		return laDate;
 	}
 
 	@Override
@@ -75,8 +79,10 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 	public int compareTo(ArticleItem unArticleItem) {
 		Long unTimestamp = unArticleItem.getTimeStampPublication();
 		Long monTimestamp = this.getTimeStampPublication();
+		// -1 pour trier en ordre anté-chronologique
+		int compareResult = -1 * monTimestamp.compareTo(unTimestamp);
 
-		return monTimestamp.compareTo(unTimestamp);
+		return compareResult;
 	}
 
 	public int getID() {
