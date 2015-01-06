@@ -18,6 +18,7 @@
  */
 package com.pcinpact.downloaders;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
@@ -58,11 +59,18 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	@Override
 	protected ArrayList<Item> doInBackground(String... params) {
-		// Je récupère mon contenu HTML
-		String monInput = Downloader.download(urlPage).toString();
-
 		// Retour
 		ArrayList<Item> mesItems = new ArrayList<Item>();
+
+		// Je récupère mon contenu HTML
+		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
+
+		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
+		if (monBAOS == null) {
+			return mesItems;
+		}
+
+		String monInput = monBAOS.toString();
 
 		// J'ouvre une instance du parser
 		ParseurHTML monParser = new ParseurHTML(monContext);
