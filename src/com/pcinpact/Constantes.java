@@ -37,7 +37,7 @@ public class Constantes {
 	 * FORMAT d'AFFICHAGE
 	 */
 	// Date des sections sur la listeArticlesActivity
-	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MM yyyy";
+	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
 	// Heure de publication des articles sur la listeArticlesActivity
 	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
 	
