@@ -70,11 +70,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		switch (typeHTML) {
 			case Constantes.HTML_LISTE_ARTICLES:
 				// Je passe par le parser
-				mesItems.addAll(monParser.getListeArticles(monInput, urlPage));
+				ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monInput, urlPage);
 
-				// Stockage en BDD
-				for (Item unItem : mesItems) {
-					monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem);
+				for (Item unItem : monRetour) {
+					// Stockage en BDD
+					if (monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem)) {
+						// Ne retourne que les nouveaux articles
+						mesItems.add(unItem);
+					}
 				}
 				break;
 
