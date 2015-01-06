@@ -26,8 +26,7 @@
     <bool name="defautOptionLiensDansArticles">false</bool>
     <bool name="defautOptionLiensDansCommentaires">false</bool>
     <bool name="defautOptionCommentairesTelechargementContinu">false</bool>
-    <!-- <bool name="defautOptionZoomTexte">[true | false]</bool> -->
-<!-- 	<int name="defautOptionZoomTexte">16</int> -->
+ 	<string name="defautOptionZoomTexte">16</string>
     <bool name="defautOptionPremierLancementApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>

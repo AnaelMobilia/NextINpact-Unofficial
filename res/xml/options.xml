@@ -24,7 +24,7 @@
     <!-- Options génériques -->
     <PreferenceCategory android:title="@string/optionsGenerales" >
         <ListPreference
-            android:defaultValue="16"
+            android:defaultValue="@string/defautOptionZoomTexte"
             android:entries="@array/tailleTexteLiteral"
             android:entryValues="@array/tailleTexteValeur"
             android:key="@string/idOptionZoomTexte"
