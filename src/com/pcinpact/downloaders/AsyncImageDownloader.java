@@ -67,7 +67,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 				// Je réduit la taille du logo pour les smileys
 				monRetour = Bitmap.createScaledBitmap(monRetour, 10, 10, false);
 			}
-			
+
 			return monRetour;
 		}
 
