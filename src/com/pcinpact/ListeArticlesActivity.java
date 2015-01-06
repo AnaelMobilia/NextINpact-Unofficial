@@ -24,6 +24,7 @@ import java.util.Collections;
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
 import com.pcinpact.downloaders.AsyncHTMLDownloader;
+import com.pcinpact.downloaders.AsyncImageDownloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
@@ -250,40 +251,39 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@SuppressLint("NewApi")
-	private void telechargeUnArticle(ArticleItem unArticle) {
-		// Le retour en GUI
-		nouveauChargementGUI();
-
-		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
-				unArticle.getURL(), monDAO);
-		// Parallèlisation des téléchargements pour l'ensemble de l'application
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			monAHD.execute();
-		}
-	}
-
 	@Override
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
-		// Rafraichissement GUI SSI DL liste articles
+		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
-			// Je supprime les articles que je possède déjà
-			desItems.removeAll(mesArticles);
-
-			// Pour chaque nouvel article :
+			android.util.Log.w("main", "" + mesArticles.size());
 			for (Item unItem : desItems) {
-				// Je lance le téléchargement de son contenu
-				telechargeUnArticle((ArticleItem) unItem);
-				// Je l'ajoute à ma liste d'articles en mémoire
+				// Je l'enregistre en mémoire
 				mesArticles.add((ArticleItem) unItem);
+
+				// Je lance le téléchargement de sa miniature
+				nouveauChargementGUI();
+				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+
+				// Je lance le téléchargement de son contenu
+				nouveauChargementGUI();
+				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
+						((ArticleItem) unItem).getURL(), monDAO);
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAHD.execute();
+				}
 			}
 
-			// Je met à jour les données
-			monItemsAdapter.updateListeItems(prepareAffichage());
-			// Je notifie le changement pour un rafraichissement du contenu
-			monItemsAdapter.notifyDataSetChanged();
+			android.util.Log.w("main", "" + mesArticles.size());
 		}
 
 		// gestion du téléchargement GUI
@@ -292,6 +292,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@Override
 	public void downloadImageFini(String uneURL, Bitmap uneImage) {
+		// gestion du téléchargement GUI
+		finChargementGUI();
 	}
 
 	/**
@@ -364,6 +366,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Affiche l'icône refresh dans le header
 			if (monMenu != null)
 				monMenu.findItem(R.id.action_refresh).setVisible(true);
+
+			// Je met à jour les données
+			monItemsAdapter.updateListeItems(prepareAffichage());
+			// Je notifie le changement pour un rafraichissement du contenu
+			monItemsAdapter.notifyDataSetChanged();
 		}
 	}
 
