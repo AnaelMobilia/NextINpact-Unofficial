@@ -178,7 +178,7 @@ public class DAO extends SQLiteOpenHelper {
 			monArticle.setID(monCursor.getInt(0));
 			monArticle.setTitre(monCursor.getString(1));
 			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setTimeStampPublication(monCursor.getLong(4));
+			monArticle.setTimeStampPublication(monCursor.getLong(3));
 			monArticle.setURL(monCursor.getString(4));
 			monArticle.setURLIllustration(monCursor.getString(5));
 			monArticle.setContenu(monCursor.getString(6));
