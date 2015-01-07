@@ -198,6 +198,12 @@ public class ParseurHTML {
 						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /><br /><p>"
 						+ contextParent.getString(R.string.videoVidme) + "</p></a>");
 			}
+			// Soundcloud
+			else if (urlLecteur.startsWith("https://w.soundcloud.com/player/")) {
+				monRemplacement.html("<a href=\"" + idVideo
+						+ "\"><img src=\"file:///android_res/drawable/video_soundcloud.png\" /><br /><p>"
+						+ contextParent.getString(R.string.videoSoundCloud) + "</p></a>");
+			}
 			// Déchet
 			else {
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
