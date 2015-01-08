@@ -55,7 +55,7 @@ public class ArticleActivity extends ActionBarActivity {
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
 		// Chargement de la DB
-		monDAO = new DAO(this.getApplicationContext());
+		monDAO = DAO.getInstance(getApplicationContext());
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
@@ -65,7 +65,7 @@ public class ArticleActivity extends ActionBarActivity {
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
 		// Taille des textes (option de l'utilisateur)
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// la taille par défaut est de 16
 		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 		int tailleDefaut = 16;
@@ -96,7 +96,7 @@ public class ArticleActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case R.id.action_comments:
-				Intent intentWeb = new Intent(ArticleActivity.this, CommentairesActivity.class);
+				Intent intentWeb = new Intent(getApplicationContext(), CommentairesActivity.class);
 				intentWeb.putExtra("ARTICLE_ID", articleID);
 				startActivity(intentWeb);
 

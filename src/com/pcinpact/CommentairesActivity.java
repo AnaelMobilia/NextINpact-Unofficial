@@ -76,7 +76,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		// Liste des commentaires
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		// Footer : bouton "Charger plus de commentaires"
-		buttonDl10Commentaires = new Button(this);
+		buttonDl10Commentaires = new Button(getApplicationContext());
 		buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -88,14 +88,14 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		monListView.addFooterView(buttonDl10Commentaires);
 
 		// Adapter pour l'affichage des données
-		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
+		monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
 		// ID de l'article concerné
 		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
 		// J'active la BDD
-		monDAO = new DAO(getApplicationContext());
+		monDAO = DAO.getInstance(getApplicationContext());
 		// Je charge mes articles
 		mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
 		// Mise à jour de l'affichage
@@ -187,9 +187,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		// Retour
 			case R.id.action_home:
 				finish();
-				Intent i = new Intent(this, ListeArticlesActivity.class);
+				Intent i = new Intent(getApplicationContext(), ListeArticlesActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				this.startActivity(i);
+				startActivity(i);
 				return true;
 
 				// Rafraichir la liste des commentaires

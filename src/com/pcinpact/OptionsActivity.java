@@ -44,7 +44,7 @@ public class OptionsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.options);
 
 		// Bouton fermant la vue "Options"
-		Button monBouton = new Button(this);
+		Button monBouton = new Button(getApplicationContext());
 		monBouton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {

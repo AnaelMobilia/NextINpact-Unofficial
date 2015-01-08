@@ -97,7 +97,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		});
 
-		monItemsAdapter = new ItemsAdapter(this, mesArticles);
+		monItemsAdapter = new ItemsAdapter(getApplicationContext(), mesArticles);
 		monListView.setAdapter(monItemsAdapter);
 		monListView.setOnItemClickListener(this);
 
@@ -121,21 +121,21 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		});
 
 		// J'active la BDD
-		monDAO = new DAO(getApplicationContext());
+		monDAO = DAO.getInstance(getApplicationContext());
 		// Je charge mes articles
 		mesArticles.addAll(monDAO.chargerArticlesTriParDate());
 		// Mise à jour de l'affichage
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Message d'accueil pour la première utilisation
-		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), getResources()
 				.getBoolean(R.bool.defautOptionPremierLancementApplication));
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
 			// Titre
 			builder.setTitle(getResources().getString(R.string.app_name));
 			// Contenu
@@ -189,7 +189,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
-		Intent monIntent = new Intent(this, ArticleActivity.class);
+		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getID());
 		startActivity(monIntent);
 	}
@@ -240,7 +240,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@Override
 	protected void onDestroy() {
 		// Préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Nombre d'articles à conserver
 		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
 				getString(R.string.defautOptionNbArticles)));

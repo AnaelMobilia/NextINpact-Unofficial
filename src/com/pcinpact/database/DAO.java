@@ -62,19 +62,34 @@ public class DAO extends SQLiteOpenHelper {
 	private static final String COMMENTAIRE_TIMESTAMP = "timestamp";
 	private static final String COMMENTAIRE_CONTENU = "contenu";
 
-	private SQLiteDatabase maDB;
+	// ma DB
+	private static SQLiteDatabase maDB = null;
+	private static DAO InstanceOfDAO = null;
 
 	/**
 	 * Création de la connexion à la DB
 	 * 
 	 * @param context
 	 */
-	public DAO(Context context) {
+	private DAO(Context context) {
 		// Je crée un lien sur la base
 		super(context, DB_NAME, null, DB_VERSION);
 		// Et l'ouvre en écriture
-		maDB = this.getWritableDatabase();
+	//	maDB = this.getWritableDatabase();
 	}
+	
+    public static DAO getInstance(Context ctx) {
+        /** 
+         * use the application context as suggested by CommonsWare.
+         * this will ensure that you dont accidentally leak an Activitys
+         * context (see this article for more information: 
+         * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
+         */
+        if (InstanceOfDAO == null) {
+        	InstanceOfDAO = new DAO(ctx.getApplicationContext());
+        }
+        return InstanceOfDAO;
+    }
 
 	/**
 	 * Création de la DB si elle n'existe pas
