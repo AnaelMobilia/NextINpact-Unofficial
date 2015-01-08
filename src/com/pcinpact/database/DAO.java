@@ -300,14 +300,14 @@ public class DAO extends SQLiteOpenHelper {
 	 * @param articleID
 	 * @return
 	 */
-	public ArrayList<CommentaireItem> chargerCommentairesTriParDate(String[] articleID) {
+	public ArrayList<CommentaireItem> chargerCommentairesTriParDate(int articleID) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
 
 		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?", articleID, null, null,
-				"1");
+		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?",
+				new String[] { String.valueOf(articleID) }, null, null, "2");
 
 		ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
 		CommentaireItem monCommentaire;
