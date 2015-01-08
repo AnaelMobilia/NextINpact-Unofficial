@@ -28,8 +28,8 @@ public class Constantes {
 	/**
 	 * MODE DEBUG
 	 */
-	public final static Boolean DEBUG = true; 
-	
+	public final static Boolean DEBUG = true;
+
 	/**
 	 * PARAMETRES GENERAUX
 	 */
@@ -42,34 +42,6 @@ public class Constantes {
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 
-	/**
-	 * FORMAT d'AFFICHAGE
-	 */
-	// Date des sections sur la listeArticlesActivity
-	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
-	// Heure de publication des articles sur la listeArticlesActivity
-	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
-	// Date et Heure de publication d'un commentaire
-	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
-	
-	/**
-	 * FORMATS DU SITE POUR LE PARSEUR
-	 */
-	// Format des dates des articles sur le site
-	public final static String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-	// Format des dates des commentaires sur le site
-	public final static String FORMAT_DATE_COMMENTAIRE = "'le  'dd/MM/yyyy 'à 'HH:mm:ss";
-
-	/**
-	 * PATH DES FICHIERS LOCAUX
-	 */
-	// Path des miniatures des articles
-	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
-	// Path des images de contenu des articles
-	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
-	// Path des smileys
-	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
-	
 	/**
 	 * TYPES DE TELECHARGEMENTS
 	 */
@@ -85,4 +57,32 @@ public class Constantes {
 	public final static int IMAGE_CONTENU_ARTICLE = 5;
 	// Type : image -> smiley des commentaires
 	public final static int IMAGE_SMILEY = 6;
+
+	/**
+	 * FORMATS DU SITE POUR LE PARSEUR
+	 */
+	// Format des dates des articles sur le site
+	public final static String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
+	// Format des dates des commentaires sur le site
+	public final static String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+
+	/**
+	 * PATH DES FICHIERS LOCAUX
+	 */
+	// Path des miniatures des articles
+	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
+	// Path des images de contenu des articles
+	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
+	// Path des smileys
+	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
+
+	/**
+	 * FORMAT d'AFFICHAGE
+	 */
+	// Date des sections sur la listeArticlesActivity
+	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
+	// Heure de publication des articles sur la listeArticlesActivity
+	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
+	// Date et Heure de publication d'un commentaire
+	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
 }
