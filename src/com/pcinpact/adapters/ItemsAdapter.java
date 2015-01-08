@@ -21,6 +21,7 @@ package com.pcinpact.adapters;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import android.text.Html.ImageGetter;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +114,7 @@ public class ItemsAdapter extends BaseAdapter {
 				v.setOnClickListener(null);
 				v.setOnLongClickListener(null);
 
-				final TextView sectionView = (TextView) v.findViewById(R.id.titreSection);
+				TextView sectionView = (TextView) v.findViewById(R.id.titreSection);
 				sectionView.setText(si.getTitre());
 
 				// Taille de texte personnalisée ?
@@ -149,9 +151,14 @@ public class ItemsAdapter extends BaseAdapter {
 					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES + ai.getImageName());
 					in = new FileInputStream(monFichier);
 					imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
-				} catch (FileNotFoundException e) {
+					in.close();
+				} catch (Exception e) {
 					// Si le fichier n'est pas trouvé, je fournis une image par défaut
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("ItemsAdapter", "getView -> Article", e);
+					}
 				}
 
 				// Taille de texte personnalisée ?
