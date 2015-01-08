@@ -19,17 +19,21 @@
 package com.pcinpact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.pcinpact.adapters.ItemsAdapter;
+import com.pcinpact.database.DAO;
+import com.pcinpact.downloaders.AsyncHTMLDownloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -42,17 +46,24 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
-	private ArrayList<CommentaireItem> lesCommentaires;
-	private String articleID;
-	private ListView monListView;
+	// les commentaires
+	private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
+	// ID de l'article
+	private int articleID;
+	// itemsAdapter
 	private ItemsAdapter monItemsAdapter;
-	private Menu monMenu;
-	private Button buttonDl10Commentaires;
+	// La BDD
+	private DAO monDAO;
+	// Etats
 	private Boolean isLoading = false;
 	private Boolean isFinCommentaires = false;
+
+	// Ressources sur les éléments graphiques
+	private Menu monMenu;
+	private ListView monListView;
+	private Button buttonDl10Commentaires;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,11 +92,15 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		monListView.setAdapter(monItemsAdapter);
 
 		// ID de l'article concerné
-		articleID = getIntent().getExtras().getString("ARTICLE_ID");
-		
-		// TODO : chargement des commentaires déjà existants
-		
-		
+		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+
+		// J'active la BDD
+		monDAO = new DAO(getApplicationContext());
+		// Je charge mes articles
+		mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
+		// Mise à jour de l'affichage
+		monItemsAdapter.updateListeItems(mesCommentaires);
+
 		// Système de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
@@ -118,31 +133,33 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	/**
 	 * Charge les commentaires suivants
 	 */
+	@SuppressLint("NewApi")
 	private void refreshListeCommentaires() {
-		// Vérification de la connexion internet avant de lancer
-		ConnectivityManager l_Connection = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (l_Connection.getActiveNetworkInfo() == null || !l_Connection.getActiveNetworkInfo().isConnected()) {
-			// Pas de connexion -> affichage d'un toast
-			CharSequence text = getString(R.string.chargementPasInternet);
-			int duration = Toast.LENGTH_LONG;
+		// MàJ des graphismes
+		lancerAnimationTelechargement();
 
-			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-			toast.show();
+		int idDernierCommentaire = 0;
+		// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
+		if (mesCommentaires.size() > 0) {
+			CommentaireItem lastCommentaire = mesCommentaires.get(mesCommentaires.size() - 1);
+			idDernierCommentaire = lastCommentaire.getID();
+		}
+
+		// Le cast en int supprime la partie après la virgule
+		int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
+
+		// Création de l'URL
+		String monURL = Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID
+				+ "=" + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+
+		// Ma tâche de DL
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_COMMENTAIRES, monURL,
+				monDAO);
+		// Parallèlisation des téléchargements pour l'ensemble de l'application
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			// MàJ des graphismes
-			lancerAnimationTelechargement();
-
-			int idDernierCommentaire = 0;
-			// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
-			if (lesCommentaires.size() > 0) {
-				CommentaireItem lastCommentaire = lesCommentaires.get(lesCommentaires.size() - 1);
-				idDernierCommentaire = lastCommentaire.getID();
-			}
-
-			// Le cast en int supprime la partie après la virgule
-			int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
-
-			
+			monAHD.execute();
 		}
 	}
 
@@ -185,54 +202,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		}
 	}
 
-	protected void safeDidConnectionResult(byte[] result, int state, String tag) {
-//		// MàJ des graphismes
-//		arreterAnimationTelechargement();
-//
-//		List<INPactComment> newComments = Old_CommentManager.getCommentsFromBytes(this, result);
-//
-//		// SSi nouveaux commentaires
-//		if (newComments.size() != 0) {
-//			// j'ajoute les commentaires juste téléchargés
-//			comments.addAll(newComments);
-//
-//			// Passage ancien système -> nouveau système
-//			ArrayList<Item> mesItems = (ArrayList) convertOld(comments);
-//
-//			// Je met à jour les données
-//			monItemsAdapter.updateListeItems(mesItems);
-//			// Je notifie le changement pour un rafraichissement du contenu
-//			monItemsAdapter.notifyDataSetChanged();
-//		}
-//
-//		// Reste-t-il des commentaires à télécharger ? (chargement continu automatique)
-//		if (newComments.size() < NextInpact.NB_COMMENTAIRES_PAR_PAGE) {
-//			isFinCommentaires = true;
-//		}
-
-	}
-
-	protected void safeDidFailWithError(String error, int state) {
-		// MàJ des graphismes
-		arreterAnimationTelechargement();
-
-		// Message d'erreur, si demandé !
-		// Chargement des préférences de l'utilisateur
-		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-		// Est-ce la premiere utilisation de l'application ?
-		Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug), getResources()
-				.getBoolean(R.bool.defautOptionDebug));
-
-		if (debug) {
-			// Affichage utilisateur du message d'erreur
-			CharSequence text = "Message d'erreur détaillé : " + error;
-			int duration = Toast.LENGTH_LONG;
-
-			Toast toast = Toast.makeText(getApplicationContext(), text, duration);
-			toast.show();
-		}
-	}
-
 	/**
 	 * Lance les animations indiquant un téléchargement
 	 */
@@ -270,15 +239,28 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems) {
-		// TODO Auto-generated method stub
-		
+	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
+		// J'enregistre en mémoire les nouveaux commentaires
+		for (Item unItem : desItems) {
+			// Je l'enregistre en mémoire
+			mesCommentaires.add((CommentaireItem) unItem);
+		}
+		// Tri des commentaires par ID
+		Collections.sort(mesCommentaires);
+
+		// Arrêt des gris-gris en GUI
+		arreterAnimationTelechargement();
+
+		// Je met à jour les données
+		monItemsAdapter.updateListeItems(mesCommentaires);
+		// Je notifie le changement pour un rafraichissement du contenu
+		monItemsAdapter.notifyDataSetChanged();
+
 	}
 
 	@Override
 	public void downloadImageFini(String uneURL, Bitmap uneImage) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
