@@ -243,10 +243,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Préférences de l'utilisateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Nombre d'articles à conserver
-		int maLimite = mesPrefs.getInt(getString(R.string.idOptionNbArticles),
-				Integer.valueOf(getApplicationContext().getResources().getString(R.string.defautOptionNbArticles)));
-		// Conservation des n derniers articles (0...[n-1])
-		maLimite--;
+		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
+				getString(R.string.defautOptionNbArticles)));
 
 		mesArticles = monDAO.chargerArticlesTriParDate();
 
@@ -262,6 +260,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Suppression en DB
 			monDAO.supprimerArticle(article);
+
+			if (Constantes.DEBUG) {
+				Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
+			}
 
 			// Suppression des commentaires de l'article
 			monDAO.supprimerCommentaire(article.getID());
