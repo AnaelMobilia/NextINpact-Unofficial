@@ -122,7 +122,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 				// DEBUG
 				if(Constantes.DEBUG){
-					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + mesItems.size() + " résultats");
+					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size() + " résultats");
 				}
 				
 				// Je ne conserve que les nouveaux commentaires
