@@ -251,14 +251,25 @@ public class DAO extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Supprimer un commentaire de la DB
+	 * Supprimer un commentaire de la DB (par ID du commentaire)
 	 * 
 	 * @param unCommentaire
 	 */
-	public void supprimerCommentaire(CommentaireItem unCommentaire) {
+	private void supprimerCommentaire(CommentaireItem unCommentaire) {
 		String[] mesParams = { String.valueOf(unCommentaire.getArticleID()), String.valueOf(unCommentaire.getID()) };
 
 		maDB.delete(DB_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID + "=?", mesParams);
+	}
+
+	/**
+	 * Supprimer un commentaire de la DB (par ID de l'article)
+	 * 
+	 * @param unCommentaire
+	 */
+	public void supprimerCommentaire(int articleID) {
+		String[] mesParams = { String.valueOf(articleID) };
+
+		maDB.delete(DB_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=?", mesParams);
 	}
 
 	/**
