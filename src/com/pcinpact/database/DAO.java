@@ -75,7 +75,7 @@ public class DAO extends SQLiteOpenHelper {
 		// Je crée un lien sur la base
 		super(context, DB_NAME, null, DB_VERSION);
 		// Et l'ouvre en écriture
-	//	maDB = this.getWritableDatabase();
+		maDB = this.getWritableDatabase();
 	}
 	
     public static DAO getInstance(Context ctx) {
