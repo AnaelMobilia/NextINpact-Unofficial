@@ -306,16 +306,17 @@ public class DAO extends SQLiteOpenHelper {
 		Cursor monCursor = maDB.query(DB_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID
 				+ "=?", idArticleEtCommentaire, null, null, null);
 
-		// Je vais au premier (et unique) résultat
-		monCursor.moveToNext();
 		CommentaireItem monCommentaire = new CommentaireItem();
-
-		monCommentaire.setArticleID(monCursor.getInt(0));
-		monCommentaire.setID(monCursor.getInt(1));
-		monCommentaire.setAuteur(monCursor.getString(2));
-		monCommentaire.setTimeStampPublication(monCursor.getLong(3));
-		monCommentaire.setCommentaire(monCursor.getString(4));
-
+		
+		// Je vais au premier (et unique) résultat
+		if (monCursor.moveToNext()) {
+			monCommentaire.setArticleID(monCursor.getInt(0));
+			monCommentaire.setID(monCursor.getInt(1));
+			monCommentaire.setAuteur(monCursor.getString(2));
+			monCommentaire.setTimeStampPublication(monCursor.getLong(3));
+			monCommentaire.setCommentaire(monCursor.getString(4));
+		}
+		
 		// Fermeture du curseur
 		monCursor.close();
 
