@@ -20,9 +20,9 @@ package com.pcinpact.items;
 
 public interface Item {
 
-	public final int typeArticle = 1;
-	public final int typeSection = 2;
-	public final int typeCommentaire = 3;
+	public final static int typeArticle = 1;
+	public final static int typeSection = 2;
+	public final static int typeCommentaire = 3;
 
 	/**
 	 * Type (Cf Item.type*) de l'item

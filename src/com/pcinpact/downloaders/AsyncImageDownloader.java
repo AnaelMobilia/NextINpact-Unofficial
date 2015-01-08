@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
@@ -53,6 +54,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		monParent = parent;
 		urlImage = uneURL;
 		typeImage = unType;
+		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.w("AsyncImageDownloader", urlImage);
 		}
@@ -72,6 +74,17 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			}
 
 			return monRetour;
+		}
+		// J'enregistrele BAOS
+		byte[] monDL = monBAOS.toByteArray();
+		// Et le ferme
+		try {
+			monBAOS.close();
+		} catch (IOException e1) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.w("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+			}
 		}
 
 		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
@@ -105,16 +118,16 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 				monFOS = new FileOutputStream(monFichier, false);
 			}
 
-			monFOS.write(monBAOS.toByteArray());
+			monFOS.write(monDL);
 			monFOS.close();
 		} catch (Exception e) {
 			if (Constantes.DEBUG) {
 				Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
 			}
 		}
-
-		// Je décode et renvoie le bitmap
-		return BitmapFactory.decodeByteArray(monBAOS.toByteArray(), 0, monBAOS.size());
+		
+		// Je renvoie le bitmap
+		return BitmapFactory.decodeByteArray(monDL, 0, monDL.length);
 	}
 
 	@Override

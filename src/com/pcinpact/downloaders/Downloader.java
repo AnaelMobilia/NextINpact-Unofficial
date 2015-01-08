@@ -45,13 +45,13 @@ public class Downloader {
 	 */
 	public static ByteArrayOutputStream download(String uneURL) {
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
-		final AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
-		final HttpGet getRequest = new HttpGet(uneURL);
+		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
+		HttpGet getRequest = new HttpGet(uneURL);
 
 		try {
 			// Lancement de la requête
 			HttpResponse response = client.execute(getRequest);
-			final int statusCode = response.getStatusLine().getStatusCode();
+			int statusCode = response.getStatusLine().getStatusCode();
 
 			// Gestion d'un code erreur
 			if (statusCode != HttpStatus.SC_OK) {
@@ -62,7 +62,7 @@ public class Downloader {
 			}
 
 			// Chargement de la réponse à la requête
-			final HttpEntity entity = response.getEntity();
+			HttpEntity entity = response.getEntity();
 			if (entity != null) {
 				// Taille du contenu à télécharger
 				int bufferSize = (int) entity.getContentLength();

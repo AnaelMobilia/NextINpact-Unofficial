@@ -20,8 +20,6 @@ package com.pcinpact.adapters;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ import android.widget.TextView;
 
 public class ItemsAdapter extends BaseAdapter {
 	// Ressources graphique
-	private static Context monContext;
+	private Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
 
@@ -93,7 +91,7 @@ public class ItemsAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		final Item i = mesItems.get(position);
+		Item i = mesItems.get(position);
 
 		// Préférences de l'utilisateur : taille du texte
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
@@ -128,12 +126,12 @@ public class ItemsAdapter extends BaseAdapter {
 			else if (i.getType() == Item.typeArticle) {
 				ArticleItem ai = (ArticleItem) i;
 				v = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
-				final ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
-				final TextView labelAbonne = (TextView) v.findViewById(R.id.labelAbonne);
-				final TextView titreArticle = (TextView) v.findViewById(R.id.titreArticle);
-				final TextView heureArticle = (TextView) v.findViewById(R.id.heureArticle);
-				final TextView sousTitreArticle = (TextView) v.findViewById(R.id.sousTitreArticle);
-				final TextView commentairesArticle = (TextView) v.findViewById(R.id.commentairesArticle);
+				ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
+				TextView labelAbonne = (TextView) v.findViewById(R.id.labelAbonne);
+				TextView titreArticle = (TextView) v.findViewById(R.id.titreArticle);
+				TextView heureArticle = (TextView) v.findViewById(R.id.heureArticle);
+				TextView sousTitreArticle = (TextView) v.findViewById(R.id.sousTitreArticle);
+				TextView commentairesArticle = (TextView) v.findViewById(R.id.commentairesArticle);
 
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
@@ -175,9 +173,9 @@ public class ItemsAdapter extends BaseAdapter {
 			else if (i.getType() == Item.typeCommentaire) {
 				CommentaireItem ai = (CommentaireItem) i;
 				v = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
-				final TextView auteurDateCommentaire = (TextView) v.findViewById(R.id.auteurDateCommentaire);
-				final TextView numeroCommentaire = (TextView) v.findViewById(R.id.numeroCommentaire);
-				final TextView commentaire = (TextView) v.findViewById(R.id.commentaire);
+				TextView auteurDateCommentaire = (TextView) v.findViewById(R.id.auteurDateCommentaire);
+				TextView numeroCommentaire = (TextView) v.findViewById(R.id.numeroCommentaire);
+				TextView commentaire = (TextView) v.findViewById(R.id.commentaire);
 
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());

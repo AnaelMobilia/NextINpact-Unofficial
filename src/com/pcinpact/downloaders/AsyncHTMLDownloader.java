@@ -19,6 +19,7 @@
 package com.pcinpact.downloaders;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
@@ -74,8 +75,18 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 			return mesItems;
 		}
 
+		// Je prend mon contenu
 		String monInput = monBAOS.toString();
-
+		// Et ferme le BAOS
+		try {
+			monBAOS.close();
+		} catch (IOException e1) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.w("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+			}
+		}
+		
 		// J'ouvre une instance du parser
 		ParseurHTML monParser = new ParseurHTML(monContext);
 
