@@ -289,17 +289,20 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
-		// Le retour en GUI
-		nouveauChargementGUI();
+		// Uniquement si on est pa&s déjà en train de faire un refresh...
+		if (DLinProgress == 0) {
+			// Le retour en GUI
+			nouveauChargementGUI();
 
-		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_LISTE_ARTICLES,
-				Constantes.NEXT_INPACT_URL, monDAO);
-		// Parallèlisation des téléchargements pour l'ensemble de l'application
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			monAHD.execute();
+			// Ma tâche de DL
+			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_LISTE_ARTICLES,
+					Constantes.NEXT_INPACT_URL, monDAO);
+			// Parallèlisation des téléchargements pour l'ensemble de l'application
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				monAHD.execute();
+			}
 		}
 	}
 
