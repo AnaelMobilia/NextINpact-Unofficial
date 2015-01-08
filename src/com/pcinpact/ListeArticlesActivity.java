@@ -67,6 +67,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	DAO monDAO;
 	// Nombre de DL en cours
 	int DLinProgress = 0;
+	// Préférence de l'utilisateur
+	final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	// Ressources sur les éléments graphiques
 	Menu monMenu;
@@ -129,8 +131,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Message d'accueil pour la première utilisation
 
-		// Chargement des préférences de l'utilisateur
-		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), getResources()
 				.getBoolean(R.bool.defautOptionPremierLancementApplication));
@@ -239,8 +239,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@Override
 	protected void onDestroy() {
 		// Nettoyage du cache
-		// Conservation des 30 derniers articles (0...29)
-		int maLimite = 29;
+		// Nombre d'articles à conserver
+		int maLimite = mesPrefs.getInt(getString(R.string.idOptionNbArticles),
+				Integer.valueOf(getApplicationContext().getResources().getString(R.string.defautOptionNbArticles)));
+		// Conservation des n derniers articles (0...[n-1])
+		maLimite--;
 
 		mesArticles = monDAO.chargerArticlesTriParDate();
 
@@ -256,10 +259,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Suppression en DB
 			monDAO.supprimerArticle(article);
-			
+
 			// Suppression des commentaires de l'article
 			monDAO.supprimerCommentaire(article.getID());
-			
+
 			// Suppression de la miniature, uniquement si plus utilisée
 			if (!imagesLegit.contains(article.getImageName())) {
 				File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
