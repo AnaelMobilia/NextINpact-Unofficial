@@ -84,6 +84,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				// Je passe par le parser
 				ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monInput, urlPage);
 
+				// DEBUG
+				if(Constantes.DEBUG){
+					Log.w("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
+				}
+				
 				for (Item unItem : monRetour) {
 					// Stockage en BDD
 					if (monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem)) {
@@ -96,7 +101,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 			case Constantes.HTML_ARTICLE:
 				// Je passe par le parser
 				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
-
+				
 				// Chargement de l'article depuis la BDD
 				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getID());
 
@@ -114,6 +119,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				// Je passe par le parser
 				mesItems.addAll(monParser.getCommentaires(monInput, urlPage));
 
+				// DEBUG
+				if(Constantes.DEBUG){
+					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + mesItems.size() + " résultats");
+				}
+				
 				// Stockage en BDD
 				for (Item unItem : mesItems) {
 					monDAO.enregistrerCommentaire((CommentaireItem) unItem);
