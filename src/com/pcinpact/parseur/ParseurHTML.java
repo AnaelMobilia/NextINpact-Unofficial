@@ -253,7 +253,8 @@ public class ParseurHTML {
 		int idArticle = Integer.valueOf(refArticle.attr("data-relnews"));
 
 		// Les commentaires
-		Elements lesCommentaires = pageNXI.select("div[class=actu_comm]");
+		// Passage par une regexp => https://github.com/jhy/jsoup/issues/521
+		Elements lesCommentaires = pageNXI.select("div[class~=actu_comm ]");
 
 		CommentaireItem monCommentaireItem;
 		// Pour chaque commentaire
@@ -295,6 +296,11 @@ public class ParseurHTML {
 				// Assignation de son URL absolue
 				unLien.attr("href", unLien.absUrl("href"));
 			}
+			
+			// Contenu
+			Element monContenu = unCommentaire.select("div[class=actu_comm_content]").get(0);
+			monCommentaireItem.setCommentaire(monContenu.toString());
+			
 
 			// Et je le stocke
 			mesCommentairesItem.add(monCommentaireItem);
