@@ -19,10 +19,14 @@
 package com.pcinpact.downloaders;
 
 import java.io.ByteArrayOutputStream;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
+
+import com.pcinpact.Constantes;
+
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
@@ -51,8 +55,9 @@ public class Downloader {
 
 			// Gestion d'un code erreur
 			if (statusCode != HttpStatus.SC_OK) {
-				// TODO : remonter l'information à l'utilisateur #77
-				Log.e("Downloader", "Error " + statusCode + " while retrieving " + uneURL);
+				if (Constantes.DEBUG) {
+					Log.e("Downloader", "Error " + statusCode + " while retrieving " + uneURL);
+				}
 				return null;
 			}
 
@@ -81,7 +86,9 @@ public class Downloader {
 			}
 		} catch (Exception e) {
 			getRequest.abort();
-			Log.e("Downloader", "Error while retrieving " + uneURL, e);
+			if (Constantes.DEBUG) {
+				Log.e("Downloader", "Error while retrieving " + uneURL, e);
+			}
 		} finally {
 			if (client != null) {
 				client.close();

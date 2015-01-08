@@ -26,6 +26,11 @@ package com.pcinpact;
  */
 public class Constantes {
 	/**
+	 * MODE DEBUG
+	 */
+	public final static Boolean DEBUG = true; 
+	
+	/**
 	 * PARAMETRES GENERAUX
 	 */
 	// URL de téléchargement

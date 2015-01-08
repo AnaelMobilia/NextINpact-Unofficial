@@ -30,6 +30,7 @@ import com.pcinpact.parseur.ParseurHTML;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * Téléchargement du code HTML
@@ -55,6 +56,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		urlPage = uneURL;
 		typeHTML = unType;
 		monDAO = unDAO;
+		if (Constantes.DEBUG) {
+			Log.w("AsyncHTMLDownloader", urlPage);
+		}
 	}
 
 	@Override

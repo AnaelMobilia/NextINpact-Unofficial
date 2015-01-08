@@ -118,7 +118,7 @@ public class ParseurHTML {
 	 */
 	public ArticleItem getArticle(String monInput, String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
-		
+
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(monInput, urlPage);
 
@@ -129,7 +129,7 @@ public class ParseurHTML {
 		Element articleID = pageNXI.select("div[class=actu_content][data-id]").get(0);
 		int unID = Integer.valueOf(articleID.attr("data-id"));
 		monArticleItem.setID(unID);
-		
+
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImagesLiens = lArticle.select("a[href] > img");
 		// Pour chaque image
@@ -149,8 +149,7 @@ public class ParseurHTML {
 			// URL du lecteur
 			String urlLecteur = uneIframe.attr("src");
 			// ID de la vidéo
-			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0]
-					.split("#")[0];
+			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
 			// Ma substitution
 			Element monRemplacement = new Element(Tag.valueOf("div"), "");
@@ -159,8 +158,7 @@ public class ParseurHTML {
 			// Liste de lecture Youtube
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
 				// Recalcul de l'ID de la vidéo (cas particulier)
-				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0]
-						.split("#")[0];
+				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
 						+ contextParent.getString(R.string.videosYouTube) + "</p></a>");
@@ -222,7 +220,7 @@ public class ParseurHTML {
 			// Assignation de son URL absolue
 			unLien.attr("href", unLien.absUrl("href"));
 		}
-		
+
 		// Gestion des URL relatives des images
 		Elements lesImages = lArticle.select("img[src]");
 		// Pour chaque lien
@@ -318,7 +316,9 @@ public class ParseurHTML {
 			// Récupération du timestamp
 			laDateTS = dfm.parse(uneDate).getTime();
 		} catch (ParseException e) {
-			Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
+			if (Constantes.DEBUG) {
+				Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
+			}
 		}
 
 		return laDateTS;

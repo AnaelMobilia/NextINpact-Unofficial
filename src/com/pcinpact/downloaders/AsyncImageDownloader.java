@@ -53,6 +53,9 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		monParent = parent;
 		urlImage = uneURL;
 		typeImage = unType;
+		if (Constantes.DEBUG) {
+			Log.w("AsyncImageDownloader", urlImage);
+		}
 	}
 
 	@Override
@@ -105,8 +108,9 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			monFOS.write(monBAOS.toByteArray());
 			monFOS.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
+			if (Constantes.DEBUG) {
+				Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
+			}
 		}
 
 		// Je décode et renvoie le bitmap

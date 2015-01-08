@@ -44,6 +44,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -255,13 +256,14 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
-			android.util.Log.w("main", "" + mesArticles.size());
+			if (Constantes.DEBUG) {
+				Log.w("main", "" + "new articles : " + mesArticles.size());
+			}
 			for (Item unItem : desItems) {
 				// Je l'enregistre en mémoire
 				mesArticles.add((ArticleItem) unItem);
 
 				// Je lance le téléchargement de sa miniature
-				nouveauChargementGUI();
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
 						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
@@ -270,9 +272,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				} else {
 					monAID.execute();
 				}
+				nouveauChargementGUI();
 
 				// Je lance le téléchargement de son contenu
-				nouveauChargementGUI();
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
 						((ArticleItem) unItem).getURL(), monDAO);
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
@@ -281,9 +283,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				} else {
 					monAHD.execute();
 				}
+				nouveauChargementGUI();
 			}
-
-			android.util.Log.w("main", "" + mesArticles.size());
 		}
 
 		// gestion du téléchargement GUI
@@ -329,6 +330,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
 		if (DLinProgress == 0) {
+			if (Constantes.DEBUG) {
+				Log.w("nouveauChargementGUI", "Lancement animation");
+			}
 			// Couleurs du RefreshLayout
 			monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
 					getResources().getColor(R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources()
@@ -346,6 +350,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je note le téléchargement en cours
 		DLinProgress++;
+		if (Constantes.DEBUG) {
+			Log.w("nouveauChargementGUI", "" + DLinProgress);
+		}
 	}
 
 	/**
@@ -357,6 +364,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Si c'est le premier => activation des gri-gri GUI
 		if (DLinProgress == 0) {
+			if (Constantes.DEBUG) {
+				Log.w("finChargementGUI", "Arrêt animation");
+			}
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
 
@@ -371,6 +381,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			monItemsAdapter.updateListeItems(prepareAffichage());
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
+		}
+		if (Constantes.DEBUG) {
+			Log.w("finChargementGUI", "" + DLinProgress);
 		}
 	}
 
