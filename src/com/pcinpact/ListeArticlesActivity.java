@@ -260,6 +260,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Suppression en DB
 			monDAO.supprimerArticle(article);
 
+			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
 			}
@@ -311,9 +312,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
-			if (Constantes.DEBUG) {
-				Log.w("main", "" + "new articles : " + mesArticles.size());
-			}
 			for (Item unItem : desItems) {
 				// Je l'enregistre en mémoire
 				mesArticles.add((ArticleItem) unItem);
@@ -339,6 +337,21 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					monAHD.execute();
 				}
 				nouveauChargementGUI();
+			}
+
+			// Préférences de l'utilisateur
+			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			// Nombre d'articles à conserver
+			int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
+					getString(R.string.defautOptionNbArticles)));
+
+			// Je limie à n articles (cf préférence de l'utilisateur)
+			for (int i = 0; i < (mesArticles.size() - maLimite); i++) {
+				mesArticles.remove(i);
+			}
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.w("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
 			}
 		}
 
@@ -385,6 +398,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
 		if (DLinProgress == 0) {
+			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("nouveauChargementGUI", "Lancement animation");
 			}
@@ -405,6 +419,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je note le téléchargement en cours
 		DLinProgress++;
+		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.w("nouveauChargementGUI", "" + DLinProgress);
 		}
@@ -419,6 +434,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Si c'est le premier => activation des gri-gri GUI
 		if (DLinProgress == 0) {
+			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("finChargementGUI", "Arrêt animation");
 			}
@@ -437,6 +453,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
 		}
+		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.w("finChargementGUI", "" + DLinProgress);
 		}
