@@ -251,6 +251,23 @@ public class DAO extends SQLiteOpenHelper {
 	}
 
 	/**
+	 * Enregistre un commentaire en DB uniquement s'il n'existe pas déjà
+	 * 
+	 * @param unCommentaire
+	 */
+	public boolean enregistrerCommentaireSiNouveau(CommentaireItem unCommentaire) {
+		// J'essaye de charger le commentaire depuis la DB
+		CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleID(), unCommentaire.getID());
+
+		// Vérif que le commentaire n'existe pas déjà
+		if (testItem.getIDArticleIDCommentaire() != unCommentaire.getIDArticleIDCommentaire()) {
+			this.enregistrerCommentaire(unCommentaire);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Supprimer un commentaire de la DB (par ID du commentaire)
 	 * 
 	 * @param unCommentaire

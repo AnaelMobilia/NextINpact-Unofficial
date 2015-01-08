@@ -61,6 +61,10 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 		return monID.compareTo(unID);
 	}
 
+	public String getIDArticleIDCommentaire() {
+		return this.getArticleID() + "-" + this.getID();
+	}
+
 	public int getID() {
 		return ID;
 	}

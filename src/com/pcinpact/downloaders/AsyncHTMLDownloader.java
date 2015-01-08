@@ -89,6 +89,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 					Log.w("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
 				}
 				
+				// Je ne conserve que les nouveaux articles
 				for (Item unItem : monRetour) {
 					// Stockage en BDD
 					if (monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem)) {
@@ -117,16 +118,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 			case Constantes.HTML_COMMENTAIRES:
 				// Je passe par le parser
-				mesItems.addAll(monParser.getCommentaires(monInput, urlPage));
+				ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(monInput, urlPage);
 
 				// DEBUG
 				if(Constantes.DEBUG){
 					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + mesItems.size() + " résultats");
 				}
 				
-				// Stockage en BDD
-				for (Item unItem : mesItems) {
-					monDAO.enregistrerCommentaire((CommentaireItem) unItem);
+				// Je ne conserve que les nouveaux commentaires
+				for (Item unItem : lesCommentaires) {
+					// Stockage en BDD
+					if (monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem)) {
+						// Ne retourne que les nouveaux articles
+						mesItems.add(unItem);
+					}
 				}
 				break;
 		}
