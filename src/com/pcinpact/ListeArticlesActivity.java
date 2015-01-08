@@ -41,6 +41,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -67,8 +68,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	DAO monDAO;
 	// Nombre de DL en cours
 	int DLinProgress = 0;
-	// Préférence de l'utilisateur
-	final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 	// Ressources sur les éléments graphiques
 	Menu monMenu;
@@ -130,7 +129,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Message d'accueil pour la première utilisation
-
+		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), getResources()
 				.getBoolean(R.bool.defautOptionPremierLancementApplication));
@@ -236,9 +235,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
+	/**
+	 * Nettoyage du cache
+	 */
 	@Override
 	protected void onDestroy() {
-		// Nettoyage du cache
+		// Préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		// Nombre d'articles à conserver
 		int maLimite = mesPrefs.getInt(getString(R.string.idOptionNbArticles),
 				Integer.valueOf(getApplicationContext().getResources().getString(R.string.defautOptionNbArticles)));
