@@ -87,7 +87,7 @@ public class ParseurHTML {
 			// Sous titre
 			Element sousTitre = unArticle.select("span[class=soustitre]").get(0);
 			// Je supprime le "- " en début du sous titre
-			String monSousTitre = sousTitre.text().substring(1);
+			String monSousTitre = sousTitre.text().substring(2);
 			monArticleItem.setSousTitre(monSousTitre);
 
 			// Nombre de commentaires
