@@ -256,6 +256,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Suppression en DB
 			monDAO.supprimerArticle(article);
+			
+			// Suppression des commentaires de l'article
+			monDAO.supprimerCommentaire(article.getID());
+			
 			// Suppression de la miniature, uniquement si plus utilisée
 			if (!imagesLegit.contains(article.getImageName())) {
 				File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
