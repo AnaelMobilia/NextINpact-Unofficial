@@ -75,7 +75,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 			return monRetour;
 		}
-		// J'enregistrele BAOS
+		// J'enregistre le BAOS
 		byte[] monDL = monBAOS.toByteArray();
 		// Et le ferme
 		try {
