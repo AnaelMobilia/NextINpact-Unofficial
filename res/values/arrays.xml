@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -35,6 +35,14 @@
         <item>16</item>
         <item>20</item>
         <item>24</item>
+    </string-array>
+    <!-- Menu options -> nombre d'articles à conserver -->
+    <string-array name="nbArticles">
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>75</item>
+        <item>90</item>
     </string-array>
 
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
 /*
- * Copyright 2013, 2014 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014, 2015 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -99,8 +99,10 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="optionDebug">Activer le débuggage</string>
     <string name="optionDebugDetail">"Afficher les messages d'erreurs (requis pour rapporter une erreur dans l'application)"</string>
     <string name="optionsFermer">Fermer</string>
-    <string name="optionsCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
-    <string name="optionsCommentairesTelechargementContinu">Chargement en continu</string>
+    <string name="optionCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
+    <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
+    <string name="optionNbArticlesDetail">"Le nombres d'articles que vous souhaitez avoir dans l'application"</string>
+    <string name="optionNbArticles">"Nombre d'articless"</string>
 
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
@@ -111,6 +113,7 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="idOptionPremierLancementApplication">5</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
+    <string name="idOptionNbArticles">8</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

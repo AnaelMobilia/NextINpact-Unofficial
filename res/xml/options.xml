@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -30,6 +30,14 @@
             android:key="@string/idOptionZoomTexte"
             android:summary="@string/optionTailleTexteDetail"
             android:title="@string/optionTailleTexte" />
+        <ListPreference
+            android:defaultValue="@string/defautOptionNbArticles"
+            android:entries="@array/nbArticles"
+            android:entryValues="@array/nbArticles"
+            android:key="@string/idOptionNbArticles"
+            android:summary="@string/optionNbArticlesDetail"
+            android:title="@string/optionNbArticles" />
+        
     </PreferenceCategory>
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles" >
@@ -54,8 +62,8 @@
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCommentairesTelechargementContinu"
             android:key="@string/idOptionCommentairesTelechargementContinu"
-            android:summary="@string/optionsCommentairesTelechargementContinuDetail"
-            android:title="@string/optionsCommentairesTelechargementContinu" />
+            android:summary="@string/optionCommentairesTelechargementContinuDetail"
+            android:title="@string/optionCommentairesTelechargementContinu" />
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement" >
