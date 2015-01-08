@@ -77,19 +77,18 @@ public class DAO extends SQLiteOpenHelper {
 		// Et l'ouvre en écriture
 		maDB = this.getWritableDatabase();
 	}
-	
-    public static DAO getInstance(Context ctx) {
-        /** 
-         * use the application context as suggested by CommonsWare.
-         * this will ensure that you dont accidentally leak an Activitys
-         * context (see this article for more information: 
-         * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
-         */
-        if (InstanceOfDAO == null) {
-        	InstanceOfDAO = new DAO(ctx.getApplicationContext());
-        }
-        return InstanceOfDAO;
-    }
+
+	public static DAO getInstance(Context ctx) {
+		/**
+		 * use the application context as suggested by CommonsWare. this will ensure that you dont accidentally leak an Activitys
+		 * context (see this article for more information:
+		 * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
+		 */
+		if (InstanceOfDAO == null) {
+			InstanceOfDAO = new DAO(ctx.getApplicationContext());
+		}
+		return InstanceOfDAO;
+	}
 
 	/**
 	 * Création de la DB si elle n'existe pas
@@ -275,7 +274,7 @@ public class DAO extends SQLiteOpenHelper {
 		CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleID(), unCommentaire.getID());
 
 		// Vérif que le commentaire n'existe pas déjà
-		if (testItem.getIDArticleIDCommentaire() != unCommentaire.getIDArticleIDCommentaire()) {
+		if (!testItem.getIDArticleIDCommentaire().endsWith(unCommentaire.getIDArticleIDCommentaire())) {
 			this.enregistrerCommentaire(unCommentaire);
 			return true;
 		}
@@ -322,7 +321,7 @@ public class DAO extends SQLiteOpenHelper {
 				+ "=?", idArticleEtCommentaire, null, null, null);
 
 		CommentaireItem monCommentaire = new CommentaireItem();
-		
+
 		// Je vais au premier (et unique) résultat
 		if (monCursor.moveToNext()) {
 			monCommentaire.setArticleID(monCursor.getInt(0));
@@ -331,7 +330,7 @@ public class DAO extends SQLiteOpenHelper {
 			monCommentaire.setTimeStampPublication(monCursor.getLong(3));
 			monCommentaire.setCommentaire(monCursor.getString(4));
 		}
-		
+
 		// Fermeture du curseur
 		monCursor.close();
 
