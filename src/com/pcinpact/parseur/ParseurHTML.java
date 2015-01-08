@@ -248,7 +248,7 @@ public class ParseurHTML {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(input);
+		Document pageNXI = Jsoup.parse(input, urlPage);
 
 		// ID de l'article concerné
 		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
