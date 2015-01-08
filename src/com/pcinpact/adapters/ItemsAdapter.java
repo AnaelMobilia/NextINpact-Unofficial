@@ -174,7 +174,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
-				numeroCommentaire.setText(ai.getID());
+				numeroCommentaire.setText(String.valueOf(ai.getID()));
 				// commentaire.setText(Html.fromHtml(ai.getCommentaire()));
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new ImageGetter() {
 
