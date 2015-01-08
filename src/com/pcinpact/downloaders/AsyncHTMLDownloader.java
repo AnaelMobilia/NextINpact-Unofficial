@@ -97,6 +97,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 						mesItems.add(unItem);
 					}
 				}
+				// DEBUG
+				if(Constantes.DEBUG){
+					Log.w("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
+				}
 				break;
 
 			case Constantes.HTML_ARTICLE:
@@ -132,6 +136,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 						// Ne retourne que les nouveaux articles
 						mesItems.add(unItem);
 					}
+				}
+				// DEBUG
+				if(Constantes.DEBUG){
+					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
 				}
 				break;
 		}
