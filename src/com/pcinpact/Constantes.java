@@ -35,6 +35,10 @@ public class Constantes {
 	 */
 	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	// URL de téléchargement des commentaires
+	public final static String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
+	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
+	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 
@@ -45,6 +49,8 @@ public class Constantes {
 	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
 	// Heure de publication des articles sur la listeArticlesActivity
 	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
+	// Date et Heure de publication d'un commentaire
+	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 	
 	/**
 	 * FORMATS DU SITE POUR LE PARSEUR
@@ -52,7 +58,7 @@ public class Constantes {
 	// Format des dates des articles sur le site
 	public final static String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
 	// Format des dates des commentaires sur le site
-	public final static String FORMAT_DATE_COMMENTAIRE = "le  dd/MM/yyyy à HH:mm:ss";
+	public final static String FORMAT_DATE_COMMENTAIRE = "'le  'dd/MM/yyyy 'à 'HH:mm:ss";
 
 	/**
 	 * PATH DES FICHIERS LOCAUX

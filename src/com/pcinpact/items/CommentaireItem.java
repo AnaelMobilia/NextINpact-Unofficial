@@ -23,7 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class CommentaireItem implements Item {
+import com.pcinpact.Constantes;
+
+public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 
 	private int ID;
 	private int articleID;
@@ -39,13 +41,24 @@ public class CommentaireItem implements Item {
 	public String getFullDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
-		DateFormat dfm = new SimpleDateFormat("le dd/MM/yyyy à HH:mm:ss", Locale.getDefault());
+		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Locale.getDefault());
 
 		return dfm.format(maDate);
 	}
 
 	public String getAuteurDateCommentaire() {
 		return this.getAuteur() + " " + this.getFullDatePublication();
+	}
+
+	@Override
+	/**
+	 * Comparaison entre objets
+	 */
+	public int compareTo(CommentaireItem unCommentaireItem) {
+		Integer unID = unCommentaireItem.getID();
+		Integer monID = this.getID();
+
+		return monID.compareTo(unID);
 	}
 
 	public int getID() {
