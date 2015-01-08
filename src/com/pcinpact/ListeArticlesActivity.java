@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -233,6 +234,46 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			default:
 				return super.onOptionsItemSelected(pItem);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		// Nettoyage du cache
+		// Conservation des 30 derniers articles (0...29)
+		int maLimite = 29;
+
+		mesArticles = monDAO.chargerArticlesTriParDate();
+
+		// Je protége les images présentes dans les articles à conserver
+		ArrayList<String> imagesLegit = new ArrayList<String>();
+		for (int i = 0; i < maLimite && i < mesArticles.size(); i++) {
+			imagesLegit.add(mesArticles.get(i).getImageName());
+		}
+
+		// Je ne conserve que les n premiers articles
+		for (int i = maLimite; i < mesArticles.size(); i++) {
+			ArticleItem article = mesArticles.get(i);
+
+			// Suppression en DB
+			monDAO.supprimerArticle(article);
+			// Suppression de la miniature, uniquement si plus utilisée
+			if (!imagesLegit.contains(article.getImageName())) {
+				File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
+						article.getImageName());
+				monFichier.delete();
+			}
+		}
+
+		// Nettoyage des traces des v<1.8.0
+		// Les fichiers sur stockés en local
+		String[] SavedFiles = getApplicationContext().fileList();
+
+		for (String file : SavedFiles) {
+			// Article à effacer
+			getApplicationContext().deleteFile(file);
+		}
+
+		super.onDestroy();
 	}
 
 	@SuppressLint("NewApi")
