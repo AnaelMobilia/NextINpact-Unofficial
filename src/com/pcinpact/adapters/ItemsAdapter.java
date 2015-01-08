@@ -221,6 +221,7 @@ public class ItemsAdapter extends BaseAdapter {
 					@Override
 					public Drawable getDrawable(String source) {
 						Drawable d = null;
+
 						try {
 							URL url = new URL(source);
 							Object o = url.getContent();
