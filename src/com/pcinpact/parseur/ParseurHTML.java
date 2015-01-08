@@ -120,7 +120,7 @@ public class ParseurHTML {
 		ArticleItem monArticleItem = new ArticleItem();
 		
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(monInput);
+		Document pageNXI = Jsoup.parse(monInput, urlPage);
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
@@ -131,9 +131,9 @@ public class ParseurHTML {
 		monArticleItem.setID(unID);
 		
 		// Suppression des liens sur les images (zoom, avec dl)
-		Elements lesImages = lArticle.select("a[href] > img");
+		Elements lesImagesLiens = lArticle.select("a[href] > img");
 		// Pour chaque image
-		for (Element uneImage : lesImages) {
+		for (Element uneImage : lesImagesLiens) {
 			// Je prend son papa
 			Element lePapa = uneImage.parent();
 			// J'insère l'image après le papa
@@ -215,12 +215,20 @@ public class ParseurHTML {
 			uneIframe.replaceWith(monRemplacement);
 		}
 
-		// Gestion des URL relatives
+		// Gestion des URL relatives des liens
 		Elements lesLiens = lArticle.select("a[href]");
 		// Pour chaque lien
 		for (Element unLien : lesLiens) {
 			// Assignation de son URL absolue
 			unLien.attr("href", unLien.absUrl("href"));
+		}
+		
+		// Gestion des URL relatives des images
+		Elements lesImages = lArticle.select("img[src]");
+		// Pour chaque lien
+		for (Element uneImage : lesImages) {
+			// Assignation de son URL absolue
+			uneImage.attr("src", uneImage.absUrl("src"));
 		}
 
 		// J'enregistre le contenu
