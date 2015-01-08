@@ -97,7 +97,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		});
 
-		monItemsAdapter = new ItemsAdapter(getApplicationContext(), mesArticles);
+		monItemsAdapter = new ItemsAdapter(this, mesArticles);
 		monListView.setAdapter(monItemsAdapter);
 		monListView.setOnItemClickListener(this);
 
