@@ -42,10 +42,10 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	// Contexte parent
 	private Context monContext;
 	// Callback : parent + ref
-	RefreshDisplayInterface monParent;
+	private RefreshDisplayInterface monParent;
 	// Type d'image & URL
-	String urlImage;
-	int typeImage;
+	private String urlImage;
+	private int typeImage;
 
 	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL) {
 		// Mappage des attributs de cette requête

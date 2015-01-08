@@ -42,12 +42,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	// Contexte parent
 	private Context monContext;
 	// Callback : parent + ref
-	RefreshDisplayInterface monParent;
+	private RefreshDisplayInterface monParent;
 	// Type & URL du code HTML
-	String urlPage;
-	int typeHTML;
+	private String urlPage;
+	private int typeHTML;
 	// Accès sur la DB
-	DAO monDAO;
+	private DAO monDAO;
 
 	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO) {
 		// Mappage des attributs de cette requête

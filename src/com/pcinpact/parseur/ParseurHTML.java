@@ -40,7 +40,7 @@ import com.pcinpact.items.CommentaireItem;
 
 public class ParseurHTML {
 
-	Context contextParent;
+	private Context contextParent;
 
 	public ParseurHTML(Context unContext) {
 		contextParent = unContext;

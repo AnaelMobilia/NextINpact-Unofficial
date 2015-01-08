@@ -35,13 +35,13 @@ import android.webkit.WebView;
 
 public class ArticleActivity extends ActionBarActivity {
 	// La webview
-	WebView webview;
+	private WebView webview;
 	// ID de l'article
-	int articleID;
+	private int articleID;
 	// Accès à la DB
-	DAO monDAO;
+	private DAO monDAO;
 	// Article
-	ArticleItem monArticle;
+	private ArticleItem monArticle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

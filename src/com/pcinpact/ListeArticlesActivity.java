@@ -60,19 +60,19 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
 	// les articles
-	ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+	private ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 	// itemAdapter
-	ItemsAdapter monItemsAdapter;
+	private ItemsAdapter monItemsAdapter;
 	// La BDD
-	DAO monDAO;
+	private DAO monDAO;
 	// Nombre de DL en cours
-	int DLinProgress = 0;
+	private int DLinProgress = 0;
 
 	// Ressources sur les éléments graphiques
-	Menu monMenu;
-	ListView monListView;
-	SwipeRefreshLayout monSwipeRefreshLayout;
-	TextView headerTextView;
+	private Menu monMenu;
+	private ListView monListView;
+	private SwipeRefreshLayout monSwipeRefreshLayout;
+	private TextView headerTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

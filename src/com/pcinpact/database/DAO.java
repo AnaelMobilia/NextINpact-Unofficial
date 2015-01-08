@@ -37,9 +37,9 @@ import com.pcinpact.items.CommentaireItem;
  */
 public class DAO extends SQLiteOpenHelper {
 	// Version de la DB (à mettre à jour à chaque changement du schéma)
-	public static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 1;
 	// Nom de la BDD
-	public static final String DB_NAME = "nxidb";
+	private static final String DB_NAME = "nxidb";
 
 	/**
 	 * Interfacage de la DB
