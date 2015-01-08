@@ -76,7 +76,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		// Liste des commentaires
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		// Footer : bouton "Charger plus de commentaires"
-		buttonDl10Commentaires = new Button(getApplicationContext());
+		buttonDl10Commentaires = new Button(this);
 		buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {

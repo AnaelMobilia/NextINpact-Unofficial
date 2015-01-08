@@ -135,7 +135,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
 			builder.setTitle(getResources().getString(R.string.app_name));
 			// Contenu
