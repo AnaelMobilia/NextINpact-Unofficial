@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -24,6 +24,9 @@ public interface Item {
 	public final static int typeSection = 2;
 	public final static int typeCommentaire = 3;
 
+	// Nombre de types différents existants
+	public final static int nombreDeTypes = 3;
+	
 	/**
 	 * Type (Cf Item.type*) de l'item
 	 * @return

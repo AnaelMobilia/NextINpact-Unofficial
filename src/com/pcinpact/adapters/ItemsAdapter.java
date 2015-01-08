@@ -88,9 +88,48 @@ public class ItemsAdapter extends BaseAdapter {
 		return arg0;
 	}
 
+	/**
+	 * Le nombre d'objets différents pouvant exister dans l'application
+	 */
+	@Override
+	public int getViewTypeCount() {
+		return Item.nombreDeTypes;
+	}
+
+	/**
+	 * Le type de l'objet à la position (pour définir le bon type de vue à fournir)
+	 */
+	@Override
+	public int getItemViewType(int position) {
+		return mesItems.get(position).getType();
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
+		// Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
+		// Pas de recyclage
+		if (convertView == null) {
+			// Je crée la vue qui va bien...
+			switch (getItemViewType(position)) {
+				case Item.typeSection:
+					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
+					convertView.setOnClickListener(null);
+					convertView.setOnLongClickListener(null);
+					break;
+				case Item.typeArticle:
+					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
+					break;
+				case Item.typeCommentaire:
+					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
+					break;
+			}
+		} else {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.w("ItemsAdapter", "getView : recyclage de la vue");
+			}
+		}
+
 		Item i = mesItems.get(position);
 
 		// Préférences de l'utilisateur : taille du texte
@@ -107,12 +146,8 @@ public class ItemsAdapter extends BaseAdapter {
 			// Section
 			if (i.getType() == Item.typeSection) {
 				SectionItem si = (SectionItem) i;
-				v = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
 
-				v.setOnClickListener(null);
-				v.setOnLongClickListener(null);
-
-				TextView sectionView = (TextView) v.findViewById(R.id.titreSection);
+				TextView sectionView = (TextView) convertView.findViewById(R.id.titreSection);
 				sectionView.setText(si.getTitre());
 
 				// Taille de texte personnalisée ?
@@ -125,13 +160,13 @@ public class ItemsAdapter extends BaseAdapter {
 			// Article
 			else if (i.getType() == Item.typeArticle) {
 				ArticleItem ai = (ArticleItem) i;
-				v = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
-				ImageView imageArticle = (ImageView) v.findViewById(R.id.imageArticle);
-				TextView labelAbonne = (TextView) v.findViewById(R.id.labelAbonne);
-				TextView titreArticle = (TextView) v.findViewById(R.id.titreArticle);
-				TextView heureArticle = (TextView) v.findViewById(R.id.heureArticle);
-				TextView sousTitreArticle = (TextView) v.findViewById(R.id.sousTitreArticle);
-				TextView commentairesArticle = (TextView) v.findViewById(R.id.commentairesArticle);
+
+				ImageView imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
+				TextView labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
+				TextView titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
+				TextView heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
+				TextView sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
+				TextView commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
 
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
@@ -172,10 +207,10 @@ public class ItemsAdapter extends BaseAdapter {
 			// Commentaire
 			else if (i.getType() == Item.typeCommentaire) {
 				CommentaireItem ai = (CommentaireItem) i;
-				v = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
-				TextView auteurDateCommentaire = (TextView) v.findViewById(R.id.auteurDateCommentaire);
-				TextView numeroCommentaire = (TextView) v.findViewById(R.id.numeroCommentaire);
-				TextView commentaire = (TextView) v.findViewById(R.id.commentaire);
+
+				TextView auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
+				TextView numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
+				TextView commentaire = (TextView) convertView.findViewById(R.id.commentaire);
 
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
@@ -234,7 +269,7 @@ public class ItemsAdapter extends BaseAdapter {
 				}
 			}
 		}
-		return v;
+		return convertView;
 	}
 
 	/**
