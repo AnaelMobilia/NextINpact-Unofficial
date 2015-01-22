@@ -52,23 +52,20 @@ public class OptionsActivity extends PreferenceActivity {
 				finish();
 			}
 		});
-		
+
 		monBouton.setText(getResources().getString(R.string.optionsFermer));
 
-		ListView v = getListView();
-		v.addFooterView(monBouton);
+		ListView maView = getListView();
+		maView.addFooterView(monBouton);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		switch (pItem.getItemId()) {
-		// Retour
-			case R.id.action_home:
-				finish();
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(pItem);
+		// Bouton retour
+		if (pItem.getItemId() == R.id.action_home) {
+			finish();
 		}
+
+		return super.onOptionsItemSelected(pItem);
 	}
 }

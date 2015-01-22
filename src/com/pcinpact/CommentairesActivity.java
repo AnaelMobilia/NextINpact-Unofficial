@@ -47,6 +47,12 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * Affichage des commentaires
+ * 
+ * @author Anael
+ *
+ */
 public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
 	// les commentaires
 	private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
@@ -110,11 +116,11 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// J'affiche le dernier commentaire en cache ?
-				if ((firstVisibleItem + visibleItemCount) >= ((totalItemCount - 1))) {
+				if ((firstVisibleItem + visibleItemCount) >= (totalItemCount - 1)) {
 					// (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
 
 					// Chargement des préférences de l'utilisateur
-					final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+					SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
 					// Téléchargement automatique en continu des commentaires ?
 					Boolean telecharger = mesPrefs.getBoolean(getString(R.string.idOptionCommentairesTelechargementContinu),
 							getResources().getBoolean(R.bool.defautOptionCommentairesTelechargementContinu));
@@ -140,7 +146,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 		int idDernierCommentaire = 0;
 		// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
-		if (mesCommentaires.size() > 0) {
+		if (!mesCommentaires.isEmpty()) {
 			CommentaireItem lastCommentaire = mesCommentaires.get(mesCommentaires.size() - 1);
 			idDernierCommentaire = lastCommentaire.getID();
 		}
@@ -213,8 +219,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		setSupportProgressBarIndeterminateVisibility(true);
 
 		// Supprime l'icône refresh dans le header
-		if (monMenu != null)
+		if (monMenu != null) {
 			monMenu.findItem(R.id.action_refresh).setVisible(false);
+		}
 
 		// MàJ du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
@@ -231,8 +238,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		setSupportProgressBarIndeterminateVisibility(false);
 
 		// Affiche l'icône refresh dans le header
-		if (monMenu != null)
+		if (monMenu != null) {
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
+		}
 
 		// MàJ du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));

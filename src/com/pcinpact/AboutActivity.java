@@ -43,21 +43,17 @@ public class AboutActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Je charge mon menu dans l'actionBar
-		MenuInflater inflater = getMenuInflater();
+		final MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.about_activity_actions, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		switch (pItem.getItemId()) {
-		// Retour
-			case R.id.action_home:
-				finish();
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(pItem);
+		// Bouton "retour"
+		if (pItem.getItemId() == R.id.action_home) {
+			finish();
 		}
+		return super.onOptionsItemSelected(pItem);
 	}
 }

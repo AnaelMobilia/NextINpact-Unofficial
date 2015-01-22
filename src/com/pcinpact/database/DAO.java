@@ -64,7 +64,7 @@ public class DAO extends SQLiteOpenHelper {
 
 	// ma DB
 	private static SQLiteDatabase maDB = null;
-	private static DAO InstanceOfDAO = null;
+	private static DAO instanceOfDAO = null;
 
 	/**
 	 * Création de la connexion à la DB
@@ -84,10 +84,10 @@ public class DAO extends SQLiteOpenHelper {
 		 * context (see this article for more information:
 		 * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
 		 */
-		if (InstanceOfDAO == null) {
-			InstanceOfDAO = new DAO(ctx.getApplicationContext());
+		if (instanceOfDAO == null) {
+			instanceOfDAO = new DAO(ctx.getApplicationContext());
 		}
-		return InstanceOfDAO;
+		return instanceOfDAO;
 	}
 
 	/**

@@ -51,6 +51,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * Adapter pour le rendu des *Item
+ * 
+ * @author Anael
+ *
+ */
 public class ItemsAdapter extends BaseAdapter {
 	// Ressources graphique
 	private Context monContext;
@@ -139,7 +145,7 @@ public class ItemsAdapter extends BaseAdapter {
 		final int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
 		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
-				"" + tailleDefaut));
+				String.valueOf(tailleDefaut)));
 		float monCoeffZoomTexte = (float) tailleOptionUtilisateur / (float) tailleDefaut;
 
 		if (i != null) {

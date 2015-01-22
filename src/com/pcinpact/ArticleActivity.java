@@ -33,6 +33,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 
+/**
+ * Affiche un article
+ * 
+ * @author Anael
+ *
+ */
 public class ArticleActivity extends ActionBarActivity {
 	// La webview
 	private WebView webview;
@@ -59,27 +65,24 @@ public class ArticleActivity extends ActionBarActivity {
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
-		if (data == null)
+		if (data == null) {
 			data = getString(R.string.articleVideErreurHTML);
+		}
 
 		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 
 		// Taille des textes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// la taille par défaut est de 16
-		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
 		int tailleDefaut = 16;
 
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), ""
-				+ tailleDefaut));
+		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), String.valueOf(tailleDefaut)));
 
-		if (tailleOptionUtilisateur == tailleDefaut) {
-			// Valeur par défaut...
-		} else {
+		if (tailleUtilisateur != tailleDefaut) {
 			// On applique la taille demandée
 			WebSettings webSettings = webview.getSettings();
-			webSettings.setDefaultFontSize(tailleOptionUtilisateur);
+			webSettings.setDefaultFontSize(tailleUtilisateur);
 		}
 
 	}

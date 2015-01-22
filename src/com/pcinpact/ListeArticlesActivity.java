@@ -58,6 +58,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Liste des articles
+ * 
+ * @author Anael
+ *
+ */
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
 	// les articles
 	private ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
@@ -66,7 +72,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	// La BDD
 	private DAO monDAO;
 	// Nombre de DL en cours
-	private int DLinProgress = 0;
+	private int dlInProgress = 0;
 
 	// Ressources sur les éléments graphiques
 	private Menu monMenu;
@@ -173,9 +179,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		inflater.inflate(R.menu.main_activity_actions, monMenu);
 
 		// Je lance l'animation si un DL est déjà en cours
-		if (DLinProgress != 0) {
+		if (dlInProgress != 0) {
 			// Hack : il n'y avait pas d'accès à la GUI sur onCreate
-			DLinProgress--;
+			dlInProgress--;
 			nouveauChargementGUI();
 		}
 
@@ -199,10 +205,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-			case KeyEvent.KEYCODE_MENU:
-				monMenu.performIdentifierAction(R.id.action_overflow, 0);
-				return true;
+		// Bouton menu
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			monMenu.performIdentifierAction(R.id.action_overflow, 0);
 		}
 
 		return super.onKeyUp(keyCode, event);
@@ -278,9 +283,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Nettoyage des traces des v<1.8.0
 		// Les fichiers sur stockés en local
-		String[] SavedFiles = getApplicationContext().fileList();
+		String[] savedFiles = getApplicationContext().fileList();
 
-		for (String file : SavedFiles) {
+		for (String file : savedFiles) {
 			// Article à effacer
 			getApplicationContext().deleteFile(file);
 		}
@@ -291,7 +296,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
 		// Uniquement si on est pa&s déjà en train de faire un refresh...
-		if (DLinProgress == 0) {
+		if (dlInProgress == 0) {
 			// Le retour en GUI
 			nouveauChargementGUI();
 
@@ -397,7 +402,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
-		if (DLinProgress == 0) {
+		if (dlInProgress == 0) {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("nouveauChargementGUI", "Lancement animation");
@@ -413,15 +418,16 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			setSupportProgressBarIndeterminateVisibility(true);
 
 			// Supprime l'icône refresh dans le header
-			if (monMenu != null)
+			if (monMenu != null) {
 				monMenu.findItem(R.id.action_refresh).setVisible(false);
+			}
 		}
 
 		// Je note le téléchargement en cours
-		DLinProgress++;
+		dlInProgress++;
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("nouveauChargementGUI", "" + DLinProgress);
+			Log.w("nouveauChargementGUI", String.valueOf(dlInProgress));
 		}
 	}
 
@@ -430,10 +436,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	private void finChargementGUI() {
 		// Je note la fin du téléchargement
-		DLinProgress--;
+		dlInProgress--;
 
 		// Si c'est le premier => activation des gri-gri GUI
-		if (DLinProgress == 0) {
+		if (dlInProgress == 0) {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("finChargementGUI", "Arrêt animation");
@@ -445,8 +451,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			setSupportProgressBarIndeterminateVisibility(false);
 
 			// Affiche l'icône refresh dans le header
-			if (monMenu != null)
+			if (monMenu != null) {
 				monMenu.findItem(R.id.action_refresh).setVisible(true);
+			}
 
 			// Je met à jour les données
 			monItemsAdapter.updateListeItems(prepareAffichage());
@@ -455,7 +462,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("finChargementGUI", "" + DLinProgress);
+			Log.w("finChargementGUI", String.valueOf(dlInProgress));
 		}
 	}
 
