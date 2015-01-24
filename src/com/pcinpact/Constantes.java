@@ -85,4 +85,6 @@ public class Constantes {
 	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
 	// Date et Heure de publication d'un commentaire
 	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
+	//Date et Heure de dernière synchro
+	public final static String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
 }

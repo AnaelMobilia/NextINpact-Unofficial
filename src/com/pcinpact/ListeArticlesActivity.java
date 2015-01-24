@@ -19,8 +19,12 @@
 package com.pcinpact;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
@@ -317,33 +321,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
-			for (Item unItem : desItems) {
-				// Je l'enregistre en mémoire
-				mesArticles.add((ArticleItem) unItem);
-
-				// Je lance le téléchargement de sa miniature
-				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					monAID.execute();
-				}
-				nouveauChargementGUI();
-
-				// Je lance le téléchargement de son contenu
-				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
-						((ArticleItem) unItem).getURL(), monDAO);
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					monAHD.execute();
-				}
-				nouveauChargementGUI();
-			}
-
+			
+			// Tri par date publication
+			
+			// Conservation des nnn 
 			// Préférences de l'utilisateur
 			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			// Nombre d'articles à conserver
@@ -357,6 +338,36 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
+			}
+			
+			
+			// Téléchargement SSI non déjà existants (image, html)
+			
+			for (Item unItem : desItems) {
+				// Je l'enregistre en mémoire
+				mesArticles.add((ArticleItem) unItem);
+
+				// Je lance le téléchargement de son contenu
+				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
+						((ArticleItem) unItem).getURL(), monDAO);
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAHD.execute();
+				}
+				nouveauChargementGUI();
+				
+				// Je lance le téléchargement de sa miniature
+				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+				nouveauChargementGUI();
 			}
 		}
 
@@ -444,6 +455,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			if (Constantes.DEBUG) {
 				Log.w("finChargementGUI", "Arrêt animation");
 			}
+			// Mise à jour de la date de dernière mise à jour
+			headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH).format(new Date()));
+			
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
 
