@@ -86,7 +86,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				Log.w("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
 			}
 		}
-		
+
 		// J'ouvre une instance du parser
 		ParseurHTML monParser = new ParseurHTML(monContext);
 
@@ -96,10 +96,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monInput, urlPage);
 
 				// DEBUG
-				if(Constantes.DEBUG){
+				if (Constantes.DEBUG) {
 					Log.w("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
 				}
-				
+
 				// Je ne conserve que les nouveaux articles
 				for (Item unItem : monRetour) {
 					// Stockage en BDD
@@ -109,7 +109,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 					}
 				}
 				// DEBUG
-				if(Constantes.DEBUG){
+				if (Constantes.DEBUG) {
 					Log.w("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
 				}
 				break;
@@ -117,7 +117,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 			case Constantes.HTML_ARTICLE:
 				// Je passe par le parser
 				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
-				
+
 				// Chargement de l'article depuis la BDD
 				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getID());
 
@@ -136,10 +136,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(monInput, urlPage);
 
 				// DEBUG
-				if(Constantes.DEBUG){
-					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size() + " résultats");
+				if (Constantes.DEBUG) {
+					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+							+ " résultats");
 				}
-				
+
 				// Je ne conserve que les nouveaux commentaires
 				for (Item unItem : lesCommentaires) {
 					// Stockage en BDD
@@ -149,8 +150,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 					}
 				}
 				// DEBUG
-				if(Constantes.DEBUG){
+				if (Constantes.DEBUG) {
 					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
+				}
+				break;
+
+			default:
+				if (Constantes.DEBUG) {
+					Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
 				}
 				break;
 		}

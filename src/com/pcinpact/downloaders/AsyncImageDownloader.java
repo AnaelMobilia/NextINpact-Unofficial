@@ -101,6 +101,11 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			case Constantes.IMAGE_SMILEY:
 				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, imgName);
 				break;
+			default:
+				if (Constantes.DEBUG) {
+					Log.e("AsyncImageDownloader", "Type Image incohérent : " + typeImage + " - URL : " + urlImage);
+				}
+				break;
 		}
 
 		// Ouverture d'un fichier en écrasement
@@ -124,8 +129,16 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			if (Constantes.DEBUG) {
 				Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
 			}
+			// On ferme le FOS au cas où...
+			try {
+				monFOS.close();
+			} catch (IOException e1) {
+				if (Constantes.DEBUG) {
+					Log.e("AsyncImageDownloader", "Error while closing FOS " + urlImage, e1);
+				}
+			}
 		}
-		
+
 		// Je renvoie le bitmap
 		return BitmapFactory.decodeByteArray(monDL, 0, monDL.length);
 	}

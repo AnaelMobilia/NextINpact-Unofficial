@@ -259,6 +259,10 @@ public class ItemsAdapter extends BaseAdapter {
 								d.setBounds(0, 0, (d.getIntrinsicWidth() * monCoeff), (d.getIntrinsicHeight() * monCoeff));
 							}
 						} catch (Exception e) {
+							if(Constantes.DEBUG)
+							{
+								Log.w("ItemsAdapter", "getDrawable exception...", e);
+							}
 						}
 						return d;
 					}
