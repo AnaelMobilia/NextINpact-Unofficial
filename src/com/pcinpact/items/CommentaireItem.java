@@ -25,6 +25,11 @@ import java.util.Locale;
 
 import com.pcinpact.Constantes;
 
+/**
+ * Objet Commentaire
+ * @author Anael
+ *
+ */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 
 	private int ID;

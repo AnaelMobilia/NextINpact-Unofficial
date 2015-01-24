@@ -38,6 +38,11 @@ import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
+/**
+ * Parseur du code HTML
+ * @author Anael
+ *
+ */
 public class ParseurHTML {
 
 	private Context contextParent;

@@ -24,6 +24,11 @@ import android.graphics.Bitmap;
 
 import com.pcinpact.items.Item;
 
+/**
+ * Interface générique de callback à la fin des téléchargements HTML / Image
+ * @author Anael
+ *
+ */
 public interface RefreshDisplayInterface {
 
 	/**

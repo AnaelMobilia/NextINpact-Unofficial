@@ -18,6 +18,11 @@
  */
 package com.pcinpact.items;
 
+/**
+ * Objet générique
+ * @author Anael
+ *
+ */
 public interface Item {
 
 	public final static int typeArticle = 1;

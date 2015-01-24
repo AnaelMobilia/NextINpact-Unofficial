@@ -35,7 +35,7 @@ import com.pcinpact.items.CommentaireItem;
  * @author Anael
  *
  */
-public class DAO extends SQLiteOpenHelper {
+public final class DAO extends SQLiteOpenHelper {
 	// Version de la DB (à mettre à jour à chaque changement du schéma)
 	private static final int DB_VERSION = 1;
 	// Nom de la BDD
@@ -100,7 +100,6 @@ public class DAO extends SQLiteOpenHelper {
 				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
 				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
 				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
-
 		db.execSQL(reqCreateArticles);
 
 		// Table des commentaires
@@ -108,7 +107,6 @@ public class DAO extends SQLiteOpenHelper {
 				+ COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + DB_TABLE_ARTICLES + "(" + ARTICLE_ID + "),"
 				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_TIMESTAMP + " INTEGER," + COMMENTAIRE_CONTENU + " TEXT,"
 				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + "));";
-		;
 		db.execSQL(reqCreateCommentaires);
 	}
 
