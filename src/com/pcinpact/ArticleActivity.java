@@ -25,7 +25,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,6 +50,8 @@ public class ArticleActivity extends ActionBarActivity {
 	private DAO monDAO;
 	// Article
 	private ArticleItem monArticle;
+	// Partage d'un article
+	private ShareActionProvider mShareActionProvider;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,8 @@ public class ArticleActivity extends ActionBarActivity {
 		int tailleDefaut = 16;
 
 		// L'option selectionnée
-		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte), String.valueOf(tailleDefaut)));
+		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte),
+				String.valueOf(tailleDefaut)));
 
 		if (tailleUtilisateur != tailleDefaut) {
 			// On applique la taille demandée
@@ -92,6 +97,19 @@ public class ArticleActivity extends ActionBarActivity {
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.article_activity_actions, menu);
+		
+	      // Get the menu item.
+	      MenuItem shareItem = menu.findItem(R.id.action_share);
+	      // Get the provider and hold onto it to set/change the share intent.
+	      mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+	      // Création de mon intent
+	      Intent monIntent = new Intent(Intent.ACTION_SEND);
+	      monIntent.setType("text/plain");
+	      monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURL());
+	      mShareActionProvider.setShareIntent(monIntent);
+	      
+	
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -99,14 +117,20 @@ public class ArticleActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		switch (pItem.getItemId()) {
 			case R.id.action_comments:
+				// Afficher les commentaires
 				Intent intentWeb = new Intent(getApplicationContext(), CommentairesActivity.class);
 				intentWeb.putExtra("ARTICLE_ID", articleID);
 				startActivity(intentWeb);
-
 				return true;
 
 			case R.id.action_home:
+				// Retour
 				finish();
+				return true;
+
+			case R.id.action_share:
+				// Partager
+
 				return true;
 
 			default:

@@ -17,10 +17,18 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
+ */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+
+    <!-- Share -->
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_menu_share"
+        android:title="@string/action_share"
+        yourapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        yourapp:showAsAction="ifRoom"/>
 
     <!-- Commentaires -->
     <item

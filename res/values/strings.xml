@@ -28,6 +28,7 @@
     <string name="action_about">A propos</string>
     <string name="action_comments">Commentaires</string>
     <string name="action_home">Accueil</string>
+    <string name="action_share">Partager</string>
 
     <!-- Ecran d'accueil -->
     <string name="app_name">NextINpact (Unofficial)</string>
