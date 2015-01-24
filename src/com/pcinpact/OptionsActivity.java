@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -20,11 +20,6 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ListView;
 
 /**
  * Options de l'application
@@ -39,33 +34,8 @@ public class OptionsActivity extends PreferenceActivity {
 		// Je lance l'activité
 		super.onCreate(savedInstanceState);
 
-		// TODO : 2014-07-21 - Anael - PreferenceActivity est partiellement
-		// deprecated. PreferenceFragment serait mieux, mais API v11.
+		// TODO : PreferenceActivity est partiellement deprecated. PreferenceFragment serait mieux, mais API v11.
 		addPreferencesFromResource(R.xml.options);
 
-		// Bouton fermant la vue "Options"
-		Button monBouton = new Button(this);
-		monBouton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				// fin de l'activité -> retour à la fenêtre précédente
-				finish();
-			}
-		});
-
-		monBouton.setText(getResources().getString(R.string.optionsFermer));
-
-		ListView maView = getListView();
-		maView.addFooterView(monBouton);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		// Bouton retour
-		if (pItem.getItemId() == R.id.action_home) {
-			finish();
-		}
-
-		return super.onOptionsItemSelected(pItem);
 	}
 }

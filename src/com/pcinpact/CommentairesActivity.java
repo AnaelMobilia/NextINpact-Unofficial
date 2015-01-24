@@ -29,7 +29,6 @@ import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -189,23 +188,13 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		switch (pItem.getItemId()) {
-		// Retour
-			case R.id.action_home:
-				finish();
-				Intent i = new Intent(getApplicationContext(), ListeArticlesActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
-				return true;
-
-				// Rafraichir la liste des commentaires
-			case R.id.action_refresh:
-				refreshListeCommentaires();
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(pItem);
+		// Rafraichir la liste des commentaires
+		if (pItem.getItemId() == R.id.action_refresh) {
+			refreshListeCommentaires();
 		}
+
+		return super.onOptionsItemSelected(pItem);
+
 	}
 
 	/**

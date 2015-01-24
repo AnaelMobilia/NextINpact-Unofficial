@@ -89,7 +89,6 @@ public class ArticleActivity extends ActionBarActivity {
 			WebSettings webSettings = webview.getSettings();
 			webSettings.setDefaultFontSize(tailleUtilisateur);
 		}
-
 	}
 
 	@Override
@@ -97,44 +96,30 @@ public class ArticleActivity extends ActionBarActivity {
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.article_activity_actions, menu);
-		
-	      // Get the menu item.
-	      MenuItem shareItem = menu.findItem(R.id.action_share);
-	      // Get the provider and hold onto it to set/change the share intent.
-	      mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-	      // Création de mon intent
-	      Intent monIntent = new Intent(Intent.ACTION_SEND);
-	      monIntent.setType("text/plain");
-	      monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURL());
-	      mShareActionProvider.setShareIntent(monIntent);
-	      
-	
+		// Get the menu item.
+		MenuItem shareItem = menu.findItem(R.id.action_share);
+		// Get the provider and hold onto it to set/change the share intent.
+		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+		// Création de mon intent
+		Intent monIntent = new Intent(Intent.ACTION_SEND);
+		monIntent.setType("text/plain");
+		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURL());
+		mShareActionProvider.setShareIntent(monIntent);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		switch (pItem.getItemId()) {
-			case R.id.action_comments:
-				// Afficher les commentaires
-				Intent intentWeb = new Intent(getApplicationContext(), CommentairesActivity.class);
-				intentWeb.putExtra("ARTICLE_ID", articleID);
-				startActivity(intentWeb);
-				return true;
-
-			case R.id.action_home:
-				// Retour
-				finish();
-				return true;
-
-			case R.id.action_share:
-				// Partager
-
-				return true;
-
-			default:
-				return super.onOptionsItemSelected(pItem);
+		// Afficher les commentaires
+		if (pItem.getItemId() == R.id.action_comments) {
+			Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+			intentComms.putExtra("ARTICLE_ID", articleID);
+			startActivity(intentComms);
 		}
+
+		return super.onOptionsItemSelected(pItem);
 	}
 }

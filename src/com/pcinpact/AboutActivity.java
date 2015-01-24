@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -20,9 +20,6 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 /**
  * A propos...
@@ -38,22 +35,5 @@ public class AboutActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.about);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Je charge mon menu dans l'actionBar
-		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.about_activity_actions, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		// Bouton "retour"
-		if (pItem.getItemId() == R.id.action_home) {
-			finish();
-		}
-		return super.onOptionsItemSelected(pItem);
 	}
 }
