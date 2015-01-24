@@ -179,7 +179,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_activity_actions, monMenu);
+		inflater.inflate(R.menu.liste_articles_activity_actions, monMenu);
 
 		// Je lance l'animation si un DL est déjà en cours
 		if (dlInProgress != 0) {

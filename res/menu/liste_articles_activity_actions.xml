@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -22,18 +22,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
 
-    <!-- Commentaires -->
+    <!-- Rafraichir -->
     <item
-        android:id="@+id/action_comments"
-        android:icon="@drawable/ic_menu_start_conversation"
-        android:title="@string/action_comments"
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_menu_refresh"
+        android:title="@string/action_refresh"
         yourapp:showAsAction="ifRoom"/>
 
-    <!-- Accueil -->
+    <!-- Overflow (...) -->
     <item
-        android:id="@+id/action_home"
-        android:icon="@drawable/ic_menu_revert"
-        android:title="@string/action_home"
-        yourapp:showAsAction="ifRoom"/>
+        android:id="@+id/action_overflow"
+        android:icon="@drawable/ic_menu_moreoverflow_normal_holo_dark"
+        android:title="@string/action_overflow"
+        yourapp:showAsAction="ifRoom">
+        <menu>
+            <!-- Paramètres -->
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/ic_menu_preferences"
+                android:title="@string/action_settings"
+                yourapp:showAsAction="ifRoom"/>
+
+            <!-- A propos -->
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ic_menu_info_details"
+                android:title="@string/action_about"/>
+        </menu>
+    </item>
 
 </menu>
