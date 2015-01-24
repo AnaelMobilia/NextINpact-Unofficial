@@ -456,7 +456,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				Log.w("finChargementGUI", "Arrêt animation");
 			}
 			// Mise à jour de la date de dernière mise à jour
-			headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH).format(new Date()));
+			headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(new Date()));
 			
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
