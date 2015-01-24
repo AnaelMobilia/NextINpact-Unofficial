@@ -36,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -237,22 +238,29 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 	@Override
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
-		// J'enregistre en mémoire les nouveaux commentaires
-		for (Item unItem : desItems) {
-			// Je l'enregistre en mémoire
-			mesCommentaires.add((CommentaireItem) unItem);
+		// Retour vide ? Fin ou pas de connexion
+		if (desItems.isEmpty()) {
+			isFinCommentaires = true;
+			if(Constantes.DEBUG) {
+				Log.w("CommentairesActivity", "fin des commentaires");
+			}
+		} else {
+			// J'enregistre en mémoire les nouveaux commentaires
+			for (Item unItem : desItems) {
+				// Je l'enregistre en mémoire
+				mesCommentaires.add((CommentaireItem) unItem);
+			}
+			// Tri des commentaires par ID
+			Collections.sort(mesCommentaires);
+
+			// Je met à jour les données
+			monItemsAdapter.updateListeItems(mesCommentaires);
+			// Je notifie le changement pour un rafraichissement du contenu
+			monItemsAdapter.notifyDataSetChanged();
 		}
-		// Tri des commentaires par ID
-		Collections.sort(mesCommentaires);
 
 		// Arrêt des gris-gris en GUI
 		arreterAnimationTelechargement();
-
-		// Je met à jour les données
-		monItemsAdapter.updateListeItems(mesCommentaires);
-		// Je notifie le changement pour un rafraichissement du contenu
-		monItemsAdapter.notifyDataSetChanged();
-
 	}
 
 	@Override
