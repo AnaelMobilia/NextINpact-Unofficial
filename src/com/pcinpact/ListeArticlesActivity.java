@@ -321,9 +321,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
 			
-			// Tri par date publication
+			// Tri des Articles par timestamp
+			Collections.sort(mesArticles);
 			
-			// Conservation des nnn 
 			// Préférences de l'utilisateur
 			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			// Nombre d'articles à conserver
@@ -331,17 +331,15 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					getString(R.string.defautOptionNbArticles)));
 
 			// Je limie à n articles (cf préférence de l'utilisateur)
-			for (int i = 0; i < (mesArticles.size() - maLimite); i++) {
+			for (int i = maLimite; i < mesArticles.size(); i++) {
 				mesArticles.remove(i);
 			}
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
 			}
-			
-			
-			// Téléchargement SSI non déjà existants (image, html)
-			
+
+			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
 			for (Item unItem : desItems) {
 				// Je l'enregistre en mémoire
 				mesArticles.add((ArticleItem) unItem);
@@ -386,9 +384,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * @return
 	 */
 	private ArrayList<Item> prepareAffichage() {
-		// Tri des Articles par timestamp
-		Collections.sort(mesArticles);
-
 		ArrayList<Item> monRetour = new ArrayList<Item>();
 		String jourActuel = "";
 		for (ArticleItem article : mesArticles) {
