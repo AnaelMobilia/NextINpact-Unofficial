@@ -141,6 +141,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	@SuppressLint("NewApi")
 	private void refreshListeCommentaires() {
+		if(Constantes.DEBUG) {
+			Log.i("CommentairesActivity", "lancement refreshListreCommentaires");
+		}
+		
 		// MàJ des graphismes
 		lancerAnimationTelechargement();
 
@@ -202,6 +206,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 * Lance les animations indiquant un téléchargement
 	 */
 	private void lancerAnimationTelechargement() {
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.w("CommentairesActivity", "lancerAnimationTelechargement");
+		}
 		// J'enregistre l'état
 		isLoading = true;
 
@@ -221,6 +229,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 * Arrêt les animations indiquant un téléchargement
 	 */
 	private void arreterAnimationTelechargement() {
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.w("CommentairesActivity", "arreterAnimationTelechargement");
+		}
 		// J'enregistre l'état
 		isLoading = false;
 
