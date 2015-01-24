@@ -58,7 +58,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		typeHTML = unType;
 		monDAO = unDAO;
 		if (Constantes.DEBUG) {
-			Log.w("AsyncHTMLDownloader", urlPage);
+			Log.i("AsyncHTMLDownloader", urlPage);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		} catch (IOException e1) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+				Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
 			}
 		}
 
@@ -97,7 +97,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
+					Log.i("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
 				}
 
 				// Je ne conserve que les nouveaux articles
@@ -110,7 +110,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
+					Log.i("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
 				}
 				break;
 
@@ -137,7 +137,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+					Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
 							+ " résultats");
 				}
 
@@ -151,7 +151,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
+					Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
 				}
 				break;
 

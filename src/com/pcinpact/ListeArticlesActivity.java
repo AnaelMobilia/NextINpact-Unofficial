@@ -336,7 +336,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
+				Log.i("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
 			}
 
 			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
@@ -432,7 +432,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		dlInProgress++;
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("nouveauChargementGUI", String.valueOf(dlInProgress));
+			Log.i("nouveauChargementGUI", String.valueOf(dlInProgress));
 		}
 	}
 
@@ -470,7 +470,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("finChargementGUI", String.valueOf(dlInProgress));
+			Log.i("finChargementGUI", String.valueOf(dlInProgress));
 		}
 	}
 

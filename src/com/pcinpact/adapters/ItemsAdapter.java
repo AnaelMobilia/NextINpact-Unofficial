@@ -132,7 +132,7 @@ public class ItemsAdapter extends BaseAdapter {
 		} else {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("ItemsAdapter", "getView : recyclage de la vue");
+				Log.i("ItemsAdapter", "getView : recyclage de la vue");
 			}
 		}
 
@@ -196,7 +196,7 @@ public class ItemsAdapter extends BaseAdapter {
 					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("ItemsAdapter", "getView -> Article", e);
+						Log.e("ItemsAdapter", "getView -> Article", e);
 					}
 				}
 
@@ -261,7 +261,7 @@ public class ItemsAdapter extends BaseAdapter {
 						} catch (Exception e) {
 							if(Constantes.DEBUG)
 							{
-								Log.w("ItemsAdapter", "getDrawable exception...", e);
+								Log.e("ItemsAdapter", "getDrawable exception...", e);
 							}
 						}
 						return d;

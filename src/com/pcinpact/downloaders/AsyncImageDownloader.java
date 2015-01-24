@@ -56,7 +56,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		typeImage = unType;
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("AsyncImageDownloader", urlImage);
+			Log.i("AsyncImageDownloader", urlImage);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		} catch (IOException e1) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+				Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
 			}
 		}
 

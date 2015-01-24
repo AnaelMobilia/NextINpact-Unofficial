@@ -242,7 +242,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		if (desItems.isEmpty()) {
 			isFinCommentaires = true;
 			if(Constantes.DEBUG) {
-				Log.w("CommentairesActivity", "fin des commentaires");
+				Log.i("CommentairesActivity", "fin des commentaires");
 			}
 		} else {
 			// J'enregistre en mémoire les nouveaux commentaires
