@@ -27,6 +27,7 @@ import com.pcinpact.Constantes;
 
 /**
  * Objet Commentaire
+ * 
  * @author Anael
  *
  */
@@ -74,16 +75,16 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 		return ID;
 	}
 
+	public void setID(int iD) {
+		ID = iD;
+	}
+
 	public int getArticleID() {
 		return articleID;
 	}
 
 	public void setArticleID(int articleID) {
 		this.articleID = articleID;
-	}
-
-	public void setID(int iD) {
-		ID = iD;
 	}
 
 	public String getAuteur() {
