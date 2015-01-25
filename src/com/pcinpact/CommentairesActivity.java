@@ -174,7 +174,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_COMMENTAIRES, monURL,
 				monDAO);
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
 			monAHD.execute();

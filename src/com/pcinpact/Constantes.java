@@ -29,7 +29,13 @@ public class Constantes {
 	 * MODE DEBUG
 	 */
 	public final static Boolean DEBUG = true;
-
+	/**
+	 * COMPATIBILITE
+	 */
+	// Build Version Honeycomb (non dispo en 2.*)
+	// http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+	public final static int HONEYCOMB = 11;
+	
 	/**
 	 * PARAMETRES GENERAUX
 	 */
@@ -39,6 +45,8 @@ public class Constantes {
 	public final static String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
 	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
 	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+	// URL des smileys
+	public final static String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
 

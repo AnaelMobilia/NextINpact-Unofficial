@@ -312,7 +312,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_LISTE_ARTICLES,
 					Constantes.NEXT_INPACT_URL, monDAO);
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			} else {
 				monAHD.execute();
@@ -353,7 +353,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
 						((ArticleItem) unItem).getURL(), monDAO);
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
 					monAHD.execute();
@@ -364,7 +364,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
 						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
 					monAID.execute();
