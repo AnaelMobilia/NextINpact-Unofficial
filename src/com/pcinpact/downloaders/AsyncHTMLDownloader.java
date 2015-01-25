@@ -21,6 +21,7 @@ package com.pcinpact.downloaders;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.database.DAO;
@@ -64,6 +65,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	@Override
 	protected ArrayList<Item> doInBackground(String... params) {
+		// Date du refresh
+		long dateRefresh = new Date().getTime();
+
 		// Retour
 		ArrayList<Item> mesItems = new ArrayList<Item>();
 
@@ -101,13 +105,16 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 
 				// Je ne conserve que les nouveaux articles
-				for (ArticleItem unArticle : monRetour) {					
+				for (ArticleItem unArticle : monRetour) {
 					// Stockage en BDD
 					if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
 						// Ne retourne que les nouveaux articles
 						mesItems.add(unArticle);
 					}
 				}
+				// Mise à jour de la date de rafraichissement
+				monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
+
 				// DEBUG
 				if (Constantes.DEBUG) {
 					Log.i("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
@@ -144,11 +151,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				// Je ne conserve que les nouveaux commentaires
 				for (CommentaireItem unCommentaire : lesCommentaires) {
 					// Stockage en BDD
-					if (monDAO.enregistrerCommentaireSiNouveau( unCommentaire)) {
+					if (monDAO.enregistrerCommentaireSiNouveau(unCommentaire)) {
 						// Ne retourne que les nouveaux articles
 						mesItems.add(unCommentaire);
 					}
 				}
+				// Calcul de l'ID de l'article concerné (entre "newsId=" et "&page=")
+				int debut = urlPage.indexOf(Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "=");
+				debut += Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID.length() + 1;
+				int fin = urlPage.indexOf("&");
+				int idArticle = Integer.valueOf(urlPage.substring(debut, fin));
+
+				// Mise à jour de la date de rafraichissement
+				monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
+
 				// DEBUG
 				if (Constantes.DEBUG) {
 					Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");

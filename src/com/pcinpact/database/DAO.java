@@ -62,6 +62,10 @@ public final class DAO extends SQLiteOpenHelper {
 	private static final String COMMENTAIRE_TIMESTAMP = "timestamp";
 	private static final String COMMENTAIRE_CONTENU = "contenu";
 
+	private static final String DB_TABLE_REFRESH = "refresh";
+	private static final String REFRESH_ARTICLE_ID = "id";
+	private static final String REFRESH_TIMESTAMP = "timestamp";
+
 	// ma DB
 	private static SQLiteDatabase maDB = null;
 	private static DAO instanceOfDAO = null;
@@ -99,7 +103,7 @@ public final class DAO extends SQLiteOpenHelper {
 		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
 				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
 				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
-				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER" + ");";
+				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER);";
 		db.execSQL(reqCreateArticles);
 
 		// Table des commentaires
@@ -108,6 +112,11 @@ public final class DAO extends SQLiteOpenHelper {
 				+ COMMENTAIRE_AUTEUR + " TEXT," + COMMENTAIRE_TIMESTAMP + " INTEGER," + COMMENTAIRE_CONTENU + " TEXT,"
 				+ "PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + "," + COMMENTAIRE_ID + "));";
 		db.execSQL(reqCreateCommentaires);
+
+		// Table des refresh
+		String reqCreateRefresh = "CREATE TABLE " + DB_TABLE_REFRESH + " (" + REFRESH_ARTICLE_ID + " INTEGER PRIMARY KEY,"
+				+ REFRESH_TIMESTAMP + " INTEGER);";
+		db.execSQL(reqCreateRefresh);
 	}
 
 	/**
@@ -371,4 +380,53 @@ public final class DAO extends SQLiteOpenHelper {
 		return mesCommentaires;
 	}
 
+	/**
+	 * Fournit la date de dernière mise à jour
+	 * @param idArticle
+	 * @return
+	 */
+	public long chargerDateRefresh(int idArticle) {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { REFRESH_TIMESTAMP };
+
+		String[] idString = { String.valueOf(idArticle) };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_REFRESH, mesColonnes, REFRESH_ARTICLE_ID + "=?", idString, null, null, null);
+
+		long retour = 0;
+
+		// Je vais au premier (et unique) résultat
+		if (monCursor.moveToNext()) {
+			retour = monCursor.getLong(0);
+		}
+		// Fermeture du curseur
+		monCursor.close();
+
+		return retour;
+	}
+	
+	/**
+	 * Définit la date de dernière mise à jour
+	 * @param idArticle
+	 * @param dateRefresh
+	 */
+	public void enregistrerDateRefresh(int idArticle, long dateRefresh) {
+		supprimerDateRefresh(idArticle);
+
+		ContentValues insertValues = new ContentValues();
+		insertValues.put(REFRESH_ARTICLE_ID, idArticle);
+		insertValues.put(REFRESH_TIMESTAMP, dateRefresh);
+
+		maDB.insert(DB_TABLE_REFRESH, null, insertValues);
+	}
+	
+	/**
+	 * Supprime la date de dernière mise à jour
+	 * @param idArticle
+	 */
+	public void supprimerDateRefresh(int idArticle) {
+		maDB.delete(DB_TABLE_REFRESH, REFRESH_ARTICLE_ID + "=?", new String[] { String.valueOf(idArticle) });		
+	}
+	
 }

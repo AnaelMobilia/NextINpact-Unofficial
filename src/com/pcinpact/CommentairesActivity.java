@@ -18,8 +18,10 @@
  */
 package com.pcinpact;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
@@ -46,6 +48,7 @@ import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Affichage des commentaires
@@ -70,6 +73,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	private Menu monMenu;
 	private ListView monListView;
 	private Button buttonDl10Commentaires;
+	private TextView headerTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		setContentView(R.layout.commentaires);
 		setSupportProgressBarIndeterminateVisibility(false);
 
+		headerTextView = (TextView) findViewById(R.id.header_text);
 		// Liste des commentaires
 		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		// Footer : bouton "Charger plus de commentaires"
@@ -134,6 +139,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 			}
 		});
+
+		// Màj de la date de dernier refresh
+		majDateRefresh();
 	}
 
 	/**
@@ -141,10 +149,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	@SuppressLint("NewApi")
 	private void refreshListeCommentaires() {
-		if(Constantes.DEBUG) {
+		if (Constantes.DEBUG) {
 			Log.i("CommentairesActivity", "lancement refreshListreCommentaires");
 		}
-		
+
 		// MàJ des graphismes
 		lancerAnimationTelechargement();
 
@@ -244,6 +252,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
 		}
 
+		// Màj de la date de dernier refresh
+		majDateRefresh();
+
 		// MàJ du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
 	}
@@ -253,7 +264,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		// Retour vide ? Fin ou pas de connexion
 		if (desItems.isEmpty()) {
 			isFinCommentaires = true;
-			if(Constantes.DEBUG) {
+			if (Constantes.DEBUG) {
 				Log.i("CommentairesActivity", "fin des commentaires");
 			}
 		} else {
@@ -278,6 +289,23 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	@Override
 	public void downloadImageFini(String uneURL, Bitmap uneImage) {
 		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * Mise à jour de la date de dernière mise à jour
+	 */
+	private void majDateRefresh() {
+		long dernierRefresh = monDAO.chargerDateRefresh(articleID);
+
+		// Une màj à déjà été faite
+		if (dernierRefresh != 0) {
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
+		} else {
+			// Jamais synchro...
+			headerTextView.setText(getString(R.string.lastUpdateNever));
+		}
+
 	}
 
 }

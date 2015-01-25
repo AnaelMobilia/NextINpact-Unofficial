@@ -22,7 +22,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
@@ -170,6 +169,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Lancement d'un téléchargement des articles
 			telechargeListeArticles();
 		}
+
+		// Date du dernier refresh
+		majDateRefresh();
 	}
 
 	@Override
@@ -265,16 +267,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		for (int i = maLimite; i < mesArticles.size(); i++) {
 			ArticleItem article = mesArticles.get(i);
 
-			// Suppression en DB
-			monDAO.supprimerArticle(article);
-
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
 			}
+			
+			// Suppression en DB
+			monDAO.supprimerArticle(article);
 
 			// Suppression des commentaires de l'article
 			monDAO.supprimerCommentaire(article.getID());
+			
+			// Suppression de la date de Refresh
+			monDAO.supprimerDateRefresh(article.getID());
 
 			// Suppression de la miniature, uniquement si plus utilisée
 			if (!imagesLegit.contains(article.getImageName())) {
@@ -320,10 +325,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
-			
+
 			// Tri des Articles par timestamp
 			Collections.sort(mesArticles);
-			
+
 			// Préférences de l'utilisateur
 			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			// Nombre d'articles à conserver
@@ -354,7 +359,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					monAHD.execute();
 				}
 				nouveauChargementGUI();
-				
+
 				// Je lance le téléchargement de sa miniature
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
 						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
@@ -450,8 +455,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				Log.w("finChargementGUI", "Arrêt animation");
 			}
 			// Mise à jour de la date de dernière mise à jour
-			headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(new Date()));
-			
+			majDateRefresh();
+
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
 
@@ -474,4 +479,20 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
+	/**
+	 * Mise à jour de la date de dernière mise à jour
+	 */
+	private void majDateRefresh() {
+		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
+
+		// Une màj à déjà été faite
+		if (dernierRefresh != 0) {
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
+		} else {
+			// Jamais synchro...
+			headerTextView.setText(getString(R.string.lastUpdateNever));
+		}		
+	}
+	
 }

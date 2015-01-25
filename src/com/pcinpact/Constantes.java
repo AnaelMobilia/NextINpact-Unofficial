@@ -87,4 +87,11 @@ public class Constantes {
 	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
 	//Date et Heure de dernière synchro
 	public final static String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
+	
+	/**
+	 * CONSTANTES EN DB
+	 */
+	// ID du refresh de la liste des articles
+	public final static int DB_REFRESH_ID_LISTE_ARTICLES = 0;
+	
 }
