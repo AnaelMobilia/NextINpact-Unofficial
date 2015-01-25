@@ -20,12 +20,11 @@ package com.pcinpact.adapters;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
+import com.pcinpact.downloaders.URLImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
@@ -34,19 +33,15 @@ import com.pcinpact.items.SectionItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.text.Html.ImageGetter;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -215,6 +210,11 @@ public class ItemsAdapter extends BaseAdapter {
 			// Commentaire
 			else if (i.getType() == Item.typeCommentaire) {
 				CommentaireItem ai = (CommentaireItem) i;
+				
+				// DEBUG
+				if(Constantes.DEBUG) {
+					Log.i("ItemsAdapter", "Commentaire #" + ai.getID());
+				}
 
 				TextView auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
 				TextView numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
@@ -224,49 +224,7 @@ public class ItemsAdapter extends BaseAdapter {
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(String.valueOf(ai.getID()));
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new ImageGetter() {
-
-					@Override
-					public Drawable getDrawable(String source) {
-						Drawable d = null;
-
-						try {
-							URL url = new URL(source);
-							Object o = url.getContent();
-							InputStream src = (InputStream) o;
-
-							d = Drawable.createFromStream(src, "src");
-							if (d != null) {
-								DisplayMetrics metrics = new DisplayMetrics();
-								((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
-										.getMetrics(metrics);
-
-								int monCoeff;
-								// Si on est sur la résolution par défaut, on reste à 1
-								if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
-									monCoeff = Math.round(1 * monCoeffZoom);
-								}
-								// Sinon, on calcule le zoom à appliquer (avec un coeff 2 pour éviter les images trop petites)
-								else {
-									monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
-											* monCoeffZoom);
-								}
-								// On évite un coeff inférieur à 1 (image non affichée !)
-								if (monCoeff < 1) {
-									monCoeff = 1;
-								}
-
-								// On définit la taille de l'image
-								d.setBounds(0, 0, (d.getIntrinsicWidth() * monCoeff), (d.getIntrinsicHeight() * monCoeff));
-							}
-						} catch (Exception e) {
-							if (Constantes.DEBUG) {
-								Log.e("ItemsAdapter", "getDrawable exception...", e);
-							}
-						}
-						return d;
-					}
-				}, null);
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(commentaire, monContext), null);
 				commentaire.setText(spannedContent);
 				// Active les liens a href
 				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
