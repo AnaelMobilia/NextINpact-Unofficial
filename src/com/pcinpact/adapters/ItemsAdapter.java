@@ -146,7 +146,7 @@ public class ItemsAdapter extends BaseAdapter {
 		// L'option selectionnée
 		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
-		float monCoeffZoomTexte = (float) tailleOptionUtilisateur / (float) tailleDefaut;
+		final float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
 
 		if (i != null) {
 			// Section
@@ -159,7 +159,7 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					appliqueZoom(sectionView, monCoeffZoomTexte);
+					appliqueZoom(sectionView, monCoeffZoom);
 				}
 
 			}
@@ -205,11 +205,11 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					appliqueZoom(titreArticle, monCoeffZoomTexte);
-					appliqueZoom(heureArticle, monCoeffZoomTexte);
-					appliqueZoom(sousTitreArticle, monCoeffZoomTexte);
-					appliqueZoom(commentairesArticle, monCoeffZoomTexte);
-					appliqueZoom(labelAbonne, monCoeffZoomTexte);
+					appliqueZoom(titreArticle, monCoeffZoom);
+					appliqueZoom(heureArticle, monCoeffZoom);
+					appliqueZoom(sousTitreArticle, monCoeffZoom);
+					appliqueZoom(commentairesArticle, monCoeffZoom);
+					appliqueZoom(labelAbonne, monCoeffZoom);
 				}
 			}
 			// Commentaire
@@ -223,7 +223,7 @@ public class ItemsAdapter extends BaseAdapter {
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(String.valueOf(ai.getID()));
-				// commentaire.setText(Html.fromHtml(ai.getCommentaire()));
+
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new ImageGetter() {
 
 					@Override
@@ -242,7 +242,6 @@ public class ItemsAdapter extends BaseAdapter {
 										.getMetrics(metrics);
 
 								int monCoeff;
-								float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
 								// Si on est sur la résolution par défaut, on reste à 1
 								if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
 									monCoeff = Math.round(1 * monCoeffZoom);
@@ -275,9 +274,9 @@ public class ItemsAdapter extends BaseAdapter {
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
 					// On applique la taille demandée
-					appliqueZoom(auteurDateCommentaire, monCoeffZoomTexte);
-					appliqueZoom(numeroCommentaire, monCoeffZoomTexte);
-					appliqueZoom(commentaire, monCoeffZoomTexte);
+					appliqueZoom(auteurDateCommentaire, monCoeffZoom);
+					appliqueZoom(numeroCommentaire, monCoeffZoom);
+					appliqueZoom(commentaire, monCoeffZoom);
 				}
 			}
 		}
