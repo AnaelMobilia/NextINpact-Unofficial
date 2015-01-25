@@ -101,11 +101,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 
 				// Je ne conserve que les nouveaux articles
-				for (Item unItem : monRetour) {
+				for (ArticleItem unArticle : monRetour) {					
 					// Stockage en BDD
-					if (monDAO.enregistrerArticleSiNouveau((ArticleItem) unItem)) {
+					if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
 						// Ne retourne que les nouveaux articles
-						mesItems.add(unItem);
+						mesItems.add(unArticle);
 					}
 				}
 				// DEBUG
@@ -142,11 +142,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				}
 
 				// Je ne conserve que les nouveaux commentaires
-				for (Item unItem : lesCommentaires) {
+				for (CommentaireItem unCommentaire : lesCommentaires) {
 					// Stockage en BDD
-					if (monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem)) {
+					if (monDAO.enregistrerCommentaireSiNouveau( unCommentaire)) {
 						// Ne retourne que les nouveaux articles
-						mesItems.add(unItem);
+						mesItems.add(unCommentaire);
 					}
 				}
 				// DEBUG
