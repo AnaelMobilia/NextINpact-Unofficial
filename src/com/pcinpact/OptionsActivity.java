@@ -34,8 +34,6 @@ public class OptionsActivity extends PreferenceActivity {
 		// Je lance l'activité
 		super.onCreate(savedInstanceState);
 
-		// TODO : PreferenceActivity est partiellement deprecated. PreferenceFragment serait mieux, mais API v11.
 		addPreferencesFromResource(R.xml.options);
-
 	}
 }
