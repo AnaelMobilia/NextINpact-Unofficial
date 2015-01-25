@@ -38,8 +38,8 @@ import android.preference.PreferenceManager;
 import android.text.Html.ImageGetter;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 /**
  * Téléchargement d'une image dans les commentaires : fournit une image vide, télécharge l'image, puis l'affichera
@@ -49,7 +49,7 @@ import android.view.WindowManager;
  */
 public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	// Vue où est affichée l'image à charger
-	private View maView;
+	private TextView maView;
 	// Contexte de l'activité
 	private Context monContext;
 	// private Drawable monRetour;
@@ -60,7 +60,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * 
 	 * @param laView
 	 */
-	public URLImageProvider(View uneView, Context unContext) {
+	public URLImageProvider(TextView uneView, Context unContext) {
 		super();
 		maView = uneView;
 		monContext = unContext;
@@ -170,6 +170,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 
 		// Rafraichissement de la vue
 		maView.invalidate();
+
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);
