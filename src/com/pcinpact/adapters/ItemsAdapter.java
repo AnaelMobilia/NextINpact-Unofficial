@@ -177,6 +177,8 @@ public class ItemsAdapter extends BaseAdapter {
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
 					labelAbonne.setVisibility(View.VISIBLE);
+				} else {
+					labelAbonne.setVisibility(View.GONE);
 				}
 				// Remplissage des textview
 				titreArticle.setText(ai.getTitre());
@@ -259,8 +261,7 @@ public class ItemsAdapter extends BaseAdapter {
 								d.setBounds(0, 0, (d.getIntrinsicWidth() * monCoeff), (d.getIntrinsicHeight() * monCoeff));
 							}
 						} catch (Exception e) {
-							if(Constantes.DEBUG)
-							{
+							if (Constantes.DEBUG) {
 								Log.e("ItemsAdapter", "getDrawable exception...", e);
 							}
 						}
