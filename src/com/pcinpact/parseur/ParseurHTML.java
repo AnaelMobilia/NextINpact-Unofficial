@@ -40,6 +40,7 @@ import com.pcinpact.items.CommentaireItem;
 
 /**
  * Parseur du code HTML
+ * 
  * @author Anael
  *
  */
@@ -243,8 +244,8 @@ public class ParseurHTML {
 	/**
 	 * Parse les commentaires
 	 * 
-	 * @param idArticle id de l'article concerné
-	 * @param numPage numéro de page
+	 * @param input
+	 * @param urlPage
 	 * @return
 	 */
 	public ArrayList<CommentaireItem> getCommentaires(String input, String urlPage) {
@@ -301,11 +302,10 @@ public class ParseurHTML {
 				// Assignation de son URL absolue
 				unLien.attr("href", unLien.absUrl("href"));
 			}
-			
+
 			// Contenu
 			Element monContenu = unCommentaire.select("div[class=actu_comm_content]").get(0);
 			monCommentaireItem.setCommentaire(monContenu.toString());
-			
 
 			// Et je le stocke
 			mesCommentairesItem.add(monCommentaireItem);
