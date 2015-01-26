@@ -25,9 +25,9 @@ package com.pcinpact.items;
  */
 public interface Item {
 
-	public final static int typeArticle = 1;
-	public final static int typeSection = 2;
-	public final static int typeCommentaire = 3;
+	public final static int typeArticle = 0;
+	public final static int typeSection = 1;
+	public final static int typeCommentaire = 2;
 
 	// Nombre de types différents existants
 	public final static int nombreDeTypes = 3;

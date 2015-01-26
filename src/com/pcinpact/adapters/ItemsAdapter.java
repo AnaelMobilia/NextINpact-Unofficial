@@ -109,6 +109,10 @@ public class ItemsAdapter extends BaseAdapter {
 		// Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
 		// Pas de recyclage
 		if (convertView == null) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
+			}
 			// Je crée la vue qui va bien...
 			switch (getItemViewType(position)) {
 				case Item.typeSection:
@@ -126,7 +130,7 @@ public class ItemsAdapter extends BaseAdapter {
 		} else {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.i("ItemsAdapter", "getView : recyclage de la vue");
+				Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + position + ")");
 			}
 		}
 
