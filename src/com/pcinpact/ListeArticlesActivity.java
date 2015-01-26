@@ -157,10 +157,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					Editor editor = mesPrefs.edit();
 					editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
 					editor.commit();
-
-					// Affichage de l'écran de configuration de l'application
-					Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
-					startActivity(intentOptions);
 				}
 			});
 			// On crée & affiche
