@@ -140,16 +140,6 @@ public class ItemsAdapter extends BaseAdapter {
 
 		Item i = mesItems.get(position);
 
-		// Préférences de l'utilisateur : taille du texte
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-		// Taile par défaut
-		// http://developer.android.com/reference/android/webkit/WebSettings.html#setDefaultFontSize%28int%29
-		final int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
-		// L'option selectionnée
-		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
-				String.valueOf(tailleDefaut)));
-		final float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
-
 		if (i != null) {
 			// Section
 			if (i.getType() == Item.typeSection) {
@@ -158,11 +148,8 @@ public class ItemsAdapter extends BaseAdapter {
 				TextView sectionView = (TextView) convertView.findViewById(R.id.titreSection);
 				sectionView.setText(si.getTitre());
 
-				// Taille de texte personnalisée ?
-				if (tailleOptionUtilisateur != tailleDefaut) {
-					// On applique la taille demandée
-					appliqueZoom(sectionView, monCoeffZoom);
-				}
+				// On applique le zoom éventuel
+				appliqueZoom(sectionView);
 
 			}
 			// Article
@@ -204,15 +191,13 @@ public class ItemsAdapter extends BaseAdapter {
 					}
 				}
 
-				// Taille de texte personnalisée ?
-				if (tailleOptionUtilisateur != tailleDefaut) {
-					// On applique la taille demandée
-					appliqueZoom(titreArticle, monCoeffZoom);
-					appliqueZoom(heureArticle, monCoeffZoom);
-					appliqueZoom(sousTitreArticle, monCoeffZoom);
-					appliqueZoom(commentairesArticle, monCoeffZoom);
-					appliqueZoom(labelAbonne, monCoeffZoom);
-				}
+				// On applique le zoom éventuel
+				appliqueZoom(titreArticle);
+				appliqueZoom(heureArticle);
+				appliqueZoom(sousTitreArticle);
+				appliqueZoom(commentairesArticle);
+				appliqueZoom(labelAbonne);
+
 			}
 			// Commentaire
 			else if (i.getType() == Item.typeCommentaire) {
@@ -246,13 +231,10 @@ public class ItemsAdapter extends BaseAdapter {
 					convertView.setOnLongClickListener(null);
 				}
 
-				// Taille de texte personnalisée ?
-				if (tailleOptionUtilisateur != tailleDefaut) {
-					// On applique la taille demandée
-					appliqueZoom(auteurDateCommentaire, monCoeffZoom);
-					appliqueZoom(numeroCommentaire, monCoeffZoom);
-					appliqueZoom(commentaire, monCoeffZoom);
-				}
+				// On applique le zoom éventuel
+				appliqueZoom(auteurDateCommentaire);
+				appliqueZoom(numeroCommentaire);
+				appliqueZoom(commentaire);
 			}
 		}
 		return convertView;
@@ -264,10 +246,21 @@ public class ItemsAdapter extends BaseAdapter {
 	 * @param uneTextView
 	 * @param unZoom
 	 */
-	private void appliqueZoom(TextView uneTextView, float unZoom) {
-		float tailleOrigine = uneTextView.getTextSize();
-		float nouvelleTaille = tailleOrigine * unZoom;
-		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
+	private void appliqueZoom(TextView uneTextView) {
+		// Taile par défaut
+		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
+		// L'option selectionnée
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
+				String.valueOf(tailleDefaut)));
+
+		// Faut-il applique un zoom ?
+		if (tailleOptionUtilisateur != tailleDefaut) {
+			float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
+
+			float tailleOrigine = uneTextView.getTextSize();
+			float nouvelleTaille = tailleOrigine * monCoeffZoom;
+			uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
+		}
 	}
 
 }
