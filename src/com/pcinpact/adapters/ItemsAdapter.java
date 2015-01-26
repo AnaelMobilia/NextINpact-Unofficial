@@ -36,7 +36,6 @@ import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -227,7 +226,7 @@ public class ItemsAdapter extends BaseAdapter {
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
 				commentaire.setText(spannedContent);
 				// Active les liens a href
-				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
+				commentaire.setMovementMethod(new GestionLiens());
 
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
