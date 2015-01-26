@@ -75,16 +75,6 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="articleVideErreurHTML"><html><h1>Cet article présente une erreur, désolé.</h1></html></string>
     <string name="articleErreurHTML"><html><h1>Cet article présente une erreur grave, désolé.</h1></html></string>
 
-    <!-- Liens vers les vidéos -->
-    <string name="videosYouTube">Voir les vidéos sur YouTube</string>
-    <string name="videoYouTube">Voir la vidéo sur YouTube</string>
-    <string name="videoDailymotion">Voir la vidéo sur Dailymotion</string>
-    <string name="videoVimeo">Voir la vidéo sur Vimeo</string>
-    <string name="videoGouvFr">Voir la vidéo sur la Plateforme Vidéo Gouvernementale</string>
-    <string name="videoVidme">Voir la vidéo sur la Vidme</string>
-    <string name="videoSoundCloud">Voir le contenu sur SoundCloud</string>
-    <string name="videoNonSupporte">Visualiser ce contenu sur le site internet</string>
-
     <!-- Vue "Options" -->
     <string name="optionsGenerales">"Options de l'application"</string>
     <string name="optionTailleTexte">Taille des textes</string>

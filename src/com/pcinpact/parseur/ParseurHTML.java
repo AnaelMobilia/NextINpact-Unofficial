@@ -30,11 +30,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.pcinpact.Constantes;
-import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
@@ -45,13 +43,6 @@ import com.pcinpact.items.CommentaireItem;
  *
  */
 public class ParseurHTML {
-
-	private Context contextParent;
-
-	public ParseurHTML(Context unContext) {
-		contextParent = unContext;
-	}
-
 	/**
 	 * Parse la liste des articles
 	 * 
@@ -166,53 +157,45 @@ public class ParseurHTML {
 				// Recalcul de l'ID de la vidéo (cas particulier)
 				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videosYouTube) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/videos_youtube.png\" /></a>");
 
 			}
 			// Youtube
 			else if (urlLecteur.startsWith("//www.youtube.com/embed/")
 					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
 				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoYouTube) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /></a>");
 
 			}
 			// Dailymotion
 			else if (urlLecteur.startsWith("//www.dailymotion.com/embed/video/")) {
 				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoDailymotion) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /></a>");
 			}
 			// Vimeo
 			else if (urlLecteur.startsWith("//player.vimeo.com/video/")) {
 				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoVimeo) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /></a>");
 			}
 			// Videos.gouv.fr
 			else if (urlLecteur.startsWith("http://static.videos.gouv.fr/player/video/")) {
 				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoGouvFr) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /></a>");
 			}
 			// Vidme
 			else if (urlLecteur.startsWith("https://vid.me")) {
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoVidme) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /></a>");
 			}
 			// Soundcloud
 			else if (urlLecteur.startsWith("https://w.soundcloud.com/player/")) {
 				monRemplacement.html("<a href=\"" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_soundcloud.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoSoundCloud) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_soundcloud.png\" /></a>");
 			}
 			// Déchet
 			else {
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
-						+ "\"><img src=\"file:///android_res/drawable/video_non_supporte.png\" /><br /><p>"
-						+ contextParent.getString(R.string.videoNonSupporte) + "</p></a>");
+						+ "\"><img src=\"file:///android_res/drawable/video_non_supporte.png\" /></a>");
 			}
 
 			// Je remplace l'iframe par mon contenu

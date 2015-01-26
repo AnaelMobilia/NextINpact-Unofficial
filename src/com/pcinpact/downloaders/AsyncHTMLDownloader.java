@@ -30,7 +30,6 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.parseur.ParseurHTML;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -41,8 +40,6 @@ import android.util.Log;
  *
  */
 public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>> {
-	// Contexte parent
-	private Context monContext;
 	// Callback : parent + ref
 	private RefreshDisplayInterface monParent;
 	// Type & URL du code HTML
@@ -51,9 +48,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	// Accès sur la DB
 	private DAO monDAO;
 
-	public AsyncHTMLDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO) {
+	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO) {
 		// Mappage des attributs de cette requête
-		monContext = unContext;
 		monParent = parent;
 		urlPage = uneURL;
 		typeHTML = unType;
@@ -92,7 +88,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		}
 
 		// J'ouvre une instance du parser
-		ParseurHTML monParser = new ParseurHTML(monContext);
+		ParseurHTML monParser = new ParseurHTML();
 
 		switch (typeHTML) {
 			case Constantes.HTML_LISTE_ARTICLES:

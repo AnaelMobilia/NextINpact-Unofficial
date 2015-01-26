@@ -271,13 +271,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			if (Constantes.DEBUG) {
 				Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
 			}
-			
+
 			// Suppression en DB
 			monDAO.supprimerArticle(article);
 
 			// Suppression des commentaires de l'article
 			monDAO.supprimerCommentaire(article.getID());
-			
+
 			// Suppression de la date de Refresh
 			monDAO.supprimerDateRefresh(article.getID());
 
@@ -309,7 +309,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			nouveauChargementGUI();
 
 			// Ma tâche de DL
-			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_LISTE_ARTICLES,
+			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
 					Constantes.NEXT_INPACT_URL, monDAO);
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
@@ -350,7 +350,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				mesArticles.add((ArticleItem) unItem);
 
 				// Je lance le téléchargement de son contenu
-				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(getApplicationContext(), this, Constantes.HTML_ARTICLE,
+				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
 						((ArticleItem) unItem).getURL(), monDAO);
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
@@ -492,7 +492,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		} else {
 			// Jamais synchro...
 			headerTextView.setText(getString(R.string.lastUpdateNever));
-		}		
+		}
 	}
-	
+
 }
