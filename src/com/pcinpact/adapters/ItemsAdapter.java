@@ -56,12 +56,16 @@ public class ItemsAdapter extends BaseAdapter {
 	private Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
+	private SharedPreferences mesPrefs;
 
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
 		monLayoutInflater = LayoutInflater.from(monContext);
+
+		// Chargement des préférences
+		mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 	}
 
 	/**
@@ -213,9 +217,9 @@ public class ItemsAdapter extends BaseAdapter {
 			// Commentaire
 			else if (i.getType() == Item.typeCommentaire) {
 				CommentaireItem ai = (CommentaireItem) i;
-				
+
 				// DEBUG
-				if(Constantes.DEBUG) {
+				if (Constantes.DEBUG) {
 					Log.i("ItemsAdapter", "Commentaire #" + ai.getID());
 				}
 
@@ -229,8 +233,18 @@ public class ItemsAdapter extends BaseAdapter {
 
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
 				commentaire.setText(spannedContent);
-				// Active les liens a href
-				commentaire.setMovementMethod(new GestionLiens());
+
+				// Liens cliquables ? option utilisateur !
+				Boolean lienClickable = mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires),
+						monContext.getResources().getBoolean(R.bool.defautOptionLiensDansCommentaires));
+				if (lienClickable) {
+					// Active les liens a href
+					commentaire.setMovementMethod(new GestionLiens());
+				} else {
+					// Désactivation de l'effet de click
+					convertView.setOnClickListener(null);
+					convertView.setOnLongClickListener(null);
+				}
 
 				// Taille de texte personnalisée ?
 				if (tailleOptionUtilisateur != tailleDefaut) {
