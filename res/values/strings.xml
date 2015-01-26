@@ -94,7 +94,7 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="optionCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
     <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
     <string name="optionNbArticlesDetail">"Le nombres d'articles que vous souhaitez avoir dans l'application"</string>
-    <string name="optionNbArticles">"Nombre d'articless"</string>
+    <string name="optionNbArticles">"Nombre d'articles"</string>
 
     <!-- Options - ID des clefs -->
     <string name="idOptionFermer">0</string>
