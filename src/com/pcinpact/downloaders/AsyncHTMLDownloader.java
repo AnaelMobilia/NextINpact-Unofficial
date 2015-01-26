@@ -108,8 +108,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 						mesItems.add(unArticle);
 					}
 				}
-				// Mise ‡ jour de la date de rafraichissement
-				monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
+
+				// M‡J de la date de M‡J uniquement si DL de la premiËre page (Èvite plusieurs m‡j si dl de plusieurs pages)
+				if (urlPage.equals(Constantes.NEXT_INPACT_URL_NUM_PAGE + 1)) {
+					// Mise ‡ jour de la date de rafraichissement
+					monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
+				}
 
 				// DEBUG
 				if (Constantes.DEBUG) {
