@@ -35,7 +35,6 @@ import com.pcinpact.items.SectionItem;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -75,6 +74,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private DAO monDAO;
 	// Nombre de DL en cours
 	private int dlInProgress = 0;
+	// Préférences utilisateur
+	private SharedPreferences mesPrefs;
 
 	// Ressources sur les éléments graphiques
 	private Menu monMenu;
@@ -90,12 +91,17 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// On définit la vue
 		setContentView(R.layout.liste_articles);
-		// On récupère les éléments
+		// On récupère les éléments GUI
 		monListView = (ListView) this.findViewById(R.id.listeArticles);
 		monSwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
 		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		setSupportProgressBarIndeterminateVisibility(false);
+
+		// Mise en place de l'itemAdapter
+		monItemsAdapter = new ItemsAdapter(this, mesArticles);
+		monListView.setAdapter(monItemsAdapter);
+		monListView.setOnItemClickListener(this);
 
 		// onRefresh
 		monSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -104,10 +110,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				telechargeListeArticles();
 			}
 		});
-
-		monItemsAdapter = new ItemsAdapter(this, mesArticles);
-		monListView.setAdapter(monItemsAdapter);
-		monListView.setOnItemClickListener(this);
 
 		// On active le SwipeRefreshLayout uniquement si on est en haut de la listview
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -135,14 +137,17 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Mise à jour de l'affichage
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
-		// Message d'accueil pour la première utilisation
-		final SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		// Chargement des préférences de l'utilisateur
+		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), getResources()
 				.getBoolean(R.bool.defautOptionPremierLancementApplication));
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
+			// Lancement d'un téléchargement des articles
+			telechargeListeArticles();
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			// Titre
 			builder.setTitle(getResources().getString(R.string.app_name));
@@ -150,20 +155,14 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			builder.setMessage(getResources().getString(R.string.disclaimerContent));
 			// Bouton d'action
 			builder.setCancelable(false);
-			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					// Enregistrement que le message a déjà été affiché
-					Editor editor = mesPrefs.edit();
-					editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
-					editor.commit();
-				}
-			});
+			builder.setPositiveButton("Ok", null);
 			// On crée & affiche
 			builder.create().show();
 
-			// Lancement d'un téléchargement des articles
-			telechargeListeArticles();
+			// Enregistrement de l'affichage
+			Editor editor = mesPrefs.edit();
+			editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
+			editor.commit();
 		}
 
 		// Date du dernier refresh
@@ -245,8 +244,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	@Override
 	protected void onDestroy() {
-		// Préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Nombre d'articles à conserver
 		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
 				getString(R.string.defautOptionNbArticles)));
@@ -299,19 +296,25 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
-		// Uniquement si on est pa&s déjà en train de faire un refresh...
+		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
-			// Le retour en GUI
-			nouveauChargementGUI();
+			// Gestion du nombre de pages à télécharger - option Utilisateur
+			int nbArticles = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
+					getString(R.string.defautOptionNbArticles)));
+			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;// Téléchargement de chaque page...
+			for (int numPage = 1; numPage <= nbPages; numPage++) {
+				// Le retour en GUI
+				nouveauChargementGUI();
 
-			// Ma tâche de DL
-			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
-					Constantes.NEXT_INPACT_URL, monDAO);
-			// Parallèlisation des téléchargements pour l'ensemble de l'application
-			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				monAHD.execute();
+				// Ma tâche de DL
+				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
+						Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO);
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAHD.execute();
+				}
 			}
 		}
 	}
@@ -320,13 +323,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@Override
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
-		if (uneURL.equals(Constantes.NEXT_INPACT_URL)) {
+		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
 
 			// Tri des Articles par timestamp
 			Collections.sort(mesArticles);
 
-			// Préférences de l'utilisateur
-			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			// Nombre d'articles à conserver
 			int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
 					getString(R.string.defautOptionNbArticles)));

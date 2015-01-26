@@ -41,6 +41,7 @@ public class Constantes {
 	 */
 	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	public final static String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
 	// URL de téléchargement des commentaires
 	public final static String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
 	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
@@ -49,6 +50,8 @@ public class Constantes {
 	public final static String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
 	// Nb de commentaires par page
 	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
+	// Nb d'articles par page
+	public final static int NB_ARTICLES_PAR_PAGE = 30;
 
 	/**
 	 * TYPES DE TELECHARGEMENTS

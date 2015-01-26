@@ -39,9 +39,7 @@
     <!-- Menu options -> nombre d'articles à conserver -->
     <string-array name="nbArticles">
         <item>30</item>
-        <item>45</item>
         <item>60</item>
-        <item>75</item>
         <item>90</item>
     </string-array>
 
