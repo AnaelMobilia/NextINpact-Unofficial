@@ -36,6 +36,7 @@ import android.view.View.OnLongClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * Affiche un article
@@ -64,13 +65,31 @@ public class ArticleActivity extends ActionBarActivity {
 		setContentView(R.layout.article);
 
 		webview = (WebView) findViewById(R.id.webview);
+
+		// Chargement des préférences de l'utilsateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+		// Liens cliquables ? option utilisateur !
+		Boolean lienClickable = mesPrefs.getBoolean(getString(R.string.idOptionLiensDansArticles),
+				getResources().getBoolean(R.bool.defautOptionLiensDansArticles));
+		if (!lienClickable) {
+			// Désactivation du clic
+			webview.setWebViewClient(new WebViewClient() {
+
+				@Override
+				public boolean shouldOverrideUrlLoading(WebView view, String url) {
+					return true;
+				};
+			});
+		}
+
+		// Mise en forme de la webview
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		// Taille des textes (option de l'utilisateur)
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		// la taille par défaut est de 16
-		int tailleDefaut = 16;
-
+		
+		// Gestion du zoom - option utilisateur
+		// taille par défaut
+		int tailleDefaut = Integer.valueOf(getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
 		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
