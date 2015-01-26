@@ -31,6 +31,8 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -64,17 +66,6 @@ public class ArticleActivity extends ActionBarActivity {
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		// Chargement de la DB
-		monDAO = DAO.getInstance(getApplicationContext());
-		monArticle = monDAO.chargerArticle(articleID);
-		String data = monArticle.getContenu();
-
-		if (data == null) {
-			data = getString(R.string.articleVideErreurHTML);
-		}
-
-		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
-
 		// Taille des textes (option de l'utilisateur)
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// la taille par défaut est de 16
@@ -89,6 +80,30 @@ public class ArticleActivity extends ActionBarActivity {
 			WebSettings webSettings = webview.getSettings();
 			webSettings.setDefaultFontSize(tailleUtilisateur);
 		}
+
+		// Désactivation de la sélection du texte
+		webview.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+				// Déclaration de l'événement comme étant traité
+				return true;
+			}
+		});
+		// Désactivation du retour vibreur
+		webview.setHapticFeedbackEnabled(false);
+
+		// Chargement de la DB
+		monDAO = DAO.getInstance(getApplicationContext());
+		monArticle = monDAO.chargerArticle(articleID);
+		String data = monArticle.getContenu();
+
+		if (data == null) {
+			data = getString(R.string.articleVideErreurHTML);
+		}
+
+		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+
 	}
 
 	@Override
