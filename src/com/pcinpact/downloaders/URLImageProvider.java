@@ -23,14 +23,12 @@ import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
-import com.pcinpact.adapters.DrawableRefreshable;
 import com.pcinpact.items.Item;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -39,30 +37,25 @@ import android.text.Html.ImageGetter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 /**
- * Téléchargement d'une image dans les commentaires : fournit une image vide, télécharge l'image, puis l'affichera
+ * Smileys dans les commentaires.
+ * Si image non présente en cache, la téléchargera
  * 
  * @author Anael
  *
  */
 public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
-	// Vue où est affichée l'image à charger
-	private TextView maView;
 	// Contexte de l'activité
 	private Context monContext;
-	// private Drawable monRetour;
-	private DrawableRefreshable monRetour = new DrawableRefreshable();
 
 	/**
 	 * Constructeur
 	 * 
 	 * @param laView
 	 */
-	public URLImageProvider(TextView uneView, Context unContext) {
+	public URLImageProvider(Context unContext) {
 		super();
-		maView = uneView;
 		monContext = unContext;
 	}
 
@@ -73,7 +66,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 */
 	public Drawable getDrawable(String urlSource) {
 		// Image de retour
-		// Drawable monRetour;
+		 Drawable monRetour;
 
 		// Détermination de l'ID du smiley
 		String nomSmiley = urlSource.substring(Constantes.NEXT_INPACT_URL_SMILEYS.length());
@@ -82,8 +75,8 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, nomSmiley);
 		if (monFichier.exists()) {
 			// Je récupère directement mon image
-			monRetour.setImage(gestionTaille(Drawable.createFromPath(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS
-					+ nomSmiley)));
+			monRetour = gestionTaille(Drawable.createFromPath(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS
+					+ nomSmiley));
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.i("URLImageProvider", nomSmiley + " fourni depuis le cache");
@@ -99,7 +92,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 			}
 
 			// Retour d'une image générique (logo NXI)
-			monRetour.setImage(gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact)));
+			monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
@@ -162,15 +155,6 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 
 	@Override
 	public void downloadImageFini(String uneURL, Bitmap uneImage) {
-		// Le smiley a été téléchargé => reaffichage de la vue
-		// Chargment de l'image
-		Drawable imageBrute = new BitmapDrawable(monContext.getResources(), uneImage);
-		// Mise à l'échelle de l'image
-		monRetour.setImage(gestionTaille(imageBrute));
-
-		// Rafraichissement de la vue
-		maView.invalidate();
-
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);

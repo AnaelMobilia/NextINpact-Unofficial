@@ -224,7 +224,7 @@ public class ItemsAdapter extends BaseAdapter {
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				numeroCommentaire.setText(String.valueOf(ai.getID()));
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(commentaire, monContext), null);
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
 				commentaire.setText(spannedContent);
 				// Active les liens a href
 				commentaire.setMovementMethod(LinkMovementMethod.getInstance());
