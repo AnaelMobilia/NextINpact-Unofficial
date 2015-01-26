@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -23,9 +23,9 @@
 
 <resources>
 
-    <bool name="defautOptionLiensDansArticles">false</bool>
-    <bool name="defautOptionLiensDansCommentaires">false</bool>
-    <bool name="defautOptionCommentairesTelechargementContinu">false</bool>
+    <bool name="defautOptionLiensDansArticles">true</bool>
+    <bool name="defautOptionLiensDansCommentaires">true</bool>
+    <bool name="defautOptionCommentairesTelechargementContinu">true</bool>
  	<string name="defautOptionZoomTexte">16</string>
     <bool name="defautOptionPremierLancementApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
