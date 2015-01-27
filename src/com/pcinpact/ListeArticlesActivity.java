@@ -73,7 +73,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	// La BDD
 	private DAO monDAO;
 	// Nombre de DL en cours
-	private int dlInProgress = 0;
+	private int dlInProgress;
 	// Préférences utilisateur
 	private SharedPreferences mesPrefs;
 
@@ -367,7 +367,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				nouveauChargementGUI();
 			}
-			
+
 			// Tri des Articles par timestamp
 			Collections.sort(mesArticles);
 		}
@@ -484,13 +484,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private void majDateRefresh() {
 		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
 
-		// Une màj à déjà été faite
-		if (dernierRefresh != 0) {
-			headerTextView.setText(getString(R.string.lastUpdate)
-					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
-		} else {
+		if (dernierRefresh == 0) {
 			// Jamais synchro...
 			headerTextView.setText(getString(R.string.lastUpdateNever));
+		} else {
+			// Une màj à déjà été faite
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}
 	}
 

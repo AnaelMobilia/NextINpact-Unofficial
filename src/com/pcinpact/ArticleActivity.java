@@ -45,16 +45,10 @@ import android.webkit.WebViewClient;
  *
  */
 public class ArticleActivity extends ActionBarActivity {
-	// La webview
-	private WebView webview;
 	// ID de l'article
 	private int articleID;
-	// Accès à la DB
-	private DAO monDAO;
 	// Article
 	private ArticleItem monArticle;
-	// Partage d'un article
-	private ShareActionProvider mShareActionProvider;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +58,7 @@ public class ArticleActivity extends ActionBarActivity {
 
 		setContentView(R.layout.article);
 
-		webview = (WebView) findViewById(R.id.webview);
+		WebView webview = (WebView) findViewById(R.id.webview);
 
 		// Chargement des préférences de l'utilsateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -113,7 +107,7 @@ public class ArticleActivity extends ActionBarActivity {
 		webview.setHapticFeedbackEnabled(false);
 
 		// Chargement de la DB
-		monDAO = DAO.getInstance(getApplicationContext());
+		DAO monDAO = DAO.getInstance(getApplicationContext());
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
@@ -134,7 +128,7 @@ public class ArticleActivity extends ActionBarActivity {
 		// Get the menu item.
 		MenuItem shareItem = menu.findItem(R.id.action_share);
 		// Get the provider and hold onto it to set/change the share intent.
-		mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+		ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
 		// Création de mon intent
 		Intent monIntent = new Intent(Intent.ACTION_SEND);

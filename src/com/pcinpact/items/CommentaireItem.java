@@ -37,7 +37,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 	private int articleId;
 	private String auteur = "";
 	private String commentaire = "";
-	private long timeStampPublication = 0;
+	private long timeStampPublication;
 
 	@Override
 	public int getType() {

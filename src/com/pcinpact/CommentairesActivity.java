@@ -71,7 +71,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 	// Ressources sur les éléments graphiques
 	private Menu monMenu;
-	private ListView monListView;
 	private Button buttonDl10Commentaires;
 	private TextView headerTextView;
 
@@ -85,7 +84,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 		headerTextView = (TextView) findViewById(R.id.header_text);
 		// Liste des commentaires
-		monListView = (ListView) this.findViewById(R.id.listeCommentaires);
+		ListView monListView = (ListView) this.findViewById(R.id.listeCommentaires);
 		// Footer : bouton "Charger plus de commentaires"
 		buttonDl10Commentaires = new Button(this);
 		buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
@@ -296,13 +295,14 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	private void majDateRefresh() {
 		long dernierRefresh = monDAO.chargerDateRefresh(articleID);
 
-		// Une màj à déjà été faite
-		if (dernierRefresh != 0) {
-			headerTextView.setText(getString(R.string.lastUpdate)
-					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
-		} else {
+		if (dernierRefresh == 0) {
 			// Jamais synchro...
 			headerTextView.setText(getString(R.string.lastUpdateNever));
+
+		} else {
+			// Une màj à déjà été faite
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}
 
 	}

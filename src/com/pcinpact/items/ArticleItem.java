@@ -35,8 +35,8 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 	private int id;
 	private String titre;
 	private String sousTitre = "";
-	private boolean isAbonne = false;
-	private int nbCommentaires = 0;
+	private boolean isAbonne;
+	private int nbCommentaires;
 	private String url;
 	private String urlIllustration = "";
 	private String contenu = "";
