@@ -26,9 +26,14 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
 import com.pcinpact.Constantes;
+import com.pcinpact.R;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.http.AndroidHttpClient;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Téléchargement des ressources
@@ -36,14 +41,20 @@ import android.util.Log;
  * @author Anael
  *
  */
-public class Downloader {
+abstract class Downloader {
 	/**
 	 * Téléchargement d'une ressource
 	 * 
 	 * @param uneURL
 	 * @return
 	 */
-	public static ByteArrayOutputStream download(String uneURL) {
+	public static ByteArrayOutputStream download(String uneURL, Context unContext) {
+		// Chargement des préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+		// L'utilisateur demande-t-il un debug ?
+		Boolean debug = mesPrefs.getBoolean(unContext.getString(R.string.idOptionDebug),
+				unContext.getResources().getBoolean(R.bool.defautOptionDebug));
+
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
 		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
 		HttpGet getRequest = new HttpGet(uneURL);
@@ -56,7 +67,13 @@ public class Downloader {
 			// Gestion d'un code erreur
 			if (statusCode != HttpStatus.SC_OK) {
 				if (Constantes.DEBUG) {
-					Log.e("Downloader", "Error " + statusCode + " while retrieving " + uneURL);
+					Log.e("Downloader", "Erreur " + statusCode + " au dl de " + uneURL);
+				}
+				// Retour utilisateur ?
+				if (debug) {
+					Toast monToast = new Toast(unContext);
+					monToast.setText("[Downloader] Erreur " + statusCode + " pour  " + uneURL);
+					monToast.show();
 				}
 				return null;
 			}
@@ -86,8 +103,15 @@ public class Downloader {
 			}
 		} catch (Exception e) {
 			getRequest.abort();
+			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.e("Downloader", "Error while retrieving " + uneURL, e);
+			}
+			// Retour utilisateur ?
+			if (debug) {
+				Toast monToast = new Toast(unContext);
+				monToast.setText("[Downloader] Erreur pour  " + uneURL);
+				monToast.show();
 			}
 		} finally {
 			if (client != null) {

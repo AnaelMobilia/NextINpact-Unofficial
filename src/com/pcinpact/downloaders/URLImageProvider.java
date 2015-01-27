@@ -39,8 +39,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 /**
- * Smileys dans les commentaires.
- * Si image non présente en cache, la téléchargera
+ * Smileys dans les commentaires. Si image non présente en cache, la téléchargera
  * 
  * @author Anael
  *
@@ -66,7 +65,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 */
 	public Drawable getDrawable(String urlSource) {
 		// Image de retour
-		 Drawable monRetour;
+		Drawable monRetour;
 
 		// Détermination de l'ID du smiley
 		String nomSmiley = urlSource.substring(Constantes.NEXT_INPACT_URL_SMILEYS.length());
@@ -112,11 +111,11 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		// Préférences de l'utilisateur : taille du texte
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 		// Taile par défaut
-		final int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
+		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
+		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
-		final float monCoeffZoom = (float) tailleOptionUtilisateur / tailleDefaut;
+		float monCoeffZoom = (float) tailleOptionUtilisateur / tailleDefaut;
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);

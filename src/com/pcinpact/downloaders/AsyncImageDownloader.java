@@ -28,10 +28,13 @@ import com.pcinpact.Constantes;
 import com.pcinpact.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Téléchargement asynchrone d'images
@@ -62,8 +65,14 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(String... params) {
+		// Chargement des préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
+		// L'utilisateur demande-t-il un debug ?
+		Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug),
+				monContext.getResources().getBoolean(R.bool.defautOptionDebug));
+
 		// Je récupère un OS sur l'image
-		ByteArrayOutputStream monBAOS = Downloader.download(urlImage);
+		ByteArrayOutputStream monBAOS = Downloader.download(urlImage, monContext);
 
 		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
 		if (monBAOS == null) {
@@ -126,12 +135,20 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			monFOS.write(monDL);
 			monFOS.close();
 		} catch (Exception e) {
+			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
 			}
+			// Retour utilisateur ?
+			if (debug) {
+				Toast monToast = new Toast(monContext);
+				monToast.setText("[AsyncImageDownloader] Erreur à l'enregistrement de " + urlImage + " => " + e.getCause());
+				monToast.show();
+			}
+
 			// On ferme le FOS au cas où...
 			try {
-				if(monFOS != null) {
+				if (monFOS != null) {
 					monFOS.close();
 				}
 			} catch (IOException e1) {

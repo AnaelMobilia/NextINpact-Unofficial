@@ -308,7 +308,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 				// Ma tâche de DL
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
-						Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO);
+						Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO, getApplicationContext());
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -347,7 +347,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 				// Je lance le téléchargement de son contenu
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
-						((ArticleItem) unItem).getUrl(), monDAO);
+						((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

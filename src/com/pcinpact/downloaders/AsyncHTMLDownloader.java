@@ -30,6 +30,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.parseur.ParseurHTML;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -47,13 +48,16 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	private int typeHTML;
 	// Accès sur la DB
 	private DAO monDAO;
+	// Context
+	Context monContext;
 
-	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO) {
+	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;
 		typeHTML = unType;
 		monDAO = unDAO;
+		monContext = unContext;
 		if (Constantes.DEBUG) {
 			Log.i("AsyncHTMLDownloader", urlPage);
 		}
@@ -68,7 +72,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		ArrayList<Item> mesItems = new ArrayList<Item>();
 
 		// Je récupère mon contenu HTML
-		ByteArrayOutputStream monBAOS = Downloader.download(urlPage);
+		ByteArrayOutputStream monBAOS = Downloader.download(urlPage, monContext);
 
 		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
 		if (monBAOS == null) {
@@ -88,7 +92,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 		}
 
 		// J'ouvre une instance du parser
-		ParseurHTML monParser = new ParseurHTML();
+		ParseurHTML monParser = new ParseurHTML(monContext);
 
 		switch (typeHTML) {
 			case Constantes.HTML_LISTE_ARTICLES:

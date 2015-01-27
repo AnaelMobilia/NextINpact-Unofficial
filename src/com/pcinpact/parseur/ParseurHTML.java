@@ -30,9 +30,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.pcinpact.Constantes;
+import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
@@ -43,6 +48,22 @@ import com.pcinpact.items.CommentaireItem;
  *
  */
 public class ParseurHTML {
+	// Debug utilisteur ?
+	Boolean debug;
+	// context
+	Context monContext;
+
+	public ParseurHTML(Context unContext) {
+		// Enregistrement du context
+		monContext = unContext;
+
+		// Chargement des préférences de l'utilisateur
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
+		// L'utilisateur demande-t-il un debug ?
+		debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug),
+				monContext.getResources().getBoolean(R.bool.defautOptionDebug));
+	}
+
 	/**
 	 * Parse la liste des articles
 	 * 
@@ -312,6 +333,12 @@ public class ParseurHTML {
 		} catch (ParseException e) {
 			if (Constantes.DEBUG) {
 				Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
+			}
+			// Retour utilisateur ?
+			if (debug) {
+				Toast monToast = new Toast(monContext);
+				monToast.setText("[ParseurHTML] Erreur au parsage de la date " + uneDate);
+				monToast.show();
 			}
 		}
 
