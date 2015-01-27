@@ -256,12 +256,12 @@ public class ItemsAdapter extends BaseAdapter {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
+		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
 
 		// Faut-il applique un zoom ?
-		if (tailleOptionUtilisateur != tailleDefaut) {
-			float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
+		if (tailleUtilisateur != tailleDefaut) {
+			float monCoeffZoom = tailleUtilisateur / tailleDefaut;
 
 			float tailleOrigine = uneTextView.getTextSize();
 			float nouvelleTaille = tailleOrigine * monCoeffZoom;
