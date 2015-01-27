@@ -31,6 +31,7 @@ import com.pcinpact.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.http.AndroidHttpClient;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ abstract class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	public static ByteArrayOutputStream download(String uneURL, Context unContext) {
+	public static ByteArrayOutputStream download(final String uneURL, final Context unContext) {
 		// Chargement des préférences de l'utilisateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 		// L'utilisateur demande-t-il un debug ?
@@ -102,16 +103,29 @@ abstract class Downloader {
 				}
 			}
 		} catch (Exception e) {
+			// Retour utilisateur obligatoire : probable problème de connexion
+			Handler handler = new Handler(unContext.getMainLooper());
+			handler.post(new Runnable() {
+				public void run() {
+					Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet), Toast.LENGTH_LONG);
+					monToast.show();
+				}
+			});
+			
 			getRequest.abort();
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.e("Downloader", "Error while retrieving " + uneURL, e);
+				Log.e("Downloader", "Erreur pour " + uneURL, e);
 			}
 			// Retour utilisateur ?
 			if (debug) {
-				Toast monToast = new Toast(unContext);
-				monToast.setText("[Downloader] Erreur pour  " + uneURL);
-				monToast.show();
+				handler = new Handler(unContext.getMainLooper());
+				handler.post(new Runnable() {
+					public void run() {
+						Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur pour " + uneURL, Toast.LENGTH_LONG);
+						monToast.show();
+					}
+				});
 			}
 		} finally {
 			if (client != null) {

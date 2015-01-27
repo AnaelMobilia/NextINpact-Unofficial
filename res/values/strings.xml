@@ -41,7 +41,7 @@
 			\nLes contenus affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
 			\nSi vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"	</string>
-    <string name="chargementPasInternet">"Vous n'êtes pas connecté à Internet, veuillez vérifier vos paramètres de connexion."</string>
+    <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
 
     <!-- A propos -->
     <string name="aboutContent">"NextINpact (Unofficial) est une application développée bénévolement par un lecteur passionné de NextINpact.
@@ -102,7 +102,7 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="idOptionLiensDansCommentaires">2</string>
     <string name="idOptionZoomTexte">3</string>
     <string name="idOptionTelechargerCommentaires">4</string>
-    <string name="idOptionPremierLancementApplication">5</string>
+    <string name="idOptionInstallationApplication">5</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
     <string name="idOptionNbArticles">8</string>

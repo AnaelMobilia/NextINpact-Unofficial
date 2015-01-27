@@ -32,6 +32,7 @@ import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,9 +50,9 @@ import com.pcinpact.items.CommentaireItem;
  */
 public class ParseurHTML {
 	// Debug utilisteur ?
-	Boolean debug;
+	private Boolean debug;
 	// context
-	Context monContext;
+	final private Context monContext;
 
 	public ParseurHTML(Context unContext) {
 		// Enregistrement du context
@@ -324,7 +325,7 @@ public class ParseurHTML {
 	 * @param uneDate
 	 * @return
 	 */
-	private long convertToTimeStamp(String uneDate, String unFormatDate) {
+	private long convertToTimeStamp(final String uneDate, String unFormatDate) {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {
@@ -336,9 +337,13 @@ public class ParseurHTML {
 			}
 			// Retour utilisateur ?
 			if (debug) {
-				Toast monToast = new Toast(monContext);
-				monToast.setText("[ParseurHTML] Erreur au parsage de la date " + uneDate);
-				monToast.show();
+				Handler handler = new Handler(monContext.getMainLooper());
+				handler.post(new Runnable() {
+					public void run() {
+						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate, Toast.LENGTH_LONG);
+						monToast.show();
+					}
+				});
 			}
 		}
 
