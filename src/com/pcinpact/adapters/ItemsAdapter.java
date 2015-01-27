@@ -130,6 +130,9 @@ public class ItemsAdapter extends BaseAdapter {
 				case Item.TYPE_COMMENTAIRE:
 					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
 					break;
+				default:
+					Log.e("ItemsAdapter", "getItemViewType incorrect : " + getItemViewType(position));
+					break;
 			}
 		} else {
 			// DEBUG
