@@ -324,7 +324,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
-
 			// Tri des Articles par timestamp
 			Collections.sort(mesArticles);
 
@@ -368,6 +367,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				nouveauChargementGUI();
 			}
+			
+			// Tri des Articles par timestamp
+			Collections.sort(mesArticles);
 		}
 
 		// gestion du téléchargement GUI
