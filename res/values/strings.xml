@@ -102,10 +102,10 @@ http://www.nextinpact.com/abonnement"	</string>
     <string name="idOptionLiensDansCommentaires">2</string>
     <string name="idOptionZoomTexte">3</string>
     <string name="idOptionTelechargerCommentaires">4</string>
-    <string name="idOptionInstallationApplication">5</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
     <string name="idOptionNbArticles">8</string>
+    <string name="idOptionInstallationApplication">9</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
