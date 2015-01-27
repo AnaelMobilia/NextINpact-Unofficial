@@ -27,7 +27,7 @@
     <bool name="defautOptionLiensDansCommentaires">true</bool>
     <bool name="defautOptionCommentairesTelechargementContinu">true</bool>
  	<string name="defautOptionZoomTexte">16</string>
-    <bool name="defautOptionPremierLancementApplication">true</bool>
+    <bool name="defautOptionInstallationApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>
     <string name="defautOptionNbArticles">30</string>

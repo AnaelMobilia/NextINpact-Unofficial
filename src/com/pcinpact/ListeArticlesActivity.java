@@ -57,6 +57,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
@@ -140,8 +141,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Chargement des préférences de l'utilisateur
 		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionPremierLancementApplication), getResources()
-				.getBoolean(R.bool.defautOptionPremierLancementApplication));
+		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionInstallationApplication), getResources()
+				.getBoolean(R.bool.defautOptionInstallationApplication));
 
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
@@ -161,7 +162,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Enregistrement de l'affichage
 			Editor editor = mesPrefs.edit();
-			editor.putBoolean(getString(R.string.idOptionPremierLancementApplication), false);
+			editor.putBoolean(getString(R.string.idOptionInstallationApplication), false);
 			editor.commit();
 		}
 
@@ -207,7 +208,22 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		// Bouton menu
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			monMenu.performIdentifierAction(R.id.action_overflow, 0);
+			if (monMenu != null) {
+				monMenu.performIdentifierAction(R.id.action_overflow, 0);
+			} else {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("ListeArticlesActivity", "onKeyUp, monMenu null");
+				}
+				// Retour utilisateur ?
+				// L'utilisateur demande-t-il un debug ?
+				Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug),
+						getResources().getBoolean(R.bool.defautOptionDebug));
+				if (debug) {
+					Toast monToast = Toast.makeText(getApplicationContext(), "[ListeArticlesActivity] Le menu est null (onKeyUp)", Toast.LENGTH_LONG);
+					monToast.show();
+				}
+			}
 		}
 
 		return super.onKeyUp(keyCode, event);
