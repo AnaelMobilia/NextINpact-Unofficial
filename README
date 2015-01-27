@@ -8,3 +8,9 @@ jsoup
 Outils pratiques :
   - Vue des icônes existantes : http://androiddrawables.com
   - Dépôt git des sources Android (permet de récupérer les images) : https://github.com/android/platform_frameworks_base/tree/master/core/res/res
+  
+  ================================================
+  Debug
+    - Logcat sur une application tournant sur une device : adb logcat *:E
+    - Install d'un apk en tant que mise à jour de l'application : adb install -r path/to/file.apk
+    - Monkey test : adb shell monkey -p mon.application.name -v 500
