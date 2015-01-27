@@ -12,5 +12,6 @@ Outils pratiques :
   ================================================
   Debug
     - Logcat sur une application tournant sur une device : adb logcat *:E
+    - effacer le logcat : adb logcat -c
     - Install d'un apk en tant que mise à jour de l'application : adb install -r path/to/file.apk
     - Monkey test : adb shell monkey -p mon.application.name -v 500
