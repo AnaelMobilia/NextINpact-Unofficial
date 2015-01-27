@@ -261,7 +261,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {
-			float monCoeffZoom = tailleUtilisateur / tailleDefaut;
+			float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
 
 			float tailleOrigine = uneTextView.getTextSize();
 			float nouvelleTaille = tailleOrigine * monCoeffZoom;

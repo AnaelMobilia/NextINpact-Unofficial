@@ -116,7 +116,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		// L'option selectionnée
 		final int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
-		final float monCoeffZoom = tailleOptionUtilisateur / tailleDefaut;
+		final float monCoeffZoom = (float) tailleOptionUtilisateur / tailleDefaut;
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);

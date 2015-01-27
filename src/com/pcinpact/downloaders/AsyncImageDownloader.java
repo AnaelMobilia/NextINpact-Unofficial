@@ -131,7 +131,9 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			}
 			// On ferme le FOS au cas où...
 			try {
-				monFOS.close();
+				if(monFOS != null) {
+					monFOS.close();
+				}
 			} catch (IOException e1) {
 				if (Constantes.DEBUG) {
 					Log.e("AsyncImageDownloader", "Error while closing FOS " + urlImage, e1);
