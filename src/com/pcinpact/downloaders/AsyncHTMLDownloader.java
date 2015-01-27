@@ -126,7 +126,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
 
 				// Chargement de l'article depuis la BDD
-				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getID());
+				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
 
 				// Ajout du contenu à l'objet chargé
 				articleDB.setContenu(articleParser.getContenu());

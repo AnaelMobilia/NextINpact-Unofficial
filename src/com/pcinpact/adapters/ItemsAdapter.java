@@ -97,7 +97,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getViewTypeCount() {
-		return Item.nombreDeTypes;
+		return Item.NOMBRE_DE_TYPES;
 	}
 
 	/**
@@ -119,15 +119,15 @@ public class ItemsAdapter extends BaseAdapter {
 			}
 			// Je crée la vue qui va bien...
 			switch (getItemViewType(position)) {
-				case Item.typeSection:
+				case Item.TYPE_SECTION:
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
 					convertView.setOnClickListener(null);
 					convertView.setOnLongClickListener(null);
 					break;
-				case Item.typeArticle:
+				case Item.TYPE_ARTICLE:
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 					break;
-				case Item.typeCommentaire:
+				case Item.TYPE_COMMENTAIRE:
 					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
 					break;
 			}
@@ -142,7 +142,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 		if (i != null) {
 			// Section
-			if (i.getType() == Item.typeSection) {
+			if (i.getType() == Item.TYPE_SECTION) {
 				SectionItem si = (SectionItem) i;
 
 				TextView sectionView = (TextView) convertView.findViewById(R.id.titreSection);
@@ -153,7 +153,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 			}
 			// Article
-			else if (i.getType() == Item.typeArticle) {
+			else if (i.getType() == Item.TYPE_ARTICLE) {
 				ArticleItem ai = (ArticleItem) i;
 
 				ImageView imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
@@ -200,12 +200,12 @@ public class ItemsAdapter extends BaseAdapter {
 
 			}
 			// Commentaire
-			else if (i.getType() == Item.typeCommentaire) {
+			else if (i.getType() == Item.TYPE_COMMENTAIRE) {
 				CommentaireItem ai = (CommentaireItem) i;
 
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.i("ItemsAdapter", "Commentaire #" + ai.getID());
+					Log.i("ItemsAdapter", "Commentaire #" + ai.getId());
 				}
 
 				TextView auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
@@ -214,7 +214,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 				// Remplissage des textview
 				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
-				numeroCommentaire.setText(String.valueOf(ai.getID()));
+				numeroCommentaire.setText(String.valueOf(ai.getId()));
 
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
 				commentaire.setText(spannedContent);

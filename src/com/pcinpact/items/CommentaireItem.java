@@ -33,15 +33,15 @@ import com.pcinpact.Constantes;
  */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 
-	private int ID;
-	private int articleID;
+	private int id;
+	private int articleId;
 	private String auteur = "";
 	private String commentaire = "";
 	private long timeStampPublication = 0;
 
 	@Override
 	public int getType() {
-		return Item.typeCommentaire;
+		return Item.TYPE_COMMENTAIRE;
 	}
 
 	public String getFullDatePublication() {
@@ -61,30 +61,30 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 	 * Comparaison entre objets
 	 */
 	public int compareTo(CommentaireItem unCommentaireItem) {
-		Integer unID = unCommentaireItem.getID();
-		Integer monID = this.getID();
+		Integer unID = unCommentaireItem.getId();
+		Integer monID = this.getId();
 
 		return monID.compareTo(unID);
 	}
 
-	public String getIDArticleIDCommentaire() {
-		return this.getArticleID() + "-" + this.getID();
+	public String getIDArticleIdCommentaire() {
+		return this.getArticleId() + "-" + this.getId();
 	}
 
-	public int getID() {
-		return ID;
+	public int getId() {
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public int getArticleID() {
-		return articleID;
+	public int getArticleId() {
+		return articleId;
 	}
 
-	public void setArticleID(int articleID) {
-		this.articleID = articleID;
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
 
 	public String getAuteur() {

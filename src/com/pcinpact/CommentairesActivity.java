@@ -160,7 +160,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
 		if (!mesCommentaires.isEmpty()) {
 			CommentaireItem lastCommentaire = mesCommentaires.get(mesCommentaires.size() - 1);
-			idDernierCommentaire = lastCommentaire.getID();
+			idDernierCommentaire = lastCommentaire.getId();
 		}
 
 		// Le cast en int supprime la partie après la virgule

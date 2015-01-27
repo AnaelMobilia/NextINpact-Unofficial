@@ -64,7 +64,7 @@ public class ParseurHTML {
 			monArticleItem = new ArticleItem();
 
 			// ID de l'article
-			monArticleItem.setID(Integer.valueOf(unArticle.attr("data-acturowid")));
+			monArticleItem.setId(Integer.valueOf(unArticle.attr("data-acturowid")));
 
 			// Date de publication de l'article
 			String laDate = unArticle.attr("data-datepubli");
@@ -72,11 +72,11 @@ public class ParseurHTML {
 
 			// URL de l'illustration
 			Element image = unArticle.select("img[class=ded-image]").get(0);
-			monArticleItem.setURLIllustration(image.absUrl("data-frz-src"));
+			monArticleItem.setUrlIllustration(image.absUrl("data-frz-src"));
 
 			// URL de l'article
 			Element url = unArticle.select("h1 > a[href]").get(0);
-			monArticleItem.setURL(url.absUrl("href"));
+			monArticleItem.setUrl(url.absUrl("href"));
 
 			// Titre de l'article (liée à l'URL)
 			monArticleItem.setTitre(url.text());
@@ -125,7 +125,7 @@ public class ParseurHTML {
 		// L'ID de l'article
 		Element articleID = pageNXI.select("div[class=actu_content][data-id]").get(0);
 		int unID = Integer.valueOf(articleID.attr("data-id"));
-		monArticleItem.setID(unID);
+		monArticleItem.setId(unID);
 
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImagesLiens = lArticle.select("a[href] > img");
@@ -251,7 +251,7 @@ public class ParseurHTML {
 			monCommentaireItem = new CommentaireItem();
 
 			// ID de l'article
-			monCommentaireItem.setArticleID(idArticle);
+			monCommentaireItem.setArticleId(idArticle);
 
 			// Auteur
 			Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
@@ -266,7 +266,7 @@ public class ParseurHTML {
 			Element monID = unCommentaire.select("span[class=actu_comm_num]").get(0);
 			// Le premier caractère est un "#"
 			String lID = monID.text().substring(1);
-			monCommentaireItem.setID(Integer.valueOf(lID));
+			monCommentaireItem.setId(Integer.valueOf(lID));
 
 			// Contenu
 			// Supprimer les liens internes (<a> => <div>)

@@ -196,7 +196,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
 		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-		monIntent.putExtra("ARTICLE_ID", monArticle.getID());
+		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
 	}
 
@@ -269,10 +269,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			monDAO.supprimerArticle(article);
 
 			// Suppression des commentaires de l'article
-			monDAO.supprimerCommentaire(article.getID());
+			monDAO.supprimerCommentaire(article.getId());
 
 			// Suppression de la date de Refresh
-			monDAO.supprimerDateRefresh(article.getID());
+			monDAO.supprimerDateRefresh(article.getId());
 
 			// Suppression de la miniature, uniquement si plus utilisée
 			if (!imagesLegit.contains(article.getImageName())) {
@@ -347,7 +347,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 				// Je lance le téléchargement de son contenu
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
-						((ArticleItem) unItem).getURL(), monDAO);
+						((ArticleItem) unItem).getUrl(), monDAO);
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -358,7 +358,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 				// Je lance le téléchargement de sa miniature
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getURLIllustration());
+						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
 				// Parallèlisation des téléchargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

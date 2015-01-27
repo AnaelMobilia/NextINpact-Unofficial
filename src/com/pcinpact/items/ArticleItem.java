@@ -32,19 +32,19 @@ import com.pcinpact.Constantes;
  */
 public class ArticleItem implements Item, Comparable<ArticleItem> {
 
-	private int ID;
+	private int id;
 	private String titre;
 	private String sousTitre = "";
 	private boolean isAbonne = false;
 	private int nbCommentaires = 0;
-	private String URL;
-	private String URLIllustration = "";
+	private String url;
+	private String urlIllustration = "";
 	private String contenu = "";
 	private long timeStampPublication;
 
 	@Override
 	public int getType() {
-		return Item.typeArticle;
+		return Item.TYPE_ARTICLE;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 	 * @return
 	 */
 	public String getImageName() {
-		String urlImage = this.getURLIllustration();
+		String urlImage = this.getUrlIllustration();
 		return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 	}
 
@@ -99,12 +99,12 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 		return compareResult;
 	}
 
-	public int getID() {
-		return ID;
+	public int getId() {
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getTitre() {
@@ -139,20 +139,20 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 		this.nbCommentaires = nbCommentaires;
 	}
 
-	public String getURL() {
-		return URL;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setURL(String uRL) {
-		URL = uRL;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getURLIllustration() {
-		return URLIllustration;
+	public String getUrlIllustration() {
+		return urlIllustration;
 	}
 
-	public void setURLIllustration(String uRLIllustration) {
-		URLIllustration = uRLIllustration;
+	public void setUrlIllustration(String urlIllustration) {
+		this.urlIllustration = urlIllustration;
 	}
 
 	public String getContenu() {

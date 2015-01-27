@@ -28,7 +28,7 @@ public class SectionItem implements Item {
 
 	@Override
 	public int getType() {
-		return Item.typeSection;
+		return Item.TYPE_SECTION;
 	}
 
 	public SectionItem(String unTitre) {

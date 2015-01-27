@@ -139,7 +139,7 @@ public class ArticleActivity extends ActionBarActivity {
 		// Création de mon intent
 		Intent monIntent = new Intent(Intent.ACTION_SEND);
 		monIntent.setType("text/plain");
-		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURL());
+		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
 		mShareActionProvider.setShareIntent(monIntent);
 
 		return super.onCreateOptionsMenu(menu);
