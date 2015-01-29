@@ -21,7 +21,6 @@ package com.pcinpact;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
@@ -99,6 +98,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		setSupportProgressBarIndeterminateVisibility(false);
 
+		// Chargement des préférences de l'utilisateur
+		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 		// Mise en place de l'itemAdapter
 		monItemsAdapter = new ItemsAdapter(this, mesArticles);
 		monListView.setAdapter(monItemsAdapter);
@@ -133,13 +135,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// J'active la BDD
 		monDAO = DAO.getInstance(getApplicationContext());
-		// Je charge mes articles
-		mesArticles.addAll(monDAO.chargerArticlesTriParDate());
-		// Mise à jour de l'affichage
+		// Chargement des articles & MàJ de l'affichage
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
-		// Chargement des préférences de l'utilisateur
-		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionInstallationApplication), getResources()
 				.getBoolean(R.bool.defautOptionInstallationApplication));
@@ -165,9 +163,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			editor.putBoolean(getString(R.string.idOptionInstallationApplication), false);
 			editor.commit();
 		}
-
-		// Date du dernier refresh
-		majDateRefresh();
 	}
 
 	@Override
@@ -220,7 +215,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug),
 						getResources().getBoolean(R.bool.defautOptionDebug));
 				if (debug) {
-					Toast monToast = Toast.makeText(getApplicationContext(), "[ListeArticlesActivity] Le menu est null (onKeyUp)", Toast.LENGTH_LONG);
+					Toast monToast = Toast.makeText(getApplicationContext(),
+							"[ListeArticlesActivity] Le menu est null (onKeyUp)", Toast.LENGTH_LONG);
 					monToast.show();
 				}
 			}
@@ -264,17 +260,28 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
 				getString(R.string.defautOptionNbArticles)));
 
-		mesArticles = monDAO.chargerArticlesTriParDate();
+		/**
+		 * Données à conserver
+		 */
 
 		// Je protége les images présentes dans les articles à conserver
 		ArrayList<String> imagesLegit = new ArrayList<String>();
-		for (int i = 0; i < maLimite && i < mesArticles.size(); i++) {
+		int nbArticles = mesArticles.size();
+		for (int i = 0; i < nbArticles; i++) {
 			imagesLegit.add(mesArticles.get(i).getImageName());
 		}
 
-		// Je ne conserve que les n premiers articles
-		for (int i = maLimite; i < mesArticles.size(); i++) {
-			ArticleItem article = mesArticles.get(i);
+		/**
+		 * Données à supprimer
+		 */
+		ArrayList<ArticleItem> articlesASupprimer = monDAO.chargerArticlesASupprimer(maLimite);
+
+		/**
+		 * Traitement
+		 */
+		nbArticles = articlesASupprimer.size();
+		for (int i = 0; i < nbArticles; i++) {
+			ArticleItem article = articlesASupprimer.get(i);
 
 			// DEBUG
 			if (Constantes.DEBUG) {
@@ -287,7 +294,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Suppression des commentaires de l'article
 			monDAO.supprimerCommentaire(article.getId());
 
-			// Suppression de la date de Refresh
+			// Suppression de la date de Refresh des commentaires
 			monDAO.supprimerDateRefresh(article.getId());
 
 			// Suppression de la miniature, uniquement si plus utilisée
@@ -298,7 +305,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		}
 
-		// Nettoyage des traces des v<1.8.0
+		/**
+		 * Suppression du cache v < 1.8.0
+		 */
 		// Les fichiers sur stockés en local
 		String[] savedFiles = getApplicationContext().fileList();
 
@@ -340,27 +349,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
-			// Tri des Articles par timestamp
-			Collections.sort(mesArticles);
-
-			// Nombre d'articles à conserver
-			int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-					getString(R.string.defautOptionNbArticles)));
-
-			// Je limie à n articles (cf préférence de l'utilisateur)
-			for (int i = maLimite; i < mesArticles.size(); i++) {
-				mesArticles.remove(i);
-			}
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.i("ListeArticlesActivity", "downloadHTMLFini : " + mesArticles.size() + " articles laissés en mémoire");
-			}
-
 			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
 			for (Item unItem : desItems) {
-				// Je l'enregistre en mémoire
-				mesArticles.add((ArticleItem) unItem);
-
 				// Je lance le téléchargement de son contenu
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
 						((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
@@ -384,8 +374,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				nouveauChargementGUI();
 			}
 
-			// Tri des Articles par timestamp
-			Collections.sort(mesArticles);
 		}
 
 		// gestion du téléchargement GUI
@@ -406,6 +394,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private ArrayList<Item> prepareAffichage() {
 		ArrayList<Item> monRetour = new ArrayList<Item>();
 		String jourActuel = "";
+
+		// Nombre d'articles à afficher
+		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
+				getString(R.string.defautOptionNbArticles)));
+		// Chargement des articles depuis la BDD (trié, limité)
+		mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
+
 		for (ArticleItem article : mesArticles) {
 			// Si ce n'est pas la même journée que l'article précédent
 			if (!article.getDatePublication().equals(jourActuel)) {
@@ -418,6 +413,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// J'ajoute mon article
 			monRetour.add(article);
 		}
+		
+		// Mise à jour de la date de dernier refresh
+		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
+
+		if (dernierRefresh == 0) {
+			// Jamais synchro...
+			headerTextView.setText(getString(R.string.lastUpdateNever));
+		} else {
+			// Une màj à déjà été faite
+			headerTextView.setText(getString(R.string.lastUpdate)
+					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
+		}
+		
 
 		return monRetour;
 	}
@@ -469,8 +477,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			if (Constantes.DEBUG) {
 				Log.w("finChargementGUI", "Arrêt animation");
 			}
-			// Mise à jour de la date de dernière mise à jour
-			majDateRefresh();
 
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
@@ -493,21 +499,4 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			Log.i("finChargementGUI", String.valueOf(dlInProgress));
 		}
 	}
-
-	/**
-	 * Mise à jour de la date de dernière mise à jour
-	 */
-	private void majDateRefresh() {
-		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
-
-		if (dernierRefresh == 0) {
-			// Jamais synchro...
-			headerTextView.setText(getString(R.string.lastUpdateNever));
-		} else {
-			// Une màj à déjà été faite
-			headerTextView.setText(getString(R.string.lastUpdate)
-					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
-		}
-	}
-
 }

@@ -215,17 +215,82 @@ public final class DAO extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Charger tous les articles de la BDD
+	 * Charger les n derniers articles de la BDD
 	 * 
+	 * @param nbVoulu
 	 * @return
 	 */
-	public ArrayList<ArticleItem> chargerArticlesTriParDate() {
+	public ArrayList<ArticleItem> chargerArticlesTriParDate(int nbVoulu) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
 
 		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC");
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
+
+		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+		ArticleItem monArticle;
+		// Je passe tous les résultats
+		while (monCursor.moveToNext()) {
+			// Je remplis l'article
+			monArticle = new ArticleItem();
+			monArticle.setId(monCursor.getInt(0));
+			monArticle.setTitre(monCursor.getString(1));
+			monArticle.setSousTitre(monCursor.getString(2));
+			monArticle.setTimeStampPublication(monCursor.getLong(3));
+			monArticle.setUrl(monCursor.getString(4));
+			monArticle.setUrlIllustration(monCursor.getString(5));
+			monArticle.setContenu(monCursor.getString(6));
+			monArticle.setNbCommentaires(monCursor.getInt(7));
+			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
+
+			// Et l'enregistre
+			mesArticles.add(monArticle);
+		}
+
+		// Fermeture du curseur
+		monCursor.close();
+
+		return mesArticles;
+	}
+
+	public ArrayList<ArticleItem> chargerArticlesASupprimer(int nbMaxArticles) {
+		/**
+		 * Articles à conserver
+		 */
+		// Colonnes de la requête
+		String[] desColonnes = { ARTICLE_ID, ARTICLE_TIMESTAMP };
+		// Requête sur la DB
+		Cursor unCursor = maDB.query(DB_TABLE_ARTICLES, desColonnes, null, null, null, null, "2 DESC",
+				String.valueOf(nbMaxArticles));
+
+		String[] idOk = new String[unCursor.getCount()];
+		int indice = 0;
+		// Récupération des ID des articles
+		while (unCursor.moveToNext()) {
+			idOk[indice] = String.valueOf(unCursor.getInt(0));
+			indice++;
+		}
+		unCursor.close();
+
+		/**
+		 * Articles à supprimer
+		 */
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+
+		// Préparation de la requête
+		String pointInterrogation = "";
+		for (int i = 0; i < idOk.length; i++) {
+			pointInterrogation += ",?";
+		}
+		// Suppression de la première virgule
+		pointInterrogation = pointInterrogation.substring(1);
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + " NOT IN (" + pointInterrogation + ")", idOk,
+				null, null, "4 DESC");
 
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;

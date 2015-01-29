@@ -30,7 +30,7 @@ import com.pcinpact.Constantes;
  * @author Anael
  *
  */
-public class ArticleItem implements Item, Comparable<ArticleItem> {
+public class ArticleItem implements Item {
 
 	private int id;
 	private String titre;
@@ -84,19 +84,6 @@ public class ArticleItem implements Item, Comparable<ArticleItem> {
 	public String getImageName() {
 		String urlImage = this.getUrlIllustration();
 		return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-	}
-
-	@Override
-	/**
-	 * Comparaison entre objets
-	 */
-	public int compareTo(ArticleItem unArticleItem) {
-		Long unTimestamp = unArticleItem.getTimeStampPublication();
-		Long monTimestamp = this.getTimeStampPublication();
-		// -1 pour trier en ordre anté-chronologique
-		int compareResult = -1 * monTimestamp.compareTo(unTimestamp);
-
-		return compareResult;
 	}
 
 	public int getId() {
