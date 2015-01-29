@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 
 import org.jsoup.Jsoup;
@@ -118,6 +119,10 @@ public class ParseurHTML {
 			// Ai-je trouvé des éléments ?
 			if (badgeAbonne.size() > 0) {
 				monArticleItem.setAbonne(true);
+				//DEBUG
+				if(Constantes.DEBUG) {
+					Log.w("ParseurHTML", monArticleItem.getTitre() + " => Abonné");
+				}
 			} else {
 				monArticleItem.setAbonne(false);
 			}
@@ -151,16 +156,25 @@ public class ParseurHTML {
 
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImagesLiens = lArticle.select("a[href] > img");
-		// Pour chaque image
+		
+		// Set assure l'unicité de la balise (ex : <a...> <img... /> <img... /> </a>)
+		HashSet<Element> baliseA = new HashSet<Element>();
+		// Récupération de toutes les balises <a...> avant <img...>
 		for (Element uneImage : lesImagesLiens) {
-			// Je prend son papa
-			Element lePapa = uneImage.parent();
-			// J'insère l'image après le papa
-			lePapa.after(uneImage);
-			// Je supprime le papa (<a>)
-			lePapa.remove();
+			// J'enregistre le lien <a...>
+			baliseA.add(uneImage.parent());
 		}
-
+		// Pour chaque balise <a...>
+		for (Element uneBalise : baliseA) {
+			// On prend chacun de ses enfants
+			for (Element unEnfant : uneBalise.children()) {
+				// Et on l'injecte après la balise <a...>
+				uneBalise.after(unEnfant);
+			}
+			// On supprime la balise <a...>
+			uneBalise.remove();
+		}
+	
 		// Gestion des iframe
 		Elements lesIframes = lArticle.select("iframe");
 		// Pour chaque iframe
