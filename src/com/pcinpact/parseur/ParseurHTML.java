@@ -167,6 +167,19 @@ public class ParseurHTML {
 		for (Element uneIframe : lesIframes) {
 			// URL du lecteur
 			String urlLecteur = uneIframe.attr("src");
+			// Généralisation de l'URL en dehors du scheme
+			String[] schemes = { "https://", "http://", "//" };
+			for (String unScheme : schemes) {
+				if (urlLecteur.startsWith(unScheme)) {
+					// Suppression du scheme
+					urlLecteur = urlLecteur.substring(unScheme.length());
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("ParseurHTML", "Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+					}
+				}
+			}
+
 			// ID de la vidéo
 			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
@@ -175,7 +188,7 @@ public class ParseurHTML {
 
 			// Gestion des lecteurs vidéos
 			// Liste de lecture Youtube
-			if (urlLecteur.startsWith("//www.youtube.com/embed/videoseries")) {
+			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
 				// Recalcul de l'ID de la vidéo (cas particulier)
 				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
@@ -183,34 +196,34 @@ public class ParseurHTML {
 
 			}
 			// Youtube
-			else if (urlLecteur.startsWith("//www.youtube.com/embed/")
+			else if (urlLecteur.startsWith("www.youtube.com/embed/")
 					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
 				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /></a>");
 
 			}
 			// Dailymotion
-			else if (urlLecteur.startsWith("//www.dailymotion.com/embed/video/")) {
+			else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
 				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /></a>");
 			}
 			// Vimeo
-			else if (urlLecteur.startsWith("//player.vimeo.com/video/")) {
+			else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
 				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /></a>");
 			}
 			// Videos.gouv.fr
-			else if (urlLecteur.startsWith("http://static.videos.gouv.fr/player/video/")) {
+			else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
 				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /></a>");
 			}
 			// Vidme
-			else if (urlLecteur.startsWith("https://vid.me")) {
+			else if (urlLecteur.startsWith("vid.me")) {
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /></a>");
 			}
 			// Soundcloud
-			else if (urlLecteur.startsWith("https://w.soundcloud.com/player/")) {
+			else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
 				monRemplacement.html("<a href=\"" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/video_soundcloud.png\" /></a>");
 			}
@@ -340,7 +353,8 @@ public class ParseurHTML {
 				Handler handler = new Handler(monContext.getMainLooper());
 				handler.post(new Runnable() {
 					public void run() {
-						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate, Toast.LENGTH_LONG);
+						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate,
+								Toast.LENGTH_LONG);
 						monToast.show();
 					}
 				});
