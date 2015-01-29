@@ -175,7 +175,7 @@ public class ParseurHTML {
 
 			// Gestion des lecteurs vidéos
 			// Liste de lecture Youtube
-			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
+			if (urlLecteur.startsWith("//www.youtube.com/embed/videoseries")) {
 				// Recalcul de l'ID de la vidéo (cas particulier)
 				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
