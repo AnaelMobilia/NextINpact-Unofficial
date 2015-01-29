@@ -103,7 +103,7 @@ public final class DAO extends SQLiteOpenHelper {
 		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
 				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
 				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
-				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " INTEGER);";
+				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " BOOLEAN);";
 		db.execSQL(reqCreateArticles);
 
 		// Table des commentaires
@@ -206,7 +206,7 @@ public final class DAO extends SQLiteOpenHelper {
 			monArticle.setUrlIllustration(monCursor.getString(5));
 			monArticle.setContenu(monCursor.getString(6));
 			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
+			monArticle.setAbonne((monCursor.getInt(8) > 0));
 		}
 		// Fermeture du curseur
 		monCursor.close();
@@ -242,7 +242,7 @@ public final class DAO extends SQLiteOpenHelper {
 			monArticle.setUrlIllustration(monCursor.getString(5));
 			monArticle.setContenu(monCursor.getString(6));
 			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
+			monArticle.setAbonne((monCursor.getInt(8) > 0));
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -255,6 +255,8 @@ public final class DAO extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<ArticleItem> chargerArticlesASupprimer(int nbMaxArticles) {
+		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+
 		/**
 		 * Articles à conserver
 		 */
@@ -272,6 +274,11 @@ public final class DAO extends SQLiteOpenHelper {
 			indice++;
 		}
 		unCursor.close();
+
+		// Protection contre un NPE
+		if (idOk.length == 0) {
+			return mesArticles;
+		}
 
 		/**
 		 * Articles à supprimer
@@ -292,7 +299,6 @@ public final class DAO extends SQLiteOpenHelper {
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + " NOT IN (" + pointInterrogation + ")", idOk,
 				null, null, "4 DESC");
 
-		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
