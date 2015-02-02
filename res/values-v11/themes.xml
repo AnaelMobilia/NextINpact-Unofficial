@@ -41,7 +41,7 @@
     </style>
 
     <!-- Style personnalisé -->
-    <style name="textAppearanceVerySmall" parent="@android:style/TextAppearance">
+    <style name="textAppearanceMicro" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
     </style>
 

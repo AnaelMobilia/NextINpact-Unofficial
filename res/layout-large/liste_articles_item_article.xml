@@ -99,6 +99,6 @@
         android:layout_alignParentRight="true"
         android:drawableLeft="@drawable/small_comms"
         android:drawableStart="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceVerySmall" />
+        android:textAppearance="@style/textAppearanceMicro" />
 
 </RelativeLayout>

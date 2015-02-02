@@ -42,7 +42,7 @@
             android:layout_alignParentTop="true"
             android:paddingStart="5dp"
             android:paddingLeft="5dp"
-            android:textAppearance="@style/textAppearanceVerySmall"
+            android:textAppearance="@style/textAppearanceMicro"
             android:textColor="#8A979D" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:layout_alignParentRight="true"
             android:paddingEnd="?android:attr/scrollbarSize"
             android:paddingRight="?android:attr/scrollbarSize"
-            android:textAppearance="@style/textAppearanceVerySmall"
+            android:textAppearance="@style/textAppearanceMicro"
             android:textColor="#177DAD"
             android:textStyle="italic" />
     </RelativeLayout>
