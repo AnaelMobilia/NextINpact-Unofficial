@@ -155,7 +155,7 @@ public class ItemsAdapter extends BaseAdapter {
 				sectionView.setText(si.getTitre());
 
 				// On applique le zoom éventuel
-				appliqueZoom(sectionView);
+				appliqueZoom(sectionView, Constantes.TEXT_SIZE_MEDIUM);
 
 			}
 			// Article
@@ -198,11 +198,11 @@ public class ItemsAdapter extends BaseAdapter {
 				}
 
 				// On applique le zoom éventuel
-				appliqueZoom(titreArticle);
-				appliqueZoom(heureArticle);
-				appliqueZoom(sousTitreArticle);
-				appliqueZoom(commentairesArticle);
-				appliqueZoom(labelAbonne);
+				appliqueZoom(titreArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(heureArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(commentairesArticle, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(labelAbonne, Constantes.TEXT_SIZE_SMALL);
 
 			}
 			// Commentaire
@@ -238,9 +238,9 @@ public class ItemsAdapter extends BaseAdapter {
 				}
 
 				// On applique le zoom éventuel
-				appliqueZoom(auteurDateCommentaire);
-				appliqueZoom(numeroCommentaire);
-				appliqueZoom(commentaire);
+				appliqueZoom(auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(commentaire, Constantes.TEXT_SIZE_SMALL);
 			}
 		}
 		return convertView;
@@ -252,20 +252,19 @@ public class ItemsAdapter extends BaseAdapter {
 	 * @param uneTextView
 	 * @param unZoom
 	 */
-	private void appliqueZoom(TextView uneTextView) {
+	private void appliqueZoom(TextView uneTextView, int defaultSize) {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
 		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
-
+		
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {
 			float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
 
-			float tailleOrigine = uneTextView.getTextSize();
-			float nouvelleTaille = tailleOrigine * monCoeffZoom;
-			uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, nouvelleTaille);
+			float nouvelleTaille = defaultSize * monCoeffZoom;
+			uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, nouvelleTaille);
 		}
 	}
 

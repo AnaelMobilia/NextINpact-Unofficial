@@ -35,7 +35,7 @@ public class Constantes {
 	// Build Version Honeycomb (non dispo en 2.*)
 	// http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
 	public final static int HONEYCOMB = 11;
-	
+
 	/**
 	 * PARAMETRES GENERAUX
 	 */
@@ -96,13 +96,22 @@ public class Constantes {
 	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
 	// Date et Heure de publication d'un commentaire
 	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
-	//Date et Heure de dernière synchro
+	// Date et Heure de dernière synchro
 	public final static String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
-	
+
 	/**
 	 * CONSTANTES EN DB
 	 */
 	// ID du refresh de la liste des articles
 	public final static int DB_REFRESH_ID_LISTE_ARTICLES = 0;
-	
+
+	/**
+	 * TAILLE DES TEXTES
+	 */
+	// http://developer.android.com/design/style/typography.html
+	public final static int TEXT_SIZE_MICRO = 12;
+	public final static int TEXT_SIZE_SMALL = 14;
+	public final static int TEXT_SIZE_MEDIUM = 18;
+	public final static int TEXT_SIZE_LARGE = 22;
+	public final static int TEXT_SIZE_XLARGE = 26;
 }
