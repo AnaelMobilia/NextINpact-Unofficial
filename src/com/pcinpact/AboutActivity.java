@@ -18,8 +18,12 @@
  */
 package com.pcinpact;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * A propos...
@@ -35,5 +39,20 @@ public class AboutActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.about);
+
+		// Affichage du numéro de version
+		try {
+			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			String version = pInfo.versionName;
+
+			Toast monToast = Toast.makeText(getApplicationContext(), "Version " + version, Toast.LENGTH_LONG);
+			monToast.show();
+		} catch (NameNotFoundException e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("AboutActivity", "Erreur à l'obtention du numéro de version", e);
+			}
+		}
+
 	}
 }
