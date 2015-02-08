@@ -141,8 +141,8 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 			}
 			// Retour utilisateur ?
 			if (debug) {
-				Toast monToast = new Toast(monContext);
-				monToast.setText("[AsyncImageDownloader] Erreur à l'enregistrement de " + urlImage + " => " + e.getCause());
+				Toast monToast = Toast.makeText(monContext, "[AsyncImageDownloader] Erreur à l'enregistrement de " + urlImage
+						+ " => " + e.getCause(), Toast.LENGTH_LONG);
 				monToast.show();
 			}
 

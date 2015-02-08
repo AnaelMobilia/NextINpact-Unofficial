@@ -72,8 +72,7 @@ abstract class Downloader {
 				}
 				// Retour utilisateur ?
 				if (debug) {
-					Toast monToast = new Toast(unContext);
-					monToast.setText("[Downloader] Erreur " + statusCode + " pour  " + uneURL);
+					Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " + uneURL, Toast.LENGTH_LONG);
 					monToast.show();
 				}
 				return null;
