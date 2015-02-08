@@ -117,19 +117,51 @@ public class ItemsAdapter extends BaseAdapter {
 			if (Constantes.DEBUG) {
 				Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
 			}
+			// Holder : sert à garder les liens sur les *View
+			ItemsViewHolder monHolder = new ItemsViewHolder();
+
 			// Je crée la vue qui va bien...
 			switch (getItemViewType(position)) {
 				case Item.TYPE_SECTION:
+					// Je charge mon layout
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
+					// Ses propriétés
 					convertView.setOnClickListener(null);
 					convertView.setOnLongClickListener(null);
+
+					// Je prépare mon holder
+					monHolder.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
+					// Et l'assigne
+					convertView.setTag(monHolder);
 					break;
+
 				case Item.TYPE_ARTICLE:
+					// Je charge mon layout
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
+
+					// Je prépare mon holder
+					monHolder.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
+					monHolder.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
+					monHolder.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
+					monHolder.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
+					monHolder.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
+					monHolder.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
+					// Et l'assigne
+					convertView.setTag(monHolder);
 					break;
+
 				case Item.TYPE_COMMENTAIRE:
+					// Je charge mon layout
 					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
+
+					// Je prépare mon holder
+					monHolder.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
+					monHolder.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
+					monHolder.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
+					// Et l'assigne
+					convertView.setTag(monHolder);
 					break;
+
 				default:
 					// DEBUG
 					if (Constantes.DEBUG) {
@@ -147,50 +179,45 @@ public class ItemsAdapter extends BaseAdapter {
 		Item i = mesItems.get(position);
 
 		if (i != null) {
+			// Je charge mon ItemsViewHolder (lien vers les *View)
+			ItemsViewHolder monHolder = (ItemsViewHolder) convertView.getTag();
+
 			// Section
 			if (i.getType() == Item.TYPE_SECTION) {
 				SectionItem si = (SectionItem) i;
 
-				TextView sectionView = (TextView) convertView.findViewById(R.id.titreSection);
-				sectionView.setText(si.getTitre());
+				monHolder.sectionView.setText(si.getTitre());
 
 				// On applique le zoom éventuel
-				appliqueZoom(sectionView, Constantes.TEXT_SIZE_MEDIUM);
+				appliqueZoom(monHolder.sectionView, Constantes.TEXT_SIZE_MEDIUM);
 
 			}
 			// Article
 			else if (i.getType() == Item.TYPE_ARTICLE) {
 				ArticleItem ai = (ArticleItem) i;
 
-				ImageView imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
-				TextView labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
-				TextView titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
-				TextView heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
-				TextView sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
-				TextView commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
-
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
-					labelAbonne.setVisibility(View.VISIBLE);
+					monHolder.labelAbonne.setVisibility(View.VISIBLE);
 				} else {
-					labelAbonne.setVisibility(View.GONE);
+					monHolder.labelAbonne.setVisibility(View.GONE);
 				}
 				// Remplissage des textview
-				titreArticle.setText(ai.getTitre());
-				heureArticle.setText(ai.getHeureMinutePublication());
-				sousTitreArticle.setText(ai.getSousTitre());
-				commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
+				monHolder.titreArticle.setText(ai.getTitre());
+				monHolder.heureArticle.setText(ai.getHeureMinutePublication());
+				monHolder.sousTitreArticle.setText(ai.getSousTitre());
+				monHolder.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
 				// Gestion de l'image
 				FileInputStream in;
 				try {
 					// Ouverture du fichier en cache
 					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES + ai.getImageName());
 					in = new FileInputStream(monFichier);
-					imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
+					monHolder.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
 					in.close();
 				} catch (Exception e) {
 					// Si le fichier n'est pas trouvé, je fournis une image par défaut
-					imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+					monHolder.imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
 					// DEBUG
 					if (Constantes.DEBUG) {
 						Log.e("ItemsAdapter", "getView -> Article", e);
@@ -198,11 +225,11 @@ public class ItemsAdapter extends BaseAdapter {
 				}
 
 				// On applique le zoom éventuel
-				appliqueZoom(titreArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(heureArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(commentairesArticle, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(labelAbonne, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(monHolder.titreArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(monHolder.heureArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(monHolder.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(monHolder.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(monHolder.labelAbonne, Constantes.TEXT_SIZE_SMALL);
 
 			}
 			// Commentaire
@@ -214,23 +241,19 @@ public class ItemsAdapter extends BaseAdapter {
 					Log.i("ItemsAdapter", "Commentaire #" + ai.getId());
 				}
 
-				TextView auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
-				TextView numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
-				TextView commentaire = (TextView) convertView.findViewById(R.id.commentaire);
-
 				// Remplissage des textview
-				auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
-				numeroCommentaire.setText(String.valueOf(ai.getId()));
+				monHolder.auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
+				monHolder.numeroCommentaire.setText(String.valueOf(ai.getId()));
 
 				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
-				commentaire.setText(spannedContent);
+				monHolder.commentaire.setText(spannedContent);
 
 				// Liens cliquables ? option utilisateur !
 				Boolean lienClickable = mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires),
 						monContext.getResources().getBoolean(R.bool.defautOptionLiensDansCommentaires));
 				if (lienClickable) {
 					// Active les liens a href
-					commentaire.setMovementMethod(new GestionLiens());
+					monHolder.commentaire.setMovementMethod(new GestionLiens());
 				} else {
 					// Désactivation de l'effet de click
 					convertView.setOnClickListener(null);
@@ -238,9 +261,9 @@ public class ItemsAdapter extends BaseAdapter {
 				}
 
 				// On applique le zoom éventuel
-				appliqueZoom(auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(commentaire, Constantes.TEXT_SIZE_SMALL);
+				appliqueZoom(monHolder.auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(monHolder.numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
+				appliqueZoom(monHolder.commentaire, Constantes.TEXT_SIZE_SMALL);
 			}
 		}
 		return convertView;
@@ -258,7 +281,7 @@ public class ItemsAdapter extends BaseAdapter {
 		// L'option selectionnée
 		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
 				String.valueOf(tailleDefaut)));
-		
+
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {
 			float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
