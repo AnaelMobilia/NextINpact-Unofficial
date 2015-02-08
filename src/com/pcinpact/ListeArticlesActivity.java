@@ -127,9 +127,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				if (monListView == null || monListView.getChildCount() == 0) {
 					topRowVerticalPosition = 0;
 				} else {
-					topRowVerticalPosition = monListView.getChildAt(0).getTop();
+					topRowVerticalPosition = monListView.getFirstVisiblePosition();
 				}
-				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
 			}
 		});
 
