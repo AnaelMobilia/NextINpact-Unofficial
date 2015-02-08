@@ -21,8 +21,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pcinpact"
-    android:versionCode="182"
-    android:versionName="1.8.2" >
+    android:versionCode="183"
+    android:versionName="1.8.3" >
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
