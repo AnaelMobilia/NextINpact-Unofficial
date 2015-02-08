@@ -165,7 +165,14 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 	@Override
 	// Post exécution
 	protected void onPostExecute(Bitmap bitmap) {
-		monParent.downloadImageFini(urlImage, bitmap);
+		try {
+			monParent.downloadImageFini(urlImage, bitmap);
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("AsyncHTMLDownloader", "Crash onPostExecute", e);
+			}
+		}
 	}
 
 }
