@@ -30,7 +30,7 @@ public class Constantes {
 	/**
 	 * MODE DEBUG
 	 */
-	public final static Boolean DEBUG = true;
+	public final static Boolean DEBUG = false;
 	/**
 	 * COMPATIBILITE
 	 */
