@@ -73,7 +73,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 			long dateRefresh = new Date().getTime();
 
 			// Je récupère mon contenu HTML
-			ByteArrayOutputStream monBAOS = Downloader.download(urlPage, monContext);
+			ByteArrayOutputStream monBAOS = Downloader.download(urlPage, monContext, true);
 
 			// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
 			if (monBAOS == null) {

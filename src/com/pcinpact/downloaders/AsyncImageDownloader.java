@@ -76,7 +76,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 					.getBoolean(R.bool.defautOptionDebug));
 
 			// Je récupère un OS sur l'image
-			ByteArrayOutputStream monBAOS = Downloader.download(urlImage, monContext);
+			ByteArrayOutputStream monBAOS = Downloader.download(urlImage, monContext, false);
 
 			// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
 			if (monBAOS == null) {

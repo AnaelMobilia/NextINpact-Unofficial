@@ -19,6 +19,8 @@
 package com.pcinpact.downloaders;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -49,7 +51,10 @@ abstract class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	public static ByteArrayOutputStream download(final String uneURL, final Context unContext) {
+	public static ByteArrayOutputStream download(final String uneURL, final Context unContext, boolean compression) {
+		// Retour
+		ByteArrayOutputStream monBAOS = null;
+
 		// Chargement des préférences de l'utilisateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 		// L'utilisateur demande-t-il un debug ?
@@ -59,6 +64,14 @@ abstract class Downloader {
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
 		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
 		HttpGet getRequest = new HttpGet(uneURL);
+
+		// Réponse à la requête
+		HttpEntity entity = null;
+
+		if (compression) {
+			// Utilisation d'une compression des datas !
+			AndroidHttpClient.modifyRequestToAcceptGzipResponse(getRequest);
+		}
 
 		try {
 			// Lancement de la requête
@@ -72,46 +85,62 @@ abstract class Downloader {
 				}
 				// Retour utilisateur ?
 				if (debug) {
-					Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " + uneURL, Toast.LENGTH_LONG);
+					Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " + uneURL,
+							Toast.LENGTH_LONG);
 					monToast.show();
 				}
-				return null;
-			}
+			} else {
+				// Chargement de la réponse du serveur
+				entity = response.getEntity();
 
-			// Chargement de la réponse à la requête
-			HttpEntity entity = response.getEntity();
-			if (entity != null) {
-				// Taille du contenu à télécharger
-				int bufferSize = (int) entity.getContentLength();
-				// Si erreur ou inconnu, on initialise à 1024
-				if (bufferSize < 0) {
-					bufferSize = 1024;
+				// Utilisation d'une compression du flux ?
+				if (compression) {
+					// Décompression de la réponse
+					InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
+					// Je crée mon buffer de sortie
+					monBAOS = new ByteArrayOutputStream(monIS.available());
+
+					int nRead;
+					byte[] data = new byte[monIS.available()];
+
+					// Je stocke mes datas dans mon flux de sortie
+					while ((nRead = monIS.read(data, 0, data.length)) != -1) {
+						monBAOS.write(data, 0, nRead);
+					}
+					monIS.close();
 				}
+				// Pas de compression
+				else {
+					if (entity != null) {
+						// Taille du contenu à télécharger
+						int bufferSize = (int) entity.getContentLength();
+						// Si erreur ou inconnu, on initialise à 1024
+						if (bufferSize < 0) {
+							bufferSize = 1024;
+						}
 
-				// Je crée mon buffer
-				ByteArrayOutputStream monBAOS = new ByteArrayOutputStream(bufferSize);
+						// Je crée mon buffer
+						monBAOS = new ByteArrayOutputStream(bufferSize);
 
-				try {
-					// Récupération du contenu
-					entity.writeTo(monBAOS);
-
-					// Renvoi de ce dernier
-					return monBAOS;
-				} finally {
-					entity.consumeContent();
+						// Récupération du contenu
+						entity.writeTo(monBAOS);
+					}
 				}
 			}
 		} catch (Exception e) {
+			// J'arrête la requête
+			getRequest.abort();
+			
 			// Retour utilisateur obligatoire : probable problème de connexion
 			Handler handler = new Handler(unContext.getMainLooper());
 			handler.post(new Runnable() {
 				public void run() {
-					Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet), Toast.LENGTH_LONG);
+					Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet),
+							Toast.LENGTH_LONG);
 					monToast.show();
 				}
 			});
-			
-			getRequest.abort();
+
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.e("Downloader", "Erreur pour " + uneURL, e);
@@ -127,10 +156,21 @@ abstract class Downloader {
 				});
 			}
 		} finally {
+			if (entity != null) {
+				// Je vide la requête HTTP
+				try {
+					entity.consumeContent();
+				} catch (IOException e) {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.e("Downloader", "entity.consumeContent", e);
+					}
+				}
+			}
 			if (client != null) {
 				client.close();
 			}
 		}
-		return null;
+		return monBAOS;
 	}
 }
