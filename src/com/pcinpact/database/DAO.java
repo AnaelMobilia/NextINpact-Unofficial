@@ -165,8 +165,24 @@ public final class DAO extends SQLiteOpenHelper {
 		if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication()) {
 			this.enregistrerArticle(unArticle);
 			return true;
+		} else {
+			// Je met à jour le nb de comms de l'article en question...
+			updateNbCommentairesArticle(unArticle);
+			return false;
 		}
-		return false;
+	}
+
+	/**
+	 * Mise à jour du Nb de commentaires d'un article déjà synchronisé
+	 * 
+	 * @param unArticle
+	 */
+	public void updateNbCommentairesArticle(ArticleItem unArticle) {
+		// Les datas à MàJ
+		ContentValues updateValues = new ContentValues();
+		updateValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
+
+		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
 	}
 
 	/**
