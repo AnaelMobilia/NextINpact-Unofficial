@@ -65,121 +65,129 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 
 	@Override
 	protected ArrayList<Item> doInBackground(String... params) {
-		// Date du refresh
-		long dateRefresh = new Date().getTime();
-
 		// Retour
 		ArrayList<Item> mesItems = new ArrayList<Item>();
 
-		// Je récupère mon contenu HTML
-		ByteArrayOutputStream monBAOS = Downloader.download(urlPage, monContext);
-
-		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
-		if (monBAOS == null) {
-			return mesItems;
-		}
-
-		// Je prend mon contenu
-		String monInput = monBAOS.toString();
-		// Et ferme le BAOS
 		try {
-			monBAOS.close();
-		} catch (IOException e1) {
+			// Date du refresh
+			long dateRefresh = new Date().getTime();
+
+			// Je récupère mon contenu HTML
+			ByteArrayOutputStream monBAOS = Downloader.download(urlPage, monContext);
+
+			// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
+			if (monBAOS == null) {
+				return mesItems;
+			}
+
+			// Je prend mon contenu
+			String monInput = monBAOS.toString();
+			// Et ferme le BAOS
+			try {
+				monBAOS.close();
+			} catch (IOException e1) {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+				}
+			}
+
+			// J'ouvre une instance du parser
+			ParseurHTML monParser = new ParseurHTML(monContext);
+
+			switch (typeHTML) {
+				case Constantes.HTML_LISTE_ARTICLES:
+					// Je passe par le parser
+					ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monInput, urlPage);
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
+								+ " résultats");
+					}
+
+					// Je ne conserve que les nouveaux articles
+					for (ArticleItem unArticle : monRetour) {
+						// Stockage en BDD
+						if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
+							// Ne retourne que les nouveaux articles
+							mesItems.add(unArticle);
+						}
+					}
+
+					// MàJ de la date de MàJ uniquement si DL de la première page (évite plusieurs màj si dl de plusieurs pages)
+					if (urlPage.equals(Constantes.NEXT_INPACT_URL_NUM_PAGE + 1)) {
+						// Mise à jour de la date de rafraichissement
+						monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
+					}
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
+					}
+					break;
+
+				case Constantes.HTML_ARTICLE:
+					// Je passe par le parser
+					ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
+
+					// Chargement de l'article depuis la BDD
+					ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
+
+					// Ajout du contenu à l'objet chargé
+					articleDB.setContenu(articleParser.getContenu());
+
+					// Enregistrement de l'objet complet
+					monDAO.enregistrerArticle(articleDB);
+
+					// Pour le retour à l'utilisateur...
+					mesItems.add(articleDB);
+					break;
+
+				case Constantes.HTML_COMMENTAIRES:
+					// Je passe par le parser
+					ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(monInput, urlPage);
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+								+ " résultats");
+					}
+
+					// Je ne conserve que les nouveaux commentaires
+					for (CommentaireItem unCommentaire : lesCommentaires) {
+						// Stockage en BDD
+						if (monDAO.enregistrerCommentaireSiNouveau(unCommentaire)) {
+							// Ne retourne que les nouveaux articles
+							mesItems.add(unCommentaire);
+						}
+					}
+					// Calcul de l'ID de l'article concerné (entre "newsId=" et "&page=")
+					int debut = urlPage.indexOf(Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "=");
+					debut += Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID.length() + 1;
+					int fin = urlPage.indexOf("&");
+					int idArticle = Integer.valueOf(urlPage.substring(debut, fin));
+
+					// Mise à jour de la date de rafraichissement
+					monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
+					}
+					break;
+
+				default:
+					if (Constantes.DEBUG) {
+						Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
+					}
+					break;
+			}
+		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
+				Log.e("AsyncHTMLDownloader", "Crash doInBackground", e);
 			}
-		}
-
-		// J'ouvre une instance du parser
-		ParseurHTML monParser = new ParseurHTML(monContext);
-
-		switch (typeHTML) {
-			case Constantes.HTML_LISTE_ARTICLES:
-				// Je passe par le parser
-				ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monInput, urlPage);
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
-				}
-
-				// Je ne conserve que les nouveaux articles
-				for (ArticleItem unArticle : monRetour) {
-					// Stockage en BDD
-					if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
-						// Ne retourne que les nouveaux articles
-						mesItems.add(unArticle);
-					}
-				}
-
-				// MàJ de la date de MàJ uniquement si DL de la première page (évite plusieurs màj si dl de plusieurs pages)
-				if (urlPage.equals(Constantes.NEXT_INPACT_URL_NUM_PAGE + 1)) {
-					// Mise à jour de la date de rafraichissement
-					monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
-				}
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
-				}
-				break;
-
-			case Constantes.HTML_ARTICLE:
-				// Je passe par le parser
-				ArticleItem articleParser = monParser.getArticle(monInput, urlPage);
-
-				// Chargement de l'article depuis la BDD
-				ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
-
-				// Ajout du contenu à l'objet chargé
-				articleDB.setContenu(articleParser.getContenu());
-
-				// Enregistrement de l'objet complet
-				monDAO.enregistrerArticle(articleDB);
-
-				// Pour le retour à l'utilisateur...
-				mesItems.add(articleDB);
-				break;
-
-			case Constantes.HTML_COMMENTAIRES:
-				// Je passe par le parser
-				ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(monInput, urlPage);
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
-							+ " résultats");
-				}
-
-				// Je ne conserve que les nouveaux commentaires
-				for (CommentaireItem unCommentaire : lesCommentaires) {
-					// Stockage en BDD
-					if (monDAO.enregistrerCommentaireSiNouveau(unCommentaire)) {
-						// Ne retourne que les nouveaux articles
-						mesItems.add(unCommentaire);
-					}
-				}
-				// Calcul de l'ID de l'article concerné (entre "newsId=" et "&page=")
-				int debut = urlPage.indexOf(Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "=");
-				debut += Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID.length() + 1;
-				int fin = urlPage.indexOf("&");
-				int idArticle = Integer.valueOf(urlPage.substring(debut, fin));
-
-				// Mise à jour de la date de rafraichissement
-				monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
-				}
-				break;
-
-			default:
-				if (Constantes.DEBUG) {
-					Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
-				}
-				break;
 		}
 		return mesItems;
 	}

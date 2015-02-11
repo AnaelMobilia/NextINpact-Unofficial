@@ -65,99 +65,108 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(String... params) {
-		// Chargement des préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-		// L'utilisateur demande-t-il un debug ?
-		Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug),
-				monContext.getResources().getBoolean(R.bool.defautOptionDebug));
+		// Retour
+		byte[] monDL = null;
 
-		// Je récupère un OS sur l'image
-		ByteArrayOutputStream monBAOS = Downloader.download(urlImage, monContext);
-
-		// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
-		if (monBAOS == null) {
-			Bitmap monRetour = BitmapFactory.decodeResource(monContext.getResources(), R.drawable.logo_nextinpact);
-			if (typeImage == Constantes.IMAGE_SMILEY) {
-				// Je réduit la taille du logo pour les smileys
-				monRetour = Bitmap.createScaledBitmap(monRetour, 10, 10, false);
-			}
-
-			return monRetour;
-		}
-		// J'enregistre le BAOS
-		byte[] monDL = monBAOS.toByteArray();
-		// Et le ferme
 		try {
-			monBAOS.close();
-		} catch (IOException e1) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e1);
-			}
-		}
+			// Chargement des préférences de l'utilisateur
+			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
+			// L'utilisateur demande-t-il un debug ?
+			Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug), monContext.getResources()
+					.getBoolean(R.bool.defautOptionDebug));
 
-		// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
-		String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+			// Je récupère un OS sur l'image
+			ByteArrayOutputStream monBAOS = Downloader.download(urlImage, monContext);
 
-		File monFichier = null;
-		switch (typeImage) {
-			case Constantes.IMAGE_CONTENU_ARTICLE:
-				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, imgName);
-				break;
-			case Constantes.IMAGE_MINIATURE_ARTICLE:
-				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, imgName);
-				break;
-			case Constantes.IMAGE_SMILEY:
-				monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, imgName);
-				break;
-			default:
-				if (Constantes.DEBUG) {
-					Log.e("AsyncImageDownloader", "Type Image incohérent : " + typeImage + " - URL : " + urlImage);
+			// Erreur de téléchargement : retour d'un fallback et pas d'enregistrement
+			if (monBAOS == null) {
+				Bitmap monRetour = BitmapFactory.decodeResource(monContext.getResources(), R.drawable.logo_nextinpact);
+				if (typeImage == Constantes.IMAGE_SMILEY) {
+					// Je réduit la taille du logo pour les smileys
+					monRetour = Bitmap.createScaledBitmap(monRetour, 10, 10, false);
 				}
-				break;
-		}
 
-		// Ouverture d'un fichier en écrasement
-		FileOutputStream monFOS = null;
-		try {
-
-			// Gestion de la mise à jour de l'application depuis une ancienne version
+				return monRetour;
+			}
+			// J'enregistre le BAOS
+			monDL = monBAOS.toByteArray();
+			// Et le ferme
 			try {
-				monFOS = new FileOutputStream(monFichier, false);
-			} catch (FileNotFoundException e) {
-				// Création du répertoire...
-				File leParent = new File(monFichier.getParent());
-				leParent.mkdirs();
-				// On retente la même opération
-				monFOS = new FileOutputStream(monFichier, false);
+				monBAOS.close();
+			} catch (IOException e) {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("AsyncImageDownloader", "Erreur à la fermeture du BAOS", e);
+				}
 			}
 
-			monFOS.write(monDL);
-			monFOS.close();
+			// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
+			String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+
+			File monFichier = null;
+			switch (typeImage) {
+				case Constantes.IMAGE_CONTENU_ARTICLE:
+					monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, imgName);
+					break;
+				case Constantes.IMAGE_MINIATURE_ARTICLE:
+					monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, imgName);
+					break;
+				case Constantes.IMAGE_SMILEY:
+					monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, imgName);
+					break;
+				default:
+					if (Constantes.DEBUG) {
+						Log.e("AsyncImageDownloader", "Type Image incohérent : " + typeImage + " - URL : " + urlImage);
+					}
+					break;
+			}
+
+			// Ouverture d'un fichier en écrasement
+			FileOutputStream monFOS = null;
+			try {
+
+				// Gestion de la mise à jour de l'application depuis une ancienne version
+				try {
+					monFOS = new FileOutputStream(monFichier, false);
+				} catch (FileNotFoundException e) {
+					// Création du répertoire...
+					File leParent = new File(monFichier.getParent());
+					leParent.mkdirs();
+					// On retente la même opération
+					monFOS = new FileOutputStream(monFichier, false);
+				}
+
+				monFOS.write(monDL);
+				monFOS.close();
+			} catch (Exception e) {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
+				}
+				// Retour utilisateur ?
+				if (debug) {
+					Toast monToast = Toast.makeText(monContext, "[AsyncImageDownloader] Erreur à l'enregistrement de " + urlImage
+							+ " => " + e.getCause(), Toast.LENGTH_LONG);
+					monToast.show();
+				}
+
+				// On ferme le FOS au cas où...
+				try {
+					if (monFOS != null) {
+						monFOS.close();
+					}
+				} catch (IOException e1) {
+					if (Constantes.DEBUG) {
+						Log.e("AsyncImageDownloader", "Error while closing FOS " + urlImage, e1);
+					}
+				}
+			}
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
-			}
-			// Retour utilisateur ?
-			if (debug) {
-				Toast monToast = Toast.makeText(monContext, "[AsyncImageDownloader] Erreur à l'enregistrement de " + urlImage
-						+ " => " + e.getCause(), Toast.LENGTH_LONG);
-				monToast.show();
-			}
-
-			// On ferme le FOS au cas où...
-			try {
-				if (monFOS != null) {
-					monFOS.close();
-				}
-			} catch (IOException e1) {
-				if (Constantes.DEBUG) {
-					Log.e("AsyncImageDownloader", "Error while closing FOS " + urlImage, e1);
-				}
+				Log.e("AsyncImageDownloader", "Crash doInBackground", e);
 			}
 		}
-
 		// Je renvoie le bitmap
 		return BitmapFactory.decodeByteArray(monDL, 0, monDL.length);
 	}
