@@ -37,7 +37,7 @@ import com.pcinpact.items.CommentaireItem;
  */
 public final class DAO extends SQLiteOpenHelper {
 	// Version de la DB (à mettre à jour à chaque changement du schéma)
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 	// Nom de la BDD
 	private static final String DB_NAME = "nxidb";
 
@@ -54,6 +54,7 @@ public final class DAO extends SQLiteOpenHelper {
 	private static final String ARTICLE_CONTENU = "contenu";
 	private static final String ARTICLE_NB_COMMS = "nbcomms";
 	private static final String ARTICLE_IS_ABONNE = "isabonne";
+	private static final String ARTICLE_IS_LU = "islu";
 
 	private static final String DB_TABLE_COMMENTAIRES = "commentaires";
 	private static final String COMMENTAIRE_ID = "id";
@@ -103,7 +104,7 @@ public final class DAO extends SQLiteOpenHelper {
 		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
 				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
 				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
-				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " BOOLEAN);";
+				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " BOOLEAN," + ARTICLE_IS_LU + " BOOLEAN);";
 		db.execSQL(reqCreateArticles);
 
 		// Table des commentaires
@@ -124,7 +125,11 @@ public final class DAO extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Penser à passer par chaque étape de mise à jour successivement... !
+		switch(oldVersion) {
+			case 1:
+				String reqUpdateFrom1 = "ALTER TABLE " + DB_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_IS_LU + " BOOLEAN;";
+				db.execSQL(reqUpdateFrom1);
+		}
 
 	}
 
@@ -146,6 +151,7 @@ public final class DAO extends SQLiteOpenHelper {
 		insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
 		insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
 		insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
+		insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
 
 		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
 	}
@@ -184,6 +190,18 @@ public final class DAO extends SQLiteOpenHelper {
 
 		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
 	}
+	
+	/**
+	 * Taggue un article comme étant lu
+	 * @param unArticle
+	 */
+	public void marquerArticleLu(ArticleItem unArticle) {
+		// Les datas à MàJ
+		ContentValues updateValues = new ContentValues();
+		updateValues.put(ARTICLE_IS_LU, unArticle.isLu());
+
+		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
+	}
 
 	/**
 	 * Supprimer un article de la DB
@@ -203,7 +221,7 @@ public final class DAO extends SQLiteOpenHelper {
 	public ArticleItem chargerArticle(int idArticle) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
 
 		String[] idString = { String.valueOf(idArticle) };
 
@@ -223,6 +241,7 @@ public final class DAO extends SQLiteOpenHelper {
 			monArticle.setContenu(monCursor.getString(6));
 			monArticle.setNbCommentaires(monCursor.getInt(7));
 			monArticle.setAbonne((monCursor.getInt(8) > 0));
+			monArticle.setLu((monCursor.getInt(9) > 0));
 		}
 		// Fermeture du curseur
 		monCursor.close();
@@ -239,7 +258,7 @@ public final class DAO extends SQLiteOpenHelper {
 	public ArrayList<ArticleItem> chargerArticlesTriParDate(int nbVoulu) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
 
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
@@ -259,6 +278,7 @@ public final class DAO extends SQLiteOpenHelper {
 			monArticle.setContenu(monCursor.getString(6));
 			monArticle.setNbCommentaires(monCursor.getInt(7));
 			monArticle.setAbonne((monCursor.getInt(8) > 0));
+			monArticle.setLu((monCursor.getInt(9) > 0));
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -301,7 +321,7 @@ public final class DAO extends SQLiteOpenHelper {
 		 */
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
 
 		// Préparation de la requête
 		String pointInterrogation = "";
@@ -328,7 +348,8 @@ public final class DAO extends SQLiteOpenHelper {
 			monArticle.setUrlIllustration(monCursor.getString(5));
 			monArticle.setContenu(monCursor.getString(6));
 			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne(Boolean.valueOf(monCursor.getString(8)));
+			monArticle.setAbonne((monCursor.getInt(8) > 0));
+			monArticle.setLu((monCursor.getInt(9) > 0));
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);

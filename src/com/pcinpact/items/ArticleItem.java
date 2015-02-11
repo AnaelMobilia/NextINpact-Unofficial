@@ -27,6 +27,7 @@ import com.pcinpact.Constantes;
 
 /**
  * Objet Article
+ * 
  * @author Anael
  *
  */
@@ -41,6 +42,7 @@ public class ArticleItem implements Item {
 	private String urlIllustration = "";
 	private String contenu = "";
 	private long timeStampPublication;
+	private boolean isLu;
 
 	@Override
 	public int getType() {
@@ -79,6 +81,7 @@ public class ArticleItem implements Item {
 
 	/**
 	 * image.ext
+	 * 
 	 * @return
 	 */
 	public String getImageName() {
@@ -156,6 +159,14 @@ public class ArticleItem implements Item {
 
 	public void setTimeStampPublication(long timeStampPublication) {
 		this.timeStampPublication = timeStampPublication;
+	}
+
+	public boolean isLu() {
+		return isLu;
+	}
+
+	public void setLu(boolean isLu) {
+		this.isLu = isLu;
 	}
 
 }

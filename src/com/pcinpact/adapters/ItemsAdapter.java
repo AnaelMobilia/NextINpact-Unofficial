@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -140,6 +141,7 @@ public class ItemsAdapter extends BaseAdapter {
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 
 					// Je prépare mon holder
+					monHolder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
 					monHolder.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
 					monHolder.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
 					monHolder.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
@@ -196,6 +198,15 @@ public class ItemsAdapter extends BaseAdapter {
 			else if (i.getType() == Item.TYPE_ARTICLE) {
 				ArticleItem ai = (ArticleItem) i;
 
+				// L'article est-il déjà lu ?
+				if(ai.isLu()) {
+					// Couleur lu
+					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
+				} else {
+					// Couleur non lu
+					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
+				}
+				
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
 					monHolder.labelAbonne.setVisibility(View.VISIBLE);

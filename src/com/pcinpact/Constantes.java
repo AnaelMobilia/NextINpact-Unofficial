@@ -18,6 +18,8 @@
  */
 package com.pcinpact;
 
+import android.graphics.Color;
+
 /**
  * Constantes de l'application (onfiguration des URL, ...)
  * 
@@ -114,4 +116,10 @@ public class Constantes {
 	public final static int TEXT_SIZE_MEDIUM = 18;
 	public final static int TEXT_SIZE_LARGE = 22;
 	public final static int TEXT_SIZE_XLARGE = 26;
+	
+	/**
+	 * COULEUR D'AFFICHAGE
+	 */
+	public final static int COULEUR_ARTICLE_NON_LU = Color.WHITE;
+	public final static int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
 }

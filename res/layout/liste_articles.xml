@@ -44,7 +44,9 @@
         <ListView
             android:id="@+id/listeArticles"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:divider="#8A979D"
+            android:dividerHeight="1px" />
     </LinearLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

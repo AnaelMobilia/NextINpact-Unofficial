@@ -185,15 +185,24 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion du clic sur un article => l'ouvrir
+	 * Gestion du clic sur un article => l'ouvrir + marquer comme lu
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		// Récupère l'article en question
 		ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
+		// Lance l'ouverture de l'article
 		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
+		
+		// Marque l'article comme lu
+		monArticle.setLu(true);
+		// Mise à jour en DB
+		monDAO.marquerArticleLu(monArticle);
+		// Mise à jour graphique
+		monItemsAdapter.notifyDataSetChanged();
 	}
 
 	/**

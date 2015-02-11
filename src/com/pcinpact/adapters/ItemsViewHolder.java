@@ -19,6 +19,7 @@
 package com.pcinpact.adapters;
 
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -42,6 +43,7 @@ public class ItemsViewHolder {
 	public TextView heureArticle;
 	public TextView sousTitreArticle;
 	public TextView commentairesArticle;
+	public RelativeLayout relativeLayout;
 
 	/**
 	 * Commentaire
