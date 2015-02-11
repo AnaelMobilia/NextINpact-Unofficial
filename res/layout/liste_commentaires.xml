@@ -29,7 +29,7 @@
         android:id="@+id/header_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:background="#427191"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/lastUpdate"

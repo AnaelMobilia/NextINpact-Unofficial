@@ -79,7 +79,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		super.onCreate(savedInstanceState);
 		// Partie graphique
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.commentaires);
+		setContentView(R.layout.liste_commentaires);
 		setSupportProgressBarIndeterminateVisibility(false);
 
 		headerTextView = (TextView) findViewById(R.id.header_text);
