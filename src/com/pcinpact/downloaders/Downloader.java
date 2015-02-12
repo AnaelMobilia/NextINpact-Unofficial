@@ -32,6 +32,7 @@ import com.pcinpact.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.net.http.AndroidHttpClient;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -61,8 +62,20 @@ abstract class Downloader {
 		Boolean debug = mesPrefs.getBoolean(unContext.getString(R.string.idOptionDebug),
 				unContext.getResources().getBoolean(R.bool.defautOptionDebug));
 
+		// Numéro de version de l'application
+		String numVersion = "";
+		try {
+			PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
+			numVersion = pInfo.versionName;
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("Downloader", "Résolution n° de version", e);
+			}
+		}
+
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
-		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial)");
+		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial) v" + numVersion);
 		HttpGet getRequest = new HttpGet(uneURL);
 
 		// Réponse à la requête
@@ -130,7 +143,7 @@ abstract class Downloader {
 		} catch (Exception e) {
 			// J'arrête la requête
 			getRequest.abort();
-			
+
 			// Retour utilisateur obligatoire : probable problème de connexion
 			Handler handler = new Handler(unContext.getMainLooper());
 			handler.post(new Runnable() {
