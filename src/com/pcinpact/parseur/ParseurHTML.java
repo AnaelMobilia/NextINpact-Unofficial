@@ -119,8 +119,8 @@ public class ParseurHTML {
 			// Ai-je trouvé des éléments ?
 			if (badgeAbonne.size() > 0) {
 				monArticleItem.setAbonne(true);
-				//DEBUG
-				if(Constantes.DEBUG) {
+				// DEBUG
+				if (Constantes.DEBUG) {
 					Log.w("ParseurHTML", monArticleItem.getTitre() + " => Abonné");
 				}
 			} else {
@@ -154,9 +154,20 @@ public class ParseurHTML {
 		int unID = Integer.valueOf(articleID.attr("data-id"));
 		monArticleItem.setId(unID);
 
+		// Suppression de l'icône de catégorie
+		try {
+			Element iconeCat = pageNXI.select("div[class=actu_title_icons_collumn]").get(0);
+			iconeCat.remove();
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("ParseurHTML", "Suppression icône catégorie", e);
+			}
+		}
+
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImagesLiens = lArticle.select("a[href] > img");
-		
+
 		// Set assure l'unicité de la balise (ex : <a...> <img... /> <img... /> </a>)
 		HashSet<Element> baliseA = new HashSet<Element>();
 		// Récupération de toutes les balises <a...> avant <img...>
@@ -174,7 +185,7 @@ public class ParseurHTML {
 			// On supprime la balise <a...>
 			uneBalise.remove();
 		}
-	
+
 		// Gestion des iframe
 		Elements lesIframes = lArticle.select("iframe");
 		// Pour chaque iframe
