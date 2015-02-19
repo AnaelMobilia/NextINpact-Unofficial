@@ -147,6 +147,7 @@ abstract class Downloader {
 			// Retour utilisateur obligatoire : probable problème de connexion
 			Handler handler = new Handler(unContext.getMainLooper());
 			handler.post(new Runnable() {
+				@Override
 				public void run() {
 					Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet),
 							Toast.LENGTH_LONG);
@@ -162,6 +163,7 @@ abstract class Downloader {
 			if (debug) {
 				handler = new Handler(unContext.getMainLooper());
 				handler.post(new Runnable() {
+					@Override
 					public void run() {
 						Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur pour " + uneURL, Toast.LENGTH_LONG);
 						monToast.show();

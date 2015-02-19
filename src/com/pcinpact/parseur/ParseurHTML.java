@@ -377,6 +377,7 @@ public class ParseurHTML {
 			if (debug) {
 				Handler handler = new Handler(monContext.getMainLooper());
 				handler.post(new Runnable() {
+					@Override
 					public void run() {
 						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate,
 								Toast.LENGTH_LONG);
