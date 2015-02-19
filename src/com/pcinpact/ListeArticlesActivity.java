@@ -129,6 +129,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				} else {
 					topRowVerticalPosition = monListView.getFirstVisiblePosition();
 				}
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.i("ListeArticlesActivity",
+							"SwipeRefreshLayout - topRowVerticalPosition : " + String.valueOf(topRowVerticalPosition));
+				}
 				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
 			}
 		});
@@ -196,7 +201,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
-		
+
 		// Marque l'article comme lu
 		monArticle.setLu(true);
 		// Mise à jour en DB
@@ -422,7 +427,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// J'ajoute mon article
 			monRetour.add(article);
 		}
-		
+
 		// Mise à jour de la date de dernier refresh
 		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
 
@@ -434,7 +439,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			headerTextView.setText(getString(R.string.lastUpdate)
 					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}
-		
 
 		return monRetour;
 	}
