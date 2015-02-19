@@ -111,7 +111,7 @@ public class ArticleActivity extends ActionBarActivity {
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
-		if (data == null) {
+		if (data == null || data == "") {
 			data = getString(R.string.articleVideErreurHTML);
 		}
 
