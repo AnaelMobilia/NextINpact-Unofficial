@@ -163,6 +163,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						break;
 				}
 			}
+			// Je ferme l'IS
+			monIS.close();
+
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
