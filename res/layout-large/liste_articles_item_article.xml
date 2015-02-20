@@ -41,8 +41,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:contentDescription="@string/contentDescriptionImageArticle"
-        android:src="@drawable/logo_nextinpact" />
+        android:contentDescription="@string/contentDescriptionImageArticle" />
 
     <TextView
         android:id="@+id/labelAbonne"
