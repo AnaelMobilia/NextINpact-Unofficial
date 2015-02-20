@@ -21,6 +21,7 @@ package com.pcinpact.downloaders;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -51,9 +52,9 @@ abstract class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	public static InputStream download(final String uneURL, final Context unContext, boolean compression) {
+	public static byte[] download(final String uneURL, final Context unContext, boolean compression) {
 		// Retour
-		InputStream monIS = null;
+		byte[] datas = null;
 
 		// Chargement des préférences de l'utilisateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -106,7 +107,11 @@ abstract class Downloader {
 				entity = response.getEntity();
 
 				// Récupération d'un IS degzipé si requis
-				monIS = AndroidHttpClient.getUngzippedContent(entity);
+				InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
+				// Passage en byte[]
+				datas = IOUtils.toByteArray(monIS);
+				// Fermeture de l'IS
+				monIS.close();
 			}
 		} catch (Exception e) {
 			// J'arrête la requête
@@ -154,6 +159,6 @@ abstract class Downloader {
 				client.close();
 			}
 		}
-		return monIS;
+		return datas;
 	}
 }

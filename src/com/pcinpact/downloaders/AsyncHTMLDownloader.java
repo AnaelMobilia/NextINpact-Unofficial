@@ -18,9 +18,10 @@
  */
 package com.pcinpact.downloaders;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+
+import org.apache.commons.io.IOUtils;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.database.DAO;
@@ -72,18 +73,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 			long dateRefresh = new Date().getTime();
 
 			// Je récupère mon contenu HTML
-			InputStream monIS = Downloader.download(urlPage, monContext, true);
+			byte[] datas = Downloader.download(urlPage, monContext, true);
 
 			// Vérifie que j'ai bien un retour (vs erreur DL)
-			if (monIS != null) {
-
+			if (datas != null) {
+				// Je convertis mon byte[] en String
+				String contenu = IOUtils.toString(datas, Constantes.NEXT_INPACT_ENCODAGE);
+				
 				// J'ouvre une instance du parser
 				ParseurHTML monParser = new ParseurHTML(monContext);
 
 				switch (typeHTML) {
 					case Constantes.HTML_LISTE_ARTICLES:
 						// Je passe par le parser
-						ArrayList<ArticleItem> monRetour = monParser.getListeArticles(monIS, urlPage);
+						ArrayList<ArticleItem> monRetour = monParser.getListeArticles(contenu, urlPage);
 
 						// DEBUG
 						if (Constantes.DEBUG) {
@@ -115,7 +118,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 					case Constantes.HTML_ARTICLE:
 						// Je passe par le parser
-						ArticleItem articleParser = monParser.getArticle(monIS, urlPage);
+						ArticleItem articleParser = monParser.getArticle(contenu, urlPage);
 
 						// Enregistrement du contenu de l'article
 						monDAO.updateContenuArticle(articleParser);
@@ -125,7 +128,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 					case Constantes.HTML_COMMENTAIRES:
 						// Je passe par le parser
-						ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(monIS, urlPage);
+						ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(contenu, urlPage);
 
 						// DEBUG
 						if (Constantes.DEBUG) {
@@ -157,8 +160,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						break;
 
 					default:
-						// Fermeture de l'IS
-						monIS.close();
 						if (Constantes.DEBUG) {
 							Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
 						}

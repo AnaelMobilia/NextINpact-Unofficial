@@ -21,7 +21,6 @@ package com.pcinpact.downloaders;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
@@ -69,12 +68,11 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 			Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug), monContext.getResources()
 					.getBoolean(R.bool.defautOptionDebug));
 
-			// Je récupère un IS contenant l'image
-			InputStream monIS = Downloader.download(urlImage, monContext, false);
+			// Je récupère un byte[] contenant l'image
+			byte[] datas = Downloader.download(urlImage, monContext, false);
 
 			// Vérifie que j'ai bien un retour (vs erreur DL)
-			if (monIS != null) {
-
+			if (datas != null) {
 				// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
 				String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
@@ -111,17 +109,11 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 						monFOS = new FileOutputStream(monFichier, false);
 					}
 
-					// J'enregistre le contenu de l'IS dans le FOS
-					int bufferSize = 1024;
-					byte[] buffer = new byte[bufferSize];
-					int bytesRead = 0;
-					while ((bytesRead = monIS.read(buffer)) != -1) {
-						monFOS.write(buffer, 0, bytesRead);
-					}
+					// J'enregistre l'image
+					monFOS.write(datas);
 
-					// Fermeture des flux
+					// Fermeture du FOS
 					monFOS.close();
-					monIS.close();
 				} catch (Exception e) {
 					// DEBUG
 					if (Constantes.DEBUG) {
