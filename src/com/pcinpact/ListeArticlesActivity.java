@@ -395,7 +395,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL) {
 		// gestion du téléchargement GUI
 		finChargementGUI();
 	}

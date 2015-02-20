@@ -153,7 +153,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL) {
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);

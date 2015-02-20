@@ -285,7 +285,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL, Bitmap uneImage) {
+	public void downloadImageFini(String uneURL) {
 		// TODO Auto-generated method stub
 	}
 
