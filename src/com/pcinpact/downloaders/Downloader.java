@@ -105,25 +105,8 @@ abstract class Downloader {
 				// Chargement de la réponse du serveur
 				entity = response.getEntity();
 
-				// Utilisation d'une compression du flux ?
-				if (compression) {
-					// Décompression de la réponse
-					monIS = AndroidHttpClient.getUngzippedContent(entity);
-				}
-				// Pas de compression
-				else {
-					if (entity != null) {
-						// Taille du contenu à télécharger
-						int bufferSize = (int) entity.getContentLength();
-						// Si erreur ou inconnu, on initialise à 1024
-						if (bufferSize < 0) {
-							bufferSize = 1024;
-						}
-
-						// // Récupération du contenu
-						monIS = entity.getContent();
-					}
-				}
+				// Récupération d'un IS degzipé si requis
+				monIS = AndroidHttpClient.getUngzippedContent(entity);
 			}
 		} catch (Exception e) {
 			// J'arrête la requête
