@@ -368,7 +368,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * @param desArticles
 	 */
 	@SuppressLint("NewApi")
-	private void telechargeListeArticles(ArrayList<Item> desItems) {
+	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
 			// Je lance le téléchargement de son contenu
 			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
@@ -395,7 +395,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
 			// Le asyncDL ne me retourne que des articles non présents en DB => à DL

@@ -39,7 +39,7 @@ import android.util.Log;
  * @author Anael
  *
  */
-public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>> {
+public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? extends Item>> {
 	// Callback : parent + ref
 	private RefreshDisplayInterface monParent;
 	// Type & URL du code HTML
@@ -173,7 +173,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 	}
 
 	@Override
-	protected void onPostExecute(ArrayList<Item> result) {
+	protected void onPostExecute(ArrayList<? extends Item> result) {
 		try {
 			monParent.downloadHTMLFini(urlPage, result);
 		} catch (Exception e) {

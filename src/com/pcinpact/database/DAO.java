@@ -27,8 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.CommentaireItem;
-import com.pcinpact.items.Item;
+import com.pcinpact.items.CommentaireItem;	
 
 /**
  * Abstraction de la DB sqlite
@@ -293,7 +292,7 @@ public final class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Item> chargerArticlesATelecharger() {
+	public ArrayList<ArticleItem> chargerArticlesATelecharger() {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
@@ -303,7 +302,7 @@ public final class DAO extends SQLiteOpenHelper {
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=?", contenu, null, null, null);
 
-		ArrayList<Item> mesArticles = new ArrayList<Item>();
+		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {

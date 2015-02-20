@@ -257,7 +257,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
 		// Retour vide ? Fin ou pas de connexion
 		if (desItems.isEmpty()) {
 			isFinCommentaires = true;

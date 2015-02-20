@@ -28,7 +28,6 @@ import com.pcinpact.items.Item;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -148,7 +147,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems) {
+	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
 		// TODO Auto-generated method stub
 	}
 
