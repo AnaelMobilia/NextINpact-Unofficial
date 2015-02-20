@@ -18,8 +18,6 @@
  */
 package com.pcinpact.downloaders;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,17 +117,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<Item>
 						// Je passe par le parser
 						ArticleItem articleParser = monParser.getArticle(monIS, urlPage);
 
-						// Chargement de l'article depuis la BDD
-						ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
+						// Enregistrement du contenu de l'article
+						monDAO.updateContenuArticle(articleParser);
 
-						// Ajout du contenu à l'objet chargé
-						articleDB.setContenu(articleParser.getContenu());
-
-						// Enregistrement de l'objet complet
-						monDAO.enregistrerArticle(articleDB);
-
-						// Pour le retour à l'utilisateur...
-						mesItems.add(articleDB);
+						// pas de retour à l'utilisateur, il s'agit d'un simple DL
 						break;
 
 					case Constantes.HTML_COMMENTAIRES:
