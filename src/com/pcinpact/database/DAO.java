@@ -155,6 +155,18 @@ public final class DAO extends SQLiteOpenHelper {
 
 		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
 	}
+	
+	/**
+	 * Enregistre le contenu d'un article
+	 * @param unArticle
+	 */
+	public void updateContenuArticle(ArticleItem unArticle) {
+		// Les datas à MàJ
+		ContentValues updateValues = new ContentValues();
+		updateValues.put(ARTICLE_CONTENU, unArticle.getContenu());
+
+		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
+	}
 
 	/**
 	 * Enregistre un article en DB uniquement s'il n'existe pas déjà
@@ -290,7 +302,54 @@ public final class DAO extends SQLiteOpenHelper {
 
 		return mesArticles;
 	}
+	
+	/**
+	 * Liste des articles pour lesquels le contenu doit-être téléchargé
+	 * @return
+	 */
+	public ArrayList<ArticleItem> chargerArticlesATelecharger() {
+		// Les colonnes à récupérer
+		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
 
+		String[] contenu = { "" };
+
+		// Requête sur la DB
+		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=?", contenu, null, null, null);
+
+		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+		ArticleItem monArticle;
+		// Je passe tous les résultats
+		while (monCursor.moveToNext()) {
+			// Je remplis l'article
+			monArticle = new ArticleItem();
+			monArticle.setId(monCursor.getInt(0));
+			monArticle.setTitre(monCursor.getString(1));
+			monArticle.setSousTitre(monCursor.getString(2));
+			monArticle.setTimeStampPublication(monCursor.getLong(3));
+			monArticle.setUrl(monCursor.getString(4));
+			monArticle.setUrlIllustration(monCursor.getString(5));
+			monArticle.setContenu(monCursor.getString(6));
+			monArticle.setNbCommentaires(monCursor.getInt(7));
+			monArticle.setAbonne((monCursor.getInt(8) > 0));
+			monArticle.setLu((monCursor.getInt(9) > 0));
+
+			// Et l'enregistre
+			mesArticles.add(monArticle);
+		}
+
+		// Fermeture du curseur
+		monCursor.close();
+
+		return mesArticles;
+	}
+	
+
+	/**
+	 * Liste des articles à effacer du cache car trop vieux
+	 * @param nbMaxArticles
+	 * @return
+	 */
 	public ArrayList<ArticleItem> chargerArticlesASupprimer(int nbMaxArticles) {
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 
