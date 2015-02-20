@@ -32,7 +32,6 @@ import com.pcinpact.items.Item;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
