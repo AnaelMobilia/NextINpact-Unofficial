@@ -18,7 +18,6 @@
  */
 package com.pcinpact.downloaders;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -54,7 +53,6 @@ abstract class Downloader {
 	 */
 	public static InputStream download(final String uneURL, final Context unContext, boolean compression) {
 		// Retour
-//		ByteArrayOutputStream monBAOS = null;
 		InputStream monIS = null;
 
 		// Chargement des préférences de l'utilisateur
@@ -111,18 +109,6 @@ abstract class Downloader {
 				if (compression) {
 					// Décompression de la réponse
 					monIS = AndroidHttpClient.getUngzippedContent(entity);
-					//					InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
-//					// Je crée mon buffer de sortie
-//					monBAOS = new ByteArrayOutputStream(monIS.available());
-//
-//					int nRead;
-//					byte[] data = new byte[monIS.available()];
-//
-//					// Je stocke mes datas dans mon flux de sortie
-//					while ((nRead = monIS.read(data, 0, data.length)) != -1) {
-//						monBAOS.write(data, 0, nRead);
-//					}
-//					monIS.close();
 				}
 				// Pas de compression
 				else {
@@ -134,11 +120,7 @@ abstract class Downloader {
 							bufferSize = 1024;
 						}
 
-//						// Je crée mon buffer
-//						monBAOS = new ByteArrayOutputStream(bufferSize);
-//
-//						// Récupération du contenu
-//						entity.writeTo(monBAOS);
+						// // Récupération du contenu
 						monIS = entity.getContent();
 					}
 				}
@@ -189,7 +171,6 @@ abstract class Downloader {
 				client.close();
 			}
 		}
-//		return monBAOS;
 		return monIS;
 	}
 }
