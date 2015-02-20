@@ -125,7 +125,7 @@ public final class DAO extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		switch(oldVersion) {
+		switch (oldVersion) {
 			case 1:
 				String reqUpdateFrom1 = "ALTER TABLE " + DB_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_IS_LU + " BOOLEAN;";
 				db.execSQL(reqUpdateFrom1);
@@ -155,9 +155,10 @@ public final class DAO extends SQLiteOpenHelper {
 
 		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
 	}
-	
+
 	/**
 	 * Enregistre le contenu d'un article
+	 * 
 	 * @param unArticle
 	 */
 	public void updateContenuArticle(ArticleItem unArticle) {
@@ -203,9 +204,10 @@ public final class DAO extends SQLiteOpenHelper {
 
 		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
 	}
-	
+
 	/**
 	 * Taggue un article comme étant lu
+	 * 
 	 * @param unArticle
 	 */
 	public void marquerArticleLu(ArticleItem unArticle) {
@@ -245,16 +247,8 @@ public final class DAO extends SQLiteOpenHelper {
 
 		// Je vais au premier (et unique) résultat
 		if (monCursor.moveToNext()) {
-			monArticle.setId(monCursor.getInt(0));
-			monArticle.setTitre(monCursor.getString(1));
-			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setTimeStampPublication(monCursor.getLong(3));
-			monArticle.setUrl(monCursor.getString(4));
-			monArticle.setUrlIllustration(monCursor.getString(5));
-			monArticle.setContenu(monCursor.getString(6));
-			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne((monCursor.getInt(8) > 0));
-			monArticle.setLu((monCursor.getInt(9) > 0));
+			// Je charge les données de l'objet
+			monArticle = cursorToArticleItem(monCursor);
 		}
 		// Fermeture du curseur
 		monCursor.close();
@@ -280,18 +274,8 @@ public final class DAO extends SQLiteOpenHelper {
 		ArticleItem monArticle;
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
-			// Je remplis l'article
-			monArticle = new ArticleItem();
-			monArticle.setId(monCursor.getInt(0));
-			monArticle.setTitre(monCursor.getString(1));
-			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setTimeStampPublication(monCursor.getLong(3));
-			monArticle.setUrl(monCursor.getString(4));
-			monArticle.setUrlIllustration(monCursor.getString(5));
-			monArticle.setContenu(monCursor.getString(6));
-			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne((monCursor.getInt(8) > 0));
-			monArticle.setLu((monCursor.getInt(9) > 0));
+			// Je charge les données de l'objet
+			monArticle = cursorToArticleItem(monCursor);
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -302,9 +286,10 @@ public final class DAO extends SQLiteOpenHelper {
 
 		return mesArticles;
 	}
-	
+
 	/**
 	 * Liste des articles pour lesquels le contenu doit-être téléchargé
+	 * 
 	 * @return
 	 */
 	public ArrayList<ArticleItem> chargerArticlesATelecharger() {
@@ -321,18 +306,8 @@ public final class DAO extends SQLiteOpenHelper {
 		ArticleItem monArticle;
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
-			// Je remplis l'article
-			monArticle = new ArticleItem();
-			monArticle.setId(monCursor.getInt(0));
-			monArticle.setTitre(monCursor.getString(1));
-			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setTimeStampPublication(monCursor.getLong(3));
-			monArticle.setUrl(monCursor.getString(4));
-			monArticle.setUrlIllustration(monCursor.getString(5));
-			monArticle.setContenu(monCursor.getString(6));
-			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne((monCursor.getInt(8) > 0));
-			monArticle.setLu((monCursor.getInt(9) > 0));
+			// Je charge les données de l'objet
+			monArticle = cursorToArticleItem(monCursor);
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -343,10 +318,10 @@ public final class DAO extends SQLiteOpenHelper {
 
 		return mesArticles;
 	}
-	
 
 	/**
 	 * Liste des articles à effacer du cache car trop vieux
+	 * 
 	 * @param nbMaxArticles
 	 * @return
 	 */
@@ -399,17 +374,7 @@ public final class DAO extends SQLiteOpenHelper {
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
 			// Je remplis l'article
-			monArticle = new ArticleItem();
-			monArticle.setId(monCursor.getInt(0));
-			monArticle.setTitre(monCursor.getString(1));
-			monArticle.setSousTitre(monCursor.getString(2));
-			monArticle.setTimeStampPublication(monCursor.getLong(3));
-			monArticle.setUrl(monCursor.getString(4));
-			monArticle.setUrlIllustration(monCursor.getString(5));
-			monArticle.setContenu(monCursor.getString(6));
-			monArticle.setNbCommentaires(monCursor.getInt(7));
-			monArticle.setAbonne((monCursor.getInt(8) > 0));
-			monArticle.setLu((monCursor.getInt(9) > 0));
+			monArticle = cursorToArticleItem(monCursor);
 
 			// Et l'enregistre
 			mesArticles.add(monArticle);
@@ -484,7 +449,7 @@ public final class DAO extends SQLiteOpenHelper {
 	 * @param idArticleEtCommentaire
 	 * @return
 	 */
-	public CommentaireItem chargerCommentaire(int idArticle, int idCommentaire) {
+	private CommentaireItem chargerCommentaire(int idArticle, int idCommentaire) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
 				COMMENTAIRE_CONTENU };
@@ -499,11 +464,8 @@ public final class DAO extends SQLiteOpenHelper {
 
 		// Je vais au premier (et unique) résultat
 		if (monCursor.moveToNext()) {
-			monCommentaire.setArticleId(monCursor.getInt(0));
-			monCommentaire.setId(monCursor.getInt(1));
-			monCommentaire.setAuteur(monCursor.getString(2));
-			monCommentaire.setTimeStampPublication(monCursor.getLong(3));
-			monCommentaire.setCommentaire(monCursor.getString(4));
+			// Je charge les données de l'objet
+			monCommentaire = cursorToCommentaireItem(monCursor);
 		}
 
 		// Fermeture du curseur
@@ -531,13 +493,8 @@ public final class DAO extends SQLiteOpenHelper {
 		CommentaireItem monCommentaire;
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
-			// Je remplis l'article
-			monCommentaire = new CommentaireItem();
-			monCommentaire.setArticleId(monCursor.getInt(0));
-			monCommentaire.setId(monCursor.getInt(1));
-			monCommentaire.setAuteur(monCursor.getString(2));
-			monCommentaire.setTimeStampPublication(monCursor.getLong(3));
-			monCommentaire.setCommentaire(monCursor.getString(4));
+			// Je charge les données de l'objet
+			monCommentaire = cursorToCommentaireItem(monCursor);
 
 			// Et l'enregistre
 			mesCommentaires.add(monCommentaire);
@@ -598,6 +555,46 @@ public final class DAO extends SQLiteOpenHelper {
 	 */
 	public void supprimerDateRefresh(int idArticle) {
 		maDB.delete(DB_TABLE_REFRESH, REFRESH_ARTICLE_ID + "=?", new String[] { String.valueOf(idArticle) });
+	}
+
+	/**
+	 * Charge un ArticleItem depuis un cursor
+	 * @param unCursor
+	 * @return
+	 */
+	private ArticleItem cursorToArticleItem(Cursor unCursor) {
+		ArticleItem monArticle = new ArticleItem();
+
+		monArticle.setId(unCursor.getInt(0));
+		monArticle.setTitre(unCursor.getString(1));
+		monArticle.setSousTitre(unCursor.getString(2));
+		monArticle.setTimeStampPublication(unCursor.getLong(3));
+		monArticle.setUrl(unCursor.getString(4));
+		monArticle.setUrlIllustration(unCursor.getString(5));
+		monArticle.setContenu(unCursor.getString(6));
+		monArticle.setNbCommentaires(unCursor.getInt(7));
+		monArticle.setAbonne((unCursor.getInt(8) > 0));
+		monArticle.setLu((unCursor.getInt(9) > 0));
+
+		return monArticle;
+	}
+	
+	/**
+	 * Charge un CommentaireItem depuis un cursor
+	 * @param unCursor
+	 * @return
+	 */
+	private CommentaireItem cursorToCommentaireItem(Cursor unCursor) {
+		CommentaireItem monCommentaire = new CommentaireItem();
+
+		monCommentaire = new CommentaireItem();
+		monCommentaire.setArticleId(unCursor.getInt(0));
+		monCommentaire.setId(unCursor.getInt(1));
+		monCommentaire.setAuteur(unCursor.getString(2));
+		monCommentaire.setTimeStampPublication(unCursor.getLong(3));
+		monCommentaire.setCommentaire(unCursor.getString(4));
+
+		return monCommentaire;
 	}
 
 }
