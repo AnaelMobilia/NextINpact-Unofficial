@@ -332,10 +332,16 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		super.onDestroy();
 	}
 
+	/**
+	 * Lance le téléchargement de la liste des articles
+	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
+			// Téléchargement des articles dont le contenu n'a pas été téléchargé au dernier refresh
+			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
+			
 			// Gestion du nombre de pages à télécharger - option Utilisateur
 			int nbArticles = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
 					getString(R.string.defautOptionNbArticles)));
@@ -356,37 +362,44 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		}
 	}
-
+	
+	/**
+	 * Lance le téléchargement des articles passés en paramètres
+	 * @param desArticles
+	 */
 	@SuppressLint("NewApi")
+	private void telechargeListeArticles(ArrayList<Item> desItems) {
+		for (Item unItem : desItems) {
+			// Je lance le téléchargement de son contenu
+			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
+					((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
+			// Parallèlisation des téléchargements pour l'ensemble de l'application
+			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				monAHD.execute();
+			}
+			nouveauChargementGUI();
+
+			// Je lance le téléchargement de sa miniature
+			AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+					Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
+			// Parallèlisation des téléchargements pour l'ensemble de l'application
+			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+				monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				monAID.execute();
+			}
+			nouveauChargementGUI();
+		}
+	}
+
 	@Override
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
 			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
-			for (Item unItem : desItems) {
-				// Je lance le téléchargement de son contenu
-				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
-						((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					monAHD.execute();
-				}
-				nouveauChargementGUI();
-
-				// Je lance le téléchargement de sa miniature
-				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
-				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					monAID.execute();
-				}
-				nouveauChargementGUI();
-			}
-
+			telechargeListeArticles(desItems);
 		}
 
 		// gestion du téléchargement GUI
