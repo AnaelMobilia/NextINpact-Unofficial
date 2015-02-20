@@ -18,6 +18,8 @@
  */
 package com.pcinpact.parseur;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,12 +73,13 @@ public class ParseurHTML {
 	 * 
 	 * @param monInput
 	 * @return
+	 * @throws IOException
 	 */
-	public ArrayList<ArticleItem> getListeArticles(String monInput, String urlPage) {
+	public ArrayList<ArticleItem> getListeArticles(InputStream monIS, String urlPage) throws IOException {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(monInput, urlPage);
+		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
 
 		// Les articles
 		Elements lesArticles = pageNXI.select("article[data-acturowid][data-datepubli]");
@@ -139,12 +142,13 @@ public class ParseurHTML {
 	 * 
 	 * @param monArticleItem
 	 * @return
+	 * @throws IOException
 	 */
-	public ArticleItem getArticle(String monInput, String urlPage) {
+	public ArticleItem getArticle(InputStream monIS, String urlPage) throws IOException {
 		ArticleItem monArticleItem = new ArticleItem();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(monInput, urlPage);
+		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
@@ -290,12 +294,13 @@ public class ParseurHTML {
 	 * @param input
 	 * @param urlPage
 	 * @return
+	 * @throws IOException
 	 */
-	public ArrayList<CommentaireItem> getCommentaires(String input, String urlPage) {
+	public ArrayList<CommentaireItem> getCommentaires(InputStream monIS, String urlPage) throws IOException {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
-		Document pageNXI = Jsoup.parse(input, urlPage);
+		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
 
 		// ID de l'article concerné
 		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
