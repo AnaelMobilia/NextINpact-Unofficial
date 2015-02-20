@@ -157,15 +157,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						break;
 
 					default:
+						// Fermeture de l'IS
+						monIS.close();
 						if (Constantes.DEBUG) {
 							Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
 						}
 						break;
 				}
 			}
-			// Je ferme l'IS
-			monIS.close();
-
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {

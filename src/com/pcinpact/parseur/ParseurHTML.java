@@ -80,6 +80,8 @@ public class ParseurHTML {
 
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
+		// Fermeture de l'IS
+		monIS.close();
 
 		// Les articles
 		Elements lesArticles = pageNXI.select("article[data-acturowid][data-datepubli]");
@@ -149,6 +151,8 @@ public class ParseurHTML {
 
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
+		// Fermeture de l'IS
+		monIS.close();
 
 		// L'article
 		Elements lArticle = pageNXI.select("article");
@@ -301,6 +305,8 @@ public class ParseurHTML {
 
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(monIS, null, urlPage);
+		// Fermeture de l'IS
+		monIS.close();
 
 		// ID de l'article concerné
 		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
