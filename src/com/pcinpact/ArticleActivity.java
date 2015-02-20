@@ -115,7 +115,7 @@ public class ArticleActivity extends ActionBarActivity {
 			data = getString(R.string.articleVideErreurHTML);
 		}
 
-		webview.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+		webview.loadDataWithBaseURL(null, data, "text/html", Constantes.NEXT_INPACT_ENCODAGE, null);
 
 	}
 

@@ -41,6 +41,8 @@ public class Constantes {
 	/**
 	 * PARAMETRES GENERAUX
 	 */
+	// Encodage des pages
+	public final static String NEXT_INPACT_ENCODAGE = "UTF-8";
 	// URL de téléchargement
 	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
 	public final static String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
