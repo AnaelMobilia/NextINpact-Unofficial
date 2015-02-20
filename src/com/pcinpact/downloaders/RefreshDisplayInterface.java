@@ -19,13 +19,11 @@
 package com.pcinpact.downloaders;
 
 import java.util.ArrayList;
-
-import android.graphics.Bitmap;
-
 import com.pcinpact.items.Item;
 
 /**
  * Interface générique de callback à la fin des téléchargements HTML / Image
+ * 
  * @author Anael
  *
  */
@@ -33,16 +31,18 @@ public interface RefreshDisplayInterface {
 
 	/**
 	 * Une ressource HTML à été téléchargée
+	 * 
 	 * @param unUUID
 	 * @param mesItems
 	 */
 	public void downloadHTMLFini(String uneURL, ArrayList<Item> mesItems);
-	
+
 	/**
 	 * Une ressource image a été téléchargée
+	 * 
 	 * @param unUUID
 	 * @param uneImage
 	 */
-	public void downloadImageFini(String uneURL, Bitmap uneImage);
-	
+	public void downloadImageFini(String uneURL);
+
 }

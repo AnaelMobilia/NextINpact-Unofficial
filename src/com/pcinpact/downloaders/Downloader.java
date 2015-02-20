@@ -52,9 +52,10 @@ abstract class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	public static ByteArrayOutputStream download(final String uneURL, final Context unContext, boolean compression) {
+	public static InputStream download(final String uneURL, final Context unContext, boolean compression) {
 		// Retour
-		ByteArrayOutputStream monBAOS = null;
+//		ByteArrayOutputStream monBAOS = null;
+		InputStream monIS = null;
 
 		// Chargement des préférences de l'utilisateur
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -109,18 +110,19 @@ abstract class Downloader {
 				// Utilisation d'une compression du flux ?
 				if (compression) {
 					// Décompression de la réponse
-					InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
-					// Je crée mon buffer de sortie
-					monBAOS = new ByteArrayOutputStream(monIS.available());
-
-					int nRead;
-					byte[] data = new byte[monIS.available()];
-
-					// Je stocke mes datas dans mon flux de sortie
-					while ((nRead = monIS.read(data, 0, data.length)) != -1) {
-						monBAOS.write(data, 0, nRead);
-					}
-					monIS.close();
+					monIS = AndroidHttpClient.getUngzippedContent(entity);
+					//					InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
+//					// Je crée mon buffer de sortie
+//					monBAOS = new ByteArrayOutputStream(monIS.available());
+//
+//					int nRead;
+//					byte[] data = new byte[monIS.available()];
+//
+//					// Je stocke mes datas dans mon flux de sortie
+//					while ((nRead = monIS.read(data, 0, data.length)) != -1) {
+//						monBAOS.write(data, 0, nRead);
+//					}
+//					monIS.close();
 				}
 				// Pas de compression
 				else {
@@ -132,11 +134,12 @@ abstract class Downloader {
 							bufferSize = 1024;
 						}
 
-						// Je crée mon buffer
-						monBAOS = new ByteArrayOutputStream(bufferSize);
-
-						// Récupération du contenu
-						entity.writeTo(monBAOS);
+//						// Je crée mon buffer
+//						monBAOS = new ByteArrayOutputStream(bufferSize);
+//
+//						// Récupération du contenu
+//						entity.writeTo(monBAOS);
+						monIS = entity.getContent();
 					}
 				}
 			}
@@ -186,6 +189,7 @@ abstract class Downloader {
 				client.close();
 			}
 		}
-		return monBAOS;
+//		return monBAOS;
+		return monIS;
 	}
 }
