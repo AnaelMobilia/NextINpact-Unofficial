@@ -250,7 +250,7 @@ public class ParseurHTML {
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" /></a>");
 			}
-			// Soundcloud
+			// Soundcloud (l'URL commence bien par w.soundcloud !)
 			else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
 				monRemplacement.html("<a href=\"" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
