@@ -220,45 +220,45 @@ public class ParseurHTML {
 				// Recalcul de l'ID de la vidéo (cas particulier)
 				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/videos_youtube.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
 
 			}
 			// Youtube
 			else if (urlLecteur.startsWith("www.youtube.com/embed/")
 					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
 				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_youtube.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_youtube.png\" /></a>");
 
 			}
 			// Dailymotion
 			else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
 				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_dailymotion.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_dailymotion.png\" /></a>");
 			}
 			// Vimeo
 			else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
 				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_vimeo.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_vimeo.png\" /></a>");
 			}
 			// Videos.gouv.fr
 			else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
 				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_videos_gouv_fr.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_videos_gouv_fr.png\" /></a>");
 			}
 			// Vidme
 			else if (urlLecteur.startsWith("vid.me")) {
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_vidme.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" /></a>");
 			}
 			// Soundcloud
 			else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
 				monRemplacement.html("<a href=\"" + idVideo
-						+ "\"><img src=\"file:///android_res/drawable/video_soundcloud.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
 			}
 			// Déchet
 			else {
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
-						+ "\"><img src=\"file:///android_res/drawable/video_non_supporte.png\" /></a>");
+						+ "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
 			}
 
 			// Je remplace l'iframe par mon contenu
