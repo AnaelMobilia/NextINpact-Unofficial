@@ -213,7 +213,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	private void lancerAnimationTelechargement() {
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("CommentairesActivity", "lancerAnimationTelechargement");
+			Log.i("CommentairesActivity", "lancerAnimationTelechargement");
 		}
 		// J'enregistre l'état
 		isLoading = true;
@@ -236,7 +236,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	private void arreterAnimationTelechargement() {
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.w("CommentairesActivity", "arreterAnimationTelechargement");
+			Log.i("CommentairesActivity", "arreterAnimationTelechargement");
 		}
 		// J'enregistre l'état
 		isLoading = false;
