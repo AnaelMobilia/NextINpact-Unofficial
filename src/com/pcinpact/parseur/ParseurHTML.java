@@ -255,6 +255,11 @@ public class ParseurHTML {
 				monRemplacement.html("<a href=\"" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
 			}
+			// Scribd
+			else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+				monRemplacement.html("<a href=\"" + urlLecteur
+						+ "\"><img src=\"file:///android_res/drawable/iframe_scribd.png\" /></a>");
+			}
 			// Déchet
 			else {
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
