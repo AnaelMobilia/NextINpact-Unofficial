@@ -32,10 +32,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.Html.ImageGetter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 /**
  * Smileys dans les commentaires. Si image non présente en cache, la téléchargera
@@ -46,15 +49,21 @@ import android.view.WindowManager;
 public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	// Contexte de l'activité
 	private Context monContext;
+	// TextView dans lequel l'image est affichée
+	private TextView maTextView;
+	// Texte du commentaire (pour recharger quand le smiley est dispo)
+	private String monCommentaire;
 
 	/**
 	 * Constructeur
 	 * 
 	 * @param laView
 	 */
-	public URLImageProvider(Context unContext) {
+	public URLImageProvider(Context unContext, TextView uneTextView, String unCommentaire) {
 		super();
 		monContext = unContext;
+		maTextView = uneTextView;
+		monCommentaire = unCommentaire;
 	}
 
 	@SuppressLint("NewApi")
@@ -157,6 +166,10 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		if (Constantes.DEBUG) {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);
 		}
+
+		// J'actualise le commentaire
+		Spanned spannedContent = Html.fromHtml(monCommentaire, this, null);
+		maTextView.setText(spannedContent);
 	}
 
 }

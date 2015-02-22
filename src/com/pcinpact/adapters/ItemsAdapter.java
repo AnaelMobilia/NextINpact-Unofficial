@@ -256,7 +256,7 @@ public class ItemsAdapter extends BaseAdapter {
 				monHolder.auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				monHolder.numeroCommentaire.setText(String.valueOf(ai.getId()));
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext), null);
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext, monHolder.commentaire, ai.getCommentaire()), null);
 				monHolder.commentaire.setText(spannedContent);
 
 				// Liens cliquables ? option utilisateur !
