@@ -67,6 +67,9 @@ abstract class Downloader {
 		try {
 			PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
 			numVersion = pInfo.versionName;
+			if(Constantes.DEBUG) {
+				numVersion += " DEV";
+			}
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
