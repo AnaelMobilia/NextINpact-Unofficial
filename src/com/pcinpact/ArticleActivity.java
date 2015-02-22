@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -111,7 +112,11 @@ public class ArticleActivity extends ActionBarActivity {
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
-		if (data == null || data == "") {
+		if (data == null || data.isEmpty()) {
+			// DEBUG
+			if(Constantes.DEBUG) {
+				Log.w("ArticleActivity", "Article vide");
+			}
 			data = getString(R.string.articleVideErreurHTML);
 		}
 
