@@ -180,28 +180,25 @@ abstract class Downloader {
 					passwordLastTry = passwordOption;
 
 					// Ai-je un cookie d'authentification ?
-					for (Cookie unCookie : monCookieStore.getCookies()) {
-						// Est-le bon cookie ?
-						if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
-							isConnected = true;
+					if (isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+						isConnected = true;
 
-							// DEBUG
-							if (Constantes.DEBUG) {
-								Log.w("Downloader", "Authentification réussie (cookie présent)");
-							}
-							// Retour utilisateur ?
-							if (debug) {
-								Handler handler = new Handler(unContext.getMainLooper());
-								handler.post(new Runnable() {
-									@Override
-									public void run() {
-										Toast monToast = Toast.makeText(unContext,
-												"[Downloader] Authentification REUSSIE en tant que  " + usernameOption,
-												Toast.LENGTH_LONG);
-										monToast.show();
-									}
-								});
-							}
+						// DEBUG
+						if (Constantes.DEBUG) {
+							Log.w("Downloader", "Authentification réussie (cookie présent)");
+						}
+						// Retour utilisateur ?
+						if (debug) {
+							Handler handler = new Handler(unContext.getMainLooper());
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									Toast monToast = Toast.makeText(unContext,
+											"[Downloader] Authentification REUSSIE en tant que  " + usernameOption,
+											Toast.LENGTH_LONG);
+									monToast.show();
+								}
+							});
 						}
 					}
 
@@ -331,17 +328,18 @@ abstract class Downloader {
 
 	/**
 	 * Vérifie l'existence d'un cookie
+	 * 
 	 * @param authentificationCookie
 	 * @return
 	 */
 	private static boolean isCookieValid(String authentificationCookie) {
 		Boolean monRetour = false;
-		
+
 		// Ai-je bien un cookieHolder
 		if (monCookieStore != null) {
 			// Je supprime tous les cookies expirés
 			monCookieStore.clearExpired(new Date());
-			
+
 			// Ai-je le cookie demandé ?
 			for (Cookie unCookie : monCookieStore.getCookies()) {
 				// Est-le bon cookie ?
