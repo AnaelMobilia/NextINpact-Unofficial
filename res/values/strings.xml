@@ -70,7 +70,8 @@ http://www.nextinpact.com/abonnement"
 	</string>
 
     <!-- Message d'erreur -->
-    <string name="articleVideErreurHTML"><html><h1>Le contenu de cet article n\'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation. Désolé.</h1></html></string>
+    <string name="articleVideErreurHTML">"Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation. Désolé."</string>
+    <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
 
     <!-- Vue "Options" -->
     <string name="optionsGenerales">"Options de l'application"</string>

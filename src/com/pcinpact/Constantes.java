@@ -124,4 +124,12 @@ public class Constantes {
 	 */
 	public final static int COULEUR_ARTICLE_NON_LU = Color.WHITE;
 	public final static int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
+	
+	/**
+	 * PARAMETRES D'AUTHENTIFICATION
+	 */
+	public final static String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
+	public final static String AUTHENTIFICATION_USERNAME = "UserName";
+	public final static String AUTHENTIFICATION_PASSWORD = "Password";
+	public final static String AUTHENTIFICATION_COOKIE = "inpactstore"; 
 }
