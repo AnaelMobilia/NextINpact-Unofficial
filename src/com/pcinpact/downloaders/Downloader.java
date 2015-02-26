@@ -42,7 +42,6 @@ import com.pcinpact.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.net.http.AndroidHttpClient;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -98,19 +97,7 @@ abstract class Downloader {
 				unContext.getResources().getBoolean(R.bool.defautOptionDebug));
 
 		// Numéro de version de l'application
-		String numVersion = "";
-		try {
-			PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
-			numVersion = pInfo.versionName;
-			if (Constantes.DEBUG) {
-				numVersion += " DEV";
-			}
-		} catch (Exception e) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.e("Downloader", "Erreur à la résolution du n° de version", e);
-			}
-		}
+		String numVersion = Constantes.getAppVersion(unContext);
 
 		/**
 		 * AUTHENTIFICATION

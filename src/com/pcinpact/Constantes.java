@@ -18,7 +18,10 @@
  */
 package com.pcinpact;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * Constantes de l'application (onfiguration des URL, ...)
@@ -132,4 +135,26 @@ public class Constantes {
 	public final static String AUTHENTIFICATION_USERNAME = "UserName";
 	public final static String AUTHENTIFICATION_PASSWORD = "Password";
 	public final static String AUTHENTIFICATION_COOKIE = "inpactstore"; 
+	
+	/**
+	 * Version de l'application
+	 */
+	public static String getAppVersion(Context unContext) {
+		// Numéro de version de l'application
+		String numVersion = "";
+		try {
+			PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
+			numVersion = pInfo.versionName;
+			if (Constantes.DEBUG) {
+				numVersion += " DEV";
+			}
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("Constantes", "Erreur à la résolution du n° de version", e);
+			}
+		}
+		
+		return numVersion;
+	}
 }
