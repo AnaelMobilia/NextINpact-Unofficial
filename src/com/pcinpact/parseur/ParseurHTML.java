@@ -92,11 +92,11 @@ public class ParseurHTML {
 
 			// Nombre de commentaires
 			Element commentaires = unArticle.select("span[class=nbcomment]").get(0);
-try {
-			monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
-} catch (Exception e) {
-	monArticleItem.setNbCommentaires(0);
-}
+			try {
+				monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
+			} catch (Exception e) {
+				monArticleItem.setNbCommentaires(0);
+			}
 
 			// Statut abonné
 			Elements badgeAbonne = unArticle.select("img[alt=badge_abonne]");
@@ -246,6 +246,11 @@ try {
 			else {
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
 						+ "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("ParseurHTML", "iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+				}
 			}
 
 			// Je remplace l'iframe par mon contenu
