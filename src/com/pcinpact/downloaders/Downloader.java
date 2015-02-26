@@ -209,6 +209,11 @@ abstract class Downloader {
 					Log.e("Downloader", "Crash sur l'authentification", e);
 				}
 			}
+		} else {
+			// DEBUG
+			if(Constantes.DEBUG) {
+				Log.i("Downloader", "Pas d'authentification à effectuer");
+			}
 		}
 
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
