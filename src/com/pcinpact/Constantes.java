@@ -19,8 +19,10 @@
 package com.pcinpact;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -121,21 +123,21 @@ public class Constantes {
 	public final static int TEXT_SIZE_MEDIUM = 18;
 	public final static int TEXT_SIZE_LARGE = 22;
 	public final static int TEXT_SIZE_XLARGE = 26;
-	
+
 	/**
 	 * COULEUR D'AFFICHAGE
 	 */
 	public final static int COULEUR_ARTICLE_NON_LU = Color.WHITE;
 	public final static int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
-	
+
 	/**
 	 * PARAMETRES D'AUTHENTIFICATION
 	 */
 	public final static String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
 	public final static String AUTHENTIFICATION_USERNAME = "UserName";
 	public final static String AUTHENTIFICATION_PASSWORD = "Password";
-	public final static String AUTHENTIFICATION_COOKIE = "inpactstore"; 
-	
+	public final static String AUTHENTIFICATION_COOKIE = "inpactstore";
+
 	/**
 	 * Version de l'application
 	 */
@@ -154,7 +156,39 @@ public class Constantes {
 				Log.e("Constantes", "Erreur à la résolution du n° de version", e);
 			}
 		}
-		
+
 		return numVersion;
+	}
+
+	/**
+	 * Retourne une option String
+	 * 
+	 * @param optionId
+	 * @param defaultOptionId
+	 * @return
+	 */
+	public static String getOptionString(Context unContext, int idOption, int defautOption) {
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+
+		return mesPrefs.getString(unContext.getString(idOption), unContext.getString(defautOption));
+	}
+
+	/**
+	 * Retourne une option Boolean
+	 * @param unContext
+	 * @param idOption
+	 * @param defautOption
+	 * @return
+	 */
+	public static Boolean getOptionBoolean(Context unContext, int idOption, int defautOption) {
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+
+		return mesPrefs.getBoolean(unContext.getString(idOption), unContext.getResources().getBoolean(defautOption));
+	}
+	
+	public static int getOptionInt(Context unContext, int idOption, int defautOption) {
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+		
+		return Integer.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
 	}
 }

@@ -80,13 +80,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 				// Je convertis mon byte[] en String
 				String contenu = IOUtils.toString(datas, Constantes.NEXT_INPACT_ENCODAGE);
 				
-				// J'ouvre une instance du parser
-				ParseurHTML monParser = new ParseurHTML(monContext);
-
 				switch (typeHTML) {
 					case Constantes.HTML_LISTE_ARTICLES:
 						// Je passe par le parser
-						ArrayList<ArticleItem> monRetour = monParser.getListeArticles(contenu, urlPage);
+						ArrayList<ArticleItem> monRetour = ParseurHTML.getListeArticles(contenu, urlPage);
 
 						// DEBUG
 						if (Constantes.DEBUG) {
@@ -118,7 +115,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 					case Constantes.HTML_ARTICLE:
 						// Je passe par le parser
-						ArticleItem articleParser = monParser.getArticle(contenu, urlPage);
+						ArticleItem articleParser = ParseurHTML.getArticle(contenu, urlPage);
 
 						// Enregistrement du contenu de l'article
 						monDAO.updateContenuArticle(articleParser);
@@ -128,7 +125,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 					case Constantes.HTML_COMMENTAIRES:
 						// Je passe par le parser
-						ArrayList<CommentaireItem> lesCommentaires = monParser.getCommentaires(contenu, urlPage);
+						ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(contenu, urlPage);
 
 						// DEBUG
 						if (Constantes.DEBUG) {

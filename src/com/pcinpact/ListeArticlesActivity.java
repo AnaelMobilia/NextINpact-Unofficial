@@ -73,8 +73,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	private DAO monDAO;
 	// Nombre de DL en cours
 	private int dlInProgress;
-	// Préférences utilisateur
-	private SharedPreferences mesPrefs;
 
 	// Ressources sur les éléments graphiques
 	private Menu monMenu;
@@ -96,9 +94,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		setSupportProgressBarIndeterminateVisibility(false);
-
-		// Chargement des préférences de l'utilisateur
-		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		// Mise en place de l'itemAdapter
 		monItemsAdapter = new ItemsAdapter(this, mesArticles);
@@ -143,9 +138,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionInstallationApplication), getResources()
-				.getBoolean(R.bool.defautOptionInstallationApplication));
-
+		Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
+				R.string.idOptionInstallationApplication, R.bool.defautOptionInstallationApplication);
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
 			// Lancement d'un téléchargement des articles
@@ -163,6 +157,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			builder.create().show();
 
 			// Enregistrement de l'affichage
+			// Chargement des préférences de l'utilisateur
+			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			Editor editor = mesPrefs.edit();
 			editor.putBoolean(getString(R.string.idOptionInstallationApplication), false);
 			editor.commit();
@@ -225,8 +221,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				// Retour utilisateur ?
 				// L'utilisateur demande-t-il un debug ?
-				Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug),
-						getResources().getBoolean(R.bool.defautOptionDebug));
+				Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+						R.bool.defautOptionDebug);
 				if (debug) {
 					Toast monToast = Toast.makeText(getApplicationContext(),
 							"[ListeArticlesActivity] Le menu est null (onKeyUp)", Toast.LENGTH_LONG);
@@ -270,8 +266,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@Override
 	protected void onDestroy() {
 		// Nombre d'articles à conserver
-		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-				getString(R.string.defautOptionNbArticles)));
+		int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+				R.string.defautOptionNbArticles);
 
 		/**
 		 * Données à conserver
@@ -341,10 +337,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		if (dlInProgress == 0) {
 			// Téléchargement des articles dont le contenu n'a pas été téléchargé au dernier refresh
 			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
-			
+
 			// Gestion du nombre de pages à télécharger - option Utilisateur
-			int nbArticles = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-					getString(R.string.defautOptionNbArticles)));
+			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+					R.string.defautOptionNbArticles);
 			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;// Téléchargement de chaque page...
 			for (int numPage = 1; numPage <= nbPages; numPage++) {
 				// Le retour en GUI
@@ -362,17 +358,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		}
 	}
-	
+
 	/**
 	 * Lance le téléchargement des articles passés en paramètres
+	 * 
 	 * @param desArticles
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
 			// Je lance le téléchargement de son contenu
-			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
-					((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
+			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(),
+					monDAO, getApplicationContext());
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -422,8 +419,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		String jourActuel = "";
 
 		// Nombre d'articles à afficher
-		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-				getString(R.string.defautOptionNbArticles)));
+		int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+				R.string.defautOptionNbArticles);
 		// Chargement des articles depuis la BDD (trié, limité)
 		mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
 

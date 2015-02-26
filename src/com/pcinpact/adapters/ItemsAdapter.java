@@ -31,7 +31,6 @@ import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -57,16 +56,12 @@ public class ItemsAdapter extends BaseAdapter {
 	private Context monContext;
 	private LayoutInflater monLayoutInflater;
 	private ArrayList<? extends Item> mesItems;
-	private SharedPreferences mesPrefs;
 
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
 		monLayoutInflater = LayoutInflater.from(monContext);
-
-		// Chargement des préférences
-		mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 	}
 
 	/**
@@ -199,14 +194,14 @@ public class ItemsAdapter extends BaseAdapter {
 				ArticleItem ai = (ArticleItem) i;
 
 				// L'article est-il déjà lu ?
-				if(ai.isLu()) {
+				if (ai.isLu()) {
 					// Couleur lu
 					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
 				} else {
 					// Couleur non lu
 					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
 				}
-				
+
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
 					monHolder.labelAbonne.setVisibility(View.VISIBLE);
@@ -256,12 +251,13 @@ public class ItemsAdapter extends BaseAdapter {
 				monHolder.auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				monHolder.numeroCommentaire.setText(String.valueOf(ai.getId()));
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext, monHolder.commentaire, ai.getCommentaire()), null);
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext,
+						monHolder.commentaire, ai.getCommentaire()), null);
 				monHolder.commentaire.setText(spannedContent);
 
 				// Liens cliquables ? option utilisateur !
-				Boolean lienClickable = mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires),
-						monContext.getResources().getBoolean(R.bool.defautOptionLiensDansCommentaires));
+				Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
+						R.bool.defautOptionLiensDansCommentaires);
 				if (lienClickable) {
 					// Active les liens a href
 					monHolder.commentaire.setMovementMethod(new GestionLiens());
@@ -290,8 +286,7 @@ public class ItemsAdapter extends BaseAdapter {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
-				String.valueOf(tailleDefaut)));
+		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
 
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {

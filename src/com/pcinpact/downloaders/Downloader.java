@@ -36,15 +36,11 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
-
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.http.AndroidHttpClient;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -90,11 +86,8 @@ abstract class Downloader {
 			monHTTPContext.setAttribute(ClientContext.COOKIE_STORE, monCookieStore);
 		}
 
-		// Chargement des préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 		// L'utilisateur demande-t-il un debug ?
-		Boolean debug = mesPrefs.getBoolean(unContext.getString(R.string.idOptionDebug),
-				unContext.getResources().getBoolean(R.bool.defautOptionDebug));
+		Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
 		// Numéro de version de l'application
 		String numVersion = Constantes.getAppVersion(unContext);
@@ -105,7 +98,6 @@ abstract class Downloader {
 		// Chargement des identifiants
 		final String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
-		
 
 		// Doit-on tenter une authentification ?
 		if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {

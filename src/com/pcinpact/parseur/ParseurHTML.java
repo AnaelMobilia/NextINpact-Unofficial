@@ -32,15 +32,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.pcinpact.Constantes;
-import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
@@ -51,22 +45,6 @@ import com.pcinpact.items.CommentaireItem;
  *
  */
 public class ParseurHTML {
-	// Debug utilisteur ?
-	private Boolean debug;
-	// context
-	final private Context monContext;
-
-	public ParseurHTML(Context unContext) {
-		// Enregistrement du context
-		monContext = unContext;
-
-		// Chargement des préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-		// L'utilisateur demande-t-il un debug ?
-		debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug),
-				monContext.getResources().getBoolean(R.bool.defautOptionDebug));
-	}
-
 	/**
 	 * Parse la liste des articles
 	 * 
@@ -74,7 +52,7 @@ public class ParseurHTML {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
+	public static ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
 
 		// Lancement du parseur sur la page
@@ -147,7 +125,7 @@ try {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArticleItem getArticle(String unContenu, String urlPage) {
+	public static ArticleItem getArticle(String unContenu, String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
 
 		// Lancement du parseur sur la page
@@ -304,7 +282,7 @@ try {
 	 * @return
 	 * @throws IOException
 	 */
-	public ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
+	public static ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
@@ -376,7 +354,7 @@ try {
 	 * @param uneDate
 	 * @return
 	 */
-	private long convertToTimeStamp(final String uneDate, String unFormatDate) {
+	private static long convertToTimeStamp(String uneDate, String unFormatDate) {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {
@@ -385,18 +363,6 @@ try {
 		} catch (ParseException e) {
 			if (Constantes.DEBUG) {
 				Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
-			}
-			// Retour utilisateur ?
-			if (debug) {
-				Handler handler = new Handler(monContext.getMainLooper());
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate,
-								Toast.LENGTH_LONG);
-						monToast.show();
-					}
-				});
 			}
 		}
 

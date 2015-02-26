@@ -27,11 +27,9 @@ import com.pcinpact.items.Item;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.Html.ImageGetter;
@@ -116,14 +114,11 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * @return
 	 */
 	private Drawable gestionTaille(Drawable uneImage) {
-		// Préférences de l'utilisateur : taille du texte
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		int tailleOptionUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
-				String.valueOf(tailleDefaut)));
-		float monCoeffZoom = (float) tailleOptionUtilisateur / tailleDefaut;
+		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
+		float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
 
 		DisplayMetrics metrics = new DisplayMetrics();
 		((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);

@@ -26,9 +26,7 @@ import com.pcinpact.Constantes;
 import com.pcinpact.R;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -62,11 +60,8 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... params) {
 		try {
-			// Chargement des préférences de l'utilisateur
-			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 			// L'utilisateur demande-t-il un debug ?
-			Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug), monContext.getResources()
-					.getBoolean(R.bool.defautOptionDebug));
+			Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
 			// Je récupère un byte[] contenant l'image
 			byte[] datas = Downloader.download(urlImage, monContext, false);
