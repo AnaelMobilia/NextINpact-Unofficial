@@ -103,8 +103,9 @@ abstract class Downloader {
 		 * AUTHENTIFICATION
 		 */
 		// Chargement des identifiants
-		final String usernameOption = "";
-		String passwordOption = "";
+		final String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
+		
 
 		// Doit-on tenter une authentification ?
 		if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
@@ -211,7 +212,7 @@ abstract class Downloader {
 			}
 		} else {
 			// DEBUG
-			if(Constantes.DEBUG) {
+			if (Constantes.DEBUG) {
 				Log.i("Downloader", "Pas d'authentification à effectuer");
 			}
 		}
