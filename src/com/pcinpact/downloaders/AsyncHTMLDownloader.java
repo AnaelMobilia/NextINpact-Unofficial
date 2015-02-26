@@ -73,7 +73,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 			long dateRefresh = new Date().getTime();
 
 			// Je récupère mon contenu HTML
-			byte[] datas = Downloader.download(urlPage, monContext, true);
+			byte[] datas = Downloader.download(urlPage, monContext, true, true);
 
 			// Vérifie que j'ai bien un retour (vs erreur DL)
 			if (datas != null) {

@@ -64,7 +64,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 			Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
 			// Je récupère un byte[] contenant l'image
-			byte[] datas = Downloader.download(urlImage, monContext, false);
+			byte[] datas = Downloader.download(urlImage, monContext, false, false);
 
 			// Vérifie que j'ai bien un retour (vs erreur DL)
 			if (datas != null) {
