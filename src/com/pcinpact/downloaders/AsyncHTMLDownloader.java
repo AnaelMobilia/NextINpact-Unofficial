@@ -79,7 +79,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 			if (datas != null) {
 				// Je convertis mon byte[] en String
 				String contenu = IOUtils.toString(datas, Constantes.NEXT_INPACT_ENCODAGE);
-				
+
 				switch (typeHTML) {
 					case Constantes.HTML_LISTE_ARTICLES:
 						// Je passe par le parser
@@ -117,8 +117,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						// Je passe par le parser
 						ArticleItem articleParser = ParseurHTML.getArticle(contenu, urlPage);
 
-						// Enregistrement du contenu de l'article
-						monDAO.updateContenuArticle(articleParser);
+						// Chargement de l'article depuis la BDD
+						ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
+
+						// Ajout du contenu à l'objet chargé
+						articleDB.setContenu(articleParser.getContenu());
+
+						// Article abonné ?
+						if (articleDB.isAbonne()) {
+							// Suis-je connecté ?
+							articleDB.setDlContenuAbonne(Downloader.connexionAbonne(monContext));
+						}
+
+						// Enregistrement de l'objet complet
+						monDAO.enregistrerArticle(articleDB);
 
 						// pas de retour à l'utilisateur, il s'agit d'un simple DL
 						break;

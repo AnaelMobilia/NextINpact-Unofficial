@@ -50,7 +50,7 @@ import android.widget.Toast;
  * @author Anael
  *
  */
-abstract class Downloader {
+public class Downloader {
 	// Contexte HTTP
 	private static BasicHttpContext monHTTPContext;
 	// Coneneur à cookies

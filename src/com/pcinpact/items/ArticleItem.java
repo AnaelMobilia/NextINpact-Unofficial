@@ -43,6 +43,7 @@ public class ArticleItem implements Item {
 	private String contenu = "";
 	private long timeStampPublication;
 	private boolean isLu;
+	private boolean isDlContenuAbonne;
 
 	@Override
 	public int getType() {
@@ -167,6 +168,14 @@ public class ArticleItem implements Item {
 
 	public void setLu(boolean isLu) {
 		this.isLu = isLu;
+	}
+
+	public boolean isDlContenuAbonne() {
+		return isDlContenuAbonne;
+	}
+
+	public void setDlContenuAbonne(boolean isDlContenuAbonne) {
+		this.isDlContenuAbonne = isDlContenuAbonne;
 	}
 
 }

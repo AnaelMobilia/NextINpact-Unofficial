@@ -27,7 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.CommentaireItem;	
+import com.pcinpact.items.CommentaireItem;
 
 /**
  * Abstraction de la DB sqlite
@@ -37,7 +37,7 @@ import com.pcinpact.items.CommentaireItem;
  */
 public final class DAO extends SQLiteOpenHelper {
 	// Version de la DB (à mettre à jour à chaque changement du schéma)
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 3;
 	// Nom de la BDD
 	private static final String DB_NAME = "nxidb";
 
@@ -55,6 +55,7 @@ public final class DAO extends SQLiteOpenHelper {
 	private static final String ARTICLE_NB_COMMS = "nbcomms";
 	private static final String ARTICLE_IS_ABONNE = "isabonne";
 	private static final String ARTICLE_IS_LU = "islu";
+	private static final String ARTICLE_DL_CONTENU_ABONNE = "iscontenuabonnedl";
 
 	private static final String DB_TABLE_COMMENTAIRES = "commentaires";
 	private static final String COMMENTAIRE_ID = "id";
@@ -76,21 +77,19 @@ public final class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @param context
 	 */
-	private DAO(Context context) {
+	private DAO(Context unContext) {
 		// Je crée un lien sur la base
-		super(context, DB_NAME, null, DB_VERSION);
+		super(unContext, DB_NAME, null, DB_VERSION);
 		// Et l'ouvre en écriture
 		maDB = getWritableDatabase();
 	}
 
-	public static DAO getInstance(Context ctx) {
+	public static DAO getInstance(Context unContext) {
 		/**
-		 * use the application context as suggested by CommonsWare. this will ensure that you dont accidentally leak an Activitys
-		 * context (see this article for more information:
-		 * http://developer.android.com/resources/articles/avoiding-memory-leaks.html)
+		 * Chargement de la DB si non déjà présente
 		 */
 		if (instanceOfDAO == null) {
-			instanceOfDAO = new DAO(ctx.getApplicationContext());
+			instanceOfDAO = new DAO(unContext);
 		}
 		return instanceOfDAO;
 	}
@@ -104,7 +103,8 @@ public final class DAO extends SQLiteOpenHelper {
 		String reqCreateArticles = "CREATE TABLE " + DB_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY,"
 				+ ARTICLE_TITRE + " TEXT NOT NULL," + ARTICLE_SOUS_TITRE + " TEXT," + ARTICLE_TIMESTAMP + " INTEGER NOT NULL,"
 				+ ARTICLE_URL + " TEXT NOT NULL," + ARTICLE_ILLUSTRATION_URL + " TEXT," + ARTICLE_CONTENU + " TEXT,"
-				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " BOOLEAN," + ARTICLE_IS_LU + " BOOLEAN);";
+				+ ARTICLE_NB_COMMS + " INTEGER," + ARTICLE_IS_ABONNE + " BOOLEAN," + ARTICLE_IS_LU + " BOOLEAN,"
+				+ ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN);";
 		db.execSQL(reqCreateArticles);
 
 		// Table des commentaires
@@ -129,8 +129,12 @@ public final class DAO extends SQLiteOpenHelper {
 			case 1:
 				String reqUpdateFrom1 = "ALTER TABLE " + DB_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_IS_LU + " BOOLEAN;";
 				db.execSQL(reqUpdateFrom1);
-		}
 
+			case 2:
+				String reqUpdateFrom2 = "ALTER TABLE " + DB_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DL_CONTENU_ABONNE
+						+ " BOOLEAN;";
+				db.execSQL(reqUpdateFrom2);
+		}
 	}
 
 	/**
@@ -152,21 +156,9 @@ public final class DAO extends SQLiteOpenHelper {
 		insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
 		insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
 		insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
+		insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
 
 		maDB.insert(DB_TABLE_ARTICLES, null, insertValues);
-	}
-
-	/**
-	 * Enregistre le contenu d'un article
-	 * 
-	 * @param unArticle
-	 */
-	public void updateContenuArticle(ArticleItem unArticle) {
-		// Les datas à MàJ
-		ContentValues updateValues = new ContentValues();
-		updateValues.put(ARTICLE_CONTENU, unArticle.getContenu());
-
-		maDB.update(DB_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
 	}
 
 	/**
@@ -236,7 +228,8 @@ public final class DAO extends SQLiteOpenHelper {
 	public ArticleItem chargerArticle(int idArticle) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+				ARTICLE_DL_CONTENU_ABONNE };
 
 		String[] idString = { String.valueOf(idArticle) };
 
@@ -265,7 +258,8 @@ public final class DAO extends SQLiteOpenHelper {
 	public ArrayList<ArticleItem> chargerArticlesTriParDate(int nbVoulu) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+				ARTICLE_DL_CONTENU_ABONNE };
 
 		// Requête sur la DB
 		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
@@ -292,15 +286,26 @@ public final class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @return
 	 */
-	public ArrayList<ArticleItem> chargerArticlesATelecharger() {
+	public ArrayList<ArticleItem> chargerArticlesATelecharger(boolean isConnecte) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+				ARTICLE_DL_CONTENU_ABONNE };
 
-		String[] contenu = { "" };
+		String[] contenu;
 
-		// Requête sur la DB
-		Cursor monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=?", contenu, null, null, null);
+		Cursor monCursor;
+		// Est-ce un abonné NXI ?
+		if (isConnecte) {
+			contenu = new String[] { "", "0", "1" };
+			// Requête sur la DB avec gestion des articles abonnés non DL
+			monCursor = maDB.query(true, DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE
+					+ "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)", contenu, null, null, null, null);
+		} else {
+			contenu = new String[] { "" };
+			// Requête sur la DB par défaut
+			monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=?", contenu, null, null, null);
+		}
 
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;
@@ -356,7 +361,8 @@ public final class DAO extends SQLiteOpenHelper {
 		 */
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU };
+				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+				ARTICLE_DL_CONTENU_ABONNE };
 
 		// Préparation de la requête
 		String pointInterrogation = "";
@@ -559,6 +565,7 @@ public final class DAO extends SQLiteOpenHelper {
 
 	/**
 	 * Charge un ArticleItem depuis un cursor
+	 * 
 	 * @param unCursor
 	 * @return
 	 */
@@ -575,12 +582,14 @@ public final class DAO extends SQLiteOpenHelper {
 		monArticle.setNbCommentaires(unCursor.getInt(7));
 		monArticle.setAbonne((unCursor.getInt(8) > 0));
 		monArticle.setLu((unCursor.getInt(9) > 0));
+		monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
 
 		return monArticle;
 	}
-	
+
 	/**
 	 * Charge un CommentaireItem depuis un cursor
+	 * 
 	 * @param unCursor
 	 * @return
 	 */

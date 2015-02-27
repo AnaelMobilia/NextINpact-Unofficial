@@ -27,6 +27,7 @@ import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
 import com.pcinpact.downloaders.AsyncHTMLDownloader;
 import com.pcinpact.downloaders.AsyncImageDownloader;
+import com.pcinpact.downloaders.Downloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
@@ -336,7 +337,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
 			// Téléchargement des articles dont le contenu n'a pas été téléchargé au dernier refresh
-			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
+			telechargeListeArticles(monDAO.chargerArticlesATelecharger(Downloader.connexionAbonne(getApplicationContext())));
 
 			// Gestion du nombre de pages à télécharger - option Utilisateur
 			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
