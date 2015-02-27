@@ -232,7 +232,7 @@ abstract class Downloader {
 		String numVersion = Constantes.getAppVersion(unContext);
 
 		// Chargement des identifiants
-		final String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
 
 		// Doit-on tenter une authentification ?
