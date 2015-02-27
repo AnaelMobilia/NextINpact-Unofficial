@@ -72,19 +72,8 @@ abstract class Downloader {
 		// Retour
 		byte[] datas = null;
 
-		// Au premier appel, j'initialise le cookie holder
-		if (monHTTPContext == null) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.w("Downloader", "création du HTTPContext");
-			}
-			// Création du HTTPContext
-			monHTTPContext = new BasicHttpContext();
-			// Création du cookieStore
-			monCookieStore = new BasicCookieStore();
-			// On conserve les cookies
-			monHTTPContext.setAttribute(ClientContext.COOKIE_STORE, monCookieStore);
-		}
+		// Initialisation du cookie store si requis
+		initialisationCookieStore();
 
 		// L'utilisateur demande-t-il un debug ?
 		Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
@@ -97,122 +86,7 @@ abstract class Downloader {
 		 */
 		// Si demandé !
 		if (authentification) {
-			// Chargement des identifiants
-			final String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin,
-					R.string.defautOptionLogin);
-			String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-					R.string.defautOptionPassword);
-
-			// Doit-on tenter une authentification ?
-			if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
-				// Actuellement non connecté, identifiants fournis
-				if (usernameOption != usernameLastTry && passwordOption != passwordLastTry) {
-					// Des identifiants qui n'ont pas été essayés sont fournis => faire une connexion
-					doConnection = true;
-
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.i("Downloader", "Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
-					}
-				}
-
-			}
-			// Actuellement connecté, cookie expiré
-			if (isConnected && !isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
-				// Des identifiants sont-ils toujours disponibles ?
-				if (!usernameOption.isEmpty() && !passwordOption.isEmpty()) {
-					doConnection = true;
-
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.i("Downloader", "RE-Authentification à effectuer en tant que " + usernameOption + " / "
-								+ passwordOption);
-					}
-				}
-			}
-
-			// Authentification sur NXI
-			if (doConnection) {
-				try {
-					// Création de la requête
-					AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial) v" + numVersion);
-					HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
-
-					// Paramètres de la requête
-					ArrayList<NameValuePair> mesParametres = new ArrayList<NameValuePair>();
-					mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_USERNAME, usernameOption));
-					mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_PASSWORD, passwordOption));
-
-					postRequest.setEntity(new UrlEncodedFormEntity(mesParametres));
-
-					// Exécution de la requête
-					HttpResponse response = client.execute(postRequest, monHTTPContext);
-					int statusCode = response.getStatusLine().getStatusCode();
-					// Fermeture du client
-					client.close();
-
-					// Gestion d'un code erreur
-					if (statusCode != HttpStatus.SC_OK) {
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.e("Downloader", "Erreur " + statusCode + " lors de l'authentification");
-						}
-					} else {
-						// Enregistrement de l'authentification
-						doConnection = false;
-						// Enregistrement des identifiants "LastTry"
-						usernameLastTry = usernameOption;
-						passwordLastTry = passwordOption;
-
-						// Ai-je un cookie d'authentification ?
-						if (isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
-							isConnected = true;
-
-							// DEBUG
-							if (Constantes.DEBUG) {
-								Log.w("Downloader", "Authentification réussie (cookie présent)");
-							}
-							// Retour utilisateur ?
-							if (debug) {
-								Handler handler = new Handler(unContext.getMainLooper());
-								handler.post(new Runnable() {
-									@Override
-									public void run() {
-										Toast monToast = Toast.makeText(unContext,
-												"[Downloader] Authentification REUSSIE en tant que  " + usernameOption,
-												Toast.LENGTH_LONG);
-										monToast.show();
-									}
-								});
-							}
-						}
-
-						// Si non connecté
-						if (!isConnected) {
-							Handler handler = new Handler(unContext.getMainLooper());
-							handler.post(new Runnable() {
-								@Override
-								public void run() {
-									Toast monToast = Toast.makeText(unContext,
-											unContext.getString(R.string.erreurAuthentification), Toast.LENGTH_LONG);
-									monToast.show();
-								}
-							});
-
-						}
-					}
-				} catch (Exception e) {
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.e("Downloader", "Crash sur l'authentification", e);
-					}
-				}
-			} else {
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("Downloader", "Pas d'authentification à effectuer");
-				}
-			}
+			connexionAbonne(unContext);
 		}
 
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
@@ -348,5 +222,135 @@ abstract class Downloader {
 		}
 
 		return monRetour;
+	}
+
+	public static boolean connexionAbonne(final Context unContext) {
+		// Initialisation du cookie store si besoin
+		initialisationCookieStore();
+
+		// Numéro de version de l'application
+		String numVersion = Constantes.getAppVersion(unContext);
+
+		// Chargement des identifiants
+		final String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
+
+		// Doit-on tenter une authentification ?
+		if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+			// Actuellement non connecté, identifiants fournis
+			if (usernameOption != usernameLastTry && passwordOption != passwordLastTry) {
+				// Des identifiants qui n'ont pas été essayés sont fournis => faire une connexion
+				doConnection = true;
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.i("Downloader", "Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
+				}
+			}
+
+		}
+		// Actuellement connecté, cookie expiré
+		if (isConnected && !isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+			// Des identifiants sont-ils toujours disponibles ?
+			if (!usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+				doConnection = true;
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.i("Downloader", "RE-Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
+				}
+			}
+		}
+
+		// Authentification sur NXI
+		if (doConnection) {
+			try {
+				// Création de la requête
+				AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial) v" + numVersion);
+				HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
+
+				// Paramètres de la requête
+				ArrayList<NameValuePair> mesParametres = new ArrayList<NameValuePair>();
+				mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_USERNAME, usernameOption));
+				mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_PASSWORD, passwordOption));
+
+				postRequest.setEntity(new UrlEncodedFormEntity(mesParametres));
+
+				// Exécution de la requête
+				HttpResponse response = client.execute(postRequest, monHTTPContext);
+				int statusCode = response.getStatusLine().getStatusCode();
+				// Fermeture du client
+				client.close();
+
+				// Gestion d'un code erreur
+				if (statusCode != HttpStatus.SC_OK) {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.e("Downloader", "Erreur " + statusCode + " lors de l'authentification");
+					}
+				} else {
+					// Enregistrement de l'authentification
+					doConnection = false;
+					// Enregistrement des identifiants "LastTry"
+					usernameLastTry = usernameOption;
+					passwordLastTry = passwordOption;
+
+					// Ai-je un cookie d'authentification ?
+					if (isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+						isConnected = true;
+
+						// DEBUG
+						if (Constantes.DEBUG) {
+							Log.w("Downloader", "Authentification réussie (cookie présent)");
+						}
+					}
+
+					// Si non connecté
+					if (!isConnected) {
+						Handler handler = new Handler(unContext.getMainLooper());
+						handler.post(new Runnable() {
+							@Override
+							public void run() {
+								Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
+										Toast.LENGTH_LONG);
+								monToast.show();
+							}
+						});
+
+					}
+				}
+			} catch (Exception e) {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("Downloader", "Crash sur l'authentification", e);
+				}
+			}
+		} else {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.i("Downloader", "Pas d'authentification à effectuer");
+			}
+		}
+
+		return isConnected;
+	}
+
+	/**
+	 * Initialisation du cookieStore si requis
+	 */
+	private static void initialisationCookieStore() {
+		// Au premier appel, j'initialise le cookie holder
+		if (monHTTPContext == null) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.w("Downloader", "création du HTTPContext");
+			}
+			// Création du HTTPContext
+			monHTTPContext = new BasicHttpContext();
+			// Création du cookieStore
+			monCookieStore = new BasicCookieStore();
+			// On conserve les cookies
+			monHTTPContext.setAttribute(ClientContext.COOKIE_STORE, monCookieStore);
+		}
 	}
 }
