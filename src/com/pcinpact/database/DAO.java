@@ -291,7 +291,7 @@ public final class DAO extends SQLiteOpenHelper {
 	public ArrayList<ArticleItem> chargerArticlesATelecharger(boolean isConnecte) {
 		// DEBUG
 		if(Constantes.DEBUG) {
-			Log.i("DAO", "chargerArticlesATelecharger : isConnecte" + String.valueOf(isConnecte));
+			Log.i("DAO", "chargerArticlesATelecharger : isConnecte est " + String.valueOf(isConnecte));
 		}
 		
 		// Les colonnes à récupérer
