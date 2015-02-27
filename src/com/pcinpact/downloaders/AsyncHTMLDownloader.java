@@ -58,6 +58,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 		typeHTML = unType;
 		monDAO = unDAO;
 		monContext = unContext;
+		
+		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("AsyncHTMLDownloader", urlPage);
 		}
