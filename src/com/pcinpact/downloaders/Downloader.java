@@ -36,8 +36,10 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
+
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
+
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.os.Handler;
@@ -199,6 +201,9 @@ public class Downloader {
 	private static boolean isCookieValid(String authentificationCookie) {
 		Boolean monRetour = false;
 
+		// Initialisation du cookie store si requis
+		initialisationCookieStore();
+
 		// Ai-je bien un cookieHolder
 		if (monCookieStore != null) {
 			// Je supprime tous les cookies expirés
@@ -223,6 +228,26 @@ public class Downloader {
 		return monRetour;
 	}
 
+	/**
+	 * Est-on actuellement connecté ?
+	 * @param unContext
+	 * @return
+	 */
+	public static boolean estConnecte() {
+		boolean monRetour = false;
+
+		// Déjà connecté & cookie valide
+		if (isConnected && isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+			monRetour = true;
+		}
+		return monRetour;
+	}
+
+	/**
+	 * Superviseur pour les connexions au compte abonné
+	 * @param unContext
+	 * @return
+	 */
 	public static boolean connexionAbonne(final Context unContext) {
 		// Initialisation du cookie store si besoin
 		initialisationCookieStore();
@@ -236,10 +261,10 @@ public class Downloader {
 		// Chargement des identifiants
 		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
-		Boolean isAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
+		Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
 		// Compte abonné activé ?
-		if (isAbonne) {
+		if (isCompteAbonne) {
 			// Doit-on tenter une authentification ?
 			if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
 				// Actuellement non connecté, identifiants fournis
@@ -249,7 +274,7 @@ public class Downloader {
 
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.i("Downloader", "Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
+						Log.i("Downloader", "connexionAbonne : Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
 					}
 				}
 
@@ -262,18 +287,23 @@ public class Downloader {
 
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.i("Downloader", "RE-Authentification à effectuer en tant que " + usernameOption + " / "
+						Log.i("Downloader", "connexionAbonne : RE-Authentification à effectuer en tant que " + usernameOption + " / "
 								+ passwordOption);
 					}
 				}
 			}
-		} 
+		}
 		// Compte abonné non activé !
 		else {
 			// Est-on connecté ?
 			if (isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
 				// Vidage des cookies
 				monCookieStore.clear();
+				
+				// DEBUG
+				if(Constantes.DEBUG) {
+					Log.w("Downloader", "connexionAbonne : Suppression du cookie abonné");
+				}
 			}
 		}
 
@@ -301,7 +331,7 @@ public class Downloader {
 				if (statusCode != HttpStatus.SC_OK) {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.e("Downloader", "Erreur " + statusCode + " lors de l'authentification");
+						Log.e("Downloader", "connexionAbonne : Erreur " + statusCode + " lors de l'authentification");
 					}
 				} else {
 					// Enregistrement de l'authentification
@@ -316,7 +346,7 @@ public class Downloader {
 
 						// DEBUG
 						if (Constantes.DEBUG) {
-							Log.w("Downloader", "Authentification réussie (cookie présent)");
+							Log.w("Downloader", "connexionAbonne : Authentification réussie (cookie présent)");
 						}
 					}
 
@@ -337,13 +367,13 @@ public class Downloader {
 			} catch (Exception e) {
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.e("Downloader", "Crash sur l'authentification", e);
+					Log.e("Downloader", "connexionAbonne : Crash sur l'authentification", e);
 				}
 			}
 		} else {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.i("Downloader", "Pas d'authentification à effectuer");
+				Log.i("Downloader", "connexionAbonne : Pas d'authentification à effectuer");
 			}
 		}
 
