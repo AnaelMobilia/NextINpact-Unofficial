@@ -25,7 +25,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
@@ -287,6 +289,11 @@ public final class DAO extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public ArrayList<ArticleItem> chargerArticlesATelecharger(boolean isConnecte) {
+		// DEBUG
+		if(Constantes.DEBUG) {
+			Log.i("DAO", "chargerArticlesATelecharger : isConnecte" + String.valueOf(isConnecte));
+		}
+		
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
