@@ -126,7 +126,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.i("ListeArticlesActivity",
+					Log.d("ListeArticlesActivity",
 							"SwipeRefreshLayout - topRowVerticalPosition : " + String.valueOf(topRowVerticalPosition));
 				}
 				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
