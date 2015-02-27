@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Options de l'application
@@ -57,6 +58,11 @@ public class OptionsActivity extends PreferenceActivity {
 
 					// Je lance la vérification du statut
 					Downloader.connexionAbonne(monContext);
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("OptionsActivity", "Lancement connexionAbonne() suite au changement de l'option " + key);
+					}
 				}
 			}
 		};
