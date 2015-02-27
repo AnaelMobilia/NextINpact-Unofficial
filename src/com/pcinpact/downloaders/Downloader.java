@@ -60,7 +60,6 @@ public class Downloader {
 	private static String passwordLastTry = "";
 	// Etat de connexion pour le site
 	private static Boolean isConnected = false;
-	private static Boolean doConnection = false;
 
 	/**
 	 * Téléchargement d'une ressource
@@ -228,37 +227,53 @@ public class Downloader {
 		// Initialisation du cookie store si besoin
 		initialisationCookieStore();
 
+		// Faut-il faire une connexion ?
+		Boolean doConnection = false;
+
 		// Numéro de version de l'application
 		String numVersion = Constantes.getAppVersion(unContext);
 
 		// Chargement des identifiants
 		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
+		Boolean isAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
-		// Doit-on tenter une authentification ?
-		if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
-			// Actuellement non connecté, identifiants fournis
-			if (usernameOption != usernameLastTry && passwordOption != passwordLastTry) {
-				// Des identifiants qui n'ont pas été essayés sont fournis => faire une connexion
-				doConnection = true;
+		// Compte abonné activé ?
+		if (isAbonne) {
+			// Doit-on tenter une authentification ?
+			if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+				// Actuellement non connecté, identifiants fournis
+				if (usernameOption != usernameLastTry && passwordOption != passwordLastTry) {
+					// Des identifiants qui n'ont pas été essayés sont fournis => faire une connexion
+					doConnection = true;
 
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("Downloader", "Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("Downloader", "Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
+					}
+				}
+
+			}
+			// Actuellement connecté, cookie expiré
+			if (isConnected && !isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+				// Des identifiants sont-ils toujours disponibles ?
+				if (!usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+					doConnection = true;
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("Downloader", "RE-Authentification à effectuer en tant que " + usernameOption + " / "
+								+ passwordOption);
+					}
 				}
 			}
-
-		}
-		// Actuellement connecté, cookie expiré
-		if (isConnected && !isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
-			// Des identifiants sont-ils toujours disponibles ?
-			if (!usernameOption.isEmpty() && !passwordOption.isEmpty()) {
-				doConnection = true;
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("Downloader", "RE-Authentification à effectuer en tant que " + usernameOption + " / " + passwordOption);
-				}
+		} 
+		// Compte abonné non activé !
+		else {
+			// Est-on connecté ?
+			if (isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
+				// Vidage des cookies
+				monCookieStore.clear();
 			}
 		}
 
