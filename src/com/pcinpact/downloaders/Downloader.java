@@ -109,7 +109,7 @@ public class Downloader {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				for (Cookie unCookie : monCookieStore.getCookies()) {
-					Log.i("Downloader", "Cookie : " + unCookie.toString());
+					Log.d("Downloader", "Cookie : " + unCookie.toString());
 				}
 			}
 
