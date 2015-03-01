@@ -176,7 +176,7 @@ public final class DAO extends SQLiteOpenHelper {
 		// - l'article n'est pas encore en BDD
 		// - l'article est déjà en BDD, mais il s'agit d'une mise à jour de l'article
 		// - l'article est déjà en BDD, mais ne contient rien (pb de dl)
-		if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication() || testItem.getContenu().isEmpty()) {
+		if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication() || testItem.getContenu().equals("")) {
 			this.enregistrerArticle(unArticle);
 			return true;
 		} else {

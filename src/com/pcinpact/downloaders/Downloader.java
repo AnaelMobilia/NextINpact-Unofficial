@@ -266,7 +266,7 @@ public class Downloader {
 		// Compte abonné activé ?
 		if (isCompteAbonne) {
 			// Doit-on tenter une authentification ?
-			if (!isConnected && !usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+			if (!isConnected && !usernameOption.equals("") && !passwordOption.equals("")) {
 				// Actuellement non connecté, identifiants fournis
 				if (usernameOption != usernameLastTry && passwordOption != passwordLastTry) {
 					// Des identifiants qui n'ont pas été essayés sont fournis => faire une connexion
