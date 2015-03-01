@@ -47,7 +47,7 @@ import android.widget.Toast;
  * @author Anael
  *
  */
-public class compteAbonne {
+public class CompteAbonne {
 	// Contexte HTTP
 	private static BasicHttpContext monHTTPContext;
 	// Coneneur à cookies
