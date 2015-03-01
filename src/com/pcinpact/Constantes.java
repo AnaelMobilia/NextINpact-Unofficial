@@ -139,9 +139,11 @@ public class Constantes {
 	public final static String AUTHENTIFICATION_COOKIE = "inpactstore";
 
 	/**
-	 * Version de l'application
+	 * USER AGENT
 	 */
-	public static String getAppVersion(Context unContext) {
+	private final static String USER_AGENT = "NextInpact (Unofficial) v";
+
+	public static String getUserAgent(Context unContext) {
 		// Numéro de version de l'application
 		String numVersion = "";
 		try {
@@ -157,7 +159,7 @@ public class Constantes {
 			}
 		}
 
-		return numVersion;
+		return USER_AGENT + numVersion;
 	}
 
 	/**
@@ -175,6 +177,7 @@ public class Constantes {
 
 	/**
 	 * Retourne une option Boolean
+	 * 
 	 * @param unContext
 	 * @param idOption
 	 * @param defautOption
@@ -185,10 +188,11 @@ public class Constantes {
 
 		return mesPrefs.getBoolean(unContext.getString(idOption), unContext.getResources().getBoolean(defautOption));
 	}
-	
+
 	public static int getOptionInt(Context unContext, int idOption, int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
-		
-		return Integer.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
+
+		return Integer
+				.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
 	}
 }

@@ -79,9 +79,6 @@ public class Downloader {
 		// L'utilisateur demande-t-il un debug ?
 		Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
-		// Numéro de version de l'application
-		String numVersion = Constantes.getAppVersion(unContext);
-
 		/**
 		 * AUTHENTIFICATION
 		 */
@@ -91,7 +88,7 @@ public class Downloader {
 		}
 
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
-		AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial) v" + numVersion);
+		AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
 		HttpGet getRequest = new HttpGet(uneURL);
 
 		// Réponse à la requête
@@ -255,9 +252,6 @@ public class Downloader {
 		// Faut-il faire une connexion ?
 		Boolean doConnection = false;
 
-		// Numéro de version de l'application
-		String numVersion = Constantes.getAppVersion(unContext);
-
 		// Chargement des identifiants
 		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
@@ -311,7 +305,7 @@ public class Downloader {
 		if (doConnection) {
 			try {
 				// Création de la requête
-				AndroidHttpClient client = AndroidHttpClient.newInstance("NextInpact (Unofficial) v" + numVersion);
+				AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
 				HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
 
 				// Paramètres de la requête

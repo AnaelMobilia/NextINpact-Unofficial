@@ -38,9 +38,9 @@ public class AboutActivity extends ActionBarActivity {
 		setContentView(R.layout.about);
 
 		// Affichage du numéro de version
-		String numVersion = Constantes.getAppVersion(getApplicationContext());
-			Toast monToast = Toast.makeText(getApplicationContext(), "Version " + numVersion, Toast.LENGTH_LONG);
-			monToast.show();
+		Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
+				Toast.LENGTH_LONG);
+		monToast.show();
 
 	}
 }
