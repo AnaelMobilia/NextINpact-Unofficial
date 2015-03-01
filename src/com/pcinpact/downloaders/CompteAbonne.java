@@ -233,34 +233,35 @@ public class CompteAbonne {
 	public static boolean estConnecte(Context unContext) {
 		boolean monRetour = false;
 
-		/**
-		 * Vérification des options
-		 */
-		// Chargement des identifiants
-		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
-		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
-		Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
-
-		// Les options sont-elles bien saisies ?
-		if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")) {
-			// Si non, effacement des cookies
-			monCookieStore.clear();
-		}
-
-		/**
-		 * Vérification du cookieHolder
-		 */
+		// Ai-je un cookieHolder ?
 		if (monCookieStore != null) {
-			// Je supprime tous les cookies expirés
-			monCookieStore.clearExpired(new Date());
+			/**
+			 * Vérification des options
+			 */
+			// Chargement des identifiants
+			String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+			String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
+					R.string.defautOptionPassword);
+			Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
-			// Ai-je le cookie demandé ?
-			for (Cookie unCookie : monCookieStore.getCookies()) {
-				// Est-le bon cookie ?
-				if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
-					monRetour = true;
-					// Pas besoin d'aller plus loin !
-					break;
+			// Les options sont-elles bien saisies ?
+			if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")) {
+				// Si non, effacement des cookies
+				monCookieStore.clear();
+			}
+			// Si oui, je cherche mon cookie...
+			else {
+				// Je supprime tous les cookies expirés
+				monCookieStore.clearExpired(new Date());
+
+				// Ai-je le cookie demandé ?
+				for (Cookie unCookie : monCookieStore.getCookies()) {
+					// Est-le bon cookie ?
+					if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
+						monRetour = true;
+						// Pas besoin d'aller plus loin !
+						break;
+					}
 				}
 			}
 		}
