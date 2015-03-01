@@ -20,6 +20,7 @@ package com.pcinpact;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -206,5 +207,19 @@ public class Constantes {
 
 		return Integer
 				.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
+	}
+	
+	/**
+	 * Enregistre un boolean dans les préférences
+	 * @param unContext
+	 * @param idOption
+	 * @param valeurOption
+	 */
+	public static void setOptionBoolean(Context unContext, int idOption, boolean valeurOption) {
+		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+		
+		Editor editor = mesPrefs.edit();
+		editor.putBoolean(unContext.getString(idOption), valeurOption);
+		editor.commit();
 	}
 }

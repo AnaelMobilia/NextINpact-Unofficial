@@ -157,11 +157,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			builder.create().show();
 
 			// Enregistrement de l'affichage
-			// Chargement des préférences de l'utilisateur
-			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			Editor editor = mesPrefs.edit();
-			editor.putBoolean(getString(R.string.idOptionInstallationApplication), false);
-			editor.commit();
+			Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
 		}
 	}
 
@@ -371,7 +367,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			AsyncHTMLDownloader monAHD;
 			// DL de l'image d'illustration ?
 			boolean dlIllustration = true;
-			
 
 			// Est-ce un article abonné ?
 			if (((ArticleItem) unItem).isAbonne()) {
