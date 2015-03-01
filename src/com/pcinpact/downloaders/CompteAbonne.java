@@ -137,7 +137,7 @@ public class CompteAbonne {
 					handler.post(new Runnable() {
 						@Override
 						public void run() {
-							Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
+							Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
 									Toast.LENGTH_LONG);
 							monToast.show();
 						}
