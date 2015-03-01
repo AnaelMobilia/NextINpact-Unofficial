@@ -193,6 +193,14 @@ public class Constantes {
 		return mesPrefs.getBoolean(unContext.getString(idOption), unContext.getResources().getBoolean(defautOption));
 	}
 
+	/**
+	 * Retourne une option int
+	 * 
+	 * @param unContext
+	 * @param idOption
+	 * @param defautOption
+	 * @return
+	 */
 	public static int getOptionInt(Context unContext, int idOption, int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
