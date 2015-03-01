@@ -152,7 +152,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 		int idDernierCommentaire = 0;
 		// Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
-		if (!mesCommentaires.isEmpty()) {
+		if (!mesCommentaires.equals("")) {
 			CommentaireItem lastCommentaire = mesCommentaires.get(mesCommentaires.size() - 1);
 			idDernierCommentaire = lastCommentaire.getId();
 		}
@@ -256,7 +256,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	@Override
 	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
 		// Retour vide ? Fin ou pas de connexion
-		if (desItems.isEmpty()) {
+		if (desItems.equals("")) {
 			isFinCommentaires = true;
 			if (Constantes.DEBUG) {
 				Log.i("CommentairesActivity", "fin des commentaires");

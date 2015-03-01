@@ -106,7 +106,7 @@ public class ArticleActivity extends ActionBarActivity {
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
-		if (data == null || data.isEmpty()) {
+		if (data.equals("")) {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.w("ArticleActivity", "Article vide");

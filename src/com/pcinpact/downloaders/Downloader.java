@@ -282,7 +282,7 @@ public class Downloader {
 			// Actuellement connecté, cookie expiré
 			if (isConnected && !isCookieValid(Constantes.AUTHENTIFICATION_COOKIE)) {
 				// Des identifiants sont-ils toujours disponibles ?
-				if (!usernameOption.isEmpty() && !passwordOption.isEmpty()) {
+				if (!usernameOption.equals("") && !passwordOption.equals("")) {
 					doConnection = true;
 
 					// DEBUG
