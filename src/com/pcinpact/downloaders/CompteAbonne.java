@@ -55,8 +55,8 @@ public class CompteAbonne {
 	// Derniers identifiants utilisés pour le site
 	private static String usernameLastTry = "";
 	private static String passwordLastTry = "";
-	// Une authentification est-elle en cours ?
-	private static Boolean isAuthEnCours = false;
+	// Jeton d'utilisation en cours
+	private static Boolean isRunning = false;
 
 	/**
 	 * Télécharge un article "Abonné"
@@ -68,17 +68,24 @@ public class CompteAbonne {
 		// Retour
 		byte[] monRetour;
 
-		// Une authentification est-elle déjà en cours ?
-		if (isAuthEnCours) {
-			// J'attends...
-			while (isAuthEnCours) {
+		// Est-ce déjà en cours d'utilisation ?
+		if (!isRunning) {
+			// Non : Je me lance !
+			isRunning = true;
+		} else {
+			// Oui : J'attends
+			while (isRunning) {
 				try {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("compteAbonne", "Attente de la fin de d'authentification pour " + uneURL);
+						Log.w("compteAbonne", "Attente de la fin d'utilisation pour " + uneURL);
 					}
 
-					Thread.sleep(1000);
+					// Attente de 0 à 1 seconde... 
+					double monCoeff = Math.random();
+					// Evite les réveils trop simultanés (les appels l'étant...)
+					int maDuree = (int) (1000 * monCoeff);
+					Thread.sleep(maDuree);
 				} catch (InterruptedException e) {
 					// DEBUG
 					if (Constantes.DEBUG) {
@@ -86,6 +93,8 @@ public class CompteAbonne {
 					}
 				}
 			}
+			// Je prends la place !
+			isRunning = true;
 		}
 
 		// Suis-je connecté ?
@@ -142,7 +151,7 @@ public class CompteAbonne {
 							monToast.show();
 						}
 					});
-					
+
 					// Enregistrement de l'affichage
 					Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
 				}
@@ -155,14 +164,19 @@ public class CompteAbonne {
 				}
 
 				// Je lance une authentification...
-				isAuthEnCours = true;
 				connexionAbonne(unContext, usernameOption, passwordOption);
-				isAuthEnCours = false;
 
+				// Je libère le jeton d'utilisation
+				isRunning = false;
+				
 				// Je relance la méthode pour avoir un résultat...
 				monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
 			}
 		}
+		
+		// Je libère le jeton d'utilisation
+		isRunning = false;
+		
 		return monRetour;
 	}
 
