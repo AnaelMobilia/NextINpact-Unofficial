@@ -105,7 +105,7 @@ public class ParseurHTML {
 				monArticleItem.setAbonne(true);
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("ParseurHTML", monArticleItem.getTitre() + " => Abonné");
+					Log.w("ParseurHTML", "[Abonné] => " + monArticleItem.getTitre());
 				}
 			} else {
 				monArticleItem.setAbonne(false);
