@@ -67,89 +67,80 @@ public class compteAbonne {
 		// Retour
 		byte[] monRetour;
 
-		// Tous les champs requis sont-ils bien remplis ? // Chargement des identifiants
-		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
-		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
-		Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
-
-		// Les options sont-elles bien saisies ?
-		if (isCompteAbonne.equals(true) && !usernameOption.equals("") && !passwordOption.equals("")) {
-			// Une authentification est-elle déjà en cours ?
-			if (isAuthEnCours) {
-				// J'attends...
-				while (isAuthEnCours) {
-					try {
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.w("compteAbonne", "Attente de la fin de d'authentification pour " + uneURL);
-						}
-
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.e("compteAbonne", "downloadArticleAbonne : crash sur le sleep", e);
-						}
-					}
-				}
-			}
-
-			// Suis-je connecté ?
-			if (estConnecte()) {
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("compteAbonne", "Déjà connecté => DL authentifié pour " + uneURL);
-				}
-
-				// Je lance le téléchargement
-				monRetour = Downloader.download(uneURL, unContext, compression, monHTTPContext);
-			}
-			// Non connecté... suis-je connectable ?
-			else {
-				// Identifiants déjà essayés ?
-				if (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry)) {
-					// Quid de la demande ?
-					if (uniquementSiConnecte) {
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.w("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
-						}
-
-						monRetour = null;
-					} else {
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.w("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
-						}
-
-						monRetour = Downloader.download(uneURL, unContext, compression);
-					}
-				}
-				// Peut-être connectable
-				else {
+		// Une authentification est-elle déjà en cours ?
+		if (isAuthEnCours) {
+			// J'attends...
+			while (isAuthEnCours) {
+				try {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
+						Log.w("compteAbonne", "Attente de la fin de d'authentification pour " + uneURL);
 					}
 
-					// Je lance une authentification...
-					isAuthEnCours = true;
-					connexionAbonne(unContext, usernameOption, passwordOption);
-					isAuthEnCours = false;
-
-					// Je relance la méthode pour avoir un résultat...
-					monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.e("compteAbonne", "downloadArticleAbonne : crash sur le sleep", e);
+					}
 				}
 			}
-		} else {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.i("compteAbonne", "Non connectable - option manquante");
-			}
-
-			monRetour = null;
 		}
 
+		// Suis-je connecté ?
+		if (estConnecte(unContext)) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.i("compteAbonne", "Déjà connecté => DL authentifié pour " + uneURL);
+			}
+
+			// Je lance le téléchargement
+			monRetour = Downloader.download(uneURL, unContext, compression, monHTTPContext);
+		}
+		// Non connecté... suis-je connectable ?
+		else {
+			// Chargement des identifiants
+			String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+			String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
+					R.string.defautOptionPassword);
+			Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
+
+			// Les options sont-elles bien saisies ? Identifiants déjà essayés ?
+			if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")
+					|| (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+				// Quid de la demande ?
+				if (uniquementSiConnecte) {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
+					}
+
+					monRetour = null;
+				} else {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
+					}
+
+					monRetour = Downloader.download(uneURL, unContext, compression);
+				}
+			}
+			// Peut-être connectable
+			else {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
+				}
+
+				// Je lance une authentification...
+				isAuthEnCours = true;
+				connexionAbonne(unContext, usernameOption, passwordOption);
+				isAuthEnCours = false;
+
+				// Je relance la méthode pour avoir un résultat...
+				monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
+			}
+		}
 		return monRetour;
 	}
 
@@ -205,7 +196,7 @@ public class compteAbonne {
 				}
 			} else {
 				// Ai-je un cookie d'authentification ?
-				if (estConnecte()) {
+				if (estConnecte(unContext)) {
 					// DEBUG
 					if (Constantes.DEBUG) {
 						Log.w("compteAbonne", "connexionAbonne : Authentification réussie (cookie présent)");
@@ -239,10 +230,26 @@ public class compteAbonne {
 	 * @param unContext
 	 * @return
 	 */
-	public static boolean estConnecte() {
+	public static boolean estConnecte(Context unContext) {
 		boolean monRetour = false;
 
-		// Ai-je bien un cookieHolder
+		/**
+		 * Vérification des options
+		 */
+		// Chargement des identifiants
+		String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+		String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword, R.string.defautOptionPassword);
+		Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
+
+		// Les options sont-elles bien saisies ?
+		if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")) {
+			// Si non, effacement des cookies
+			monCookieStore.clear();
+		}
+
+		/**
+		 * Vérification du cookieHolder
+		 */
 		if (monCookieStore != null) {
 			// Je supprime tous les cookies expirés
 			monCookieStore.clearExpired(new Date());
