@@ -32,7 +32,6 @@ import com.pcinpact.items.SectionItem;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
