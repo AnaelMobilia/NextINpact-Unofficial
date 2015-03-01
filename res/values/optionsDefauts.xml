@@ -33,5 +33,6 @@
     <bool name='defautOptionAbonne'>false</bool>
     <string name="defautOptionLogin"></string>
     <string name="defautOptionPassword"></string>
+    <bool name="defautOptionInfoCompteAbonne">true</bool>
     
 </resources>

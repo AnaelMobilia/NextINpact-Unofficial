@@ -63,7 +63,8 @@ public class CompteAbonne {
 	 * 
 	 * @return
 	 */
-	public static byte[] downloadArticleAbonne(String uneURL, Context unContext, boolean compression, boolean uniquementSiConnecte) {
+	public static byte[] downloadArticleAbonne(String uneURL, final Context unContext, boolean compression,
+			boolean uniquementSiConnecte) {
 		// Retour
 		byte[] monRetour;
 
@@ -123,6 +124,27 @@ public class CompteAbonne {
 					}
 
 					monRetour = Downloader.download(uneURL, unContext, compression);
+				}
+
+				// Information sur l'existance du compte abonné dans les options
+				boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
+						R.bool.defautOptionInfoCompteAbonne);
+
+				// Dois-je notifier l'utilisateur ?
+				if (infoAbonne) {
+					// Affichage d'un toast
+					Handler handler = new Handler(unContext.getMainLooper());
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
+									Toast.LENGTH_LONG);
+							monToast.show();
+						}
+					});
+					
+					// Enregistrement de l'affichage
+					Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
 				}
 			}
 			// Peut-être connectable

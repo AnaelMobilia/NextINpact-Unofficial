@@ -40,8 +40,7 @@
 			\nLes contenus affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
 			\nSi vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"</string>
-    <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
-
+    
     <!-- A propos -->
     <string name="aboutContent">"NextINpact (Unofficial) est une application développée bénévolement par un lecteur passionné de NextINpact.
 
@@ -67,10 +66,12 @@ Les contenus sont la pleine propriété de leurs auteurs respectifs.
 Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
 http://www.nextinpact.com/abonnement"</string>
 
-    <!-- Message d'erreur -->
+    <!-- Message d'erreur / information en Toast -->
+    <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
     <string name="articleVideErreurHTML">"Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation. Désolé."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
-
+	<string name="infoOptionAbonne">"Vous pouvez configurer votre compte abonné NXI dans les options de l'application.\nVous pourrez ainsi lire les articles abonnés !"</string>
+    
     <!-- Vue "Options" -->
     <!-- Options : Générales -->
     <string name="optionsGenerales">"Options de l'application"</string>
@@ -80,7 +81,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionAbonneDetail">Configurez votre compte abonné</string>
 	<!-- Options : PreferenceScreen Abonné -->
 	<string name="optionsAbonne">Configurer mon compte abonné</string>
-	<string name="optionAbonneDisclaimer">"Les identifiants de votre compte seront stockés sur cet appareil afin de vous permettre de lire les contenus abonnés du site."</string>
+	<string name="optionAbonneDisclaimer">"J'accepte que les identifiants de mon compte soient stockés sur cet appareil afin de me permettre de lire les contenus abonnés du site."</string>
     <string name="optionLogin">Identifiant</string>
     <string name="optionLoginDetail">Votre pseudonyme Next INpact</string>
     <string name="optionPassword">Mot de passe</string>
@@ -90,11 +91,11 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionNbArticles">"Nombre d'articles"</string>
     <string name="optionNbArticlesDetail">"Le nombres d'articles que vous souhaitez voir dans l'application"</string>
     <string name="optionActiverLiensArticle">Liens hypertextes</string>
-    <string name="optionActiverLiensArticleDetail">Activer les liens externes dans les articles</string>
+    <string name="optionActiverLiensArticleDetail">Activer les liens dans les articles</string>
     <!-- Options : Commentaires -->
     <string name="optionsCommentaires">Options des commentaires</string>
     <string name="optionActiverLiensCommentaire">Liens hypertextes</string>
-    <string name="optionActiverLiensCommentaireDetail">Activer les liens externes dans les commentaires</string>
+    <string name="optionActiverLiensCommentaireDetail">Activer les liens dans les commentaires</string>
     <!-- <string name="optionTelechargerCommentaires">Télécharger</string> -->
     <!-- <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string> -->
     <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
@@ -116,6 +117,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionAbonne">10</string>
     <string name="idOptionLogin">11</string>
     <string name="idOptionPassword">12</string>
+    <string name="idOptionInfoCompteAbonne">13</string>
 
 
     <!-- Liste des articles -->
