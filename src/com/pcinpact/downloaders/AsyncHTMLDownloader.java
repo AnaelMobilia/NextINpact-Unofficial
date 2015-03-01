@@ -77,7 +77,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("AsyncHTMLDownloader", "(Abonné) " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
+			Log.w("AsyncHTMLDownloader", "(Abonné) " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
 		}
 	}
 
