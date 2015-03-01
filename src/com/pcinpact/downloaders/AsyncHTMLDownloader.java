@@ -51,7 +51,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	// Context
 	Context monContext;
 	// Contenu abonné
-	Boolean isAbonne;
+	Boolean isAbonne = false;
 	Boolean uniquementSiConnecte;
 
 	/**
@@ -77,7 +77,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("AsyncHTMLDownloader", "Abonné " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
+			Log.i("AsyncHTMLDownloader", "(Abonné) " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
 		}
 	}
 
@@ -101,7 +101,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("AsyncHTMLDownloader", "NON Abonné " + urlPage);
+			Log.i("AsyncHTMLDownloader", "(NON Abonné) " + urlPage);
 		}
 	}
 
