@@ -288,12 +288,7 @@ public final class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @return
 	 */
-	public ArrayList<ArticleItem> chargerArticlesATelecharger(boolean isConnecte) {
-		// DEBUG
-		if(Constantes.DEBUG) {
-			Log.i("DAO", "chargerArticlesATelecharger : isConnecte est " + String.valueOf(isConnecte));
-		}
-		
+	public ArrayList<ArticleItem> chargerArticlesATelecharger() {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
@@ -301,18 +296,10 @@ public final class DAO extends SQLiteOpenHelper {
 
 		String[] contenu;
 
-		Cursor monCursor;
-		// Est-ce un abonné NXI ?
-		if (isConnecte) {
-			contenu = new String[] { "", "1", "0" };
-			// Requête sur la DB avec gestion des articles abonnés non DL
-			monCursor = maDB.query(true, DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE
-					+ "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)", contenu, null, null, null, null);
-		} else {
-			contenu = new String[] { "" };
-			// Requête sur la DB par défaut
-			monCursor = maDB.query(DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=?", contenu, null, null, null);
-		}
+		// Articles vides et des articles Abonnés non DL
+		contenu = new String[] { "", "1", "0" };
+		Cursor monCursor = maDB.query(true, DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE
+				+ "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)", contenu, null, null, null, null);
 
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;

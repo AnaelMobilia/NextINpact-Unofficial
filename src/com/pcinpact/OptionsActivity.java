@@ -46,29 +46,29 @@ public class OptionsActivity extends PreferenceActivity {
 
 		addPreferencesFromResource(R.xml.options);
 
-		// Superviseur des changements de préférence
-		SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
-			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-				// Modification du compte abonné ?
-				if (key.equals(getResources().getString(R.string.idOptionAbonne))
-						|| key.equals(getResources().getString(R.string.idOptionLogin))
-						|| key.equals(getResources().getString(R.string.idOptionPassword))) {
-
-					// Je lance la vérification du statut
-					Downloader.connexionAbonne(monContext);
-
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.w("OptionsActivity", "Lancement connexionAbonne() suite au changement de l'option " + key);
-					}
-				}
-			}
-		};
-
-		// Attachement du superviseur aux préférences
-		PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-				.registerOnSharedPreferenceChangeListener(spChanged);
+//		// Superviseur des changements de préférence
+//		SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
+//			@Override
+//			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//
+//				// Modification du compte abonné ?
+//				if (key.equals(getResources().getString(R.string.idOptionAbonne))
+//						|| key.equals(getResources().getString(R.string.idOptionLogin))
+//						|| key.equals(getResources().getString(R.string.idOptionPassword))) {
+//
+//					// Je lance la vérification du statut
+//					Downloader.connexionAbonne(monContext);
+//
+//					// DEBUG
+//					if (Constantes.DEBUG) {
+//						Log.w("OptionsActivity", "Lancement connexionAbonne() suite au changement de l'option " + key);
+//					}
+//				}
+//			}
+//		};
+//
+//		// Attachement du superviseur aux préférences
+//		PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+//				.registerOnSharedPreferenceChangeListener(spChanged);
 	}
 }

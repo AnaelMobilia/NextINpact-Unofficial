@@ -51,26 +51,46 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	// Context
 	Context monContext;
 	// Contenu abonné
-	Boolean contenuAbonne;
+	Boolean isAbonne;
 	Boolean uniquementSiConnecte;
 
+	/**
+	 * DL avec gestion du compte abonné et de l'état de la connexion
+	 * @param parent
+	 * @param unType
+	 * @param uneURL
+	 * @param unDAO
+	 * @param unContext
+	 * @param contenuAbonne
+	 * @param onlyifConnecte
+	 */
 	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext,
-			Boolean isAbonne, Boolean onlyifConnecte) {
+			Boolean contenuAbonne, Boolean onlyifConnecte) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;
 		typeHTML = unType;
 		monDAO = unDAO;
 		monContext = unContext;
-		contenuAbonne = isAbonne;
+		isAbonne = contenuAbonne;
 		uniquementSiConnecte = onlyifConnecte;
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("AsyncHTMLDownloader (abonné)", urlPage);
+			Log.i("AsyncHTMLDownloader", "Abonné " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
 		}
 	}
 
+	/**
+	 * DL snas gestion du statu abonné
+	 * @param parent
+	 * @param unType
+	 * @param uneURL
+	 * @param unDAO
+	 * @param unContext
+	 * @param contenuAbonne
+	 * @param onlyifConnecte
+	 */
 	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
@@ -81,7 +101,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("AsyncHTMLDownloader", urlPage);
+			Log.i("AsyncHTMLDownloader", "NON Abonné " + urlPage);
 		}
 	}
 
@@ -96,10 +116,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 			// Retour du Downloader
 			byte[] datas;
-			if (contenuAbonne) {
+			if (isAbonne) {
 				// Je récupère mon contenu HTML en passant par la partie abonné
 				datas = compteAbonne.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
-						contenuAbonne, uniquementSiConnecte);
+						uniquementSiConnecte);
 			} else {
 				// Je récupère mon contenu HTML directement
 				datas = Downloader.download(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES);
@@ -156,7 +176,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						// Article abonné ?
 						if (articleDB.isAbonne()) {
 							// Suis-je connecté ?
-							articleDB.setDlContenuAbonne(Downloader.estConnecte());
+							articleDB.setDlContenuAbonne(compteAbonne.estConnecte());
 						}
 
 						// Enregistrement de l'objet complet
@@ -203,6 +223,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 							Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
 						}
 						break;
+				}
+			} else {
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("AsyncHTMLDownloader", "contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
 				}
 			}
 		} catch (Exception e) {

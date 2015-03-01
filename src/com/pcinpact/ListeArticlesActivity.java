@@ -27,7 +27,6 @@ import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
 import com.pcinpact.downloaders.AsyncHTMLDownloader;
 import com.pcinpact.downloaders.AsyncImageDownloader;
-import com.pcinpact.downloaders.Downloader;
 import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
@@ -337,7 +336,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
 			// Téléchargement des articles dont le contenu n'a pas été téléchargé au dernier refresh
-			telechargeListeArticles(monDAO.chargerArticlesATelecharger(Downloader.estConnecte()));
+			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
 
 			// Gestion du nombre de pages à télécharger - option Utilisateur
 			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
@@ -368,9 +367,23 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
-			// Je lance le téléchargement de son contenu
+			boolean isConnecteRequis = false;
+			boolean isAbonne = false;
+
+			// Est-ce un article abonné ?
+			if (((ArticleItem) unItem).isAbonne()) {
+				isAbonne = true;
+
+				// Ai-je déjà la version publique de l'article ?
+				if (!((ArticleItem) unItem).getContenu().equals("")) {
+					// Je requiert d'être connecté (sinon le DL ne sert à rien)
+					isConnecteRequis = true;
+				}
+			}
+
 			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(),
-					monDAO, getApplicationContext());
+					monDAO, getApplicationContext(), isAbonne, isConnecteRequis);
+
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
