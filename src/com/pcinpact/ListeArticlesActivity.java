@@ -367,16 +367,22 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
+			// Tâche de DL HTML
 			AsyncHTMLDownloader monAHD;
+			// DL de l'image d'illustration ?
+			boolean dlIllustration = true;
+			
 
 			// Est-ce un article abonné ?
 			if (((ArticleItem) unItem).isAbonne()) {
 				boolean isConnecteRequis = false;
-				
+
 				// Ai-je déjà la version publique de l'article ?
 				if (!((ArticleItem) unItem).getContenu().equals("")) {
 					// Je requiert d'être connecté (sinon le DL ne sert à rien)
 					isConnecteRequis = true;
+					// Je ne veux pas DL l'image de l'article
+					dlIllustration = false;
 				}
 				// Téléchargement de la ressource
 				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
@@ -395,16 +401,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 			nouveauChargementGUI();
 
-			// Je lance le téléchargement de sa miniature
-			AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-					Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
-			// Parallèlisation des téléchargements pour l'ensemble de l'application
-			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-				monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				monAID.execute();
+			// Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
+			if (dlIllustration) {
+				// Je lance le téléchargement de sa miniature
+				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+				nouveauChargementGUI();
 			}
-			nouveauChargementGUI();
 		}
 	}
 
