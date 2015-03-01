@@ -5,9 +5,9 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/NextINpact-Unofficial/libs/jsoup-1.8.1/jsoup-1.8.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="libs/commons-io-2.4/commons-io-2.4.jar">
+	<classpathentry exported="true" kind="lib" path="libs/commons-io-2.2/commons-io-2.2.jar" sourcepath="libs/commons-io-2.2/commons-io-2.2-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/NextINpact-Unofficial/libs/commons-io-2.4/commons-io-2.4-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/NextINpact-Unofficial/libs/commons-io-2.2/commons-io-2.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
