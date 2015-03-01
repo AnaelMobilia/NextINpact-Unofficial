@@ -367,22 +367,25 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
-			boolean isConnecteRequis = false;
-			boolean isAbonne = false;
+			AsyncHTMLDownloader monAHD;
 
 			// Est-ce un article abonné ?
 			if (((ArticleItem) unItem).isAbonne()) {
-				isAbonne = true;
-
+				boolean isConnecteRequis = false;
+				
 				// Ai-je déjà la version publique de l'article ?
 				if (!((ArticleItem) unItem).getContenu().equals("")) {
 					// Je requiert d'être connecté (sinon le DL ne sert à rien)
 					isConnecteRequis = true;
 				}
+				// Téléchargement de la ressource
+				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+						getApplicationContext(), true, isConnecteRequis);
+			} else {
+				// Téléchargement de la ressource
+				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+						getApplicationContext());
 			}
-
-			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(),
-					monDAO, getApplicationContext(), isAbonne, isConnecteRequis);
 
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
