@@ -304,7 +304,7 @@ public final class DAO extends SQLiteOpenHelper {
 		Cursor monCursor;
 		// Est-ce un abonné NXI ?
 		if (isConnecte) {
-			contenu = new String[] { "", "0", "1" };
+			contenu = new String[] { "", "1", "0" };
 			// Requête sur la DB avec gestion des articles abonnés non DL
 			monCursor = maDB.query(true, DB_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE
 					+ "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)", contenu, null, null, null, null);
