@@ -32,6 +32,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
+import android.R.integer;
 import android.util.Log;
 
 import com.pcinpact.Constantes;
@@ -94,8 +95,24 @@ public class ParseurHTML {
 			Element commentaires = unArticle.select("span[class=nbcomment]").get(0);
 			try {
 				monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
-			} catch (Exception e) {
-				monArticleItem.setNbCommentaires(0);
+			} catch (NumberFormatException e) {
+				// Nouveaux commentaires : "172 + 5"
+				String valeur = commentaires.text();
+
+				// Récupération des éléments
+				int positionOperateur = valeur.indexOf("+");
+				String membreGauche = valeur.substring(0, positionOperateur).trim();
+				String membreDroit = valeur.substring(positionOperateur + 1).trim();
+
+				// On additionne
+				int total = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
+				// Et on renvoit !
+				monArticleItem.setNbCommentaires(total);
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("ParseurHTML", "Nombre de commentaires : " + valeur + " => " + String.valueOf(total));
+				}
 			}
 
 			// Statut abonné
