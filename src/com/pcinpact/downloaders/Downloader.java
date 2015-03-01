@@ -69,7 +69,7 @@ public class Downloader {
 	 * @param uneURL
 	 * @return
 	 */
-	public static byte[] download(final String uneURL, final Context unContext, boolean compression, boolean authentification) {
+	public static byte[] download(final String uneURL, final Context unContext, boolean compression) {
 		// Retour
 		byte[] datas = null;
 
@@ -83,9 +83,9 @@ public class Downloader {
 		 * AUTHENTIFICATION
 		 */
 		// Si demandé !
-		if (authentification) {
-			connexionAbonne(unContext);
-		}
+//		if (authentification) {
+//			connexionAbonne(unContext);
+//		}
 
 		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
 		AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
