@@ -18,14 +18,8 @@
  */
 package com.pcinpact;
 
-import com.pcinpact.downloaders.Downloader;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Options de l'application
@@ -34,41 +28,11 @@ import android.util.Log;
  * 
  */
 public class OptionsActivity extends PreferenceActivity {
-	private static Context monContext;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
 		super.onCreate(savedInstanceState);
 
-		// J'enregistre mon contexte
-		monContext = getApplicationContext();
-
 		addPreferencesFromResource(R.xml.options);
-
-//		// Superviseur des changements de préférence
-//		SharedPreferences.OnSharedPreferenceChangeListener spChanged = new SharedPreferences.OnSharedPreferenceChangeListener() {
-//			@Override
-//			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//
-//				// Modification du compte abonné ?
-//				if (key.equals(getResources().getString(R.string.idOptionAbonne))
-//						|| key.equals(getResources().getString(R.string.idOptionLogin))
-//						|| key.equals(getResources().getString(R.string.idOptionPassword))) {
-//
-//					// Je lance la vérification du statut
-//					Downloader.connexionAbonne(monContext);
-//
-//					// DEBUG
-//					if (Constantes.DEBUG) {
-//						Log.w("OptionsActivity", "Lancement connexionAbonne() suite au changement de l'option " + key);
-//					}
-//				}
-//			}
-//		};
-//
-//		// Attachement du superviseur aux préférences
-//		PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-//				.registerOnSharedPreferenceChangeListener(spChanged);
 	}
 }
