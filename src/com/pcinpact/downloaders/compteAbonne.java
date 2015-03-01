@@ -64,9 +64,28 @@ public class compteAbonne {
 	 * @return
 	 */
 	public static byte[] downloadArticleAbonne(String uneURL, Context unContext, boolean compression, boolean uniquementSiConnecte) {
-
 		// Retour
 		byte[] monRetour;
+
+		// Une authentification est-elle déjà en cours ?
+		if (isAuthEnCours) {
+			// J'attends...
+			while (isAuthEnCours) {
+				try {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("compteAbonne", "Attente de la fin de d'authentification pour " + uneURL);
+					}
+
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.e("compteAbonne", "downloadArticleAbonne : crash sur le sleep", e);
+					}
+				}
+			}
+		}
 
 		// Suis-je connecté ?
 		if (estConnecte()) {
@@ -93,14 +112,14 @@ public class compteAbonne {
 				if (uniquementSiConnecte) {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.i("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
+						Log.w("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
 					}
 
 					monRetour = null;
 				} else {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.i("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
+						Log.w("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
 					}
 
 					monRetour = Downloader.download(uneURL, unContext, compression);
@@ -108,25 +127,15 @@ public class compteAbonne {
 			}
 			// Peut-être connectable
 			else {
-				// Une authentification est-elle déjà en cours ?
-				if (isAuthEnCours) {
-					// J'attends...
-					while (isAuthEnCours) {
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// DEBUG
-							if (Constantes.DEBUG) {
-								Log.e("compteAbonne", "downloadArticleAbonne : crash sur le sleep", e);
-							}
-						}
-					}
-				} else {
-					// Je lance une authentification...
-					isAuthEnCours = true;
-					connexionAbonne(unContext, usernameOption, passwordOption);
-					isAuthEnCours = false;
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
 				}
+
+				// Je lance une authentification...
+				isAuthEnCours = true;
+				connexionAbonne(unContext, usernameOption, passwordOption);
+				isAuthEnCours = false;
 
 				// Je relance la méthode pour avoir un résultat...
 				monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
