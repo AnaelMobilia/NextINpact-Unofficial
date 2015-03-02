@@ -25,16 +25,16 @@ package com.pcinpact.items;
  */
 public interface Item {
 
-	public final static int TYPE_ARTICLE = 0;
-	public final static int TYPE_SECTION = 1;
-	public final static int TYPE_COMMENTAIRE = 2;
+	int TYPE_ARTICLE = 0;
+	int TYPE_SECTION = 1;
+	int TYPE_COMMENTAIRE = 2;
 
 	// Nombre de types différents existants
-	public final static int NOMBRE_DE_TYPES = 3;
+	int NOMBRE_DE_TYPES = 3;
 	
 	/**
 	 * Type (Cf Item.type*) de l'item
 	 * @return
 	 */
-	public int getType();
+	int getType();
 }

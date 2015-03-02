@@ -35,7 +35,7 @@ public interface RefreshDisplayInterface {
 	 * @param unUUID
 	 * @param mesItems
 	 */
-	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems);
+	void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems);
 
 	/**
 	 * Une ressource image a été téléchargée
@@ -43,6 +43,6 @@ public interface RefreshDisplayInterface {
 	 * @param unUUID
 	 * @param uneImage
 	 */
-	public void downloadImageFini(String uneURL);
+	void downloadImageFini(String uneURL);
 
 }

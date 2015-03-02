@@ -271,11 +271,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
 		// DEBUG
-		if(Constantes.DEBUG) {
+		if (Constantes.DEBUG) {
 			Log.i("ListeArticlesActivity", "telechargeListeArticles()");
 		}
-		
-		
+
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
 			/**
@@ -293,7 +292,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			 */
 			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
 					R.string.defautOptionNbArticles);
-			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;// Téléchargement de chaque page...
+			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
+			// Téléchargement de chaque page...
 			for (int numPage = 1; numPage <= nbPages; numPage++) {
 				// Le retour en GUI
 				nouveauChargementGUI();
@@ -308,7 +308,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					monAHD.execute();
 				}
 			}
-			
+
 			/**
 			 * Téléchargement des miniatures manquantes
 			 */

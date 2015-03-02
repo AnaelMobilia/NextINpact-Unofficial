@@ -25,6 +25,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
@@ -133,6 +136,12 @@ public final class DAO extends SQLiteOpenHelper {
 				String reqUpdateFrom2 = "ALTER TABLE " + DB_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DL_CONTENU_ABONNE
 						+ " BOOLEAN;";
 				db.execSQL(reqUpdateFrom2);
+
+			default:
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("DAO", "onUpgrade => default !");
+				}
 		}
 	}
 
