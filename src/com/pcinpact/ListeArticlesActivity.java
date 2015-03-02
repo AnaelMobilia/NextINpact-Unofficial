@@ -330,6 +330,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
+			// GUI : activité en cours...
+			nouveauChargementGUI();
+			
 			/**
 			 * Nettoyage du cache
 			 */
@@ -396,6 +399,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				nouveauChargementGUI();
 			}
+			
+			// GUI : fin de l'activité en cours...
+			finChargementGUI();
 		}
 	}
 
