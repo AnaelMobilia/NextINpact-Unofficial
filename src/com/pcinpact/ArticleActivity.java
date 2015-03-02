@@ -38,15 +38,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Affiche un article
+ * Affiche un article.
  * 
  * @author Anael
  *
  */
 public class ArticleActivity extends ActionBarActivity {
-	// ID de l'article
+	/**
+	 * ID de l'article.
+	 */
 	private int articleID;
-	// Article
+	/**
+	 * ArticleItem.
+	 */
 	private ArticleItem monArticle;
 
 	@Override

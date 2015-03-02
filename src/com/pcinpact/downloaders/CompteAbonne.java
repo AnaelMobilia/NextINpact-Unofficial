@@ -42,26 +42,41 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Connexion au compte abonné et gestion du DL des articles abonnés
+ * Connexion au compte abonné et gestion du DL des articles abonnés.
  * 
  * @author Anael
  *
  */
 public class CompteAbonne {
-	// Contexte HTTP
+	/**
+	 * Context HTTP.
+	 */
 	private static BasicHttpContext monHTTPContext;
-	// Coneneur à cookies
+	/**
+	 * Conteneur à cookies.
+	 */
 	private static BasicCookieStore monCookieStore;
-	// Derniers identifiants utilisés pour le site
+	/**
+	 * Dernier utilisateur essayé.
+	 */
 	private static String usernameLastTry = "";
+	/**
+	 * Dernier mot de passe essayé.
+	 */
 	private static String passwordLastTry = "";
-	// Jeton d'utilisation en cours
+	/**
+	 * Jeton d'"utilisation en cours".
+	 */
 	private static Boolean isRunning = false;
 
 	/**
-	 * Télécharge un article "Abonné"
+	 * Télécharge un article "Abonné".
 	 * 
-	 * @return
+	 * @param uneURL URL de la ressource
+	 * @param unContext context de l'application
+	 * @param compression faut-il demander au serveur de compresser la ressource ?
+	 * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
+	 * @return code HTML de l'article brut
 	 */
 	public static byte[] downloadArticleAbonne(String uneURL, final Context unContext, boolean compression,
 			boolean uniquementSiConnecte) {
@@ -81,7 +96,7 @@ public class CompteAbonne {
 						Log.w("compteAbonne", "Attente de la fin d'utilisation pour " + uneURL);
 					}
 
-					// Attente de 0 à 1 seconde... 
+					// Attente de 0 à 1 seconde...
 					double monCoeff = Math.random();
 					// Evite les réveils trop simultanés (les appels l'étant...)
 					int maDuree = (int) (1000 * monCoeff);
@@ -106,9 +121,8 @@ public class CompteAbonne {
 
 			// Je lance le téléchargement
 			monRetour = Downloader.download(uneURL, unContext, compression, monHTTPContext);
-		}
-		// Non connecté... suis-je connectable ?
-		else {
+		} else {
+			// Non connecté... suis-je connectable ?
 			// Chargement des identifiants
 			String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 			String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
@@ -155,9 +169,8 @@ public class CompteAbonne {
 					// Enregistrement de l'affichage
 					Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
 				}
-			}
-			// Peut-être connectable
-			else {
+			} else {
+				// Peut-être connectable
 				// DEBUG
 				if (Constantes.DEBUG) {
 					Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
@@ -168,23 +181,24 @@ public class CompteAbonne {
 
 				// Je libère le jeton d'utilisation
 				isRunning = false;
-				
+
 				// Je relance la méthode pour avoir un résultat...
 				monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
 			}
 		}
-		
+
 		// Je libère le jeton d'utilisation
 		isRunning = false;
-		
+
 		return monRetour;
 	}
 
 	/**
-	 * Connexion au compte abonné
+	 * Connexion au compte abonné.
 	 * 
-	 * @param unContext
-	 * @return
+	 * @param unContext context de l'application
+	 * @param username nom d'utilisateur NXI
+	 * @param password mot de passe NXI
 	 */
 	private static void connexionAbonne(final Context unContext, String username, String password) {
 		// Au premier appel, j'initialise le cookie holder
@@ -237,10 +251,8 @@ public class CompteAbonne {
 					if (Constantes.DEBUG) {
 						Log.w("compteAbonne", "connexionAbonne : Authentification réussie (cookie présent)");
 					}
-				}
-
-				// Si non connecté
-				else {
+				} else {
+					// Si non connecté
 					Handler handler = new Handler(unContext.getMainLooper());
 					handler.post(new Runnable() {
 						@Override
@@ -261,10 +273,10 @@ public class CompteAbonne {
 	}
 
 	/**
-	 * Est-on connecté (vérification du cookie)
+	 * Est-on connecté (vérification du cookie).
 	 * 
-	 * @param unContext
-	 * @return
+	 * @param unContext context de l'application
+	 * @return true si compte utilisateur connecté chez NXI
 	 */
 	public static boolean estConnecte(Context unContext) {
 		boolean monRetour = false;
@@ -284,10 +296,9 @@ public class CompteAbonne {
 			if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")) {
 				// Si non, effacement des cookies
 				monCookieStore.clear();
-			}
-			// Si oui, je cherche mon cookie...
-			else {
-				// Je supprime tous les cookies expirés
+			} else {
+				// Si oui, je cherche mon cookie...
+				// Suppression des cookies expirés
 				monCookieStore.clearExpired(new Date());
 
 				// Ai-je le cookie demandé ?

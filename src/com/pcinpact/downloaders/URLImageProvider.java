@@ -39,23 +39,31 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 /**
- * Smileys dans les commentaires. Si image non présente en cache, la téléchargera
+ * Smileys dans les commentaires. Si image non présente en cache, la téléchargera.
  * 
  * @author Anael
  *
  */
 public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
-	// Contexte de l'activité
+	/**
+	 * Context de l'application.
+	 */
 	private Context monContext;
-	// TextView dans lequel l'image est affichée
+	/**
+	 * TextView dans laquelle l'image est affichée.
+	 */
 	private TextView maTextView;
-	// Texte du commentaire (pour recharger quand le smiley est dispo)
+	/**
+	 * Texte du commentaire (pour recharger quand le smiley est dispo).
+	 */
 	private String monCommentaire;
 
 	/**
-	 * Constructeur
+	 * Constructeur.
 	 * 
-	 * @param laView
+	 * @param unContext context de l'application
+	 * @param uneTextView textView concernée
+	 * @param unCommentaire commentaire affiché dans la textView
 	 */
 	public URLImageProvider(Context unContext, TextView uneTextView, String unCommentaire) {
 		super();
@@ -108,10 +116,10 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	}
 
 	/**
-	 * Charge et Zoome sur une image
+	 * Charge et zoome une image.
 	 * 
-	 * @param pathImage
-	 * @return
+	 * @param uneImage ressource Image
+	 * @return Drawable redimensionnée si besoin
 	 */
 	private Drawable gestionTaille(Drawable uneImage) {
 		// Taile par défaut
@@ -124,12 +132,15 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
 
 		int monCoeff;
-		// Si on est sur la résolution par défaut, on reste à 1
 		if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
+			/**
+			 * Si on est sur la résolution par défaut, on reste à 1
+			 */
 			monCoeff = Math.round(1 * monCoeffZoom);
-		}
-		// Sinon, on calcule le zoom à appliquer (avec un coeff 2 pour éviter les images trop petites)
-		else {
+		} else {
+			/**
+			 * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
+			 */
 			monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
 		}
 		// On évite un coeff inférieur à 1 (image non affichée !)

@@ -23,32 +23,56 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Permet de conserver en cache les emplacements des *View d'un layout pour ne pas les recharger dans l'itemsAdapter
+ * Conservation en cache des emplacements des *View d'un layout pour ne pas les recharger dans l'itemsAdapter.
  * 
  * @author Anael
  *
  */
 public class ItemsViewHolder {
 	/**
-	 * Section
+	 * Section.
 	 */
 	public TextView sectionView;
 
 	/**
-	 * Article
+	 * (Article) Illustration.
 	 */
 	public ImageView imageArticle;
+	/**
+	 * (Article) Label abonné.
+	 */
 	public TextView labelAbonne;
+	/**
+	 * (Article) Titre.
+	 */
 	public TextView titreArticle;
+	/**
+	 * (Article) heure.
+	 */
 	public TextView heureArticle;
+	/**
+	 * (Article) sous titre.
+	 */
 	public TextView sousTitreArticle;
+	/**
+	 * (Article) nombre de commentaires.
+	 */
 	public TextView commentairesArticle;
+	/**
+	 * (Article) relative Layout - couleur de fond.
+	 */
 	public RelativeLayout relativeLayout;
 
 	/**
-	 * Commentaire
+	 * (Commentaire) auteur et date.
 	 */
 	public TextView auteurDateCommentaire;
+	/**
+	 * (Commentaire) numéro.
+	 */
 	public TextView numeroCommentaire;
+	/**
+	 * (Commentaire) contenu.
+	 */
 	public TextView commentaire;
 }

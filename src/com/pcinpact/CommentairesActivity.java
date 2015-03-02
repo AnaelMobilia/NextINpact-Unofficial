@@ -48,27 +48,47 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Affichage des commentaires
+ * Affichage des commentaires.
  * 
  * @author Anael
  *
  */
 public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
-	// les commentaires
+	/**
+	 * Les commentaires.
+	 */
 	private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
-	// ID de l'article
+	/**
+	 * ID de l'article.
+	 */
 	private int articleID;
-	// itemsAdapter
+	/**
+	 * ItemAdapter.
+	 */
 	private ItemsAdapter monItemsAdapter;
-	// La BDD
+	/**
+	 * Accès à la BDD.
+	 */
 	private DAO monDAO;
-	// Etats
+	/**
+	 * Téléchargement en cours ?
+	 */
 	private Boolean isLoading = false;
+	/**
+	 * Fin des commentaires ?
+	 */
 	private Boolean isFinCommentaires = false;
-
-	// Ressources sur les éléments graphiques
+	/**
+	 * Menu.
+	 */
 	private Menu monMenu;
+	/**
+	 * Bouton pour télécharger 10 commentaires en plus.
+	 */
 	private Button buttonDl10Commentaires;
+	/**
+	 * TextView "Dernière synchro...".
+	 */
 	private TextView headerTextView;
 
 	@Override
@@ -139,7 +159,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Charge les commentaires suivants
+	 * Charge les commentaires suivants.
 	 */
 	@SuppressLint("NewApi")
 	private void refreshListeCommentaires() {
@@ -205,7 +225,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Lance les animations indiquant un téléchargement
+	 * Lance les animations indiquant un téléchargement.
 	 */
 	private void lancerAnimationTelechargement() {
 		// DEBUG
@@ -228,7 +248,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Arrêt les animations indiquant un téléchargement
+	 * Arrête les animations indiquant un téléchargement.
 	 */
 	private void arreterAnimationTelechargement() {
 		// DEBUG
@@ -286,7 +306,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Mise à jour de la date de dernière mise à jour
+	 * MàJ de la date de dernière mise à jour.
 	 */
 	private void majDateRefresh() {
 		long dernierRefresh = monDAO.chargerDateRefresh(articleID);

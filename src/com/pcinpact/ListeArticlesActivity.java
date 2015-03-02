@@ -57,25 +57,43 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * Liste des articles
+ * Liste des articles.
  * 
  * @author Anael
  *
  */
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
-	// les articles
+	/**
+	 * Les articles.
+	 */
 	private ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
-	// itemAdapter
+	/**
+	 * ItemAdapter.
+	 */
 	private ItemsAdapter monItemsAdapter;
-	// La BDD
+	/**
+	 * BDD.
+	 */
 	private DAO monDAO;
-	// Nombre de DL en cours
+	/**
+	 * Nombre de DL en cours.
+	 */
 	private int dlInProgress;
-
-	// Ressources sur les éléments graphiques
+	/**
+	 * Menu.
+	 */
 	private Menu monMenu;
+	/**
+	 * ListView.
+	 */
 	private ListView monListView;
+	/**
+	 * SwipeRefreshLayout.
+	 */
 	private SwipeRefreshLayout monSwipeRefreshLayout;
+	/**
+	 * TextView "Dernière synchro...".
+	 */
 	private TextView headerTextView;
 
 	@Override
@@ -179,7 +197,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion du clic sur un article => l'ouvrir + marquer comme lu
+	 * Gestion du clic sur un article => l'ouvrir + marquer comme lu.
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,7 +218,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Ouverture du menu de l'action bar à l'utilisation du bouton menu
+	 * Ouverture du menu de l'action bar à l'utilisation du bouton menu.
 	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -229,7 +247,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion des clic dans le menu d'options de l'activité
+	 * Gestion des clic dans le menu d'options de l'activité.
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
@@ -255,7 +273,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Nettoyage du cache
+	 * Arrêt de l'activité.
 	 */
 	@Override
 	protected void onDestroy() {
@@ -266,7 +284,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Lance le téléchargement de la liste des articles
+	 * Lance le téléchargement de la liste des articles.
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
@@ -347,9 +365,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Lance le téléchargement des articles passés en paramètres
+	 * Lance le téléchargement des articles.
 	 * 
-	 * @param desArticles
+	 * @param desItems liste d'articles à télécharger
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
@@ -422,9 +440,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Fournit une liste d'articles triés par date + sections
+	 * Fournit une liste d'articles triés par date + sections.
 	 * 
-	 * @return
+	 * @return Liste d'articles
 	 */
 	private ArrayList<Item> prepareAffichage() {
 		ArrayList<Item> monRetour = new ArrayList<Item>();
@@ -465,7 +483,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement
+	 * Gère les animations de téléchargement.
 	 */
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
@@ -499,7 +517,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement
+	 * Gère les animations de téléchargement.
 	 */
 	private void finChargementGUI() {
 		// Je note la fin du téléchargement
@@ -535,7 +553,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Nettoie le cache de l'application
+	 * Nettoie le cache de l'application.
 	 */
 	private void nettoyerCache() {
 		try {

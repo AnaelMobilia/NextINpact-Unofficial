@@ -19,22 +19,35 @@
 package com.pcinpact.items;
 
 /**
- * Objet générique
+ * Objet générique.
+ * 
  * @author Anael
  *
  */
 public interface Item {
 
+	/**
+	 * Type "Article".
+	 */
 	int TYPE_ARTICLE = 0;
+	/**
+	 * Type "Section".
+	 */
 	int TYPE_SECTION = 1;
+	/**
+	 * Type "Commentaire".
+	 */
 	int TYPE_COMMENTAIRE = 2;
 
-	// Nombre de types différents existants
-	int NOMBRE_DE_TYPES = 3;
-	
 	/**
-	 * Type (Cf Item.type*) de l'item
-	 * @return
+	 * Nombre de types existants.
+	 */
+	int NOMBRE_DE_TYPES = 3;
+
+	/**
+	 * Type (cf Item.type*) de l'item.
+	 * 
+	 * @return type de l'item
 	 */
 	int getType();
 }

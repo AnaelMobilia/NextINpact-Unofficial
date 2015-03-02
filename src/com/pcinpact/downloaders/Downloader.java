@@ -36,19 +36,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Téléchargement des ressources
+ * Téléchargement des ressources.
  * 
  * @author Anael
  *
  */
 public class Downloader {
 	/**
-	 * Download sans être connecté
+	 * Téléchargement sans être connecté en tant qu'abonné.
 	 * 
-	 * @param uneURL
-	 * @param unContext
-	 * @param compression
-	 * @return
+	 * @param uneURL URL de la ressource à télécharger
+	 * @param unContext context de l'application
+	 * @param compression true = demander au serveur une compression gzip
+	 * @return ressource demandée brute
 	 */
 	public static byte[] download(final String uneURL, final Context unContext, boolean compression) {
 
@@ -56,10 +56,12 @@ public class Downloader {
 	}
 
 	/**
-	 * Téléchargement d'une ressource en tant qu'abonné
-	 * 
-	 * @param uneURL
-	 * @return
+	 * Téléchargement d'une ressource en tant qu'abonné.
+	 * @param uneURL URL de la ressource à télécharger
+	 * @param unContext context de l'application
+	 * @param compression true = demander au serveur une compression gzip
+	 * @param monHTTPContext HTTPcontext contenant le cookie de connexion au compte abonné NXI
+	 * @return ressource demandée brute
 	 */
 	public static byte[] download(final String uneURL, final Context unContext, boolean compression, HttpContext monHTTPContext) {
 		// Retour

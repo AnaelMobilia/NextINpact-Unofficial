@@ -31,20 +31,37 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Téléchargement asynchrone d'images
+ * Téléchargement asynchrone d'image.
  * 
  * @author Anael
  *
  */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
-	// Contexte parent
+	/**
+	 * Context parent.
+	 */
 	private Context monContext;
-	// Callback : parent + ref
+	/**
+	 * Parent qui sera rappelé à la fin.
+	 */
 	private RefreshDisplayInterface monParent;
-	// Type d'image & URL
+	/**
+	 * URL de l'image.
+	 */
 	private String urlImage;
+	/**
+	 * Type d'image.
+	 */
 	private int typeImage;
 
+	/**
+	 * DL sans gestion du statu abonné.
+	 * 
+	 * @param unContext context de l'application
+	 * @param parent parent à callback à la fin
+	 * @param unType type de la ressource (Cf Constantes.TYPE_)
+	 * @param uneURL URL de la ressource
+	 */
 	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;

@@ -35,34 +35,50 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 /**
- * Téléchargement du code HTML
+ * Téléchargement du code HTML.
  * 
  * @author Anael
  *
  */
 public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? extends Item>> {
-	// Callback : parent + ref
+	/**
+	 * Parent qui sera rappelé à la fin.
+	 */
 	private RefreshDisplayInterface monParent;
-	// Type & URL du code HTML
+	/**
+	 * URL de la page.
+	 */
 	private String urlPage;
+	/**
+	 * Type de la ressource.
+	 */
 	private int typeHTML;
-	// Accès sur la DB
+	/**
+	 * Accès à la BDD.
+	 */
 	private DAO monDAO;
-	// Context
-	Context monContext;
-	// Contenu abonné
-	Boolean isAbonne = false;
-	Boolean uniquementSiConnecte;
+	/**
+	 * Context de l'application.
+	 */
+	private Context monContext;
+	/**
+	 * Est-ce du contenu abonné ?
+	 */
+	private Boolean isAbonne = false;
+	/**
+	 * Téléchargement uniquement si connecté ?
+	 */
+	private Boolean uniquementSiConnecte;
 
 	/**
-	 * DL avec gestion du compte abonné et de l'état de la connexion
-	 * @param parent
-	 * @param unType
-	 * @param uneURL
-	 * @param unDAO
-	 * @param unContext
-	 * @param contenuAbonne
-	 * @param onlyifConnecte
+	 * DL avec gestion du compte abonné et de l'état de la connexion.
+	 * @param parent parent à callback à la fin
+	 * @param unType type de la ressource (Cf Constantes.TYPE_)
+	 * @param uneURL URL de la ressource
+	 * @param unDAO accès sur la DB
+	 * @param unContext context de l'application
+	 * @param contenuAbonne est-ce un contenu abonné ?
+	 * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
 	 */
 	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext,
 			Boolean contenuAbonne, Boolean onlyifConnecte) {
@@ -82,14 +98,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	}
 
 	/**
-	 * DL snas gestion du statu abonné
-	 * @param parent
-	 * @param unType
-	 * @param uneURL
-	 * @param unDAO
-	 * @param unContext
-	 * @param contenuAbonne
-	 * @param onlyifConnecte
+	 * DL sans gestion du statut abonné.
+	 * @param parent parent à callback à la fin
+	 * @param unType type de la ressource (Cf Constantes.TYPE_)
+	 * @param uneURL URL de la ressource
+	 * @param unDAO accès sur la DB
+	 * @param unContext context de l'application
 	 */
 	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext) {
 		// Mappage des attributs de cette requête

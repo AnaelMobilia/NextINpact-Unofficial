@@ -27,127 +27,224 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
- * Constantes de l'application (onfiguration des URL, ...)
+ * Constantes et outils.
  * 
  * @author Anael
  *
  */
 public class Constantes {
 	/**
-	 * MODE DEBUG
+	 * MODE DEBUG.
 	 */
-	public final static Boolean DEBUG = true;
+	public static final Boolean DEBUG = true;
 	/**
-	 * COMPATIBILITE
+	 * COMPATIBILITE.
 	 */
-	// Build Version Honeycomb (non dispo en 2.*)
-	// http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
-	public final static int HONEYCOMB = 11;
+	/**
+	 * Build Version Honeycomb (non dispo en 2.*).
+	 * http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+	 */
+	public static final int HONEYCOMB = 11;
 
 	/**
 	 * PARAMETRES GENERAUX
 	 */
-	// Encodage des pages
-	public final static String NEXT_INPACT_ENCODAGE = "UTF-8";
-	// URL de téléchargement
-	public final static String NEXT_INPACT_URL = "http://m.nextinpact.com";
-	public final static String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
-	// URL de téléchargement des commentaires
-	public final static String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
-	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
-	public final static String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
-	// URL des smileys
-	public final static String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
-	// Nb de commentaires par page
-	public final static int NB_COMMENTAIRES_PAR_PAGE = 10;
-	// Nb d'articles par page
-	public final static int NB_ARTICLES_PAR_PAGE = 30;
-	// Utilisation d'une compression pour les contenus textes
-	public final static Boolean COMPRESSION_CONTENU_TEXTES = true;
-	// Utilisation d'une compression pour les contenus image
-	public final static Boolean COMPRESSION_CONTENU_IMAGES = false;
+	/**
+	 * Encodage des pages.
+	 */
+	public static final String NEXT_INPACT_ENCODAGE = "UTF-8";
+	/**
+	 * URL de téléchargement.
+	 */
+	public static final String NEXT_INPACT_URL = "http://m.nextinpact.com";
+	/**
+	 * Paramètre numéro de page (liste articles).
+	 */
+	public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
+	/**
+	 * URL de téléchargement des commentaires.
+	 */
+	public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
+	/**
+	 * Paramètre ID d'article (commentaires).
+	 */
+	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
+	/**
+	 * Paramètre numéro de page (commentaires).
+	 */	
+	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+	/**
+	 * URL des smileys.
+	 */
+	public static final String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
+	/**
+	 * Nb de commentaires par page.
+	 */
+	public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
+	/**
+	 * Nb d'articles par page.
+	 */
+	public static final int NB_ARTICLES_PAR_PAGE = 30;
+	/**
+	 * Utilisation d'une compression pour les contenus textes.
+	 */
+	public static final Boolean COMPRESSION_CONTENU_TEXTES = true;
+	/**
+	 * Utilisation d'une compression pour les contenus image.
+	 */
+	public static final Boolean COMPRESSION_CONTENU_IMAGES = false;
 
 	/**
-	 * TYPES DE TELECHARGEMENTS
+	 * TYPES DE TELECHARGEMENTS.
 	 */
-	// Type : liste des articles
-	public final static int HTML_LISTE_ARTICLES = 1;
-	// Type : contenu d'un article
-	public final static int HTML_ARTICLE = 2;
-	// Type : commentaires d'un article
-	public final static int HTML_COMMENTAIRES = 3;
-	// Type : image -> miniature
-	public final static int IMAGE_MINIATURE_ARTICLE = 4;
-	// Type : image -> du contenu d'un article
-	public final static int IMAGE_CONTENU_ARTICLE = 5;
-	// Type : image -> smiley des commentaires
-	public final static int IMAGE_SMILEY = 6;
+	/**
+	 * Type : liste des articles.
+	 */
+	public static final int HTML_LISTE_ARTICLES = 1;
+	/**
+	 * Type : contenu d'un article.
+	 */
+	public static final int HTML_ARTICLE = 2;
+	/**
+	 * Type : commentaires.
+	 */
+	public static final int HTML_COMMENTAIRES = 3;
+	/**
+	 * Type : image -> miniature.
+	 */
+	public static final int IMAGE_MINIATURE_ARTICLE = 4;
+	/**
+	 * Type : image -> du contenu d'un article.
+	 */
+	public static final int IMAGE_CONTENU_ARTICLE = 5;
+	/**
+	 * Type : image -> smiley dans commentaires.
+	 */
+	public static final int IMAGE_SMILEY = 6;
 
 	/**
-	 * FORMATS DU SITE POUR LE PARSEUR
+	 * FORMATS DU SITE POUR LE PARSEUR.
 	 */
-	// Format des dates des articles sur le site
-	public final static String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-	// Format des dates des commentaires sur le site
-	public final static String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+	/**
+	 * Format des dates des articles sur le site.
+	 */
+	public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
+	/**
+	 * Format des dates des commentaires sur le site.
+	 */
+	public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 
 	/**
-	 * PATH DES FICHIERS LOCAUX
+	 * PATH DES FICHIERS LOCAUX.
 	 */
-	// Path des miniatures des articles
-	public final static String PATH_IMAGES_MINIATURES = "/MINIATURES/";
-	// Path des images de contenu des articles
-	public final static String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
-	// Path des smileys
-	public final static String PATH_IMAGES_SMILEYS = "/SMILEYS/";
+	/**
+	 * Path des miniatures des articles.
+	 */
+	public static final String PATH_IMAGES_MINIATURES = "/MINIATURES/";
+	/**
+	 * Path des images de contenu des articles. 
+	 */
+	public static final String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
+	/**
+	 * Path des smileys.
+	 */
+	public static final String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
 	/**
-	 * FORMAT d'AFFICHAGE
+	 * FORMATS D'AFFICHAGE.
 	 */
-	// Date des sections sur la listeArticlesActivity
-	public final static String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
-	// Heure de publication des articles sur la listeArticlesActivity
-	public final static String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
-	// Date et Heure de publication d'un commentaire
-	public final static String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
-	// Date et Heure de dernière synchro
-	public final static String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
+	/**
+	 * Date des sections sur la listeArticlesActivity.
+	 */
+	public static final String FORMAT_AFFICHAGE_SECTION_DATE = "EEEE dd MMMM yyyy";
+	/**
+	 * Heure de publication des articles sur la listeArticlesActivity.
+	 */
+	public static final String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
+	/**
+	 * Date et Heure de publication d'un commentaire.
+	 */
+	public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
+	/**
+	 * Date et Heure de dernière synchro.
+	 */
+	public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
 
 	/**
-	 * CONSTANTES EN DB
+	 * CONSTANTES EN BDD.
 	 */
-	// ID du refresh de la liste des articles
-	public final static int DB_REFRESH_ID_LISTE_ARTICLES = 0;
+	/**
+	 * ID du refresh de la liste des articles.
+	 */
+	public static final int DB_REFRESH_ID_LISTE_ARTICLES = 0;
 
 	/**
-	 * TAILLE DES TEXTES
+	 * TAILLE DES TEXTES.
+	 * http://developer.android.com/design/style/typography.html
 	 */
-	// http://developer.android.com/design/style/typography.html
-	public final static int TEXT_SIZE_MICRO = 12;
-	public final static int TEXT_SIZE_SMALL = 14;
-	public final static int TEXT_SIZE_MEDIUM = 18;
-	public final static int TEXT_SIZE_LARGE = 22;
-	public final static int TEXT_SIZE_XLARGE = 26;
+	/**
+	 * Taille de texte MICRO.
+	 */
+	public static final int TEXT_SIZE_MICRO = 12;
+	/**
+	 * Taille de texte SMALL.
+	 */	
+	public static final int TEXT_SIZE_SMALL = 14;
+	/**
+	 * Taille de texte MEDIUM.
+	 */
+	public static final int TEXT_SIZE_MEDIUM = 18;
+	/**
+	 * Taille de texte LARGE.
+	 */
+	public static final int TEXT_SIZE_LARGE = 22;
+	/**
+	 * Taille de texte XLARGE.
+	 */
+	public static final int TEXT_SIZE_XLARGE = 26;
 
 	/**
-	 * COULEUR D'AFFICHAGE
+	 * COULEURS D'AFFICHAGE.
 	 */
-	public final static int COULEUR_ARTICLE_NON_LU = Color.WHITE;
-	public final static int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
+	/**
+	 * Couleur de fond - article non lu.
+	 */
+	public static final int COULEUR_ARTICLE_NON_LU = Color.WHITE;
+	/**
+	 * Couleur de fond - article lu.
+	 */
+	public static final int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
 
 	/**
-	 * PARAMETRES D'AUTHENTIFICATION
+	 * PARAMETRES D'AUTHENTIFICATION.
 	 */
-	public final static String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
-	public final static String AUTHENTIFICATION_USERNAME = "UserName";
-	public final static String AUTHENTIFICATION_PASSWORD = "Password";
-	public final static String AUTHENTIFICATION_COOKIE = "inpactstore";
+	/**
+	 * URL d'authentification.
+	 */
+	public static final String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
+	/**
+	 * Paramètre utilisateur.
+	 */
+	public static final String AUTHENTIFICATION_USERNAME = "UserName";
+	/**
+	 * Paramètre mot de passe.
+	 */
+	public static final String AUTHENTIFICATION_PASSWORD = "Password";
+	/**
+	 * Nom du cookie d'authentification.
+	 */
+	public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
 
 	/**
-	 * USER AGENT
+	 * USER AGENT.
 	 */
-	private final static String USER_AGENT = "NextInpact (Unofficial) v";
+	private static final String USER_AGENT = "NextInpact (Unofficial) v";
 
+	/**
+	 * User agent pour les requêtes réseau.
+	 * @param unContext context de l'application
+	 * @return User-Agent
+	 */
 	public static String getUserAgent(Context unContext) {
 		// Numéro de version de l'application
 		String numVersion = "";
@@ -168,11 +265,11 @@ public class Constantes {
 	}
 
 	/**
-	 * Retourne une option String
-	 * 
-	 * @param optionId
-	 * @param defaultOptionId
-	 * @return
+	 * Retourne une option de type String.
+	 * @param unContext context d'application
+	 * @param idOption id de l'option
+	 * @param defautOption id de la valeur par défaut de l'option
+	 * @return l'option demandée
 	 */
 	public static String getOptionString(Context unContext, int idOption, int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -181,12 +278,12 @@ public class Constantes {
 	}
 
 	/**
-	 * Retourne une option Boolean
+	 * Retourne une option de type Boolean.
 	 * 
-	 * @param unContext
-	 * @param idOption
-	 * @param defautOption
-	 * @return
+	 * @param unContext context d'application
+	 * @param idOption id de l'option
+	 * @param defautOption id de la valeur par défaut de l'option
+	 * @return @return l'option demandée
 	 */
 	public static Boolean getOptionBoolean(Context unContext, int idOption, int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -195,12 +292,12 @@ public class Constantes {
 	}
 
 	/**
-	 * Retourne une option int
+	 * Retourne une option de type int.
 	 * 
-	 * @param unContext
-	 * @param idOption
-	 * @param defautOption
-	 * @return
+	 * @param unContext context d'application
+	 * @param idOption id de l'option
+	 * @param defautOption id de la valeur par défaut de l'option
+	 * @return @return l'option demandée
 	 */
 	public static int getOptionInt(Context unContext, int idOption, int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -208,16 +305,17 @@ public class Constantes {
 		return Integer
 				.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
 	}
-	
+
 	/**
-	 * Enregistre un boolean dans les préférences
-	 * @param unContext
-	 * @param idOption
-	 * @param valeurOption
+	 * Enregistre un boolean dans les préférences.
+	 * 
+	 * @param unContext context d'application
+	 * @param idOption id de l'option
+	 * @param valeurOption valeur à enregistrer
 	 */
 	public static void setOptionBoolean(Context unContext, int idOption, boolean valeurOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
-		
+
 		Editor editor = mesPrefs.edit();
 		editor.putBoolean(unContext.getString(idOption), valeurOption);
 		editor.commit();

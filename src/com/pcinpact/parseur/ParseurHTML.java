@@ -38,18 +38,18 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
 /**
- * Parseur du code HTML
+ * Parseur du code HTML.
  * 
  * @author Anael
  *
  */
 public class ParseurHTML {
 	/**
-	 * Parse la liste des articles
+	 * Parse la liste des articles.
 	 * 
-	 * @param monInput
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return liste d'articleItem
 	 */
 	public static ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
@@ -134,11 +134,11 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Parse le contenu d'un article (retour en texte)
+	 * Parse le contenu d'un article.
 	 * 
-	 * @param monArticleItem
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return ArticleItem
 	 */
 	public static ArticleItem getArticle(String unContenu, String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
@@ -212,53 +212,63 @@ public class ParseurHTML {
 			Element monRemplacement = new Element(Tag.valueOf("div"), "");
 
 			// Gestion des lecteurs vidéos
-			// Liste de lecture Youtube
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
+				/**
+				 * Liste de lecture Youtube
+				 */
 				// Recalcul de l'ID de la vidéo (cas particulier)
-				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
+				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
 
-			}
-			// Youtube
-			else if (urlLecteur.startsWith("www.youtube.com/embed/")
+			} else if (urlLecteur.startsWith("www.youtube.com/embed/")
 					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
+				/**
+				 * Youtube
+				 */
 				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_youtube.png\" /></a>");
 
-			}
-			// Dailymotion
-			else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+			} else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+				/**
+				 * Dailymotion
+				 */
 				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_dailymotion.png\" /></a>");
-			}
-			// Vimeo
-			else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+			} else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+				/**
+				 * VIMEO
+				 */
 				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_vimeo.png\" /></a>");
-			}
-			// Videos.gouv.fr
-			else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+			} else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+				/**
+				 * Videos.gouv.fr
+				 */
 				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_videos_gouv_fr.png\" /></a>");
-			}
-			// Vidme
-			else if (urlLecteur.startsWith("vid.me")) {
+			} else if (urlLecteur.startsWith("vid.me")) {
+				/**
+				 * Vidme
+				 */
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" /></a>");
-			}
-			// Soundcloud (l'URL commence bien par w.soundcloud !)
-			else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+			} else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+				/**
+				 * Soundcloud (l'URL commence bien par w.soundcloud !)
+				 */
 				monRemplacement.html("<a href=\"" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
-			}
-			// Scribd
-			else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+			} else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+				/**
+				 * Scribd
+				 */
 				monRemplacement.html("<a href=\"" + urlLecteur
 						+ "\"><img src=\"file:///android_res/drawable/iframe_scribd.png\" /></a>");
-			}
-			// Déchet
-			else {
+			} else {
+				/**
+				 * Déchet (cath all)
+				 */
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
 						+ "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
 
@@ -295,12 +305,11 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Parse les commentaires
+	 * Parse les commentaires.
 	 * 
-	 * @param input
-	 * @param urlPage
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return liste de CommentaireItem
 	 */
 	public static ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
@@ -369,10 +378,11 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Convertie une date texte en timestamp
+	 * Convertit une date texte en timestamp.
 	 * 
-	 * @param uneDate
-	 * @return
+	 * @param uneDate date au format textuel
+	 * @param unFormatDate format de la date
+	 * @return timestamp
 	 */
 	private static long convertToTimeStamp(String uneDate, String unFormatDate) {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());

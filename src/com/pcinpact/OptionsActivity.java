@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 /**
- * Options de l'application
+ * Options de l'application.
  * 
  * @author Anael
  * 

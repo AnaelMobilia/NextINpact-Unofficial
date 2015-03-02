@@ -45,17 +45,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Adapter pour le rendu des *Item
+ * Adapter pour le rendu des *Item.
  * 
  * @author Anael
  *
  */
 public class ItemsAdapter extends BaseAdapter {
-	// Ressources graphique
+	/**
+	 * Context de l'application.
+	 */
 	private Context monContext;
+	/**
+	 * Layout inflater.
+	 */
 	private LayoutInflater monLayoutInflater;
+	/**
+	 * Items à afficher.
+	 */
 	private ArrayList<? extends Item> mesItems;
 
+	/**
+	 * Constructeur.
+	 * 
+	 * @param unContext contect de l'application
+	 * @param desItems items à afficher
+	 */
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
@@ -64,9 +78,9 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Met à jour les données de la liste d'items
+	 * MàJ les données de la liste d'items.
 	 * 
-	 * @param nouveauxItems
+	 * @param nouveauxItems liste d'items
 	 */
 	public void updateListeItems(ArrayList<? extends Item> nouveauxItems) {
 		mesItems = nouveauxItems;
@@ -88,7 +102,7 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Le nombre d'objets différents pouvant exister dans l'application
+	 * Nombre de type d'items existants.
 	 */
 	@Override
 	public int getViewTypeCount() {
@@ -96,7 +110,7 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Le type de l'objet à la position (pour définir le bon type de vue à fournir)
+	 * Type de l'itemt à la position (pour définir le bon type de vue à fournir).
 	 */
 	@Override
 	public int getItemViewType(int position) {
@@ -187,9 +201,10 @@ public class ItemsAdapter extends BaseAdapter {
 				// On applique le zoom éventuel
 				appliqueZoom(monHolder.sectionView, Constantes.TEXT_SIZE_MEDIUM);
 
-			}
-			// Article
-			else if (i.getType() == Item.TYPE_ARTICLE) {
+			} else if (i.getType() == Item.TYPE_ARTICLE) {
+				/**
+				 * Article
+				 */
 				ArticleItem ai = (ArticleItem) i;
 
 				// L'article est-il déjà lu ?
@@ -236,9 +251,10 @@ public class ItemsAdapter extends BaseAdapter {
 				appliqueZoom(monHolder.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
 				appliqueZoom(monHolder.labelAbonne, Constantes.TEXT_SIZE_SMALL);
 
-			}
-			// Commentaire
-			else if (i.getType() == Item.TYPE_COMMENTAIRE) {
+			} else if (i.getType() == Item.TYPE_COMMENTAIRE) {
+				/**
+				 * Commentaire
+				 */
 				CommentaireItem ai = (CommentaireItem) i;
 
 				// DEBUG
@@ -276,10 +292,10 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Applique le zoom sur la textview (respect des proportions originales)
+	 * Applique un zoom sur une textview.
 	 * 
-	 * @param uneTextView
-	 * @param unZoom
+	 * @param uneTextView textView cible
+	 * @param defaultSize taille par défaut
 	 */
 	private void appliqueZoom(TextView uneTextView, int defaultSize) {
 		// Taile par défaut

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import com.pcinpact.items.Item;
 
 /**
- * Interface générique de callback à la fin des téléchargements HTML / Image
+ * Interface générique de callback à la fin des téléchargements HTML / Image.
  * 
  * @author Anael
  *
@@ -30,18 +30,17 @@ import com.pcinpact.items.Item;
 public interface RefreshDisplayInterface {
 
 	/**
-	 * Une ressource HTML à été téléchargée
+	 * Une ressource HTML à été téléchargée.
 	 * 
-	 * @param unUUID
-	 * @param mesItems
+	 * @param uneURL URL de la page
+	 * @param mesItems liste d'*Items téléchargés
 	 */
 	void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems);
 
 	/**
-	 * Une ressource image a été téléchargée
+	 * Une ressource image a été téléchargée.
 	 * 
-	 * @param unUUID
-	 * @param uneImage
+	 * @param uneURL URL de l'image
 	 */
 	void downloadImageFini(String uneURL);
 
