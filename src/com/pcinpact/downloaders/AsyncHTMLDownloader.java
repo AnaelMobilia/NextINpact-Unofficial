@@ -180,13 +180,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 							
 							// Suis-je connecté ?
 							articleDB.setDlContenuAbonne(etatAbonne);
-							
-							// Je viens de DL le contenu Abonné d'un article
-							if(etatAbonne) {
-								// Donc à lire...
-								articleDB.setLu(false);
-							}
 						}
+						
+						// Je viens de DL l'article => non lu
+						articleDB.setLu(false);
 
 						// Enregistrement de l'objet complet
 						monDAO.enregistrerArticle(articleDB);
