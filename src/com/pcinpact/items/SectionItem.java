@@ -19,11 +19,15 @@
 package com.pcinpact.items;
 
 /**
- * Objet Section (séparateur date dans la liste d'articles)
+ * Objet Section (séparateur date dans la liste d'articles).
+ * 
  * @author Anael
  *
  */
 public class SectionItem implements Item {
+	/**
+	 * Titre.
+	 */
 	private String titre;
 
 	@Override
@@ -31,15 +35,27 @@ public class SectionItem implements Item {
 		return Item.TYPE_SECTION;
 	}
 
+	/**
+	 * Constructeur avec titre.
+	 * 
+	 * @param unTitre titre
+	 */
 	public SectionItem(String unTitre) {
 		setTitre(unTitre);
 	}
 
+	/**
+	 * @return titre
+	 */
 	public String getTitre() {
 		return titre;
 	}
 
+	/**
+	 * @param titre titre
+	 */
 	public void setTitre(String titre) {
 		this.titre = titre;
 	}
+
 }

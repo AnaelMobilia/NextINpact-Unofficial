@@ -31,9 +31,7 @@ import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -47,32 +45,42 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Adapter pour le rendu des *Item
+ * Adapter pour le rendu des *Item.
  * 
  * @author Anael
  *
  */
 public class ItemsAdapter extends BaseAdapter {
-	// Ressources graphique
+	/**
+	 * Context de l'application.
+	 */
 	private Context monContext;
+	/**
+	 * Layout inflater.
+	 */
 	private LayoutInflater monLayoutInflater;
+	/**
+	 * Items à afficher.
+	 */
 	private ArrayList<? extends Item> mesItems;
-	private SharedPreferences mesPrefs;
 
+	/**
+	 * Constructeur.
+	 * 
+	 * @param unContext contect de l'application
+	 * @param desItems items à afficher
+	 */
 	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
 		monLayoutInflater = LayoutInflater.from(monContext);
-
-		// Chargement des préférences
-		mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 	}
 
 	/**
-	 * Met à jour les données de la liste d'items
+	 * MàJ les données de la liste d'items.
 	 * 
-	 * @param nouveauxItems
+	 * @param nouveauxItems liste d'items
 	 */
 	public void updateListeItems(ArrayList<? extends Item> nouveauxItems) {
 		mesItems = nouveauxItems;
@@ -94,7 +102,7 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Le nombre d'objets différents pouvant exister dans l'application
+	 * Nombre de type d'items existants.
 	 */
 	@Override
 	public int getViewTypeCount() {
@@ -102,7 +110,7 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Le type de l'objet à la position (pour définir le bon type de vue à fournir)
+	 * Type de l'itemt à la position (pour définir le bon type de vue à fournir).
 	 */
 	@Override
 	public int getItemViewType(int position) {
@@ -193,20 +201,21 @@ public class ItemsAdapter extends BaseAdapter {
 				// On applique le zoom éventuel
 				appliqueZoom(monHolder.sectionView, Constantes.TEXT_SIZE_MEDIUM);
 
-			}
-			// Article
-			else if (i.getType() == Item.TYPE_ARTICLE) {
+			} else if (i.getType() == Item.TYPE_ARTICLE) {
+				/**
+				 * Article
+				 */
 				ArticleItem ai = (ArticleItem) i;
 
 				// L'article est-il déjà lu ?
-				if(ai.isLu()) {
+				if (ai.isLu()) {
 					// Couleur lu
 					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
 				} else {
 					// Couleur non lu
 					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
 				}
-				
+
 				// Gestion du badge abonné
 				if (ai.isAbonne()) {
 					monHolder.labelAbonne.setVisibility(View.VISIBLE);
@@ -242,9 +251,10 @@ public class ItemsAdapter extends BaseAdapter {
 				appliqueZoom(monHolder.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
 				appliqueZoom(monHolder.labelAbonne, Constantes.TEXT_SIZE_SMALL);
 
-			}
-			// Commentaire
-			else if (i.getType() == Item.TYPE_COMMENTAIRE) {
+			} else if (i.getType() == Item.TYPE_COMMENTAIRE) {
+				/**
+				 * Commentaire
+				 */
 				CommentaireItem ai = (CommentaireItem) i;
 
 				// DEBUG
@@ -256,12 +266,13 @@ public class ItemsAdapter extends BaseAdapter {
 				monHolder.auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
 				monHolder.numeroCommentaire.setText(String.valueOf(ai.getId()));
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext, monHolder.commentaire, ai.getCommentaire()), null);
+				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext,
+						monHolder.commentaire, ai.getCommentaire()), null);
 				monHolder.commentaire.setText(spannedContent);
 
 				// Liens cliquables ? option utilisateur !
-				Boolean lienClickable = mesPrefs.getBoolean(monContext.getString(R.string.idOptionLiensDansCommentaires),
-						monContext.getResources().getBoolean(R.bool.defautOptionLiensDansCommentaires));
+				Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
+						R.bool.defautOptionLiensDansCommentaires);
 				if (lienClickable) {
 					// Active les liens a href
 					monHolder.commentaire.setMovementMethod(new GestionLiens());
@@ -281,17 +292,16 @@ public class ItemsAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * Applique le zoom sur la textview (respect des proportions originales)
+	 * Applique un zoom sur une textview.
 	 * 
-	 * @param uneTextView
-	 * @param unZoom
+	 * @param uneTextView textView cible
+	 * @param defaultSize taille par défaut
 	 */
 	private void appliqueZoom(TextView uneTextView, int defaultSize) {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(monContext.getString(R.string.idOptionZoomTexte),
-				String.valueOf(tailleDefaut)));
+		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
 
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {

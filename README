@@ -4,7 +4,7 @@ jsoup
 	http://jsoup.org/
 	Parsage du code HTML
 Commons-io
-	v2.4
+	v2.2
 	http://commons.apache.org/proper/commons-io/
 	Méthode de gestion de flux de fichiers (entre autres)
 

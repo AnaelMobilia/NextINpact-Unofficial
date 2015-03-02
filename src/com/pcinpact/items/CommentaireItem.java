@@ -26,17 +26,31 @@ import java.util.Locale;
 import com.pcinpact.Constantes;
 
 /**
- * Objet Commentaire
+ * Objet Commentaire.
  * 
  * @author Anael
  *
  */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
-
+	/**
+	 * ID du commentaire.
+	 */
 	private int id;
+	/**
+	 * ID de l'article parent.
+	 */
 	private int articleId;
+	/**
+	 * Auteur du commentaire.
+	 */
 	private String auteur = "";
+	/**
+	 * Contenu du commentaire.
+	 */
 	private String commentaire = "";
+	/**
+	 * Timsetamp du commentaire.
+	 */
 	private long timeStampPublication;
 
 	@Override
@@ -44,6 +58,11 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 		return Item.TYPE_COMMENTAIRE;
 	}
 
+	/**
+	 * Date de publication formatée.
+	 * 
+	 * @return date de publication
+	 */
 	public String getFullDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
 		// Format souhaité
@@ -52,13 +71,18 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 		return dfm.format(maDate);
 	}
 
+	/**
+	 * Auteur et Date.
+	 * 
+	 * @return Auteur et date
+	 */
 	public String getAuteurDateCommentaire() {
 		return this.getAuteur() + " " + this.getFullDatePublication();
 	}
 
 	@Override
 	/**
-	 * Comparaison entre objets
+	 * Comparaison entre objets.
 	 */
 	public int compareTo(CommentaireItem unCommentaireItem) {
 		Integer unID = unCommentaireItem.getId();
@@ -67,46 +91,81 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 		return monID.compareTo(unID);
 	}
 
+	/**
+	 * IdArticle-IdCommentaire.
+	 * 
+	 * @return IdArticle-IdCommentaire
+	 */
 	public String getIDArticleIdCommentaire() {
 		return this.getArticleId() + "-" + this.getId();
 	}
 
+	/**
+	 * @return id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @param id id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return articleId
+	 */
 	public int getArticleId() {
 		return articleId;
 	}
 
+	/**
+	 * @param articleId articleId
+	 */
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
 	}
 
+	/**
+	 * @return auteur
+	 */
 	public String getAuteur() {
 		return auteur;
 	}
 
+	/**
+	 * @param auteur auteur
+	 */
 	public void setAuteur(String auteur) {
 		this.auteur = auteur;
 	}
 
+	/**
+	 * @return commentaire
+	 */
 	public String getCommentaire() {
 		return commentaire;
 	}
 
+	/**
+	 * @param commentaire commentaire
+	 */
 	public void setCommentaire(String commentaire) {
 		this.commentaire = commentaire;
 	}
 
+	/**
+	 * @return timeStampPublication
+	 */
 	public long getTimeStampPublication() {
 		return timeStampPublication;
 	}
 
+	/**
+	 * @param timeStampPublication timeStampPublication
+	 */
 	public void setTimeStampPublication(long timeStampPublication) {
 		this.timeStampPublication = timeStampPublication;
 	}

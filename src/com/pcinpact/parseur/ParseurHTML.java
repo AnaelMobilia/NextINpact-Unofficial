@@ -18,7 +18,6 @@
  */
 package com.pcinpact.parseur;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,49 +31,27 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.pcinpact.Constantes;
-import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
 /**
- * Parseur du code HTML
+ * Parseur du code HTML.
  * 
  * @author Anael
  *
  */
 public class ParseurHTML {
-	// Debug utilisteur ?
-	private Boolean debug;
-	// context
-	final private Context monContext;
-
-	public ParseurHTML(Context unContext) {
-		// Enregistrement du context
-		monContext = unContext;
-
-		// Chargement des préférences de l'utilisateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
-		// L'utilisateur demande-t-il un debug ?
-		debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug),
-				monContext.getResources().getBoolean(R.bool.defautOptionDebug));
-	}
-
 	/**
-	 * Parse la liste des articles
+	 * Parse la liste des articles.
 	 * 
-	 * @param monInput
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return liste d'articleItem
 	 */
-	public ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
+	public static ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
 
 		// Lancement du parseur sur la page
@@ -114,7 +91,27 @@ public class ParseurHTML {
 
 			// Nombre de commentaires
 			Element commentaires = unArticle.select("span[class=nbcomment]").get(0);
-			monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
+			try {
+				monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
+			} catch (NumberFormatException e) {
+				// Nouveaux commentaires : "172 + 5"
+				String valeur = commentaires.text();
+
+				// Récupération des éléments
+				int positionOperateur = valeur.indexOf("+");
+				String membreGauche = valeur.substring(0, positionOperateur).trim();
+				String membreDroit = valeur.substring(positionOperateur + 1).trim();
+
+				// On additionne
+				int total = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
+				// Et on renvoit !
+				monArticleItem.setNbCommentaires(total);
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("ParseurHTML", "Nombre de commentaires : " + valeur + " => " + String.valueOf(total));
+				}
+			}
 
 			// Statut abonné
 			Elements badgeAbonne = unArticle.select("img[alt=badge_abonne]");
@@ -123,7 +120,7 @@ public class ParseurHTML {
 				monArticleItem.setAbonne(true);
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("ParseurHTML", monArticleItem.getTitre() + " => Abonné");
+					Log.w("ParseurHTML", "[Abonné] => " + monArticleItem.getTitre());
 				}
 			} else {
 				monArticleItem.setAbonne(false);
@@ -137,13 +134,13 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Parse le contenu d'un article (retour en texte)
+	 * Parse le contenu d'un article.
 	 * 
-	 * @param monArticleItem
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return ArticleItem
 	 */
-	public ArticleItem getArticle(String unContenu, String urlPage) {
+	public static ArticleItem getArticle(String unContenu, String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
 
 		// Lancement du parseur sur la page
@@ -215,55 +212,70 @@ public class ParseurHTML {
 			Element monRemplacement = new Element(Tag.valueOf("div"), "");
 
 			// Gestion des lecteurs vidéos
-			// Liste de lecture Youtube
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
+				/**
+				 * Liste de lecture Youtube
+				 */
 				// Recalcul de l'ID de la vidéo (cas particulier)
-				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + 5).split("\\?")[0].split("#")[0];
+				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
 
-			}
-			// Youtube
-			else if (urlLecteur.startsWith("www.youtube.com/embed/")
+			} else if (urlLecteur.startsWith("www.youtube.com/embed/")
 					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
+				/**
+				 * Youtube
+				 */
 				monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_youtube.png\" /></a>");
 
-			}
-			// Dailymotion
-			else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+			} else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+				/**
+				 * Dailymotion
+				 */
 				monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_dailymotion.png\" /></a>");
-			}
-			// Vimeo
-			else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+			} else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+				/**
+				 * VIMEO
+				 */
 				monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_vimeo.png\" /></a>");
-			}
-			// Videos.gouv.fr
-			else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+			} else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+				/**
+				 * Videos.gouv.fr
+				 */
 				monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_videos_gouv_fr.png\" /></a>");
-			}
-			// Vidme
-			else if (urlLecteur.startsWith("vid.me")) {
+			} else if (urlLecteur.startsWith("vid.me")) {
+				/**
+				 * Vidme
+				 */
 				monRemplacement.html("<a href=\"https://vid.me/" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" /></a>");
-			}
-			// Soundcloud (l'URL commence bien par w.soundcloud !)
-			else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+			} else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+				/**
+				 * Soundcloud (l'URL commence bien par w.soundcloud !)
+				 */
 				monRemplacement.html("<a href=\"" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
-			}
-			// Scribd
-			else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+			} else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+				/**
+				 * Scribd
+				 */
 				monRemplacement.html("<a href=\"" + urlLecteur
 						+ "\"><img src=\"file:///android_res/drawable/iframe_scribd.png\" /></a>");
-			}
-			// Déchet
-			else {
+			} else {
+				/**
+				 * Déchet (cath all)
+				 */
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
 						+ "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.e("ParseurHTML", "iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+				}
 			}
 
 			// Je remplace l'iframe par mon contenu
@@ -293,14 +305,13 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Parse les commentaires
+	 * Parse les commentaires.
 	 * 
-	 * @param input
-	 * @param urlPage
-	 * @return
-	 * @throws IOException
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return liste de CommentaireItem
 	 */
-	public ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
+	public static ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
@@ -367,12 +378,13 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Convertie une date texte en timestamp
+	 * Convertit une date texte en timestamp.
 	 * 
-	 * @param uneDate
-	 * @return
+	 * @param uneDate date au format textuel
+	 * @param unFormatDate format de la date
+	 * @return timestamp
 	 */
-	private long convertToTimeStamp(final String uneDate, String unFormatDate) {
+	private static long convertToTimeStamp(String uneDate, String unFormatDate) {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {
@@ -381,18 +393,6 @@ public class ParseurHTML {
 		} catch (ParseException e) {
 			if (Constantes.DEBUG) {
 				Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
-			}
-			// Retour utilisateur ?
-			if (debug) {
-				Handler handler = new Handler(monContext.getMainLooper());
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						Toast monToast = Toast.makeText(monContext, "[ParseurHTML] Erreur au parsage de la date " + uneDate,
-								Toast.LENGTH_LONG);
-						monToast.show();
-					}
-				});
 			}
 		}
 

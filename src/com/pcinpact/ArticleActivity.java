@@ -22,9 +22,7 @@ import com.pcinpact.database.DAO;
 import com.pcinpact.items.ArticleItem;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -40,15 +38,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Affiche un article
+ * Affiche un article.
  * 
  * @author Anael
  *
  */
 public class ArticleActivity extends ActionBarActivity {
-	// ID de l'article
+	/**
+	 * ID de l'article.
+	 */
 	private int articleID;
-	// Article
+	/**
+	 * ArticleItem.
+	 */
 	private ArticleItem monArticle;
 
 	@Override
@@ -61,12 +63,9 @@ public class ArticleActivity extends ActionBarActivity {
 
 		WebView webview = (WebView) findViewById(R.id.webview);
 
-		// Chargement des préférences de l'utilsateur
-		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
 		// Liens cliquables ? option utilisateur !
-		Boolean lienClickable = mesPrefs.getBoolean(getString(R.string.idOptionLiensDansArticles),
-				getResources().getBoolean(R.bool.defautOptionLiensDansArticles));
+		Boolean lienClickable = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionLiensDansArticles,
+				R.bool.defautOptionLiensDansArticles);
 		if (!lienClickable) {
 			// Désactivation du clic
 			webview.setWebViewClient(new WebViewClient() {
@@ -81,13 +80,12 @@ public class ArticleActivity extends ActionBarActivity {
 		// Mise en forme de la webview
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		
 		// Gestion du zoom - option utilisateur
 		// taille par défaut
 		int tailleDefaut = Integer.valueOf(getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
-		int tailleUtilisateur = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionZoomTexte),
-				String.valueOf(tailleDefaut)));
+		int tailleUtilisateur = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionZoomTexte,
+				R.string.defautOptionZoomTexte);
 
 		if (tailleUtilisateur != tailleDefaut) {
 			// On applique la taille demandée
@@ -112,9 +110,9 @@ public class ArticleActivity extends ActionBarActivity {
 		monArticle = monDAO.chargerArticle(articleID);
 		String data = monArticle.getContenu();
 
-		if (data == null || data.isEmpty()) {
+		if (data.equals("")) {
 			// DEBUG
-			if(Constantes.DEBUG) {
+			if (Constantes.DEBUG) {
 				Log.w("ArticleActivity", "Article vide");
 			}
 			data = getString(R.string.articleVideErreurHTML);

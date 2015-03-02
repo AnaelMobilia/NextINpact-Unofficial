@@ -17,12 +17,37 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
--->
+ */-->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!-- Options génériques -->
     <PreferenceCategory android:title="@string/optionsGenerales" >
+
+        <!-- Compte abonné -->
+        <PreferenceScreen
+            android:summary="@string/optionAbonneDetail"
+            android:title="@string/optionAbonne" >
+            <PreferenceCategory android:title="Configurer mon compte abonné" >
+                <CheckBoxPreference
+                    android:summary="@string/optionAbonneDisclaimer"
+                    android:key="@string/idOptionAbonne"
+                    android:defaultValue="@bool/defautOptionAbonne" />
+                <EditTextPreference
+                    android:dependency="@string/idOptionAbonne"
+                    android:defaultValue="@string/defautOptionLogin"
+                    android:key="@string/idOptionLogin"
+                    android:summary="@string/optionLoginDetail"
+                    android:title="@string/optionLogin" />
+                <EditTextPreference
+                    android:dependency="@string/idOptionAbonne"
+                    android:defaultValue="@string/defautOptionPassword"
+                    android:inputType="textPassword"
+                    android:key="@string/idOptionPassword"
+                    android:summary="@string/optionPasswordDetail"
+                    android:title="@string/optionPassword" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+
         <ListPreference
             android:defaultValue="@string/defautOptionZoomTexte"
             android:entries="@array/tailleTexteLiteral"
@@ -30,6 +55,9 @@
             android:key="@string/idOptionZoomTexte"
             android:summary="@string/optionTailleTexteDetail"
             android:title="@string/optionTailleTexte" />
+    </PreferenceCategory>
+    <!-- Options spécifiques aux articles -->
+    <PreferenceCategory android:title="@string/optionsArticles" >
         <ListPreference
             android:defaultValue="@string/defautOptionNbArticles"
             android:entries="@array/nbArticles"
@@ -37,10 +65,7 @@
             android:key="@string/idOptionNbArticles"
             android:summary="@string/optionNbArticlesDetail"
             android:title="@string/optionNbArticles" />
-        
-    </PreferenceCategory>
-    <!-- Options spécifiques aux articles -->
-    <PreferenceCategory android:title="@string/optionsArticles" >
+
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"
@@ -48,12 +73,13 @@
             android:title="@string/optionActiverLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
-    <PreferenceCategory android:title="@string/optionsCommentaires">
-<!--         <CheckBoxPreference -->
-<!--             android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
-<!--             android:key="@string/idOptionTelechargerCommentaires" -->
-<!--             android:summary="@string/optionTelechargerCommentairesDetail" -->
-<!--             android:title="@string/optionTelechargerCommentaires" /> -->
+    <PreferenceCategory android:title="@string/optionsCommentaires" >
+
+        <!-- <CheckBoxPreference -->
+        <!-- android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
+        <!-- android:key="@string/idOptionTelechargerCommentaires" -->
+        <!-- android:summary="@string/optionTelechargerCommentairesDetail" -->
+        <!-- android:title="@string/optionTelechargerCommentaires" /> -->
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
@@ -73,4 +99,5 @@
             android:summary="@string/optionDebugDetail"
             android:title="@string/optionDebug" />
     </PreferenceCategory>
+
 </PreferenceScreen>

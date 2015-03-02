@@ -26,27 +26,42 @@ import com.pcinpact.Constantes;
 import com.pcinpact.R;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Téléchargement asynchrone d'images
+ * Téléchargement asynchrone d'image.
  * 
  * @author Anael
  *
  */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
-	// Contexte parent
+	/**
+	 * Context parent.
+	 */
 	private Context monContext;
-	// Callback : parent + ref
+	/**
+	 * Parent qui sera rappelé à la fin.
+	 */
 	private RefreshDisplayInterface monParent;
-	// Type d'image & URL
+	/**
+	 * URL de l'image.
+	 */
 	private String urlImage;
+	/**
+	 * Type d'image.
+	 */
 	private int typeImage;
 
+	/**
+	 * DL sans gestion du statu abonné.
+	 * 
+	 * @param unContext context de l'application
+	 * @param parent parent à callback à la fin
+	 * @param unType type de la ressource (Cf Constantes.TYPE_)
+	 * @param uneURL URL de la ressource
+	 */
 	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
@@ -62,14 +77,11 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... params) {
 		try {
-			// Chargement des préférences de l'utilisateur
-			SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(monContext);
 			// L'utilisateur demande-t-il un debug ?
-			Boolean debug = mesPrefs.getBoolean(monContext.getString(R.string.idOptionDebug), monContext.getResources()
-					.getBoolean(R.bool.defautOptionDebug));
+			Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
 			// Je récupère un byte[] contenant l'image
-			byte[] datas = Downloader.download(urlImage, monContext, false);
+			byte[] datas = Downloader.download(urlImage, monContext, Constantes.COMPRESSION_CONTENU_IMAGES);
 
 			// Vérifie que j'ai bien un retour (vs erreur DL)
 			if (datas != null) {

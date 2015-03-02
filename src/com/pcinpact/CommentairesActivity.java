@@ -31,11 +31,9 @@ import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -50,27 +48,47 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Affichage des commentaires
+ * Affichage des commentaires.
  * 
  * @author Anael
  *
  */
 public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
-	// les commentaires
+	/**
+	 * Les commentaires.
+	 */
 	private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
-	// ID de l'article
+	/**
+	 * ID de l'article.
+	 */
 	private int articleID;
-	// itemsAdapter
+	/**
+	 * ItemAdapter.
+	 */
 	private ItemsAdapter monItemsAdapter;
-	// La BDD
+	/**
+	 * Accès à la BDD.
+	 */
 	private DAO monDAO;
-	// Etats
+	/**
+	 * Téléchargement en cours ?
+	 */
 	private Boolean isLoading = false;
+	/**
+	 * Fin des commentaires ?
+	 */
 	private Boolean isFinCommentaires = false;
-
-	// Ressources sur les éléments graphiques
+	/**
+	 * Menu.
+	 */
 	private Menu monMenu;
+	/**
+	 * Bouton pour télécharger 10 commentaires en plus.
+	 */
 	private Button buttonDl10Commentaires;
+	/**
+	 * TextView "Dernière synchro...".
+	 */
 	private TextView headerTextView;
 
 	@Override
@@ -122,12 +140,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 				if ((firstVisibleItem + visibleItemCount) >= (totalItemCount - 1)) {
 					// (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
 
-					// Chargement des préférences de l'utilisateur
-					SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
 					// Téléchargement automatique en continu des commentaires ?
-					Boolean telecharger = mesPrefs.getBoolean(getString(R.string.idOptionCommentairesTelechargementContinu),
-							getResources().getBoolean(R.bool.defautOptionCommentairesTelechargementContinu));
-
+					Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
+							R.string.idOptionCommentairesTelechargementContinu,
+							R.bool.defautOptionCommentairesTelechargementContinu);
 					// Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
 					if (telecharger && !isLoading && !isFinCommentaires) {
 						// Téléchargement de 10 commentaires en plus
@@ -143,7 +159,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Charge les commentaires suivants
+	 * Charge les commentaires suivants.
 	 */
 	@SuppressLint("NewApi")
 	private void refreshListeCommentaires() {
@@ -169,7 +185,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 				+ "=" + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
 
 		// Ma tâche de DL
-		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO, getApplicationContext());
+		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
+				getApplicationContext());
 		// Parallèlisation des téléchargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -208,7 +225,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Lance les animations indiquant un téléchargement
+	 * Lance les animations indiquant un téléchargement.
 	 */
 	private void lancerAnimationTelechargement() {
 		// DEBUG
@@ -231,7 +248,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Arrêt les animations indiquant un téléchargement
+	 * Arrête les animations indiquant un téléchargement.
 	 */
 	private void arreterAnimationTelechargement() {
 		// DEBUG
@@ -289,7 +306,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Mise à jour de la date de dernière mise à jour
+	 * MàJ de la date de dernière mise à jour.
 	 */
 	private void majDateRefresh() {
 		long dernierRefresh = monDAO.chargerDateRefresh(articleID);

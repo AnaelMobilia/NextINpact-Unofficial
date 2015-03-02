@@ -21,6 +21,7 @@ package com.pcinpact;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
@@ -35,12 +36,9 @@ import com.pcinpact.items.SectionItem;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
@@ -59,27 +57,43 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * Liste des articles
+ * Liste des articles.
  * 
  * @author Anael
  *
  */
 public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
-	// les articles
+	/**
+	 * Les articles.
+	 */
 	private ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
-	// itemAdapter
+	/**
+	 * ItemAdapter.
+	 */
 	private ItemsAdapter monItemsAdapter;
-	// La BDD
+	/**
+	 * BDD.
+	 */
 	private DAO monDAO;
-	// Nombre de DL en cours
+	/**
+	 * Nombre de DL en cours.
+	 */
 	private int dlInProgress;
-	// Préférences utilisateur
-	private SharedPreferences mesPrefs;
-
-	// Ressources sur les éléments graphiques
+	/**
+	 * Menu.
+	 */
 	private Menu monMenu;
+	/**
+	 * ListView.
+	 */
 	private ListView monListView;
+	/**
+	 * SwipeRefreshLayout.
+	 */
 	private SwipeRefreshLayout monSwipeRefreshLayout;
+	/**
+	 * TextView "Dernière synchro...".
+	 */
 	private TextView headerTextView;
 
 	@Override
@@ -96,9 +110,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		setSupportProgressBarIndeterminateVisibility(false);
-
-		// Chargement des préférences de l'utilisateur
-		mesPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		// Mise en place de l'itemAdapter
 		monItemsAdapter = new ItemsAdapter(this, mesArticles);
@@ -130,7 +141,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.i("ListeArticlesActivity",
+					Log.d("ListeArticlesActivity",
 							"SwipeRefreshLayout - topRowVerticalPosition : " + String.valueOf(topRowVerticalPosition));
 				}
 				monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
@@ -143,9 +154,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Est-ce la premiere utilisation de l'application ?
-		Boolean premiereUtilisation = mesPrefs.getBoolean(getString(R.string.idOptionInstallationApplication), getResources()
-				.getBoolean(R.bool.defautOptionInstallationApplication));
-
+		Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
+				R.string.idOptionInstallationApplication, R.bool.defautOptionInstallationApplication);
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
 			// Lancement d'un téléchargement des articles
@@ -163,9 +173,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			builder.create().show();
 
 			// Enregistrement de l'affichage
-			Editor editor = mesPrefs.edit();
-			editor.putBoolean(getString(R.string.idOptionInstallationApplication), false);
-			editor.commit();
+			Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
 		}
 	}
 
@@ -189,7 +197,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion du clic sur un article => l'ouvrir + marquer comme lu
+	 * Gestion du clic sur un article => l'ouvrir + marquer comme lu.
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -210,7 +218,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Ouverture du menu de l'action bar à l'utilisation du bouton menu
+	 * Ouverture du menu de l'action bar à l'utilisation du bouton menu.
 	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -225,8 +233,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				// Retour utilisateur ?
 				// L'utilisateur demande-t-il un debug ?
-				Boolean debug = mesPrefs.getBoolean(getString(R.string.idOptionDebug),
-						getResources().getBoolean(R.bool.defautOptionDebug));
+				Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+						R.bool.defautOptionDebug);
 				if (debug) {
 					Toast monToast = Toast.makeText(getApplicationContext(),
 							"[ListeArticlesActivity] Le menu est null (onKeyUp)", Toast.LENGTH_LONG);
@@ -239,7 +247,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion des clic dans le menu d'options de l'activité
+	 * Gestion des clic dans le menu d'options de l'activité.
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
@@ -265,87 +273,45 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Nettoyage du cache
+	 * Arrêt de l'activité.
 	 */
 	@Override
 	protected void onDestroy() {
-		// Nombre d'articles à conserver
-		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-				getString(R.string.defautOptionNbArticles)));
-
-		/**
-		 * Données à conserver
-		 */
-
-		// Je protége les images présentes dans les articles à conserver
-		ArrayList<String> imagesLegit = new ArrayList<String>();
-		int nbArticles = mesArticles.size();
-		for (int i = 0; i < nbArticles; i++) {
-			imagesLegit.add(mesArticles.get(i).getImageName());
-		}
-
-		/**
-		 * Données à supprimer
-		 */
-		ArrayList<ArticleItem> articlesASupprimer = monDAO.chargerArticlesASupprimer(maLimite);
-
-		/**
-		 * Traitement
-		 */
-		nbArticles = articlesASupprimer.size();
-		for (int i = 0; i < nbArticles; i++) {
-			ArticleItem article = articlesASupprimer.get(i);
-
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
-			}
-
-			// Suppression en DB
-			monDAO.supprimerArticle(article);
-
-			// Suppression des commentaires de l'article
-			monDAO.supprimerCommentaire(article.getId());
-
-			// Suppression de la date de Refresh des commentaires
-			monDAO.supprimerDateRefresh(article.getId());
-
-			// Suppression de la miniature, uniquement si plus utilisée
-			if (!imagesLegit.contains(article.getImageName())) {
-				File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
-						article.getImageName());
-				monFichier.delete();
-			}
-		}
-
-		/**
-		 * Suppression du cache v < 1.8.0
-		 */
-		// Les fichiers sur stockés en local
-		String[] savedFiles = getApplicationContext().fileList();
-
-		for (String file : savedFiles) {
-			// Article à effacer
-			getApplicationContext().deleteFile(file);
-		}
+		// Nettoyage du cache de l'application
+		nettoyerCache();
 
 		super.onDestroy();
 	}
 
 	/**
-	 * Lance le téléchargement de la liste des articles
+	 * Lance le téléchargement de la liste des articles.
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.i("ListeArticlesActivity", "telechargeListeArticles()");
+		}
+
 		// Uniquement si on est pas déjà en train de faire un refresh...
 		if (dlInProgress == 0) {
-			// Téléchargement des articles dont le contenu n'a pas été téléchargé au dernier refresh
+			/**
+			 * Nettoyage du cache
+			 */
+			nettoyerCache();
+
+			/**
+			 * Téléchargement des articles dont le contenu n'avait pas été téléchargé
+			 */
 			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
-			
-			// Gestion du nombre de pages à télécharger - option Utilisateur
-			int nbArticles = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-					getString(R.string.defautOptionNbArticles)));
-			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;// Téléchargement de chaque page...
+
+			/**
+			 * Téléchargement des pages de liste d'articles
+			 */
+			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+					R.string.defautOptionNbArticles);
+			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
+			// Téléchargement de chaque page...
 			for (int numPage = 1; numPage <= nbPages; numPage++) {
 				// Le retour en GUI
 				nouveauChargementGUI();
@@ -360,19 +326,77 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 					monAHD.execute();
 				}
 			}
+
+			/**
+			 * Téléchargement des miniatures manquantes
+			 */
+			// Les miniatures que je devrais avoir
+			HashMap<String, String> miniaturesItem = new HashMap<>();
+			int nbItems = mesArticles.size();
+			for (int i = 0; i < nbItems; i++) {
+				miniaturesItem.put(mesArticles.get(i).getImageName(), mesArticles.get(i).getUrlIllustration());
+			}
+
+			// Les miniatures que j'ai
+			String[] miniaturesFS = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
+			// Pour chaque miniature que j'ai...
+			for (String uneMiniature : miniaturesFS) {
+				// Si elle est aussi dans la liste des miniatures à avoir
+				if (miniaturesItem.containsKey(uneMiniature)) {
+					// Je l'efface
+					miniaturesItem.remove(uneMiniature);
+				}
+			}
+
+			// Miniatures restantes == miniatures manquantes
+			for (String uneMiniature : miniaturesItem.values()) {
+				// Je lance le téléchargement
+				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+						Constantes.IMAGE_MINIATURE_ARTICLE, uneMiniature);
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+				nouveauChargementGUI();
+			}
 		}
 	}
-	
+
 	/**
-	 * Lance le téléchargement des articles passés en paramètres
-	 * @param desArticles
+	 * Lance le téléchargement des articles.
+	 * 
+	 * @param desItems liste d'articles à télécharger
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
-			// Je lance le téléchargement de son contenu
-			AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE,
-					((ArticleItem) unItem).getUrl(), monDAO, getApplicationContext());
+			// Tâche de DL HTML
+			AsyncHTMLDownloader monAHD;
+			// DL de l'image d'illustration ?
+			boolean dlIllustration = true;
+
+			// Est-ce un article abonné ?
+			if (((ArticleItem) unItem).isAbonne()) {
+				boolean isConnecteRequis = false;
+
+				// Ai-je déjà la version publique de l'article ?
+				if (!((ArticleItem) unItem).getContenu().equals("")) {
+					// Je requiert d'être connecté (sinon le DL ne sert à rien)
+					isConnecteRequis = true;
+					// Je ne veux pas DL l'image de l'article
+					dlIllustration = false;
+				}
+				// Téléchargement de la ressource
+				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+						getApplicationContext(), true, isConnecteRequis);
+			} else {
+				// Téléchargement de la ressource
+				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+						getApplicationContext());
+			}
+
 			// Parallèlisation des téléchargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -381,16 +405,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 			nouveauChargementGUI();
 
-			// Je lance le téléchargement de sa miniature
-			AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-					Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
-			// Parallèlisation des téléchargements pour l'ensemble de l'application
-			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-				monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				monAID.execute();
+			// Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
+			if (dlIllustration) {
+				// Je lance le téléchargement de sa miniature
+				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
+						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+				nouveauChargementGUI();
 			}
-			nouveauChargementGUI();
 		}
 	}
 
@@ -413,17 +440,17 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Fournit une liste d'articles triés par date + sections
+	 * Fournit une liste d'articles triés par date + sections.
 	 * 
-	 * @return
+	 * @return Liste d'articles
 	 */
 	private ArrayList<Item> prepareAffichage() {
 		ArrayList<Item> monRetour = new ArrayList<Item>();
 		String jourActuel = "";
 
 		// Nombre d'articles à afficher
-		int maLimite = Integer.parseInt(mesPrefs.getString(getString(R.string.idOptionNbArticles),
-				getString(R.string.defautOptionNbArticles)));
+		int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+				R.string.defautOptionNbArticles);
 		// Chargement des articles depuis la BDD (trié, limité)
 		mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
 
@@ -456,7 +483,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement
+	 * Gère les animations de téléchargement.
 	 */
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
@@ -490,7 +517,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement
+	 * Gère les animations de téléchargement.
 	 */
 	private void finChargementGUI() {
 		// Je note la fin du téléchargement
@@ -522,6 +549,78 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("finChargementGUI", String.valueOf(dlInProgress));
+		}
+	}
+
+	/**
+	 * Nettoie le cache de l'application.
+	 */
+	private void nettoyerCache() {
+		try {
+			// Nombre d'articles à conserver
+			int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
+					R.string.defautOptionNbArticles);
+
+			/**
+			 * Données à conserver
+			 */
+
+			// Je protége les images présentes dans les articles à conserver
+			ArrayList<String> imagesLegit = new ArrayList<String>();
+			int nbArticles = mesArticles.size();
+			for (int i = 0; i < nbArticles; i++) {
+				imagesLegit.add(mesArticles.get(i).getImageName());
+			}
+
+			/**
+			 * Données à supprimer
+			 */
+			ArrayList<ArticleItem> articlesASupprimer = monDAO.chargerArticlesASupprimer(maLimite);
+
+			/**
+			 * Traitement
+			 */
+			nbArticles = articlesASupprimer.size();
+			for (int i = 0; i < nbArticles; i++) {
+				ArticleItem article = articlesASupprimer.get(i);
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
+				}
+
+				// Suppression en DB
+				monDAO.supprimerArticle(article);
+
+				// Suppression des commentaires de l'article
+				monDAO.supprimerCommentaire(article.getId());
+
+				// Suppression de la date de Refresh des commentaires
+				monDAO.supprimerDateRefresh(article.getId());
+
+				// Suppression de la miniature, uniquement si plus utilisée
+				if (!imagesLegit.contains(article.getImageName())) {
+					File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
+							article.getImageName());
+					monFichier.delete();
+				}
+			}
+
+			/**
+			 * Suppression du cache v < 1.8.0
+			 */
+			// Les fichiers sur stockés en local
+			String[] savedFiles = getApplicationContext().fileList();
+
+			for (String file : savedFiles) {
+				// Article à effacer
+				getApplicationContext().deleteFile(file);
+			}
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("ListeArticlesActivity", "nettoyerCache()", e);
+			}
 		}
 	}
 }

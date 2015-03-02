@@ -22,13 +22,12 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 /**
- * Options de l'application
+ * Options de l'application.
  * 
  * @author Anael
  * 
  */
 public class OptionsActivity extends PreferenceActivity {
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// Je lance l'activité
