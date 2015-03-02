@@ -238,6 +238,7 @@ public class ItemsAdapter extends BaseAdapter {
 				} catch (Exception e) {
 					// Si le fichier n'est pas trouvé, je fournis une image par défaut
 					monHolder.imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+
 					// DEBUG
 					if (Constantes.DEBUG) {
 						Log.e("ItemsAdapter", "getView -> Article", e);
@@ -303,13 +304,20 @@ public class ItemsAdapter extends BaseAdapter {
 		// L'option selectionnée
 		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
 
+		float monCoeffZoom = 1;
+
 		// Faut-il applique un zoom ?
 		if (tailleUtilisateur != tailleDefaut) {
-			float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
+			monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
+		}
 
-			float nouvelleTaille = defaultSize * monCoeffZoom;
-			uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, nouvelleTaille);
+		float nouvelleTaille = defaultSize * monCoeffZoom;
+		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, nouvelleTaille);
+
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize + " => "
+					+ nouvelleTaille);
 		}
 	}
-
 }
