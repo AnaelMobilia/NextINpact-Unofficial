@@ -105,8 +105,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// On définit la vue
 		setContentView(R.layout.liste_articles);
 		// On récupère les éléments GUI
-		monListView = (ListView) this.findViewById(R.id.listeArticles);
-		monSwipeRefreshLayout = (SwipeRefreshLayout) this.findViewById(R.id.swipe_container);
+		monListView = (ListView) findViewById(R.id.listeArticles);
+		monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 		headerTextView = (TextView) findViewById(R.id.header_text);
 
 		setSupportProgressBarIndeterminateVisibility(false);
