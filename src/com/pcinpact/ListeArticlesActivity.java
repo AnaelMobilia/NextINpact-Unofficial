@@ -36,9 +36,11 @@ import com.pcinpact.items.SectionItem;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarActivity;
@@ -95,6 +97,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * TextView "Dernière synchro...".
 	 */
 	private TextView headerTextView;
+	/**
+	 * Listener pour le changement de taille des textes.
+	 */
+	private SharedPreferences.OnSharedPreferenceChangeListener listenerOptionZoom;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -175,6 +181,31 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Enregistrement de l'affichage
 			Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
 		}
+
+		// Gestion du changement de la taille des textes (option utilisateur)
+		listenerOptionZoom = new SharedPreferences.OnSharedPreferenceChangeListener() {
+			@Override
+			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+				// Modification de la taille des textes ?
+				if (key.equals(getResources().getString(R.string.idOptionZoomTexte))) {
+					// Rafraichissement de l'affichage
+					monItemsAdapter.notifyDataSetChanged();
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("ListeArticlesActivity",
+								"changement taille des textes => "
+										+ Constantes.getOptionInt(getApplicationContext(), R.string.idOptionZoomTexte,
+												R.string.defautOptionZoomTexte));
+					}
+				}
+			}
+		};
+		// Attachement du superviseur aux préférences
+		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
+				listenerOptionZoom);
+
 	}
 
 	@Override
@@ -277,6 +308,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	@Override
 	protected void onDestroy() {
+		// Détachement du listener pour la taille des textes
+		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
+				listenerOptionZoom);
+
 		// Nettoyage du cache de l'application
 		nettoyerCache();
 
@@ -607,9 +642,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 
 			/**
-			 * Suppression du cache v < 1.8.0
+			 * Suppression du cache v < 1.8.0 Les fichiers sur stockés en local
 			 */
-			// Les fichiers sur stockés en local
 			String[] savedFiles = getApplicationContext().fileList();
 
 			for (String file : savedFiles) {
