@@ -36,7 +36,7 @@ public class Constantes {
 	/**
 	 * MODE DEBUG.
 	 */
-	public static final Boolean DEBUG = false;
+	public static final Boolean DEBUG = true;
 	/**
 	 * COMPATIBILITE.
 	 */
