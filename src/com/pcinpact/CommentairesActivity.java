@@ -25,10 +25,10 @@ import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
-import com.pcinpact.downloaders.AsyncHTMLDownloader;
-import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
+import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.RefreshDisplayInterface;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;

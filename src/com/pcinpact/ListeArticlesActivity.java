@@ -26,12 +26,12 @@ import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
-import com.pcinpact.downloaders.AsyncHTMLDownloader;
-import com.pcinpact.downloaders.AsyncImageDownloader;
-import com.pcinpact.downloaders.RefreshDisplayInterface;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
+import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.AsyncImageDownloader;
+import com.pcinpact.network.RefreshDisplayInterface;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
-import com.pcinpact.downloaders.URLImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
+import com.pcinpact.network.URLImageProvider;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
