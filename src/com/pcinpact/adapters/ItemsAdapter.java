@@ -24,6 +24,9 @@ import java.util.ArrayList;
 
 import com.pcinpact.Constantes;
 import com.pcinpact.R;
+import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
+import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
+import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
@@ -126,8 +129,6 @@ public class ItemsAdapter extends BaseAdapter {
 			if (Constantes.DEBUG) {
 				Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
 			}
-			// Holder : sert à garder les liens sur les *View
-			ItemsViewHolder monHolder = new ItemsViewHolder();
 
 			// Je crée la vue qui va bien...
 			switch (getItemViewType(position)) {
@@ -138,38 +139,44 @@ public class ItemsAdapter extends BaseAdapter {
 					convertView.setOnClickListener(null);
 					convertView.setOnLongClickListener(null);
 
+					// Je crée mon viewHolder
+					SectionItemViewHolder sectionVH = new SectionItemViewHolder();
 					// Je prépare mon holder
-					monHolder.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
+					sectionVH.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
 					// Et l'assigne
-					convertView.setTag(monHolder);
+					convertView.setTag(sectionVH);
 					break;
 
 				case Item.TYPE_ARTICLE:
 					// Je charge mon layout
 					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 
+					// Je crée mon viewHolder
+					ArticleItemViewHolder articleVH = new ArticleItemViewHolder();
 					// Je prépare mon holder
-					monHolder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
-					monHolder.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
-					monHolder.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
-					monHolder.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
-					monHolder.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
-					monHolder.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
-					monHolder.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
+					articleVH.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
+					articleVH.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
+					articleVH.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
+					articleVH.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
+					articleVH.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
+					articleVH.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
+					articleVH.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
 					// Et l'assigne
-					convertView.setTag(monHolder);
+					convertView.setTag(articleVH);
 					break;
 
 				case Item.TYPE_COMMENTAIRE:
 					// Je charge mon layout
 					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
 
+					// Je crée mon viewHolder
+					CommentaireItemViewHolder commentaireVH = new CommentaireItemViewHolder();
 					// Je prépare mon holder
-					monHolder.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
-					monHolder.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
-					monHolder.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
+					commentaireVH.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
+					commentaireVH.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
+					commentaireVH.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
 					// Et l'assigne
-					convertView.setTag(monHolder);
+					convertView.setTag(commentaireVH);
 					break;
 
 				default:
@@ -189,104 +196,121 @@ public class ItemsAdapter extends BaseAdapter {
 		Item i = mesItems.get(position);
 
 		if (i != null) {
-			// Je charge mon ItemsViewHolder (lien vers les *View)
-			ItemsViewHolder monHolder = (ItemsViewHolder) convertView.getTag();
+			switch (i.getType()) {
+				case Item.TYPE_SECTION:
+					// Je charge mon ItemsViewHolder (lien vers les *View)
+					SectionItemViewHolder sectionVH = (SectionItemViewHolder) convertView.getTag();
 
-			// Section
-			if (i.getType() == Item.TYPE_SECTION) {
-				SectionItem si = (SectionItem) i;
+					SectionItem si = (SectionItem) i;
 
-				monHolder.sectionView.setText(si.getTitre());
+					sectionVH.sectionView.setText(si.getTitre());
 
-				// On applique le zoom éventuel
-				appliqueZoom(monHolder.sectionView, Constantes.TEXT_SIZE_MEDIUM);
+					// On applique le zoom éventuel
+					appliqueZoom(sectionVH.sectionView, Constantes.TEXT_SIZE_MEDIUM);
+					break;
 
-			} else if (i.getType() == Item.TYPE_ARTICLE) {
-				/**
-				 * Article
-				 */
-				ArticleItem ai = (ArticleItem) i;
+				case Item.TYPE_ARTICLE:
+					// Je charge mon ItemsViewHolder (lien vers les *View)
+					ArticleItemViewHolder articleVH = (ArticleItemViewHolder) convertView.getTag();
+					/**
+					 * Article
+					 */
+					ArticleItem ai = (ArticleItem) i;
 
-				// L'article est-il déjà lu ?
-				if (ai.isLu()) {
-					// Couleur lu
-					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
-				} else {
-					// Couleur non lu
-					monHolder.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
-				}
+					// L'article est-il déjà lu ?
+					if (ai.isLu()) {
+						// Couleur lu
+						articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
+					} else {
+						// Couleur non lu
+						articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
+					}
 
-				// Gestion du badge abonné
-				if (ai.isAbonne()) {
-					monHolder.labelAbonne.setVisibility(View.VISIBLE);
-				} else {
-					monHolder.labelAbonne.setVisibility(View.GONE);
-				}
-				// Remplissage des textview
-				monHolder.titreArticle.setText(ai.getTitre());
-				monHolder.heureArticle.setText(ai.getHeureMinutePublication());
-				monHolder.sousTitreArticle.setText(ai.getSousTitre());
-				monHolder.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
-				// Gestion de l'image
-				FileInputStream in;
-				try {
-					// Ouverture du fichier en cache
-					File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES + ai.getImageName());
-					in = new FileInputStream(monFichier);
-					monHolder.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
-					in.close();
-				} catch (Exception e) {
-					// Si le fichier n'est pas trouvé, je fournis une image par défaut
-					monHolder.imageArticle.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+					// Gestion du badge abonné
+					if (ai.isAbonne()) {
+						articleVH.labelAbonne.setVisibility(View.VISIBLE);
+					} else {
+						articleVH.labelAbonne.setVisibility(View.GONE);
+					}
+					// Remplissage des textview
+					articleVH.titreArticle.setText(ai.getTitre());
+					articleVH.heureArticle.setText(ai.getHeureMinutePublication());
+					articleVH.sousTitreArticle.setText(ai.getSousTitre());
+					articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
+					// Gestion de l'image
+					FileInputStream in;
+					try {
+						// Ouverture du fichier en cache
+						File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES
+								+ ai.getImageName());
+						in = new FileInputStream(monFichier);
+						articleVH.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
+						in.close();
+					} catch (Exception e) {
+						// Si le fichier n'est pas trouvé, je fournis une image par défaut
+						articleVH.imageArticle
+								.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+
+						// DEBUG
+						if (Constantes.DEBUG) {
+							Log.e("ItemsAdapter", "getView -> Article", e);
+						}
+					}
+
+					// On applique le zoom éventuel
+					appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
+					appliqueZoom(articleVH.heureArticle, Constantes.TEXT_SIZE_SMALL);
+					appliqueZoom(articleVH.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
+					appliqueZoom(articleVH.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
+					appliqueZoom(articleVH.labelAbonne, Constantes.TEXT_SIZE_SMALL);
+					break;
+
+				case Item.TYPE_COMMENTAIRE:
+					// Je charge mon ItemsViewHolder (lien vers les *View)
+					CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) convertView.getTag();
+					/**
+					 * Commentaire
+					 */
+					CommentaireItem ci = (CommentaireItem) i;
 
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.e("ItemsAdapter", "getView -> Article", e);
+						Log.i("ItemsAdapter", "Commentaire #" + ci.getId());
 					}
-				}
 
-				// On applique le zoom éventuel
-				appliqueZoom(monHolder.titreArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(monHolder.heureArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(monHolder.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
-				appliqueZoom(monHolder.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(monHolder.labelAbonne, Constantes.TEXT_SIZE_SMALL);
+					// Remplissage des textview
+					commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
+					commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
-			} else if (i.getType() == Item.TYPE_COMMENTAIRE) {
-				/**
-				 * Commentaire
-				 */
-				CommentaireItem ai = (CommentaireItem) i;
+					Spanned spannedContent = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
+							commentaireVH.commentaire, ci.getCommentaire()), null);
+					commentaireVH.commentaire.setText(spannedContent);
 
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.i("ItemsAdapter", "Commentaire #" + ai.getId());
-				}
+					// Liens cliquables ? option utilisateur !
+					Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
+							R.bool.defautOptionLiensDansCommentaires);
+					if (lienClickable) {
+						// Active les liens a href
+						commentaireVH.commentaire.setMovementMethod(new GestionLiens());
+					} else {
+						// Désactivation de l'effet de click
+						convertView.setOnClickListener(null);
+						convertView.setOnLongClickListener(null);
+					}
 
-				// Remplissage des textview
-				monHolder.auteurDateCommentaire.setText(ai.getAuteurDateCommentaire());
-				monHolder.numeroCommentaire.setText(String.valueOf(ai.getId()));
+					// On applique le zoom éventuel
+					appliqueZoom(commentaireVH.auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
+					appliqueZoom(commentaireVH.numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
+					appliqueZoom(commentaireVH.commentaire, Constantes.TEXT_SIZE_SMALL);
+					break;
 
-				Spanned spannedContent = Html.fromHtml(ai.getCommentaire(), new URLImageProvider(monContext,
-						monHolder.commentaire, ai.getCommentaire()), null);
-				monHolder.commentaire.setText(spannedContent);
+				default:
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.e("ItemsAdapter", "getView : i.getType() incorrect : " + i.getType());
+					}
+					break;
 
-				// Liens cliquables ? option utilisateur !
-				Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
-						R.bool.defautOptionLiensDansCommentaires);
-				if (lienClickable) {
-					// Active les liens a href
-					monHolder.commentaire.setMovementMethod(new GestionLiens());
-				} else {
-					// Désactivation de l'effet de click
-					convertView.setOnClickListener(null);
-					convertView.setOnLongClickListener(null);
-				}
-
-				// On applique le zoom éventuel
-				appliqueZoom(monHolder.auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(monHolder.numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
-				appliqueZoom(monHolder.commentaire, Constantes.TEXT_SIZE_SMALL);
 			}
 		}
 		return convertView;

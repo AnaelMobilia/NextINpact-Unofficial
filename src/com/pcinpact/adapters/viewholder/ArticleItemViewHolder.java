@@ -16,63 +16,56 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.adapters;
+package com.pcinpact.adapters.viewholder;
+
+import com.pcinpact.items.Item;
 
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Conservation en cache des emplacements des *View d'un layout pour ne pas les recharger dans l'itemsAdapter.
+ * ViewHolder pour un ArticleItem.
  * 
  * @author Anael
  *
  */
-public class ItemsViewHolder {
+public class ArticleItemViewHolder implements ItemViewHolder {
 	/**
-	 * Section.
-	 */
-	public TextView sectionView;
-
-	/**
-	 * (Article) Illustration.
+	 * Illustration.
 	 */
 	public ImageView imageArticle;
 	/**
-	 * (Article) Label abonné.
+	 * Label abonné.
 	 */
 	public TextView labelAbonne;
 	/**
-	 * (Article) Titre.
+	 * Titre.
 	 */
 	public TextView titreArticle;
 	/**
-	 * (Article) heure.
+	 * Heure.
 	 */
 	public TextView heureArticle;
 	/**
-	 * (Article) sous titre.
+	 * Sous titre.
 	 */
 	public TextView sousTitreArticle;
 	/**
-	 * (Article) nombre de commentaires.
+	 * Nombre de commentaires.
 	 */
 	public TextView commentairesArticle;
 	/**
-	 * (Article) relative Layout - couleur de fond.
+	 * Relative Layout - couleur de fond.
 	 */
 	public RelativeLayout relativeLayout;
 
-	/**
-	 * (Commentaire) auteur et date.
+	/*
+	 * (non-Javadoc)
+	 * @see com.pcinpact.items.Item#getType()
 	 */
-	public TextView auteurDateCommentaire;
-	/**
-	 * (Commentaire) numéro.
-	 */
-	public TextView numeroCommentaire;
-	/**
-	 * (Commentaire) contenu.
-	 */
-	public TextView commentaire;
+	@Override
+	public int getType() {
+		return Item.TYPE_ARTICLE;
+	}
 }
