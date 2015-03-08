@@ -62,7 +62,8 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	 * @param unType type de la ressource (Cf Constantes.TYPE_)
 	 * @param uneURL URL de la ressource
 	 */
-	public AsyncImageDownloader(Context unContext, RefreshDisplayInterface parent, int unType, String uneURL) {
+	public AsyncImageDownloader(final Context unContext, final RefreshDisplayInterface parent, final int unType,
+			final String uneURL) {
 		// Mappage des attributs de cette requête
 		monContext = unContext;
 		monParent = parent;

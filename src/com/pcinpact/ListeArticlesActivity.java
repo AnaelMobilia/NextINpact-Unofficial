@@ -332,7 +332,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		if (dlInProgress == 0) {
 			// GUI : activité en cours...
 			nouveauChargementGUI();
-			
+
 			/**
 			 * Nettoyage du cache
 			 */
@@ -399,7 +399,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 				nouveauChargementGUI();
 			}
-			
+
 			// GUI : fin de l'activité en cours...
 			finChargementGUI();
 		}
@@ -411,7 +411,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 * @param desItems liste d'articles à télécharger
 	 */
 	@SuppressLint("NewApi")
-	private void telechargeListeArticles(ArrayList<? extends Item> desItems) {
+	private void telechargeListeArticles(final ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
 			// Tâche de DL HTML
 			AsyncHTMLDownloader monAHD;
@@ -463,7 +463,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
+	public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
 		// Si c'est un refresh général
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
 			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
@@ -475,7 +475,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL) {
+	public void downloadImageFini(final String uneURL) {
 		// gestion du téléchargement GUI
 		finChargementGUI();
 	}

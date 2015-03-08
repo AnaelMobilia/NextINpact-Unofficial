@@ -35,13 +35,13 @@ public interface RefreshDisplayInterface {
 	 * @param uneURL URL de la page
 	 * @param mesItems liste d'*Items téléchargés
 	 */
-	void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems);
+	void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> mesItems);
 
 	/**
 	 * Une ressource image a été téléchargée.
 	 * 
 	 * @param uneURL URL de l'image
 	 */
-	void downloadImageFini(String uneURL);
+	void downloadImageFini(final String uneURL);
 
 }

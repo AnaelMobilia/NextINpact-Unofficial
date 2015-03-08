@@ -51,7 +51,7 @@ public class ParseurHTML {
 	 * @param urlPage URL de la page
 	 * @return liste d'articleItem
 	 */
-	public static ArrayList<ArticleItem> getListeArticles(String unContenu, String urlPage) {
+	public static ArrayList<ArticleItem> getListeArticles(final String unContenu, final String urlPage) {
 		ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
 
 		// Lancement du parseur sur la page
@@ -140,7 +140,7 @@ public class ParseurHTML {
 	 * @param urlPage URL de la page
 	 * @return ArticleItem
 	 */
-	public static ArticleItem getArticle(String unContenu, String urlPage) {
+	public static ArticleItem getArticle(final String unContenu, final String urlPage) {
 		ArticleItem monArticleItem = new ArticleItem();
 
 		// Lancement du parseur sur la page
@@ -311,7 +311,7 @@ public class ParseurHTML {
 	 * @param urlPage URL de la page
 	 * @return liste de CommentaireItem
 	 */
-	public static ArrayList<CommentaireItem> getCommentaires(String unContenu, String urlPage) {
+	public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final String urlPage) {
 		ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
 
 		// Lancement du parseur sur la page
@@ -384,7 +384,7 @@ public class ParseurHTML {
 	 * @param unFormatDate format de la date
 	 * @return timestamp
 	 */
-	private static long convertToTimeStamp(String uneDate, String unFormatDate) {
+	private static long convertToTimeStamp(final String uneDate, final String unFormatDate) {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {

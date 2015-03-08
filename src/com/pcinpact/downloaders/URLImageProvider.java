@@ -65,7 +65,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * @param uneTextView textView concernée
 	 * @param unCommentaire commentaire affiché dans la textView
 	 */
-	public URLImageProvider(Context unContext, TextView uneTextView, String unCommentaire) {
+	public URLImageProvider(final Context unContext, final TextView uneTextView, final String unCommentaire) {
 		super();
 		monContext = unContext;
 		maTextView = uneTextView;
@@ -77,7 +77,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	/**
 	 * Fournir une image (URL)
 	 */
-	public Drawable getDrawable(String urlSource) {
+	public Drawable getDrawable(final String urlSource) {
 		// Image de retour
 		Drawable monRetour;
 
@@ -121,7 +121,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * @param uneImage ressource Image
 	 * @return Drawable redimensionnée si besoin
 	 */
-	private Drawable gestionTaille(Drawable uneImage) {
+	private Drawable gestionTaille(final Drawable uneImage) {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
@@ -157,17 +157,16 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 					"gestionTaille : coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight()
 							+ " - largeur = " + uneImage.getIntrinsicWidth());
 		}
-
 		return uneImage;
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
+	public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> mesItems) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL) {
+	public void downloadImageFini(final String uneURL) {
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);

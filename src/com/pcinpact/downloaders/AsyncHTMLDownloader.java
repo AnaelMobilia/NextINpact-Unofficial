@@ -80,8 +80,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	 * @param contenuAbonne est-ce un contenu abonné ?
 	 * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
 	 */
-	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext,
-			Boolean contenuAbonne, Boolean onlyifConnecte) {
+	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO, final Context unContext,
+			final Boolean contenuAbonne, final Boolean onlyifConnecte) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;
@@ -105,7 +105,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	 * @param unDAO accès sur la DB
 	 * @param unContext context de l'application
 	 */
-	public AsyncHTMLDownloader(RefreshDisplayInterface parent, int unType, String uneURL, DAO unDAO, Context unContext) {
+	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO, final Context unContext) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;

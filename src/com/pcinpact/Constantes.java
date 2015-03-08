@@ -41,8 +41,7 @@ public class Constantes {
 	 * COMPATIBILITE.
 	 */
 	/**
-	 * Build Version Honeycomb (non dispo en 2.*).
-	 * http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+	 * Build Version Honeycomb (non dispo en 2.*). http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
 	 */
 	public static final int HONEYCOMB = 11;
 
@@ -71,7 +70,7 @@ public class Constantes {
 	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
 	/**
 	 * Paramètre numéro de page (commentaires).
-	 */	
+	 */
 	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
 	/**
 	 * URL des smileys.
@@ -142,7 +141,7 @@ public class Constantes {
 	 */
 	public static final String PATH_IMAGES_MINIATURES = "/MINIATURES/";
 	/**
-	 * Path des images de contenu des articles. 
+	 * Path des images de contenu des articles.
 	 */
 	public static final String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
 	/**
@@ -179,8 +178,7 @@ public class Constantes {
 	public static final int DB_REFRESH_ID_LISTE_ARTICLES = 0;
 
 	/**
-	 * TAILLE DES TEXTES.
-	 * http://developer.android.com/design/style/typography.html
+	 * TAILLE DES TEXTES. http://developer.android.com/design/style/typography.html
 	 */
 	/**
 	 * Taille de texte MICRO.
@@ -188,7 +186,7 @@ public class Constantes {
 	public static final int TEXT_SIZE_MICRO = 12;
 	/**
 	 * Taille de texte SMALL.
-	 */	
+	 */
 	public static final int TEXT_SIZE_SMALL = 14;
 	/**
 	 * Taille de texte MEDIUM.
@@ -242,10 +240,11 @@ public class Constantes {
 
 	/**
 	 * User agent pour les requêtes réseau.
+	 * 
 	 * @param unContext context de l'application
 	 * @return User-Agent
 	 */
-	public static String getUserAgent(Context unContext) {
+	public static String getUserAgent(final Context unContext) {
 		// Numéro de version de l'application
 		String numVersion = "";
 		try {
@@ -266,12 +265,13 @@ public class Constantes {
 
 	/**
 	 * Retourne une option de type String.
+	 * 
 	 * @param unContext context d'application
 	 * @param idOption id de l'option
 	 * @param defautOption id de la valeur par défaut de l'option
 	 * @return l'option demandée
 	 */
-	public static String getOptionString(Context unContext, int idOption, int defautOption) {
+	public static String getOptionString(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
 		return mesPrefs.getString(unContext.getString(idOption), unContext.getString(defautOption));
@@ -285,7 +285,7 @@ public class Constantes {
 	 * @param defautOption id de la valeur par défaut de l'option
 	 * @return @return l'option demandée
 	 */
-	public static Boolean getOptionBoolean(Context unContext, int idOption, int defautOption) {
+	public static Boolean getOptionBoolean(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
 		return mesPrefs.getBoolean(unContext.getString(idOption), unContext.getResources().getBoolean(defautOption));
@@ -299,7 +299,7 @@ public class Constantes {
 	 * @param defautOption id de la valeur par défaut de l'option
 	 * @return @return l'option demandée
 	 */
-	public static int getOptionInt(Context unContext, int idOption, int defautOption) {
+	public static int getOptionInt(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
 		return Integer
@@ -313,7 +313,7 @@ public class Constantes {
 	 * @param idOption id de l'option
 	 * @param valeurOption valeur à enregistrer
 	 */
-	public static void setOptionBoolean(Context unContext, int idOption, boolean valeurOption) {
+	public static void setOptionBoolean(final Context unContext, final int idOption, final boolean valeurOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
 		Editor editor = mesPrefs.edit();

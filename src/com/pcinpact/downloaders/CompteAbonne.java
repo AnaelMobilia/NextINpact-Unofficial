@@ -78,8 +78,8 @@ public class CompteAbonne {
 	 * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
 	 * @return code HTML de l'article brut
 	 */
-	public static byte[] downloadArticleAbonne(String uneURL, final Context unContext, boolean compression,
-			boolean uniquementSiConnecte) {
+	public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean compression,
+			final boolean uniquementSiConnecte) {
 		// Retour
 		byte[] monRetour;
 
@@ -200,7 +200,7 @@ public class CompteAbonne {
 	 * @param username nom d'utilisateur NXI
 	 * @param password mot de passe NXI
 	 */
-	private static void connexionAbonne(final Context unContext, String username, String password) {
+	private static void connexionAbonne(final Context unContext, final String username, final String password) {
 		// Au premier appel, j'initialise le cookie holder
 		if (monHTTPContext == null) {
 			// DEBUG
@@ -278,7 +278,7 @@ public class CompteAbonne {
 	 * @param unContext context de l'application
 	 * @return true si compte utilisateur connecté chez NXI
 	 */
-	public static boolean estConnecte(Context unContext) {
+	public static boolean estConnecte(final Context unContext) {
 		boolean monRetour = false;
 
 		// Ai-je un cookieHolder ?

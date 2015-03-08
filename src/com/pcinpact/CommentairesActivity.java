@@ -274,7 +274,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
+	public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
 		// Retour vide ? Fin ou pas de connexion
 		if (desItems.isEmpty()) {
 			isFinCommentaires = true;
@@ -301,7 +301,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	@Override
-	public void downloadImageFini(String uneURL) {
+	public void downloadImageFini(final String uneURL) {
 		// TODO Auto-generated method stub
 	}
 

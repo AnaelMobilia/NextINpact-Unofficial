@@ -70,7 +70,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 * @param unContext contect de l'application
 	 * @param desItems items à afficher
 	 */
-	public ItemsAdapter(Context unContext, ArrayList<? extends Item> desItems) {
+	public ItemsAdapter(final Context unContext, final ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
 		monContext = unContext;
 		mesItems = desItems;
@@ -82,7 +82,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 * 
 	 * @param nouveauxItems liste d'items
 	 */
-	public void updateListeItems(ArrayList<? extends Item> nouveauxItems) {
+	public void updateListeItems(final ArrayList<? extends Item> nouveauxItems) {
 		mesItems = nouveauxItems;
 	}
 
@@ -298,7 +298,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 * @param uneTextView textView cible
 	 * @param defaultSize taille par défaut
 	 */
-	private void appliqueZoom(TextView uneTextView, int defaultSize) {
+	private void appliqueZoom(final TextView uneTextView, final int defaultSize) {
 		// Taile par défaut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
 		// L'option selectionnée
