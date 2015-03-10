@@ -235,17 +235,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		// Récupère l'article en question
 		ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
+		// Marque l'article comme lu
+		monArticle.setLu(true);
+		// Mise à jour graphique
+		monItemsAdapter.notifyDataSetChanged();
+		
 		// Lance l'ouverture de l'article
 		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
 
-		// Marque l'article comme lu
-		monArticle.setLu(true);
+
 		// Mise à jour en DB
 		monDAO.marquerArticleLu(monArticle);
-		// Mise à jour graphique
-		monItemsAdapter.notifyDataSetChanged();
 	}
 
 	/**
