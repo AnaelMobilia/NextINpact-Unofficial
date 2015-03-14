@@ -68,7 +68,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	/**
 	 * Téléchargement uniquement si connecté ?
 	 */
-	private Boolean uniquementSiConnecte;
+	private Boolean uniquementSiConnecte = false;
 
 	/**
 	 * DL avec gestion du compte abonné et de l'état de la connexion.
