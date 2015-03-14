@@ -148,6 +148,12 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 					if (telecharger && !isLoading && !isFinCommentaires) {
 						// TÈlÈchargement de 10 commentaires en plus
 						refreshListeCommentaires();
+
+						// DEBUG
+						if (Constantes.DEBUG) {
+							Log.i("CommentairesActivity", "Chargement continu -> lancement chargement commentaires - "
+									+ visibleItemCount);
+						}
 					}
 				}
 
@@ -266,9 +272,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
 		}
 
-		// M‡j de la date de dernier refresh
-		majDateRefresh();
-
 		// M‡J du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
 	}
@@ -294,6 +297,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			monItemsAdapter.updateListeItems(mesCommentaires);
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
+			
+			// Je M‡J la date du dernier refresh
+			majDateRefresh();
 		}
 
 		// ArrÍt des gris-gris en GUI
