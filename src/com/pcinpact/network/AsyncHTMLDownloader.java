@@ -88,7 +88,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 		urlPage = uneURL;
 		typeHTML = unType;
 		monDAO = unDAO;
-		monContext = unContext;
+		monContext = unContext.getApplicationContext();
 		isAbonne = contenuAbonne;
 		uniquementSiConnecte = onlyifConnecte;
 

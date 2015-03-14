@@ -67,7 +67,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 */
 	public URLImageProvider(final Context unContext, final TextView uneTextView, final String unCommentaire) {
 		super();
-		monContext = unContext;
+		monContext = unContext.getApplicationContext();
 		maTextView = uneTextView;
 		monCommentaire = unCommentaire;
 	}

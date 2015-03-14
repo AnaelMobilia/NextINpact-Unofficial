@@ -101,7 +101,7 @@ public final class DAO extends SQLiteOpenHelper {
 		 * Chargement de la BDD si non déjà présente
 		 */
 		if (instanceOfDAO == null) {
-			instanceOfDAO = new DAO(unContext);
+			instanceOfDAO = new DAO(unContext.getApplicationContext());
 		}
 		return instanceOfDAO;
 	}

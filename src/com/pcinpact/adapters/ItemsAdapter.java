@@ -75,7 +75,7 @@ public class ItemsAdapter extends BaseAdapter {
 	 */
 	public ItemsAdapter(final Context unContext, final ArrayList<? extends Item> desItems) {
 		// Je charge le bouzin
-		monContext = unContext;
+		monContext = unContext.getApplicationContext();
 		mesItems = desItems;
 		monLayoutInflater = LayoutInflater.from(monContext);
 	}

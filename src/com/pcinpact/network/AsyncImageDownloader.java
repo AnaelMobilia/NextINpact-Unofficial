@@ -65,7 +65,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	public AsyncImageDownloader(final Context unContext, final RefreshDisplayInterface parent, final int unType,
 			final String uneURL) {
 		// Mappage des attributs de cette requête
-		monContext = unContext;
+		monContext = unContext.getApplicationContext();
 		monParent = parent;
 		urlImage = uneURL;
 		typeImage = unType;
