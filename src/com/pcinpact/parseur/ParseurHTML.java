@@ -188,12 +188,13 @@ public class ParseurHTML {
 
 		// Gestion des iframe
 		Elements lesIframes = lArticle.select("iframe");
+		// Généralisation de l'URL en dehors du scheme
+		String[] schemes = { "https://", "http://", "//" };
 		// Pour chaque iframe
 		for (Element uneIframe : lesIframes) {
 			// URL du lecteur
 			String urlLecteur = uneIframe.attr("src");
-			// Généralisation de l'URL en dehors du scheme
-			String[] schemes = { "https://", "http://", "//" };
+
 			for (String unScheme : schemes) {
 				if (urlLecteur.startsWith(unScheme)) {
 					// Suppression du scheme
@@ -292,7 +293,7 @@ public class ParseurHTML {
 
 		// Gestion des URL relatives des images
 		Elements lesImages = lArticle.select("img[src]");
-		// Pour chaque lien
+		// Pour chaque image
 		for (Element uneImage : lesImages) {
 			// Assignation de son URL absolue
 			uneImage.attr("src", uneImage.absUrl("src"));
@@ -304,6 +305,13 @@ public class ParseurHTML {
 		return monArticleItem;
 	}
 
+	/**
+	 * Nombre de commentaires d'un article à partir d'une page de commentaires.
+	 * 
+	 * @param unContenu contenu HTML brut
+	 * @param urlPage URL de la page
+	 * @return nb de commentaires de l'article
+	 */
 	public static int getNbCommentaires(final String unContenu, final String urlPage) {
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(unContenu, urlPage);
@@ -349,6 +357,24 @@ public class ParseurHTML {
 		// Passage par une regexp => https://github.com/jhy/jsoup/issues/521
 		Elements lesCommentaires = pageNXI.select("div[class~=actu_comm ]");
 
+		// Contenu
+		// Supprimer les liens internes (<a> => <div>)
+		// "En réponse à ...", "... à écrit"
+		Elements lesLiensInternes = lesCommentaires.select("a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
+		lesLiensInternes.tagName("div");
+
+		// Blockquote
+		Elements lesCitations = lesCommentaires.select("div[class=link_reply_to], div[class=quote_bloc]");
+		lesCitations.tagName("blockquote");
+
+		// Gestion des URL relatives
+		Elements lesLiens = lesCommentaires.select("a[href]");
+		// Pour chaque lien
+		for (Element unLien : lesLiens) {
+			// Assignation de son URL absolue
+			unLien.attr("href", unLien.absUrl("href"));
+		}
+
 		CommentaireItem monCommentaireItem;
 		// Pour chaque commentaire
 		for (Element unCommentaire : lesCommentaires) {
@@ -371,24 +397,6 @@ public class ParseurHTML {
 			// Le premier caractère est un "#"
 			String lID = monID.text().substring(1);
 			monCommentaireItem.setId(Integer.valueOf(lID));
-
-			// Contenu
-			// Supprimer les liens internes (<a> => <div>)
-			// "En réponse à ...", "... à écrit"
-			Elements lesLiensInternes = unCommentaire.select("a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
-			lesLiensInternes.tagName("div");
-
-			// Blockquote
-			Elements lesCitations = unCommentaire.select("div[class=link_reply_to], div[class=quote_bloc]");
-			lesCitations.tagName("blockquote");
-
-			// Gestion des URL relatives
-			Elements lesLiens = unCommentaire.select("a[href]");
-			// Pour chaque lien
-			for (Element unLien : lesLiens) {
-				// Assignation de son URL absolue
-				unLien.attr("href", unLien.absUrl("href"));
-			}
 
 			// Contenu
 			Element monContenu = unCommentaire.select("div[class=actu_comm_content]").get(0);
