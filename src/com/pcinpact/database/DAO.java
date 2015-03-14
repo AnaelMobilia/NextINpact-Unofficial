@@ -48,34 +48,99 @@ public final class DAO extends SQLiteOpenHelper {
 	private static final String BDD_NOM = "nxidb";
 
 	/**
-	 * Interfacage de la BDD.
+	 * Table articles.
 	 */
 	private static final String BDD_TABLE_ARTICLES = "articles";
+	/**
+	 * Champ articles => ID.
+	 */
 	private static final String ARTICLE_ID = "id";
+	/**
+	 * Champ articles => Titre .
+	 */
 	private static final String ARTICLE_TITRE = "titre";
+	/**
+	 * Champ articles => Sous Titre .
+	 */
 	private static final String ARTICLE_SOUS_TITRE = "soustitre";
+	/**
+	 * Champ articles => Timestamp Publication.
+	 */
 	private static final String ARTICLE_TIMESTAMP = "timestamp";
+	/**
+	 * Champ articles => URL .
+	 */
 	private static final String ARTICLE_URL = "url";
+	/**
+	 * Champ articles => URL miniature .
+	 */
 	private static final String ARTICLE_ILLUSTRATION_URL = "miniatureurl";
+	/**
+	 * Champ articles => Contenu .
+	 */
 	private static final String ARTICLE_CONTENU = "contenu";
+	/**
+	 * Champ articles => Nb de commentaires .
+	 */
 	private static final String ARTICLE_NB_COMMS = "nbcomms";
+	/**
+	 * Champ articles => Abonné ?
+	 */
 	private static final String ARTICLE_IS_ABONNE = "isabonne";
+	/**
+	 * Champ articles => Lu ?
+	 */
 	private static final String ARTICLE_IS_LU = "islu";
+	/**
+	 * Champ articles => Contenu abonné téléchargé ?
+	 */
 	private static final String ARTICLE_DL_CONTENU_ABONNE = "iscontenuabonnedl";
 
+	/**
+	 * Table commentaires.
+	 */
 	private static final String BDD_TABLE_COMMENTAIRES = "commentaires";
+	/**
+	 * Champ commentaires => ID.
+	 */
 	private static final String COMMENTAIRE_ID = "id";
+	/**
+	 * Champ commentaires => ID article.
+	 */
 	private static final String COMMENTAIRE_ID_ARTICLE = "idarticle";
+	/**
+	 * Champ commentaires => Auteur.
+	 */
 	private static final String COMMENTAIRE_AUTEUR = "auteur";
+	/**
+	 * Champ commentaires => Timestamp Publication.
+	 */
 	private static final String COMMENTAIRE_TIMESTAMP = "timestamp";
+	/**
+	 * Champ commentaires => Contenu.
+	 */
 	private static final String COMMENTAIRE_CONTENU = "contenu";
 
+	/**
+	 * Table refresh.
+	 */
 	private static final String BDD_TABLE_REFRESH = "refresh";
+	/**
+	 * Champ refresh => ID article.
+	 */
 	private static final String REFRESH_ARTICLE_ID = "id";
+	/**
+	 * Champ refresh => Timestamp Refresh.
+	 */
 	private static final String REFRESH_TIMESTAMP = "timestamp";
 
-	// ma BDD
+	/**
+	 * BDD SQLite.
+	 */
 	private static SQLiteDatabase maBDD = null;
+	/**
+	 * Instance de la BDD.
+	 */
 	private static DAO instanceOfDAO = null;
 
 	/**
@@ -206,7 +271,8 @@ public final class DAO extends SQLiteOpenHelper {
 	/**
 	 * MàJ du nb de commentaires d'un article déjà synchronisé.
 	 * 
-	 * @param unArticle ArticleItem
+	 * @param articleID ID de l'article
+	 * @param nbCommentaires Nb de commentaires
 	 */
 	public void updateNbCommentairesArticle(final int articleID, final int nbCommentaires) {
 		// Les datas à MàJ
