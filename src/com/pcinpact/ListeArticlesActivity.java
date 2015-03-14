@@ -118,7 +118,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		setSupportProgressBarIndeterminateVisibility(false);
 
 		// Mise en place de l'itemAdapter
-		monItemsAdapter = new ItemsAdapter(this, mesArticles);
+		monItemsAdapter = new ItemsAdapter(getApplicationContext(), mesArticles);
 		monListView.setAdapter(monItemsAdapter);
 		monListView.setOnItemClickListener(this);
 

@@ -119,7 +119,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		monListView.addFooterView(buttonDl10Commentaires);
 
 		// Adapter pour l'affichage des données
-		monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
+		monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
 		// ID de l'article concerné
