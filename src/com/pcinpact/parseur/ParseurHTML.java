@@ -304,6 +304,30 @@ public class ParseurHTML {
 		return monArticleItem;
 	}
 
+	public static int getNbCommentaires(final String unContenu, final String urlPage) {
+		// Lancement du parseur sur la page
+		Document pageNXI = Jsoup.parse(unContenu, urlPage);
+		// Nombre de commentaires
+		Element elementNbComms = pageNXI.select("span[class=actu_separator_comms]").get(0);
+
+		// Représentation textuelle "nn commentaires"
+		String stringNbComms = elementNbComms.text();
+
+		// Isolation du chiffre uniquement (avant l'espace)
+		int positionEspace = stringNbComms.indexOf(" ");
+		String valeur = stringNbComms.substring(0, positionEspace).trim();
+
+		// Parsage de la valeur
+		int nbComms = Integer.valueOf(valeur);
+
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.i("ParseurHTML", "getNbCommentaires : " + nbComms);
+		}
+
+		return nbComms;
+	}
+
 	/**
 	 * Parse les commentaires.
 	 * 

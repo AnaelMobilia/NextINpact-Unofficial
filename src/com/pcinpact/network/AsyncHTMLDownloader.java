@@ -72,6 +72,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 	/**
 	 * DL avec gestion du compte abonné et de l'état de la connexion.
+	 * 
 	 * @param parent parent à callback à la fin
 	 * @param unType type de la ressource (Cf Constantes.TYPE_)
 	 * @param uneURL URL de la ressource
@@ -80,8 +81,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 	 * @param contenuAbonne est-ce un contenu abonné ?
 	 * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
 	 */
-	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO, final Context unContext,
-			final Boolean contenuAbonne, final Boolean onlyifConnecte) {
+	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO,
+			final Context unContext, final Boolean contenuAbonne, final Boolean onlyifConnecte) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;
@@ -99,13 +100,15 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
 	/**
 	 * DL sans gestion du statut abonné.
+	 * 
 	 * @param parent parent à callback à la fin
 	 * @param unType type de la ressource (Cf Constantes.TYPE_)
 	 * @param uneURL URL de la ressource
 	 * @param unDAO accès sur la DB
 	 * @param unContext context de l'application
 	 */
-	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO, final Context unContext) {
+	public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO,
+			final Context unContext) {
 		// Mappage des attributs de cette requête
 		monParent = parent;
 		urlPage = uneURL;
@@ -191,11 +194,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						if (articleDB.isAbonne()) {
 							// Suis-je connecté ?
 							boolean etatAbonne = CompteAbonne.estConnecte(monContext);
-							
+
 							// Suis-je connecté ?
 							articleDB.setDlContenuAbonne(etatAbonne);
 						}
-						
+
 						// Je viens de DL l'article => non lu
 						articleDB.setLu(false);
 
@@ -206,6 +209,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						break;
 
 					case Constantes.HTML_COMMENTAIRES:
+						/**
+						 * MàJ des commentaires
+						 */
 						// Je passe par le parser
 						ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(contenu, urlPage);
 
@@ -232,6 +238,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 						// Mise à jour de la date de rafraichissement
 						monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
 
+						/**
+						 * MàJ du nombre de commentaires
+						 */
+						int nbCommentaires = ParseurHTML.getNbCommentaires(contenu, urlPage);
+						monDAO.updateNbCommentairesArticle(idArticle, nbCommentaires);
+
 						// DEBUG
 						if (Constantes.DEBUG) {
 							Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
@@ -247,7 +259,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 			} else {
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("AsyncHTMLDownloader", "contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
+					Log.w("AsyncHTMLDownloader",
+							"contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
 				}
 			}
 		} catch (Exception e) {

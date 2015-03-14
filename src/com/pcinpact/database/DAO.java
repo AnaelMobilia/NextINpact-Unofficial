@@ -198,7 +198,7 @@ public final class DAO extends SQLiteOpenHelper {
 			return true;
 		} else {
 			// Je met ‡ jour le nb de comms de l'article en question...
-			updateNbCommentairesArticle(unArticle);
+			updateNbCommentairesArticle(unArticle.getId(), unArticle.getNbCommentaires());
 			return false;
 		}
 	}
@@ -208,12 +208,12 @@ public final class DAO extends SQLiteOpenHelper {
 	 * 
 	 * @param unArticle ArticleItem
 	 */
-	public void updateNbCommentairesArticle(final ArticleItem unArticle) {
+	public void updateNbCommentairesArticle(final int articleID, final int nbCommentaires) {
 		// Les datas ‡ M‡J
 		ContentValues updateValues = new ContentValues();
-		updateValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
+		updateValues.put(ARTICLE_NB_COMMS, nbCommentaires);
 
-		maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(unArticle.getId()) });
+		maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[] { String.valueOf(articleID) });
 	}
 
 	/**
