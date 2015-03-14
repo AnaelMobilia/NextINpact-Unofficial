@@ -59,7 +59,7 @@ public class ArticleActivity extends ActionBarActivity {
 
 		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
-		setContentView(R.layout.article);
+		setContentView(R.layout.article_webview);
 
 		WebView webview = (WebView) findViewById(R.id.webview);
 
