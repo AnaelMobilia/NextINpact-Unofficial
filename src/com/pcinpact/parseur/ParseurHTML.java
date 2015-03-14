@@ -266,6 +266,13 @@ public class ParseurHTML {
 				 */
 				monRemplacement.html("<a href=\"" + urlLecteur
 						+ "\"><img src=\"file:///android_res/drawable/iframe_scribd.png\" /></a>");
+				
+			} else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
+				/**
+				 * Canal+
+				 */
+				monRemplacement.html("<a href=\"" + urlLecteur
+						+ "\"><img src=\"file:///android_res/drawable/iframe_canalplus.png\" /></a>");
 			} else {
 				/**
 				 * Déchet (cath all)
