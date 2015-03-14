@@ -156,7 +156,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 						}
 					}
 				}
-
 			}
 		});
 
@@ -280,6 +279,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
 		// Retour vide ? Fin ou pas de connexion
 		if (desItems.isEmpty()) {
+			// Je note qu'il n'y a plus de commentaires
 			isFinCommentaires = true;
 			if (Constantes.DEBUG) {
 				Log.i("CommentairesActivity", "fin des commentaires");
@@ -297,9 +297,12 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			monItemsAdapter.updateListeItems(mesCommentaires);
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
-			
+
 			// Je MàJ la date du dernier refresh
 			majDateRefresh();
+
+			// Je note que je ne suis pas à la fin des commentaires
+			isFinCommentaires = false;
 		}
 
 		// Arrêt des gris-gris en GUI
