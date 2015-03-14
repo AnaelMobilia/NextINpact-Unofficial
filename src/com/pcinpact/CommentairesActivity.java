@@ -79,6 +79,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	private Boolean isFinCommentaires = false;
 	/**
+	 * Téléchargement de TOUS les commentaires ?
+	 */
+	private Boolean isChargementTotal = false;
+	/**
 	 * Menu.
 	 */
 	private Menu monMenu;
@@ -222,6 +226,12 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
 		// Rafraichir la liste des commentaires
 		if (pItem.getItemId() == R.id.action_refresh) {
+			// Retour GUI
+			lancerAnimationTelechargement();
+			// Téléchargement de TOUS les commentaires
+			isChargementTotal = true;
+
+			// Lancement du premier chargement
 			refreshListeCommentaires();
 		}
 
@@ -281,6 +291,15 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		if (desItems.isEmpty()) {
 			// Je note qu'il n'y a plus de commentaires
 			isFinCommentaires = true;
+
+			// Chargement de TOUS les commentaires ?
+			if (isChargementTotal) {
+				// On enlève le marqueur
+				isChargementTotal = false;
+				// Suppression de l'animation GUI restante
+				arreterAnimationTelechargement();
+			}
+
 			if (Constantes.DEBUG) {
 				Log.i("CommentairesActivity", "fin des commentaires");
 			}
@@ -303,6 +322,12 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 			// Je note que je ne suis pas à la fin des commentaires
 			isFinCommentaires = false;
+
+			// Chargement de TOUS les commentaires ?
+			if (isChargementTotal) {
+				// Lancement du prochain téléchargement...
+				refreshListeCommentaires();
+			}
 		}
 
 		// Arrêt des gris-gris en GUI
@@ -329,7 +354,5 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			headerTextView.setText(getString(R.string.lastUpdate)
 					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}
-
 	}
-
 }
