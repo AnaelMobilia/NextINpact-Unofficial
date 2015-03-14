@@ -43,7 +43,7 @@ import android.webkit.WebViewClient;
  * @author Anael
  *
  */
-public class ArticleActivity extends ActionBarActivity {
+public class ArticleActivityWebview extends ActionBarActivity {
 	/**
 	 * ID de l'article.
 	 */
@@ -113,7 +113,7 @@ public class ArticleActivity extends ActionBarActivity {
 		if (data.equals("")) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("ArticleActivity", "Article vide");
+				Log.w("ArticleActivityWebview", "Article vide");
 			}
 			data = getString(R.string.articleVideErreurHTML);
 		}

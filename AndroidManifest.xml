@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ArticleActivity"
+            android:name=".ArticleActivityWebview"
             android:parentActivityName="com.pcinpact.ListeArticlesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme" >
