@@ -222,7 +222,7 @@ public class ParseurHTML {
 						+ "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
 
 			} else if (urlLecteur.startsWith("www.youtube.com/embed/")
-					|| urlLecteur.startsWith("//www.youtube-nocookie.com/embed/")) {
+					|| urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
 				/**
 				 * Youtube
 				 */
