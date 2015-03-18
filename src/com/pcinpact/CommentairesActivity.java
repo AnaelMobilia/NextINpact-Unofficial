@@ -131,6 +131,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
 		// Mise à jour de l'affichage
 		monItemsAdapter.updateListeItems(mesCommentaires);
+		// Je fait remarquer que le contenu à changé
+		monItemsAdapter.notifyDataSetChanged();
 
 		// Système de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
