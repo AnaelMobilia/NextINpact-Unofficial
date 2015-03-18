@@ -57,6 +57,10 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * Texte du commentaire (pour recharger quand le smiley est dispo).
 	 */
 	private String monCommentaire;
+	/**
+	 * #176 - Est-ce un appel interne pour MàJ une image ?
+	 */
+	private boolean isCallback = false;
 
 	/**
 	 * Constructeur.
@@ -95,21 +99,28 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 				Log.i("URLImageProvider", nomSmiley + " fourni depuis le cache");
 			}
 		} else {
-			// Lancement du DL
-			AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, Constantes.IMAGE_SMILEY, urlSource);
-			// Parallèlisation des téléchargements pour l'ensemble de l'application
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				monAID.execute();
+			// #176 - Est-ce le premier appel ou un callback pour le rendu ?
+			if (!isCallback) {
+				// Lancement du DL
+				AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, Constantes.IMAGE_SMILEY, urlSource);
+				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					monAID.execute();
+				}
+
+				// DEBUG
+				if (Constantes.DEBUG) {
+					Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
+				}
+
+				// #176 - Je note que le prochain appel sera un callback pour le rendu uniquement
+				isCallback = true;
 			}
 
 			// Retour d'une image générique (logo NXI)
 			monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
-			}
 		}
 		// Je retourne mon image
 		return monRetour;
