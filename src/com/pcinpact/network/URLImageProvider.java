@@ -153,7 +153,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 
 		// DEBUG
 		if (Constantes.DEBUG) {
-			Log.i("URLImageProvider",
+			Log.d("URLImageProvider",
 					"gestionTaille : coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight()
 							+ " - largeur = " + uneImage.getIntrinsicWidth());
 		}
