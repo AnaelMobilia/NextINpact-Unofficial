@@ -17,15 +17,18 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
+ */
+-->
 <resources>
 
     <!-- Thème Android v8 à v10 -->
 
-    
+
     <!-- the theme applied to the application or activity -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-<!--         <item name="android:actionBarStyle">@style/NextInpactActionBar</item> -->
+
+        <!-- <item name="android:actionBarStyle">@style/NextInpactActionBar</item> -->
+
 
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar</item>
@@ -42,6 +45,19 @@
     <!-- Style personnalisé -->
     <style name="textAppearanceMicro" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- Reprise des autres valeurs de taille de texte -->
+    <style name="textAppearanceSmall" parent="@android:style/TextAppearance">
+        <item name="android:textSize">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="textAppearanceMedium" parent="@android:style/TextAppearance">
+        <item name="android:textSize">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="textAppearanceLarge" parent="@android:style/TextAppearance">
+        <item name="android:textSize">?android:attr/textAppearanceLarge</item>
     </style>
 
 </resources>
