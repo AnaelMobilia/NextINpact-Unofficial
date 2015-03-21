@@ -189,7 +189,8 @@ public class ItemsAdapter extends BaseAdapter {
 		} else {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + position + ")");
+				// 0...n vs 1...(n+1)
+				Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + (position + 1) + ")");
 			}
 		}
 
