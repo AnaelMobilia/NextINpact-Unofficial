@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,42 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.items;
+package com.pcinpact.adapters.viewholder;
+
+import android.widget.TextView;
+
+import com.pcinpact.items.Item;
 
 /**
- * Objet générique Item.
+ * ViewHolder pour un ContenuArticleItem.
  * 
  * @author Anael
  *
  */
-public interface Item {
+public class ContenuArticleViewHolder implements ItemViewHolder {
+	/**
+	 * Contenu.
+	 */
+	public TextView contenu;
 
-	/**
-	 * Type "Article".
+	/*
+	 * (non-Javadoc)
+	 * @see com.pcinpact.items.Item#getType()
 	 */
-	int TYPE_ARTICLE = 0;
-	/**
-	 * Type "Section".
-	 */
-	int TYPE_SECTION = 1;
-	/**
-	 * Type "Commentaire".
-	 */
-	int TYPE_COMMENTAIRE = 2;
-	/**
-	 * Type "ContenuArticle"
-	 */
-	int TYPE_CONTENU_ARTICLE = 3;
+	@Override
+	public int getType() {
+		return Item.TYPE_CONTENU_ARTICLE;
+	}
 
-	/**
-	 * Nombre de types existants.
-	 */
-	int NOMBRE_DE_TYPES = 4;
-
-	/**
-	 * Type (cf Item.type*) de l'item.
-	 * 
-	 * @return type de l'item
-	 */
-	int getType();
 }

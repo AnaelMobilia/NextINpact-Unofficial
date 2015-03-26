@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.database.DAO;
 import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.RefreshDisplayInterface;
 
@@ -67,7 +67,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 		
 		// Liste des commentaires
-		ListView monListView = (ListView) this.findViewById(R.id.listeCommentaires);
+		ListView monListView = (ListView) this.findViewById(R.id.contenuArticle);
 
 		// Adapter pour l'affichage des données
 		monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
@@ -81,17 +81,18 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		if (data.equals("")) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("ArticleActivityWebview", "Article vide");
+				Log.w("ArticleActivity", "Article vide");
 			}
 			data = getString(R.string.articleVideErreurHTML);
 		}
 		
-		// J'active la BDD
-		monDAO = DAO.getInstance(getApplicationContext());
-//		// Je charge mes articles
-//		mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
-//		// Mise à jour de l'affichage
-//		monItemsAdapter.updateListeItems(mesCommentaires);
+	
+		ArrayList<ContenuArticleItem> monAR = new ArrayList<ContenuArticleItem>();
+		ContenuArticleItem toto = new ContenuArticleItem();
+		toto.setContenu(monArticle.getContenu());
+		monAR.add(toto);
+		// Mise à jour de l'affichage
+		monItemsAdapter.updateListeItems(monAR);
 	}
 
 	@Override
@@ -124,46 +125,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		}
 
 		return super.onOptionsItemSelected(pItem);
-	}
-
-	/**
-	 * Lance les animations indiquant un téléchargement.
-	 */
-	private void lancerAnimationTelechargement() {
-//		// DEBUG
-//		if (Constantes.DEBUG) {
-//			Log.i("ArticleActivity", "lancerAnimationTelechargement");
-//		}
-//		// J'enregistre l'état
-//		isLoading = true;
-//
-//		// Lance la rotation du logo dans le header
-//		setSupportProgressBarIndeterminateVisibility(true);
-//
-//		// Supprime l'icône refresh dans le header
-//		if (monMenu != null) {
-//			monMenu.findItem(R.id.action_refresh).setVisible(false);
-//		}
-	}
-
-	/**
-	 * Arrête les animations indiquant un téléchargement.
-	 */
-	private void arreterAnimationTelechargement() {
-//		// DEBUG
-//		if (Constantes.DEBUG) {
-//			Log.i("ArticleActivity", "arreterAnimationTelechargement");
-//		}
-//		// J'enregistre l'état
-//		isLoading = false;
-//
-//		// Arrêt de la rotation du logo dans le header
-//		setSupportProgressBarIndeterminateVisibility(false);
-//
-//		// Affiche l'icône refresh dans le header
-//		if (monMenu != null) {
-//			monMenu.findItem(R.id.action_refresh).setVisible(true);
-//		}
 	}
 
 	@Override

@@ -241,7 +241,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monItemsAdapter.notifyDataSetChanged();
 		
 		// Lance l'ouverture de l'article
-		Intent monIntent = new Intent(getApplicationContext(), ArticleActivityWebview.class);
+		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
 

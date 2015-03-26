@@ -26,9 +26,11 @@ import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
 import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
+import com.pcinpact.adapters.viewholder.ContenuArticleViewHolder;
 import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.URLImageProvider;
@@ -179,6 +181,19 @@ public class ItemsAdapter extends BaseAdapter {
 					convertView.setTag(commentaireVH);
 					break;
 
+					
+				case Item.TYPE_CONTENU_ARTICLE:
+					// Je charge mon layout
+					convertView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
+
+					// Je crée mon viewHolder
+					ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
+					// Je prépare mon holder
+					contenuVH.contenu = (TextView) convertView.findViewById(R.id.texteArticle);
+					// Et l'assigne
+					convertView.setTag(contenuVH);
+					break;
+					
 				default:
 					// DEBUG
 					if (Constantes.DEBUG) {
@@ -283,9 +298,9 @@ public class ItemsAdapter extends BaseAdapter {
 					commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
 					commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
-					Spanned spannedContent = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
+					Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
 							commentaireVH.commentaire, ci.getCommentaire()), null);
-					commentaireVH.commentaire.setText(spannedContent);
+					commentaireVH.commentaire.setText(spannedCommentaire);
 
 					// Liens cliquables ? option utilisateur !
 					Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
@@ -305,6 +320,28 @@ public class ItemsAdapter extends BaseAdapter {
 					appliqueZoom(commentaireVH.commentaire, Constantes.TEXT_SIZE_SMALL);
 					break;
 
+					
+				case Item.TYPE_CONTENU_ARTICLE:
+					// Je charge mon ItemsViewHolder (lien vers les *View)
+					ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) convertView.getTag();
+					/**
+					 * Contenu
+					 */
+					ContenuArticleItem cai = (ContenuArticleItem) i;
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.i("ItemsAdapter", "Contenu Article #" + cai.getContenu());
+					}
+
+					// Remplissage des textview
+					Spanned spannedContenu = Html.fromHtml(cai.getContenu(), null, null);
+					contenuVH.contenu.setText(spannedContenu);
+
+					// On applique le zoom éventuel
+					appliqueZoom(contenuVH.contenu, Constantes.TEXT_SIZE_SMALL);
+					break;
+					
 				default:
 					// DEBUG
 					if (Constantes.DEBUG) {
