@@ -41,7 +41,7 @@ public class CommentaireItemViewHolder implements ItemViewHolder {
 	 * Contenu.
 	 */
 	public TextView commentaire;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.pcinpact.items.Item#getType()
