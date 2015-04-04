@@ -39,7 +39,7 @@
             <!-- Paramètres -->
             <item
                 android:id="@+id/action_settings"
-                android:icon="@drawable/ic_menu_preferences"
+                android:icon="@drawable/ic_sysbar_quicksettings"
                 android:title="@string/action_settings"
                 yourapp:showAsAction="ifRoom"/>
 
