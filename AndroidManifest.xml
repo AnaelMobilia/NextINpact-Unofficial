@@ -96,6 +96,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />
         </activity>
+        <activity
+            android:name=".DebugActivity"
+            android:parentActivityName="com.pcinpact.DebugActivity"
+            android:screenOrientation="user"
+            android:theme="@style/NextInpactTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pcinpact.ListeArticlesActivity" />
+        </activity>
     </application>
 
 </manifest>

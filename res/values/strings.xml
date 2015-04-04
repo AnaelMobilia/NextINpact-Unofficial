@@ -26,6 +26,7 @@
     <string name="action_overflow">Plus...</string>
     <string name="action_settings">Options</string>
     <string name="action_about">A propos</string>
+    <string name="action_debug">Debug</string>
     <string name="action_comments">Commentaires</string>
     <string name="action_share">Partager</string>
 
@@ -126,5 +127,8 @@ http://www.nextinpact.com/abonnement"</string>
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>
     <string name="commentairesChargement">Chargement...</string>
+    
+    <!-- Debug -->
+    <string name="debug">"Configuration avancée de l'application"</string>
 
 </resources>

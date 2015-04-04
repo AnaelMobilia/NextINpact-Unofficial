@@ -215,7 +215,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// Je charge mon menu dans l'actionBar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.liste_articles_activity_actions, monMenu);
+
+		// Suis-je en mode DEBUG ?
+		Boolean modeDebug = Constantes
+				.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug);
+
+		// Chargement du fichier XML
+		if (modeDebug) {
+			// Mode DEBUG
+			inflater.inflate(R.menu.liste_articles_activity_actions_debug, monMenu);
+		} else {
+			// Mode standard
+			inflater.inflate(R.menu.liste_articles_activity_actions, monMenu);
+		}
 
 		// Je lance l'animation si un DL est déjà en cours
 		if (dlInProgress != 0) {
@@ -239,12 +251,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monArticle.setLu(true);
 		// Mise à jour graphique
 		monItemsAdapter.notifyDataSetChanged();
-		
+
 		// Lance l'ouverture de l'article
 		Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
-
 
 		// Mise à jour en DB
 		monDAO.marquerArticleLu(monArticle);
@@ -289,17 +300,26 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			case R.id.action_refresh:
 				telechargeListeArticles();
 				return true;
+
 				// Menu Options
 			case R.id.action_settings:
 				// Je lance l'activité options
 				Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
 				startActivity(intentOptions);
 				return true;
+
 				// A propos
 			case R.id.action_about:
 				Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
 				startActivity(intentAbout);
 				return true;
+
+				// Debug
+			case R.id.action_debug:
+				Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+				startActivity(intentDebug);
+				return true;
+
 			default:
 				return super.onOptionsItemSelected(pItem);
 		}
