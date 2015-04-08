@@ -40,6 +40,11 @@ public class Cache {
 	 * Nettoie le cache de l'application.
 	 */
 	public static void nettoyerCache(Context unContext) {
+		// DEBUG
+		if(Constantes.DEBUG) {
+			Log.i("Cache", "nettoyerCache()");
+		}
+		
 		try {
 			// Protection du context
 			unContext = unContext.getApplicationContext();
@@ -51,7 +56,7 @@ public class Cache {
 			int maLimite = Constantes.getOptionInt(unContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
 
 			// Chargement de tous les articles de la BDD
-			ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(null);
+			ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(0);
 
 			/**
 			 * Données à conserver

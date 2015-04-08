@@ -337,18 +337,25 @@ public final class DAO extends SQLiteOpenHelper {
 	/**
 	 * Charge les n derniers articles de la BDD.
 	 * 
-	 * @param nbVoulu nombre d'articles voulus
+	 * @param nbVoulu nombre d'articles voulus (0 = pas de limite)
 	 * @return ArrayList<ArticleItem> les articles demandés
 	 */
-	public ArrayList<ArticleItem> chargerArticlesTriParDate(final Integer nbVoulu) {
+	public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
 				ARTICLE_DL_CONTENU_ABONNE };
 
-		// Requête sur la BDD
-		Cursor monCursor = maBDD
-				.query(BDD_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
+		Cursor monCursor;
+
+		// Une limite est-elle fournie ?
+		if (nbVoulu == 0) {
+			// Requête sur la BDD
+			monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", null);
+		} else {
+			// Requête sur la BDD
+			monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
+		}
 
 		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
 		ArticleItem monArticle;
