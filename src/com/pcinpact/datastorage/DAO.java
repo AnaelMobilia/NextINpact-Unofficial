@@ -340,7 +340,7 @@ public final class DAO extends SQLiteOpenHelper {
 	 * @param nbVoulu nombre d'articles voulus
 	 * @return ArrayList<ArticleItem> les articles demandés
 	 */
-	public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
+	public ArrayList<ArticleItem> chargerArticlesTriParDate(final Integer nbVoulu) {
 		// Les colonnes à récupérer
 		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
 				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
@@ -390,74 +390,6 @@ public final class DAO extends SQLiteOpenHelper {
 		// Je passe tous les résultats
 		while (monCursor.moveToNext()) {
 			// Je charge les données de l'objet
-			monArticle = cursorToArticleItem(monCursor);
-
-			// Et l'enregistre
-			mesArticles.add(monArticle);
-		}
-
-		// Fermeture du curseur
-		monCursor.close();
-
-		return mesArticles;
-	}
-
-	/**
-	 * Liste des articles obsolètes à effacer du cache.
-	 * 
-	 * @param nbMaxArticles nombre maximum d'articles à conserver en BDD
-	 * @return Liste d'articles obsolètes
-	 */
-	public ArrayList<ArticleItem> chargerArticlesASupprimer(final int nbMaxArticles) {
-		ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
-
-		/**
-		 * Articles à conserver
-		 */
-		// Colonnes de la requête
-		String[] desColonnes = { ARTICLE_ID, ARTICLE_TIMESTAMP };
-		// Requête sur la BDD
-		Cursor unCursor = maBDD.query(BDD_TABLE_ARTICLES, desColonnes, null, null, null, null, "2 DESC",
-				String.valueOf(nbMaxArticles));
-
-		String[] idOk = new String[unCursor.getCount()];
-		int indice = 0;
-		// Récupération des ID des articles
-		while (unCursor.moveToNext()) {
-			idOk[indice] = String.valueOf(unCursor.getInt(0));
-			indice++;
-		}
-		unCursor.close();
-
-		// Protection contre un NPE
-		if (idOk.length == 0) {
-			return mesArticles;
-		}
-
-		/**
-		 * Articles à supprimer
-		 */
-		// Les colonnes à récupérer
-		String[] mesColonnes = new String[] { ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-				ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
-				ARTICLE_DL_CONTENU_ABONNE };
-
-		// Préparation de la requête
-		String pointInterrogation = "";
-		for (int i = 0; i < idOk.length; i++) {
-			pointInterrogation += ",?";
-		}
-		// Suppression de la première virgule
-		pointInterrogation = pointInterrogation.substring(1);
-
-		// Requête sur la BDD
-		Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + " NOT IN (" + pointInterrogation + ")",
-				idOk, null, null, "4 DESC");
-
-		ArticleItem monArticle;
-		// Je passe tous les résultats
-		while (monCursor.moveToNext()) {
-			// Je remplis l'article
 			monArticle = cursorToArticleItem(monCursor);
 
 			// Et l'enregistre

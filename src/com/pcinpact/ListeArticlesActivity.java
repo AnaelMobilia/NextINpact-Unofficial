@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
+import com.pcinpact.datastorage.Cache;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
@@ -353,7 +354,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				listenerOptions);
 
 		// Nettoyage du cache de l'application
-		nettoyerCache();
+		Cache.nettoyerCache(getApplicationContext());
 
 		super.onDestroy();
 	}
@@ -376,7 +377,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			/**
 			 * Nettoyage du cache
 			 */
-			nettoyerCache();
+			Cache.nettoyerCache(getApplicationContext());
 
 			/**
 			 * Téléchargement des articles dont le contenu n'avait pas été téléchargé
@@ -633,74 +634,4 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		}
 	}
 
-	/**
-	 * Nettoie le cache de l'application.
-	 */
-	private void nettoyerCache() {
-		try {
-			// Nombre d'articles à conserver
-			int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
-					R.string.defautOptionNbArticles);
-
-			/**
-			 * Données à conserver
-			 */
-
-			// Je protége les images présentes dans les articles à conserver
-			ArrayList<String> imagesLegit = new ArrayList<String>();
-			int nbArticles = mesArticles.size();
-			for (int i = 0; i < nbArticles; i++) {
-				imagesLegit.add(mesArticles.get(i).getImageName());
-			}
-
-			/**
-			 * Données à supprimer
-			 */
-			ArrayList<ArticleItem> articlesASupprimer = monDAO.chargerArticlesASupprimer(maLimite);
-
-			/**
-			 * Traitement
-			 */
-			nbArticles = articlesASupprimer.size();
-			for (int i = 0; i < nbArticles; i++) {
-				ArticleItem article = articlesASupprimer.get(i);
-
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.w("ListeArticlesActivity", "Cache : suppression de " + article.getTitre());
-				}
-
-				// Suppression en DB
-				monDAO.supprimerArticle(article);
-
-				// Suppression des commentaires de l'article
-				monDAO.supprimerCommentaire(article.getId());
-
-				// Suppression de la date de Refresh des commentaires
-				monDAO.supprimerDateRefresh(article.getId());
-
-				// Suppression de la miniature, uniquement si plus utilisée
-				if (!imagesLegit.contains(article.getImageName())) {
-					File monFichier = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
-							article.getImageName());
-					monFichier.delete();
-				}
-			}
-
-			/**
-			 * Suppression du cache v < 1.8.0 Les fichiers sur stockés en local
-			 */
-			String[] savedFiles = getApplicationContext().fileList();
-
-			for (String file : savedFiles) {
-				// Article à effacer
-				getApplicationContext().deleteFile(file);
-			}
-		} catch (Exception e) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.e("ListeArticlesActivity", "nettoyerCache()", e);
-			}
-		}
-	}
 }
