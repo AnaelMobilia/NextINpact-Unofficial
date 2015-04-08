@@ -18,8 +18,14 @@
  */
 package com.pcinpact;
 
+import com.pcinpact.datastorage.Cache;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * Debug de l'application.
@@ -35,5 +41,22 @@ public class DebugActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.debug);
+
+		/**
+		 * Boutton : effacement du cache
+		 */
+		Button buttonCache = (Button) this.findViewById(R.id.buttonDeleteCache);
+		buttonCache.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// Effacement du cache
+				Cache.nettoyerCache(getApplicationContext());
+
+				// Retour utilisateur
+				Toast monToast = Toast.makeText(getApplicationContext(),
+						getApplicationContext().getString(R.string.effacerCacheToast), Toast.LENGTH_LONG);
+				monToast.show();
+			}
+		});
 	}
 }

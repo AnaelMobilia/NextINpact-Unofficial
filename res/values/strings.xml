@@ -17,7 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */
+ */
 -->
 <resources>
 
@@ -130,5 +130,7 @@ http://www.nextinpact.com/abonnement"</string>
     
     <!-- Debug -->
     <string name="debug">"Configuration avancée de l'application"</string>
+    <string name="effacerCache">"Effacer le cache de l'application"</string>
+    <string name="effacerCacheToast">"Effacement du cache de l'application !"</string>
 
 </resources>

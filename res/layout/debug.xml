@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,28 +16,28 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
--->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+ * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>-->
 
-    <LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/debugTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:paddingBottom="5dp"
+        android:paddingEnd="?android:attr/scrollbarSize"
+        android:paddingLeft="5dp"
+        android:paddingRight="?android:attr/scrollbarSize"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/debug" />
 
-        <TextView
-            android:id="@+id/debugTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingEnd="?android:attr/scrollbarSize"
-            android:paddingLeft="5dp"
-            android:paddingRight="?android:attr/scrollbarSize"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/debug" />
-    </LinearLayout>
-
-</ScrollView>
+    <Button
+        android:id="@+id/buttonDeleteCache"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/effacerCache" />
+</LinearLayout>
