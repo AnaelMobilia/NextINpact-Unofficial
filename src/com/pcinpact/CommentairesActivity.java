@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.database.DAO;
+import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;

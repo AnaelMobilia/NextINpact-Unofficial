@@ -24,7 +24,7 @@ import java.util.Date;
 import org.apache.commons.io.IOUtils;
 
 import com.pcinpact.Constantes;
-import com.pcinpact.database.DAO;
+import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;

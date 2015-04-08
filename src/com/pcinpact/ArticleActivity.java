@@ -21,7 +21,7 @@ package com.pcinpact;
 import java.util.ArrayList;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.database.DAO;
+import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;

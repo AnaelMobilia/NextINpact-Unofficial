@@ -18,7 +18,7 @@
  */
 package com.pcinpact;
 
-import com.pcinpact.database.DAO;
+import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 
 import android.content.Intent;
