@@ -100,7 +100,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	/**
 	 * Listener pour le changement de taille des textes.
 	 */
-	private SharedPreferences.OnSharedPreferenceChangeListener listenerOptionZoom;
+	private SharedPreferences.OnSharedPreferenceChangeListener listenerOptions;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -182,12 +182,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
 		}
 
-		// Gestion du changement de la taille des textes (option utilisateur)
-		listenerOptionZoom = new SharedPreferences.OnSharedPreferenceChangeListener() {
+		// Gestion du changement d'options de l'application
+		listenerOptions = new SharedPreferences.OnSharedPreferenceChangeListener() {
 			@Override
 			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-				// Modification de la taille des textes ?
+				// Taille des textes
 				if (key.equals(getResources().getString(R.string.idOptionZoomTexte))) {
 					// Rafraichissement de l'affichage
 					monItemsAdapter.notifyDataSetChanged();
@@ -200,11 +200,24 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 												R.string.defautOptionZoomTexte));
 					}
 				}
+				// Menu debug
+				else if (key.equals(getResources().getString(R.string.idOptionDebug))) {
+					// invalidation du menu
+					invalidateOptionsMenu();
+
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("ListeArticlesActivity",
+								"changement option debug => "
+										+ Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+												R.bool.defautOptionDebug));
+					}
+				}
 			}
 		};
 		// Attachement du superviseur aux préférences
 		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
-				listenerOptionZoom);
+				listenerOptions);
 
 	}
 
@@ -220,6 +233,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		Boolean modeDebug = Constantes
 				.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug);
 
+		// DEBUG
+		if(Constantes.DEBUG) {
+			Log.i("ListeArticlesActivity", "onCreateOptionsMenu : modeDebug => " + modeDebug);
+		}
+		
 		// Chargement du fichier XML
 		if (modeDebug) {
 			// Mode DEBUG
@@ -332,7 +350,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	protected void onDestroy() {
 		// Détachement du listener pour la taille des textes
 		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
-				listenerOptionZoom);
+				listenerOptions);
 
 		// Nettoyage du cache de l'application
 		nettoyerCache();
