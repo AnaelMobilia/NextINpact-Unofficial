@@ -3,7 +3,7 @@ language: android
 android:
     components:
         # Version de Build-tools
-        - build-tools-21.1.1
+        - build-tools-22.0.1
 
         # Version du SDK
-        - android-21
+        - android-22
