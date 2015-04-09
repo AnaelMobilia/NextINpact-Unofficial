@@ -50,7 +50,7 @@ public class DebugActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View arg0) {
 				// Effacement du cache
-				Cache.nettoyerCache(getApplicationContext());
+				Cache.effacerCache(getApplicationContext());
 
 				// Retour utilisateur
 				Toast monToast = Toast.makeText(getApplicationContext(),
