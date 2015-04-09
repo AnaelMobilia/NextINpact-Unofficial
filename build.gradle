@@ -9,6 +9,7 @@
  buildscript {
  	repositories {
  		mavenCentral()
+ 		jcenter()
 	}
 
 	dependencies {
@@ -20,7 +21,7 @@
 /**
  * Type du projet 
  */
- apply plugin: 'android'
+ apply plugin: 'com.android.application'
 
 /**
  * Librairies additionnelles du projet
