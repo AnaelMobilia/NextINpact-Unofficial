@@ -1,1 +1,54 @@
-apply plugin:'java'
+/**
+ * 	
+ *
+ */
+ buildscript {
+ 	repositories {
+ 		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'com.android.tools.build:gradle:0.11.1'
+  	}
+  }
+
+/**
+ * Type du projet 
+ */
+ apply plugin: 'android'
+
+/**
+ * Dépendances du projet
+ */
+dependecies {
+	compile files('libs/commons-io-2.2/commons-io-2.2.jar')
+	compile files('libs/jsoup-1.8.1/jsoup-1.8.1.jar')
+}
+
+android {
+	/**
+ 	 * Niveau de compilation
+ 	 */
+	compileSdkVersion 19
+	buildToolsVersion "19.0.0"
+
+	/**
+	 * Path des fichiers
+	 */
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src/com/pcinpact']
+
+	 		resources.srcDirs = ['src/com/pcinpact']
+			aidl.srcDirs = ['src/com/pcinpact']
+
+			renderscript.srcDirs = ['src/com/pcinpact']
+
+			res.srcDirs = ['res']
+			assets.srcDirs = ['assets']
+		}
+
+		androidTest.setRoot('tests')
+	}
+}
