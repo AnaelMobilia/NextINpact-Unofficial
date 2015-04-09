@@ -7,3 +7,6 @@ android:
 
         # Version du SDK
         - android-22
+
+        # Composants additionnels
+        - extra-google-m2repository
