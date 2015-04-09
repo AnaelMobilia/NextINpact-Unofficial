@@ -47,12 +47,12 @@ android {
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
-			java.srcDirs = ['src/com/pcinpact']
+			java.srcDirs = ['src']
 
-	 		resources.srcDirs = ['src/com/pcinpact']
-			aidl.srcDirs = ['src/com/pcinpact']
+	 		resources.srcDirs = ['src']
+			aidl.srcDirs = ['src']
 
-			renderscript.srcDirs = ['src/com/pcinpact']
+			renderscript.srcDirs = ['src']
 
 			res.srcDirs = ['res']
 			assets.srcDirs = ['assets']
@@ -60,6 +60,6 @@ android {
 		/**
 		 * Path des tests
 		 */
-		androidTest.setRoot('tests')
+		/**androidTest.setRoot('tests')*/
 	}
 }
