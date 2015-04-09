@@ -1,9 +1,9 @@
 language: android
 
 android:
-	components:
-		# Version de Build-tools
-		- build-tools-21.1.1
+    components:
+        # Version de Build-tools
+        - build-tools-21.1.1
 
-		# Version du SDK
-		- android-21
+        # Version du SDK
+        - android-21
