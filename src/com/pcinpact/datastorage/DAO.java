@@ -625,4 +625,16 @@ public final class DAO extends SQLiteOpenHelper {
 		return monCommentaire;
 	}
 
+	/**
+	 * Suppression de tout le contenu de la BDD.
+	 */
+	public void vider() {
+		// Les articles
+		maBDD.delete(BDD_TABLE_ARTICLES, null, null);
+		// Les commentaires
+		maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
+		// Date de refresh
+		maBDD.delete(BDD_TABLE_REFRESH, null, null);
+	}
+
 }

@@ -37,18 +37,20 @@ import com.pcinpact.items.ArticleItem;
 public class Cache {
 
 	/**
-	 * Nettoie le cache de l'application.
+	 * Nettoie le cache de l'application des articles obsolètes.
+	 * 
+	 * @param unContext context application
 	 */
 	public static void nettoyerCache(Context unContext) {
 		// DEBUG
-		if(Constantes.DEBUG) {
-			Log.i("Cache", "nettoyerCache()");
+		if (Constantes.DEBUG) {
+			Log.d("Cache", "nettoyerCache()");
 		}
-		
+
 		try {
 			// Protection du context
 			unContext = unContext.getApplicationContext();
-			
+
 			// Connexion sur la BDD
 			DAO monDAO = DAO.getInstance(unContext);
 
@@ -57,60 +59,129 @@ public class Cache {
 
 			// Chargement de tous les articles de la BDD
 			ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(0);
-
-			/**
-			 * Données à conserver
-			 */
-			// Je protége les images présentes dans les articles à conserver
-			ArrayList<String> imagesLegit = new ArrayList<String>();
-			for (int i = 0; i < maLimite; i++) {
-				imagesLegit.add(mesArticles.get(i).getImageName());
-			}
-
-
-			/**
-			 * Données à supprimer
-			 */
 			int nbArticles = mesArticles.size();
-			for (int i = maLimite; i < nbArticles; i++) {
-				ArticleItem article = mesArticles.get(i);
 
-				// DEBUG
-				if (Constantes.DEBUG) {
-					Log.w("Cache", "nettoyerCache() : suppression de " + article.getTitre());
+			// Ai-je plus d'articles que ma limite ?
+			if (nbArticles > maLimite) {
+				/**
+				 * Données à conserver
+				 */
+				// Je protége les images présentes dans les articles à conserver
+				ArrayList<String> imagesLegit = new ArrayList<String>();
+				for (int i = 0; i < maLimite; i++) {
+					imagesLegit.add(mesArticles.get(i).getImageName());
 				}
 
-				// Suppression en DB
-				monDAO.supprimerArticle(article);
+				/**
+				 * Données à supprimer
+				 */
+				for (int i = maLimite; i < nbArticles; i++) {
+					ArticleItem article = mesArticles.get(i);
 
-				// Suppression des commentaires de l'article
-				monDAO.supprimerCommentaire(article.getId());
+					// DEBUG
+					if (Constantes.DEBUG) {
+						Log.w("Cache", "nettoyerCache() : suppression de " + article.getTitre());
+					}
 
-				// Suppression de la date de Refresh des commentaires
-				monDAO.supprimerDateRefresh(article.getId());
+					// Suppression en DB
+					monDAO.supprimerArticle(article);
 
-				// Suppression de la miniature, uniquement si plus utilisée
-				if (!imagesLegit.contains(article.getImageName())) {
-					File monFichier = new File(unContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
-							article.getImageName());
-					monFichier.delete();
+					// Suppression des commentaires de l'article
+					monDAO.supprimerCommentaire(article.getId());
+
+					// Suppression de la date de Refresh des commentaires
+					monDAO.supprimerDateRefresh(article.getId());
+
+					// Suppression de la miniature, uniquement si plus utilisée
+					if (!imagesLegit.contains(article.getImageName())) {
+						File monFichier = new File(unContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
+								article.getImageName());
+						monFichier.delete();
+					}
 				}
-			}
-
-			/**
-			 * Suppression du cache v < 1.8.0 Les fichiers sur stockés en local
-			 */
-			String[] savedFiles = unContext.fileList();
-
-			for (String file : savedFiles) {
-				// Article à effacer
-				unContext.deleteFile(file);
 			}
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.e("Cache", "nettoyerCache()", e);
 			}
+		}
+	}
+
+	/**
+	 * Supprime l'ensemble du cache.
+	 * 
+	 * @param unContext contexte application
+	 */
+	public static void effacerCache(Context unContext) {
+		// DEBUG
+		if (Constantes.DEBUG) {
+			Log.i("Cache", "effacerCache()");
+		}
+
+		try {
+			// Protection du context
+			unContext = unContext.getApplicationContext();
+
+			// Connexion sur la BDD
+			DAO monDAO = DAO.getInstance(unContext);
+
+			/**
+			 * Vidage BDD
+			 */
+			monDAO.vider();
+
+			/**
+			 * Miniatures d'articles
+			 */
+			effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES);
+
+			/**
+			 * Illustrations d'articles
+			 */
+			effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
+			/**
+			 * Smileys
+			 */
+			effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
+		} catch (Exception e) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.e("Cache", "nettoyerCache()", e);
+			}
+		}
+	}
+
+	/**
+	 * Efface tous les fichiers d'un répertoire.
+	 * 
+	 * @param unPath répertoire
+	 */
+	private static void effacerContenuRepertoire(String unPath) {
+		File[] mesFichiers = new File(unPath).listFiles();
+
+		if (mesFichiers != null) {
+			for (File unFichier : mesFichiers) {
+				// Fichier à effacer
+				unFichier.delete();
+			}
+		}
+	}
+
+	/**
+	 * Effacement du cache v < 1.8.0
+	 * 
+	 * @param unContext
+	 */
+	public static void effacerCacheV180(Context unContext) {
+		// Protection du context
+		unContext = unContext.getApplicationContext();
+
+		String[] savedFiles = unContext.fileList();
+
+		for (String file : savedFiles) {
+			// Article à effacer
+			unContext.deleteFile(file);
 		}
 	}
 }
