@@ -52,6 +52,10 @@ public class DebugActivity extends ActionBarActivity {
 				// Effacement du cache
 				Cache.effacerCache(getApplicationContext());
 
+				// Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
+				Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, R.bool.defautOptionDebugEffacerCache);
+				Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
+				
 				// Retour utilisateur
 				Toast monToast = Toast.makeText(getApplicationContext(),
 						getApplicationContext().getString(R.string.effacerCacheToast), Toast.LENGTH_LONG);

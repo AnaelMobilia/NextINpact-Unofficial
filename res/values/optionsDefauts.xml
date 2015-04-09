@@ -34,5 +34,6 @@
     <string name="defautOptionLogin"></string>
     <string name="defautOptionPassword"></string>
     <bool name="defautOptionInfoCompteAbonne">true</bool>
+    <bool name="defautOptionDebugEffacerCache">false</bool>
     
 </resources>

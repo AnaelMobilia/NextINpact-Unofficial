@@ -119,6 +119,8 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionLogin">11</string>
     <string name="idOptionPassword">12</string>
     <string name="idOptionInfoCompteAbonne">13</string>
+    <!-- Option sans GUI, sert à notifier l'effacement uniquement -->
+    <string name="idOptionDebugEffacerCache">14</string>
 
 
     <!-- Liste des articles -->

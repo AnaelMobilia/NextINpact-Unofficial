@@ -217,6 +217,14 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 												R.bool.defautOptionDebug));
 					}
 				}
+				// Menu debug
+				else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
+					// Je vide ma liste d'articles...
+					nouveauChargementGUI();
+					mesArticles.clear();
+					// Lancement du refresh de l'affichage
+					finChargementGUI();
+				}
 			}
 		};
 		// Attachement du superviseur aux préférences

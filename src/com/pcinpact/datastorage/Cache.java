@@ -140,6 +140,7 @@ public class Cache {
 			 * Illustrations d'articles
 			 */
 			effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
+
 			/**
 			 * Smileys
 			 */
