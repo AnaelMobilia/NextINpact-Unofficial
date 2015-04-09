@@ -167,7 +167,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		if (premiereUtilisation) {
 			// Effacement du cache de l'application v < 1.8.0
 			Cache.effacerCacheV180(getApplicationContext());
-			
+
 			// Lancement d'un téléchargement des articles
 			telechargeListeArticles();
 
@@ -238,10 +238,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug);
 
 		// DEBUG
-		if(Constantes.DEBUG) {
+		if (Constantes.DEBUG) {
 			Log.i("ListeArticlesActivity", "onCreateOptionsMenu : modeDebug => " + modeDebug);
 		}
-		
+
 		// Chargement du fichier XML
 		if (modeDebug) {
 			// Mode DEBUG
@@ -421,12 +421,15 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Les miniatures que j'ai
 			String[] miniaturesFS = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
-			// Pour chaque miniature que j'ai...
-			for (String uneMiniature : miniaturesFS) {
-				// Si elle est aussi dans la liste des miniatures à avoir
-				if (miniaturesItem.containsKey(uneMiniature)) {
-					// Je l'efface
-					miniaturesItem.remove(uneMiniature);
+			// Ssi j'ai déjà des miniatures...
+			if (miniaturesFS != null) {
+				// Pour chaque miniature que j'ai...
+				for (String uneMiniature : miniaturesFS) {
+					// Si elle est aussi dans la liste des miniatures à avoir
+					if (miniaturesItem.containsKey(uneMiniature)) {
+						// Je l'efface
+						miniaturesItem.remove(uneMiniature);
+					}
 				}
 			}
 
