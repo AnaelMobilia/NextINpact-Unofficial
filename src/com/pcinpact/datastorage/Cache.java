@@ -144,13 +144,22 @@ public class Cache {
 			/**
 			 * Smileys
 			 */
-			effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
+			effacerCacheSmiley(unContext);
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
 				Log.e("Cache", "nettoyerCache()", e);
 			}
 		}
+	}
+
+	/**
+	 * Efface les smileys du cache
+	 * 
+	 * @param unContext contexte de l'application
+	 */
+	public static void effacerCacheSmiley(Context unContext) {
+		effacerContenuRepertoire(unContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
 	}
 
 	/**

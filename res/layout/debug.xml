@@ -37,7 +37,14 @@
 
     <Button
         android:id="@+id/buttonDeleteCache"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/effacerCache" />
+
+    <Button
+        android:id="@+id/buttonDeleteCacheSmiley"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/effacerCacheSmiley" />
+
 </LinearLayout>

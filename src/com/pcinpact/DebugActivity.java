@@ -62,5 +62,22 @@ public class DebugActivity extends ActionBarActivity {
 				monToast.show();
 			}
 		});
+		
+		/**
+		 * Boutton : effacement des smileys
+		 */
+		Button buttonSmileys = (Button) this.findViewById(R.id.buttonDeleteCacheSmiley);
+		buttonSmileys.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// Effacement du cache
+				Cache.effacerCacheSmiley(getApplicationContext());
+				
+				// Retour utilisateur
+				Toast monToast = Toast.makeText(getApplicationContext(),
+						getApplicationContext().getString(R.string.effacerCacheSmileyToast), Toast.LENGTH_LONG);
+				monToast.show();
+			}
+		});
 	}
 }

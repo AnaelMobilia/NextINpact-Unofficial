@@ -132,7 +132,9 @@ http://www.nextinpact.com/abonnement"</string>
     
     <!-- Debug -->
     <string name="debug">"Configuration avancée de l'application"</string>
-    <string name="effacerCache">"Effacer le cache de l'application"</string>
+    <string name="effacerCache">"Effacer TOUT le cache de l'application"</string>
     <string name="effacerCacheToast">"Effacement du cache de l'application !"</string>
+    <string name="effacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
+    <string name="effacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
 
 </resources>
