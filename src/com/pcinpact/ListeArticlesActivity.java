@@ -165,6 +165,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				R.string.idOptionInstallationApplication, R.bool.defautOptionInstallationApplication);
 		// Si première utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
+			// Effacement du cache de l'application v < 1.8.0
+			Cache.effacerCacheV180(getApplicationContext());
+			
 			// Lancement d'un téléchargement des articles
 			telechargeListeArticles();
 
