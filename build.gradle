@@ -36,7 +36,7 @@ dependencies {
 	compile files('deps/android-support-v7-appcompat/libs/android-support-v4.jar')
 	compile files('deps/android-support-v7-appcompat/libs/android-support-v7-appcompat.jar')
 */
-	compile 'com.android.support:appcompat-v7:21.0.+'
+	compile 'com.android.support:appcompat-v7:21.+'
 	compile 'org.jsoup:jsoup:1.8.1'
 }
 
@@ -47,8 +47,8 @@ android {
 	/**
  	 * Niveau de compilation
  	 */
-	compileSdkVersion 22
-	buildToolsVersion "22.0.1"
+	compileSdkVersion 21
+	buildToolsVersion "21.+"
 
 	/**
 	 * Path des fichiers
