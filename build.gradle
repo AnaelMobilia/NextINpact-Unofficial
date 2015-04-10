@@ -31,11 +31,6 @@ repositories {
  * Librairies additionnelles du projet
  */
 dependencies {
-/**
-	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile files('deps/android-support-v7-appcompat/libs/android-support-v4.jar')
-	compile files('deps/android-support-v7-appcompat/libs/android-support-v7-appcompat.jar')
-*/
 	compile 'com.android.support:appcompat-v7:21.+'
 	compile 'org.jsoup:jsoup:1.8.1'
 	compile 'commons-io:commons-io:2.2'
