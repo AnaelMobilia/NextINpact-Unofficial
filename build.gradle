@@ -91,7 +91,7 @@ android {
 	    // Pas d'arrêt si des erreurs sont remontées 
 	    abortOnError false
 	    // Les warnings ne sont pas considérés comme erreurs
-	    warningAsErrors false
+	    warningsAsErrors false
 	    // Affichage complet des erreurs
 	    showAll true
 	    // Affichage des erreurs sous format texte
