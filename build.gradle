@@ -48,7 +48,7 @@ android {
  	 * Niveau de compilation
  	 */
 	compileSdkVersion 21
-	buildToolsVersion "21.+"
+	buildToolsVersion "21.1.2"
 
 	/**
 	 * Path des fichiers
