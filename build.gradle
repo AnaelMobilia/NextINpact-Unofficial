@@ -23,6 +23,15 @@
   }
 
 
+/**
+ * Affichage des warnings à la compilation
+ */
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+
 repositories {
     mavenCentral()
 }
