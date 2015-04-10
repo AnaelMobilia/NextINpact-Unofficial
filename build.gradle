@@ -4,12 +4,17 @@
  */
 
 /**
+ * Type du projet 
+ */
+ apply plugin: 'com.android.application'
+
+/**
  * Dépôt & version de gradle à utiliser
  */
  buildscript {
  	repositories {
- 		mavenCentral()
  		jcenter()
+ 		mavenCentral()
 	}
 
 	dependencies {
@@ -18,18 +23,20 @@
   }
 
 
-/**
- * Type du projet 
- */
- apply plugin: 'com.android.application'
+repositories {
+    mavenCentral()
+}
 
 /**
  * Librairies additionnelles du projet
  */
 dependencies {
+/**
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 	compile files('deps/android-support-v7-appcompat/libs/android-support-v4.jar')
 	compile files('deps/android-support-v7-appcompat/libs/android-support-v7-appcompat.jar')
+*/
+	compile "com.android.support:appcompat-v7:21.0.+"
 }
 
 /**
