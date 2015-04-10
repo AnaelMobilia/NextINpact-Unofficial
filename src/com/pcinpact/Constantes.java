@@ -53,23 +53,23 @@ public class Constantes {
 	 */
 	public static final String NEXT_INPACT_ENCODAGE = "UTF-8";
 	/**
-	 * URL de téléchargement.
+	 * URL de tÃ©lÃ©chargement.
 	 */
 	public static final String NEXT_INPACT_URL = "http://m.nextinpact.com";
 	/**
-	 * Paramètre numéro de page (liste articles).
+	 * ParamÃªtre numÃ©ro de page (liste articles).
 	 */
 	public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
 	/**
-	 * URL de téléchargement des commentaires.
+	 * URL de tÃ©lÃ©chargement des commentaires.
 	 */
 	public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
 	/**
-	 * Paramètre ID d'article (commentaires).
+	 * ParamÃªtre ID d'article (commentaires).
 	 */
 	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
 	/**
-	 * Paramètre numéro de page (commentaires).
+	 * ParamÃªtre numÃ©ro de page (commentaires).
 	 */
 	public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
 	/**
@@ -131,7 +131,7 @@ public class Constantes {
 	/**
 	 * Format des dates des commentaires sur le site.
 	 */
-	public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+	public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'Ã ' HH:mm:ss";
 
 	/**
 	 * PATH DES FICHIERS LOCAUX.
@@ -165,9 +165,9 @@ public class Constantes {
 	 */
 	public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
 	/**
-	 * Date et Heure de dernière synchro.
+	 * Date et Heure de derniÃ¨re synchro.
 	 */
-	public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
+	public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'Ã ' HH:mm";
 
 	/**
 	 * CONSTANTES EN BDD.
@@ -221,11 +221,11 @@ public class Constantes {
 	 */
 	public static final String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
 	/**
-	 * Paramètre utilisateur.
+	 * ParamÃªtre utilisateur.
 	 */
 	public static final String AUTHENTIFICATION_USERNAME = "UserName";
 	/**
-	 * Paramètre mot de passe.
+	 * ParamÃªtre mot de passe.
 	 */
 	public static final String AUTHENTIFICATION_PASSWORD = "Password";
 	/**
@@ -239,13 +239,13 @@ public class Constantes {
 	private static final String USER_AGENT = "NextInpact (Unofficial) v";
 
 	/**
-	 * User agent pour les requêtes réseau.
+	 * User agent pour les RequÃªtes rÃ©seau.
 	 * 
 	 * @param unContext context de l'application
 	 * @return User-Agent
 	 */
 	public static String getUserAgent(final Context unContext) {
-		// Numéro de version de l'application
+		// NumÃ©ro de version de l'application
 		String numVersion = "";
 		try {
 			PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
@@ -256,7 +256,7 @@ public class Constantes {
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.e("Constantes", "Erreur à la résolution du n° de version", e);
+				Log.e("Constantes", "Erreur Ã  la rÃ©solution du nÂ° de version", e);
 			}
 		}
 
@@ -268,8 +268,8 @@ public class Constantes {
 	 * 
 	 * @param unContext context d'application
 	 * @param idOption id de l'option
-	 * @param defautOption id de la valeur par défaut de l'option
-	 * @return l'option demandée
+	 * @param defautOption id de la valeur par dÃ©faut de l'option
+	 * @return l'option demandÃ©e
 	 */
 	public static String getOptionString(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -282,8 +282,8 @@ public class Constantes {
 	 * 
 	 * @param unContext context d'application
 	 * @param idOption id de l'option
-	 * @param defautOption id de la valeur par défaut de l'option
-	 * @return @return l'option demandée
+	 * @param defautOption id de la valeur par dÃ©faut de l'option
+	 * @return l'option demandÃ©e
 	 */
 	public static Boolean getOptionBoolean(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -296,8 +296,8 @@ public class Constantes {
 	 * 
 	 * @param unContext context d'application
 	 * @param idOption id de l'option
-	 * @param defautOption id de la valeur par défaut de l'option
-	 * @return @return l'option demandée
+	 * @param defautOption id de la valeur par dÃ©faut de l'option
+	 * @return l'option demandÃ©e
 	 */
 	public static int getOptionInt(final Context unContext, final int idOption, final int defautOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
@@ -307,11 +307,11 @@ public class Constantes {
 	}
 
 	/**
-	 * Enregistre un boolean dans les préférences.
+	 * Enregistre un boolean dans les prÃ©fÃ©rences.
 	 * 
 	 * @param unContext context d'application
 	 * @param idOption id de l'option
-	 * @param valeurOption valeur à enregistrer
+	 * @param valeurOption valeur Ã  enregistrer
 	 */
 	public static void setOptionBoolean(final Context unContext, final int idOption, final boolean valeurOption) {
 		SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);

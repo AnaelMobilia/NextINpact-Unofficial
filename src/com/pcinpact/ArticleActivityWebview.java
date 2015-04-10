@@ -67,7 +67,7 @@ public class ArticleActivityWebview extends ActionBarActivity {
 		Boolean lienClickable = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionLiensDansArticles,
 				R.bool.defautOptionLiensDansArticles);
 		if (!lienClickable) {
-			// Désactivation du clic
+			// DÃ©sactivation du clic
 			webview.setWebViewClient(new WebViewClient() {
 
 				@Override
@@ -81,28 +81,28 @@ public class ArticleActivityWebview extends ActionBarActivity {
 		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
 		// Gestion du zoom - option utilisateur
-		// taille par défaut
+		// taille par dÃ©faut
 		int tailleDefaut = Integer.valueOf(getResources().getString(R.string.defautOptionZoomTexte));
-		// L'option selectionnée
+		// L'option selectionnÃ©e
 		int tailleUtilisateur = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionZoomTexte,
 				R.string.defautOptionZoomTexte);
 
 		if (tailleUtilisateur != tailleDefaut) {
-			// On applique la taille demandée
+			// On applique la taille demandÃ©e
 			WebSettings webSettings = webview.getSettings();
 			webSettings.setDefaultFontSize(tailleUtilisateur);
 		}
 
-		// Désactivation de la sélection du texte
+		// DÃ©sactivation de la sÃ©lection du texte
 		webview.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
 			public boolean onLongClick(View v) {
-				// Déclaration de l'événement comme étant traité
+				// DÃ©claration de l'Ã©vÃ©nement comme Ã©tant traitÃ©
 				return true;
 			}
 		});
-		// Désactivation du retour vibreur
+		// DÃ©sactivation du retour vibreur
 		webview.setHapticFeedbackEnabled(false);
 
 		// Chargement de la DB
@@ -133,7 +133,7 @@ public class ArticleActivityWebview extends ActionBarActivity {
 		// Get the provider and hold onto it to set/change the share intent.
 		ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-		// Création de mon intent
+		// CrÃ©ation de mon intent
 		Intent monIntent = new Intent(Intent.ACTION_SEND);
 		monIntent.setType("text/plain");
 		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());

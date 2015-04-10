@@ -36,7 +36,7 @@ public class ArticleItemViewHolder implements ItemViewHolder {
 	 */
 	public ImageView imageArticle;
 	/**
-	 * Label abonné.
+	 * Label abonnÃ©.
 	 */
 	public TextView labelAbonne;
 	/**

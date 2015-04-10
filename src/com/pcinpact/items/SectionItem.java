@@ -19,7 +19,7 @@
 package com.pcinpact.items;
 
 /**
- * Objet Section (séparateur date dans la liste d'articles).
+ * Objet Section (sÃ©parateur date dans la liste d'articles).
  * 
  * @author Anael
  *

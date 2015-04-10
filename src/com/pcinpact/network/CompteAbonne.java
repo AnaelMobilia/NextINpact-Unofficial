@@ -42,7 +42,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Connexion au compte abonné et gestion du DL des articles abonnés.
+ * Connexion au compte abonnÃ© et gestion du DL des articles abonnÃ©s.
  * 
  * @author Anael
  *
@@ -53,15 +53,15 @@ public class CompteAbonne {
 	 */
 	private static BasicHttpContext monHTTPContext;
 	/**
-	 * Conteneur à cookies.
+	 * Conteneur Ã  cookies.
 	 */
 	private static BasicCookieStore monCookieStore;
 	/**
-	 * Dernier utilisateur essayé.
+	 * Dernier utilisateur essayÃ©.
 	 */
 	private static String usernameLastTry = "";
 	/**
-	 * Dernier mot de passe essayé.
+	 * Dernier mot de passe essayÃ©.
 	 */
 	private static String passwordLastTry = "";
 	/**
@@ -70,12 +70,12 @@ public class CompteAbonne {
 	private static Boolean isRunning = false;
 
 	/**
-	 * Télécharge un article "Abonné".
+	 * TÃ©lÃ©charge un article "abonnÃ©".
 	 * 
 	 * @param uneURL URL de la ressource
 	 * @param unContext context de l'application
 	 * @param compression faut-il demander au serveur de compresser la ressource ?
-	 * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
+	 * @param uniquementSiConnecte dois-je tÃ©lÃ©charger uniquement si le compte abonnÃ© est connectÃ© ?
 	 * @return code HTML de l'article brut
 	 */
 	public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean compression,
@@ -83,7 +83,7 @@ public class CompteAbonne {
 		// Retour
 		byte[] monRetour;
 
-		// Est-ce déjà en cours d'utilisation ?
+		// Est-ce dÃ©jÃ  en cours d'utilisation ?
 		if (!isRunning) {
 			// Non : Je me lance !
 			isRunning = true;
@@ -96,9 +96,9 @@ public class CompteAbonne {
 						Log.w("compteAbonne", "Attente de la fin d'utilisation pour " + uneURL);
 					}
 
-					// Attente de 0 à 1 seconde...
+					// Attente de 0 Ã  1 seconde...
 					double monCoeff = Math.random();
-					// Evite les réveils trop simultanés (les appels l'étant...)
+					// Evite les rÃ©veils trop simultanÃ©s (les appels l'Ã©tant...)
 					int maDuree = (int) (1000 * monCoeff);
 					Thread.sleep(maDuree);
 				} catch (InterruptedException e) {
@@ -112,44 +112,44 @@ public class CompteAbonne {
 			isRunning = true;
 		}
 
-		// Suis-je connecté ?
+		// Suis-je connectÃ© ?
 		if (estConnecte(unContext)) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.i("compteAbonne", "Déjà connecté => DL authentifié pour " + uneURL);
+				Log.i("compteAbonne", "dÃ©jÃ  connectÃ© => DL authentifiÃ© pour " + uneURL);
 			}
 
-			// Je lance le téléchargement
+			// Je lance le tÃ©lÃ©chargement
 			monRetour = Downloader.download(uneURL, unContext, compression, monHTTPContext);
 		} else {
-			// Non connecté... suis-je connectable ?
+			// Non connectÃ©... suis-je connectable ?
 			// Chargement des identifiants
 			String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
 			String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
 					R.string.defautOptionPassword);
 			Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
-			// Les options sont-elles bien saisies ? Identifiants déjà essayés ?
+			// Les options sont-elles bien saisies ? Identifiants dÃ©jÃ  essayÃ©s ?
 			if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")
 					|| (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
 				// Quid de la demande ?
 				if (uniquementSiConnecte) {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
+						Log.w("compteAbonne", "Non connectable => DL non autorisÃ© (NULL) pour " + uneURL);
 					}
 
 					monRetour = null;
 				} else {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
+						Log.w("compteAbonne", "Non connectable => DL non authentifiÃ© pour " + uneURL);
 					}
 
 					monRetour = Downloader.download(uneURL, unContext, compression);
 				}
 
-				// Information sur l'existance du compte abonné dans les options
+				// Information sur l'existance du compte abonnÃ© dans les options
 				boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
 						R.bool.defautOptionInfoCompteAbonne);
 
@@ -170,7 +170,7 @@ public class CompteAbonne {
 					Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
 				}
 			} else {
-				// Peut-être connectable
+				// Peut-Ãªtre connectable
 				// DEBUG
 				if (Constantes.DEBUG) {
 					Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
@@ -179,22 +179,22 @@ public class CompteAbonne {
 				// Je lance une authentification...
 				connexionAbonne(unContext, usernameOption, passwordOption);
 
-				// Je libère le jeton d'utilisation
+				// Je libÃ¨re le jeton d'utilisation
 				isRunning = false;
 
-				// Je relance la méthode pour avoir un résultat...
+				// Je relance la mÃ©thode pour avoir un rÃ©sultat...
 				monRetour = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
 			}
 		}
 
-		// Je libère le jeton d'utilisation
+		// Je libÃ¨re le jeton d'utilisation
 		isRunning = false;
 
 		return monRetour;
 	}
 
 	/**
-	 * Connexion au compte abonné.
+	 * Connexion au compte abonnÃ©.
 	 * 
 	 * @param unContext context de l'application
 	 * @param username nom d'utilisateur NXI
@@ -205,11 +205,11 @@ public class CompteAbonne {
 		if (monHTTPContext == null) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("compteAbonne", "création du HTTPContext");
+				Log.w("compteAbonne", "crÃ©ation du HTTPContext");
 			}
-			// Création du HTTPContext
+			// CrÃ©ation du HTTPContext
 			monHTTPContext = new BasicHttpContext();
-			// Création du cookieStore
+			// CrÃ©ation du cookieStore
 			monCookieStore = new BasicCookieStore();
 			// On conserve les cookies
 			monHTTPContext.setAttribute(ClientContext.COOKIE_STORE, monCookieStore);
@@ -221,18 +221,18 @@ public class CompteAbonne {
 
 		// Authentification sur NXI
 		try {
-			// Création de la requête
+			// CrÃ©ation de la requÃªte
 			AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
 			HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
 
-			// Paramètres de la requête
+			// ParamÃ¨tres de la requÃªte
 			ArrayList<NameValuePair> mesParametres = new ArrayList<NameValuePair>();
 			mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_USERNAME, username));
 			mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_PASSWORD, password));
 
 			postRequest.setEntity(new UrlEncodedFormEntity(mesParametres));
 
-			// Exécution de la requête
+			// ExÃ©cution de la requÃªte
 			HttpResponse response = client.execute(postRequest, monHTTPContext);
 			int statusCode = response.getStatusLine().getStatusCode();
 			// Fermeture du client
@@ -249,10 +249,10 @@ public class CompteAbonne {
 				if (estConnecte(unContext)) {
 					// DEBUG
 					if (Constantes.DEBUG) {
-						Log.w("compteAbonne", "connexionAbonne : Authentification réussie (cookie présent)");
+						Log.w("compteAbonne", "connexionAbonne : Authentification rÃ©ussie (cookie prÃ©sent)");
 					}
 				} else {
-					// Si non connecté
+					// Si non connectÃ©
 					Handler handler = new Handler(unContext.getMainLooper());
 					handler.post(new Runnable() {
 						@Override
@@ -273,10 +273,10 @@ public class CompteAbonne {
 	}
 
 	/**
-	 * Est-on connecté (vérification du cookie).
+	 * Est-on connectÃ© (vÃ©rification du cookie).
 	 * 
 	 * @param unContext context de l'application
-	 * @return true si compte utilisateur connecté chez NXI
+	 * @return true si compte utilisateur connectÃ© chez NXI
 	 */
 	public static boolean estConnecte(final Context unContext) {
 		boolean monRetour = false;
@@ -284,7 +284,7 @@ public class CompteAbonne {
 		// Ai-je un cookieHolder ?
 		if (monCookieStore != null) {
 			/**
-			 * Vérification des options
+			 * VÃ©rification des options
 			 */
 			// Chargement des identifiants
 			String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
@@ -298,10 +298,10 @@ public class CompteAbonne {
 				monCookieStore.clear();
 			} else {
 				// Si oui, je cherche mon cookie...
-				// Suppression des cookies expirés
+				// Suppression des cookies expirÃ©s
 				monCookieStore.clearExpired(new Date());
 
-				// Ai-je le cookie demandé ?
+				// Ai-je le cookie demandÃ© ?
 				for (Cookie unCookie : monCookieStore.getCookies()) {
 					// Est-le bon cookie ?
 					if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {

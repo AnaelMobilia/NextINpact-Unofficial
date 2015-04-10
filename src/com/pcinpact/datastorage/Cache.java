@@ -37,7 +37,7 @@ import com.pcinpact.items.ArticleItem;
 public class Cache {
 
 	/**
-	 * Nettoie le cache de l'application des articles obsolètes.
+	 * Nettoie le cache de l'application des articles obsolÃ¨tes.
 	 * 
 	 * @param unContext context application
 	 */
@@ -54,7 +54,7 @@ public class Cache {
 			// Connexion sur la BDD
 			DAO monDAO = DAO.getInstance(unContext);
 
-			// Nombre d'articles à conserver
+			// Nombre d'articles Ã  conserver
 			int maLimite = Constantes.getOptionInt(unContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
 
 			// Chargement de tous les articles de la BDD
@@ -64,16 +64,16 @@ public class Cache {
 			// Ai-je plus d'articles que ma limite ?
 			if (nbArticles > maLimite) {
 				/**
-				 * Données à conserver
+				 * DonnÃ©es Ã  conserver
 				 */
-				// Je protége les images présentes dans les articles à conserver
+				// Protection des images prÃ©sentes dans les articles Ã  conserver
 				ArrayList<String> imagesLegit = new ArrayList<String>();
 				for (int i = 0; i < maLimite; i++) {
 					imagesLegit.add(mesArticles.get(i).getImageName());
 				}
 
 				/**
-				 * Données à supprimer
+				 * DonnÃ©es Ã  supprimer
 				 */
 				for (int i = maLimite; i < nbArticles; i++) {
 					ArticleItem article = mesArticles.get(i);
@@ -92,7 +92,7 @@ public class Cache {
 					// Suppression de la date de Refresh des commentaires
 					monDAO.supprimerDateRefresh(article.getId());
 
-					// Suppression de la miniature, uniquement si plus utilisée
+					// Suppression de la miniature, uniquement si plus utilisÃ©e
 					if (!imagesLegit.contains(article.getImageName())) {
 						File monFichier = new File(unContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES,
 								article.getImageName());
@@ -163,16 +163,16 @@ public class Cache {
 	}
 
 	/**
-	 * Efface tous les fichiers d'un répertoire.
+	 * Efface tous les fichiers d'un rÃ©pertoire.
 	 * 
-	 * @param unPath répertoire
+	 * @param unPath rÃ©pertoire
 	 */
 	private static void effacerContenuRepertoire(String unPath) {
 		File[] mesFichiers = new File(unPath).listFiles();
 
 		if (mesFichiers != null) {
 			for (File unFichier : mesFichiers) {
-				// Fichier à effacer
+				// Fichier Ã  effacer
 				unFichier.delete();
 			}
 		}
@@ -190,7 +190,7 @@ public class Cache {
 		String[] savedFiles = unContext.fileList();
 
 		for (String file : savedFiles) {
-			// Article à effacer
+			// Article Ã  effacer
 			unContext.deleteFile(file);
 		}
 	}

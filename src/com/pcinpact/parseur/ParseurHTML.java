@@ -80,12 +80,12 @@ public class ParseurHTML {
 			Element url = unArticle.select("h1 > a[href]").get(0);
 			monArticleItem.setUrl(url.absUrl("href"));
 
-			// Titre de l'article (liÈe ‡ l'URL)
+			// Titre de l'article (li√©e √† l'URL)
 			monArticleItem.setTitre(url.text());
 
 			// Sous titre
 			Element sousTitre = unArticle.select("span[class=soustitre]").get(0);
-			// Je supprime le "- " en dÈbut du sous titre
+			// Je supprime le "- " en d√©but du sous titre
 			String monSousTitre = sousTitre.text().substring(2);
 			monArticleItem.setSousTitre(monSousTitre);
 
@@ -97,7 +97,7 @@ public class ParseurHTML {
 				// Nouveaux commentaires : "172 + 5"
 				String valeur = commentaires.text();
 
-				// RÈcupÈration des ÈlÈments
+				// R√©cup√©ration des √©l√©ments
 				int positionOperateur = valeur.indexOf("+");
 				String membreGauche = valeur.substring(0, positionOperateur).trim();
 				String membreDroit = valeur.substring(positionOperateur + 1).trim();
@@ -113,14 +113,14 @@ public class ParseurHTML {
 				}
 			}
 
-			// Statut abonnÈ
+			// Statut abonn√©
 			Elements badgeAbonne = unArticle.select("img[alt=badge_abonne]");
-			// Ai-je trouvÈ des ÈlÈments ?
+			// Ai-je trouv√© des √©l√©ments ?
 			if (badgeAbonne.size() > 0) {
 				monArticleItem.setAbonne(true);
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("ParseurHTML", "[AbonnÈ] => " + monArticleItem.getTitre());
+					Log.w("ParseurHTML", "[abonn√©] => " + monArticleItem.getTitre());
 				}
 			} else {
 				monArticleItem.setAbonne(false);
@@ -154,23 +154,23 @@ public class ParseurHTML {
 		int unID = Integer.valueOf(articleID.attr("data-id"));
 		monArticleItem.setId(unID);
 
-		// Suppression de l'icÙne de catÈgorie
+		// Suppression de l'ic√¥ne de cat√©gorie
 		try {
 			Element iconeCat = pageNXI.select("div[class=actu_title_icons_collumn]").get(0);
 			iconeCat.remove();
 		} catch (Exception e) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.e("ParseurHTML", "Suppression icÙne catÈgorie", e);
+				Log.e("ParseurHTML", "Suppression ic√¥ne cat√©gorie", e);
 			}
 		}
 
 		// Suppression des liens sur les images (zoom, avec dl)
 		Elements lesImagesLiens = lArticle.select("a[href] > img");
 
-		// Set assure l'unicitÈ de la balise (ex : <a...> <img... /> <img... /> </a>)
+		// Set assure l'unicit√© de la balise (ex : <a...> <img... /> <img... /> </a>)
 		HashSet<Element> baliseA = new HashSet<Element>();
-		// RÈcupÈration de toutes les balises <a...> avant <img...>
+		// R√©cup√©ration de toutes les balises <a...> avant <img...>
 		for (Element uneImage : lesImagesLiens) {
 			// J'enregistre le lien <a...>
 			baliseA.add(uneImage.parent());
@@ -179,7 +179,7 @@ public class ParseurHTML {
 		for (Element uneBalise : baliseA) {
 			// On prend chacun de ses enfants
 			for (Element unEnfant : uneBalise.children()) {
-				// Et on l'injecte aprËs la balise <a...>
+				// Et on l'injecte apr√®s la balise <a...>
 				uneBalise.after(unEnfant);
 			}
 			// On supprime la balise <a...>
@@ -188,7 +188,7 @@ public class ParseurHTML {
 
 		// Gestion des iframe
 		Elements lesIframes = lArticle.select("iframe");
-		// GÈnÈralisation de l'URL en dehors du scheme
+		// g√©n√©ralisation de l'URL en dehors du scheme
 		String[] schemes = { "https://", "http://", "//" };
 		// Pour chaque iframe
 		for (Element uneIframe : lesIframes) {
@@ -206,18 +206,18 @@ public class ParseurHTML {
 				}
 			}
 
-			// ID de la vidÈo
+			// ID de la vid√©o
 			String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
 			// Ma substitution
 			Element monRemplacement = new Element(Tag.valueOf("div"), "");
 
-			// Gestion des lecteurs vidÈos
+			// Gestion des lecteurs vid√©os
 			if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
 				/**
 				 * Liste de lecture Youtube
 				 */
-				// Recalcul de l'ID de la vidÈo (cas particulier)
+				// Recalcul de l'ID de la vid√©o (cas particulier)
 				idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
 				monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
 						+ "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
@@ -275,14 +275,14 @@ public class ParseurHTML {
 						+ "\"><img src=\"file:///android_res/drawable/iframe_canalplus.png\" /></a>");
 			} else {
 				/**
-				 * DÈchet (cath all)
+				 * D√©chet (cath all)
 				 */
 				monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
 						+ "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
 
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.e("ParseurHTML", "iframe non gÈrÈe dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+					Log.e("ParseurHTML", "iframe non g√©r√©e dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
 				}
 			}
 
@@ -313,7 +313,7 @@ public class ParseurHTML {
 	}
 
 	/**
-	 * Nombre de commentaires d'un article ‡ partir d'une page de commentaires.
+	 * Nombre de commentaires d'un article √† partir d'une page de commentaires.
 	 * 
 	 * @param unContenu contenu HTML brut
 	 * @param urlPage URL de la page
@@ -325,7 +325,7 @@ public class ParseurHTML {
 		// Nombre de commentaires
 		Element elementNbComms = pageNXI.select("span[class=actu_separator_comms]").get(0);
 
-		// ReprÈsentation textuelle "nn commentaires"
+		// Repr√©sentation textuelle "nn commentaires"
 		String stringNbComms = elementNbComms.text();
 
 		// Isolation du chiffre uniquement (avant l'espace)
@@ -356,7 +356,7 @@ public class ParseurHTML {
 		// Lancement du parseur sur la page
 		Document pageNXI = Jsoup.parse(unContenu, urlPage);
 
-		// ID de l'article concernÈ
+		// ID de l'article concern√©
 		Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
 		int idArticle = Integer.valueOf(refArticle.attr("data-relnews"));
 
@@ -366,7 +366,7 @@ public class ParseurHTML {
 
 		// Contenu
 		// Supprimer les liens internes (<a> => <div>)
-		// "En rÈponse ‡ ...", "... ‡ Ècrit"
+		// "En r√©ponse √† ...", "... √† √©crit"
 		Elements lesLiensInternes = lesCommentaires.select("a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
 		lesLiensInternes.tagName("div");
 
@@ -401,7 +401,7 @@ public class ParseurHTML {
 
 			// Id du commentaire
 			Element monID = unCommentaire.select("span[class=actu_comm_num]").get(0);
-			// Le premier caractËre est un "#"
+			// Le premier caract√®re est un "#"
 			String lID = monID.text().substring(1);
 			monCommentaireItem.setId(Integer.valueOf(lID));
 
@@ -427,7 +427,7 @@ public class ParseurHTML {
 		DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
 		long laDateTS = 0;
 		try {
-			// RÈcupÈration du timestamp
+			// R√©cup√©ration du timestamp
 			laDateTS = dfm.parse(uneDate).getTime();
 		} catch (ParseException e) {
 			if (Constantes.DEBUG) {

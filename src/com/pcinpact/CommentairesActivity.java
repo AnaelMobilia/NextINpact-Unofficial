@@ -67,11 +67,11 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	private ItemsAdapter monItemsAdapter;
 	/**
-	 * AccËs ‡ la BDD.
+	 * acc√®s √† la BDD.
 	 */
 	private DAO monDAO;
 	/**
-	 * TÈlÈchargement en cours ?
+	 * t√©l√©chargement en cours ?
 	 */
 	private Boolean isLoading = false;
 	/**
@@ -79,7 +79,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	private Boolean isFinCommentaires = false;
 	/**
-	 * TÈlÈchargement de TOUS les commentaires ?
+	 * t√©l√©chargement de TOUS les commentaires ?
 	 */
 	private Boolean isChargementTotal = false;
 	/**
@@ -87,11 +87,11 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	 */
 	private Menu monMenu;
 	/**
-	 * Bouton pour tÈlÈcharger 10 commentaires en plus.
+	 * Bouton pour t√©l√©charger 10 commentaires en plus.
 	 */
 	private Button buttonDl10Commentaires;
 	/**
-	 * TextView "DerniËre synchro...".
+	 * TextView "Derni√®re synchro...".
 	 */
 	private TextView headerTextView;
 
@@ -111,30 +111,30 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				// TÈlÈchargement de 10 commentaires en plus
+				// t√©l√©chargement de 10 commentaires en plus
 				refreshListeCommentaires();
 			}
 		});
 		buttonDl10Commentaires.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
 		monListView.addFooterView(buttonDl10Commentaires);
 
-		// Adapter pour l'affichage des donnÈes
+		// Adapter pour l'affichage des donn√©es
 		monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
-		// ID de l'article concernÈ
+		// ID de l'article concern√©
 		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
 		// J'active la BDD
 		monDAO = DAO.getInstance(getApplicationContext());
 		// Je charge mes articles
 		mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
-		// Mise ‡ jour de l'affichage
+		// M√†J de l'affichage
 		monItemsAdapter.updateListeItems(mesCommentaires);
-		// Je fait remarquer que le contenu ‡ changÈ
+		// Je fait remarquer que le contenu √† chang√©
 		monItemsAdapter.notifyDataSetChanged();
 
-		// SystËme de rafraichissement de la vue
+		// Syst√®me de rafraichissement de la vue
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -144,15 +144,15 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// J'affiche le dernier commentaire en cache ?
 				if ((firstVisibleItem + visibleItemCount) >= (totalItemCount - 1)) {
-					// (# du 1er commentaire affichÈ + nb d'items affichÈs) == (nb total d'item dan la liste - [bouton footer])
+					// (# du 1er commentaire affich√© + nb d'items affich√©s) == (nb total d'item dan la liste - [bouton footer])
 
-					// TÈlÈchargement automatique en continu des commentaires ?
+					// t√©l√©chargement automatique en continu des commentaires ?
 					Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
 							R.string.idOptionCommentairesTelechargementContinu,
 							R.bool.defautOptionCommentairesTelechargementContinu);
-					// Si l'utilisateur le veut && je ne tÈlÈcharge pas dÈj‡ && la fin des commentaires n'est pas atteinte
+					// Si l'utilisateur le veut && je ne t√©l√©charge pas d√©j√† && la fin des commentaires n'est pas atteinte
 					if (telecharger && !isLoading && !isFinCommentaires) {
-						// TÈlÈchargement de 10 commentaires en plus
+						// t√©l√©chargement de 10 commentaires en plus
 						refreshListeCommentaires();
 
 						// DEBUG
@@ -165,7 +165,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			}
 		});
 
-		// M‡j de la date de dernier refresh
+		// M√†J de la date de dernier refresh
 		majDateRefresh();
 	}
 
@@ -178,27 +178,27 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			Log.i("CommentairesActivity", "lancement refreshListreCommentaires");
 		}
 
-		// M‡J des graphismes
+		// M√†J des graphismes
 		lancerAnimationTelechargement();
 
 		int idDernierCommentaire = 0;
-		// Si j'ai des commentaires, je rÈcupËre l'ID du dernier dans la liste
+		// Si j'ai des commentaires, je r√©cup√®re l'ID du dernier dans la liste
 		if (!mesCommentaires.isEmpty()) {
 			CommentaireItem lastCommentaire = mesCommentaires.get(mesCommentaires.size() - 1);
 			idDernierCommentaire = lastCommentaire.getId();
 		}
 
-		// Le cast en int supprime la partie aprËs la virgule
+		// Le cast en int supprime la partie apr√®s la virgule
 		int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
-		// CrÈation de l'URL
+		// Cr√©ation de l'URL
 		String monURL = Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID
 				+ "=" + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
 
-		// Ma t‚che de DL
+		// Ma t√¢che de DL
 		AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
 				getApplicationContext());
-		// ParallËlisation des tÈlÈchargements pour l'ensemble de l'application
+		// Parall√©lisation des t√©l√©chargements pour l'ensemble de l'application
 		if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 			monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -215,9 +215,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.commentaires_activity_actions, menu);
 
-		// Ticket #86 : un chargement automatique a-t-il lieu (sera lancÈ avant de crÈer le menu)
+		// Ticket #86 : un chargement automatique a-t-il lieu (sera lanc√© avant de cr√©er le menu)
 		if (isLoading) {
-			// Je fait coincider les animations avec l'Ètat rÈel
+			// Je fait coincider les animations avec l'√©tat r√©el
 			lancerAnimationTelechargement();
 		}
 
@@ -230,7 +230,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 		if (pItem.getItemId() == R.id.action_refresh) {
 			// Retour GUI
 			lancerAnimationTelechargement();
-			// TÈlÈchargement de TOUS les commentaires
+			// t√©l√©chargement de TOUS les commentaires
 			isChargementTotal = true;
 
 			// Lancement du premier chargement
@@ -242,48 +242,48 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * Lance les animations indiquant un tÈlÈchargement.
+	 * Lance les animations indiquant un t√©l√©chargement.
 	 */
 	private void lancerAnimationTelechargement() {
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("CommentairesActivity", "lancerAnimationTelechargement");
 		}
-		// J'enregistre l'Ètat
+		// J'enregistre l'√©tat
 		isLoading = true;
 
 		// Lance la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(true);
 
-		// Supprime l'icÙne refresh dans le header
+		// Supprime l'ic√¥ne refresh dans le header
 		if (monMenu != null) {
 			monMenu.findItem(R.id.action_refresh).setVisible(false);
 		}
 
-		// M‡J du bouton du footer
+		// M√†J du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
 	}
 
 	/**
-	 * ArrÍte les animations indiquant un tÈlÈchargement.
+	 * Arr√™te les animations indiquant un t√©l√©chargement.
 	 */
 	private void arreterAnimationTelechargement() {
 		// DEBUG
 		if (Constantes.DEBUG) {
 			Log.i("CommentairesActivity", "arreterAnimationTelechargement");
 		}
-		// J'enregistre l'Ètat
+		// J'enregistre l'√©tat
 		isLoading = false;
 
-		// ArrÍt de la rotation du logo dans le header
+		// Arr√™t de la rotation du logo dans le header
 		setSupportProgressBarIndeterminateVisibility(false);
 
-		// Affiche l'icÙne refresh dans le header
+		// Affiche l'ic√¥ne refresh dans le header
 		if (monMenu != null) {
 			monMenu.findItem(R.id.action_refresh).setVisible(true);
 		}
 
-		// M‡J du bouton du footer
+		// M√†J du bouton du footer
 		buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
 	}
 
@@ -296,7 +296,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
 			// Chargement de TOUS les commentaires ?
 			if (isChargementTotal) {
-				// On enlËve le marqueur
+				// On enl√®ve le marqueur
 				isChargementTotal = false;
 				// Suppression de l'animation GUI restante
 				arreterAnimationTelechargement();
@@ -306,33 +306,33 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 				Log.i("CommentairesActivity", "fin des commentaires");
 			}
 		} else {
-			// J'enregistre en mÈmoire les nouveaux commentaires
+			// J'enregistre en m√©moire les nouveaux commentaires
 			for (Item unItem : desItems) {
-				// Je l'enregistre en mÈmoire
+				// Je l'enregistre en m√©moire
 				mesCommentaires.add((CommentaireItem) unItem);
 			}
 			// Tri des commentaires par ID
 			Collections.sort(mesCommentaires);
 
-			// Je met ‡ jour les donnÈes
+			// Je met √† jour les donn√©es
 			monItemsAdapter.updateListeItems(mesCommentaires);
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();
 
-			// Je M‡J la date du dernier refresh
+			// Je M√†J la date du dernier refresh
 			majDateRefresh();
 
-			// Je note que je ne suis pas ‡ la fin des commentaires
+			// Je note que je ne suis pas √† la fin des commentaires
 			isFinCommentaires = false;
 
 			// Chargement de TOUS les commentaires ?
 			if (isChargementTotal) {
-				// Lancement du prochain tÈlÈchargement...
+				// Lancement du prochain t√©l√©chargement...
 				refreshListeCommentaires();
 			}
 		}
 
-		// ArrÍt des gris-gris en GUI
+		// Arr√™t des gris-gris en GUI
 		arreterAnimationTelechargement();
 	}
 
@@ -342,7 +342,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 	}
 
 	/**
-	 * M‡J de la date de derniËre mise ‡ jour.
+	 * M√†J de la date de derni√®re M√†J.
 	 */
 	private void majDateRefresh() {
 		long dernierRefresh = monDAO.chargerDateRefresh(articleID);
@@ -352,7 +352,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 			headerTextView.setText(getString(R.string.lastUpdateNever));
 
 		} else {
-			// Une m‡j ‡ dÈj‡ ÈtÈ faite
+			// Une M√†J √† d√©j√† √©t√© faite
 			headerTextView.setText(getString(R.string.lastUpdate)
 					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}

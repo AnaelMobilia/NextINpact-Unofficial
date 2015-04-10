@@ -27,7 +27,7 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 
 /**
- * Vérifie que le clic sur un lien saura bien être géré (evitable crash car pas d'application capable...).
+ * VÃ©rifie que le clic sur un lien saura bien Ãªtre gÃ©rÃ© (Ã©vite crash car pas d'application capable...).
  * 
  * @author Anael
  *

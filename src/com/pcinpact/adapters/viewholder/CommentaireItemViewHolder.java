@@ -34,7 +34,7 @@ public class CommentaireItemViewHolder implements ItemViewHolder {
 	 */
 	public TextView auteurDateCommentaire;
 	/**
-	 * Numéro.
+	 * NumÃ©ro.
 	 */
 	public TextView numeroCommentaire;
 	/**

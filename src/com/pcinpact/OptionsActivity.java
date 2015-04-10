@@ -30,7 +30,7 @@ import android.preference.PreferenceActivity;
 public class OptionsActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
+		// Je lance l'activitÃ©
 		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.xml.options);

@@ -46,7 +46,7 @@ public class ArticleItem implements Item {
 	 */
 	private String sousTitre = "";
 	/**
-	 * Est-ce un article abonnÈ ?
+	 * Est-ce un article abonn√© ?
 	 */
 	private boolean isAbonne;
 	/**
@@ -70,11 +70,11 @@ public class ArticleItem implements Item {
 	 */
 	private long timeStampPublication;
 	/**
-	 * L'article est-il dÈj‡ lu ?
+	 * L'article est-il d√©j√† lu ?
 	 */
 	private boolean isLu;
 	/**
-	 * Le contenu abonnÈ a-t-il ÈtÈ tÈlÈchargÈ ?
+	 * Le contenu abonn√© a-t-il √©t√© t√©l√©charg√© ?
 	 */
 	private boolean isDlContenuAbonne;
 
@@ -90,7 +90,7 @@ public class ArticleItem implements Item {
 	 */
 	public String getHeureMinutePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
-		// Format souhaitÈ
+		// Format souhait√©
 		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Locale.getDefault());
 
 		return dfm.format(maDate);
@@ -103,11 +103,11 @@ public class ArticleItem implements Item {
 	 */
 	public String getDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
-		// Format souhaitÈ
+		// Format souhait√©
 		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
 		String laDate = dfm.format(maDate);
 
-		// PremiËre lettre en majuscule
+		// Premi√®re lettre en majuscule
 		laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Locale.getDefault()) + laDate.substring(1);
 
 		return laDate;

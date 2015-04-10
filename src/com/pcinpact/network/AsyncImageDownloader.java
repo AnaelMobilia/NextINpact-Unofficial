@@ -31,7 +31,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Téléchargement asynchrone d'image.
+ * tÃ©lÃ©chargement asynchrone d'image.
  * 
  * @author Anael
  *
@@ -42,7 +42,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	 */
 	private Context monContext;
 	/**
-	 * Parent qui sera rappelé à la fin.
+	 * Parent qui sera rappelÃ© Ã  la fin.
 	 */
 	private RefreshDisplayInterface monParent;
 	/**
@@ -55,16 +55,16 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 	private int typeImage;
 
 	/**
-	 * DL sans gestion du statu abonné.
+	 * DL sans gestion du statu abonnÃ©.
 	 * 
 	 * @param unContext context de l'application
-	 * @param parent parent à callback à la fin
+	 * @param parent parent Ã  callback Ã  la fin
 	 * @param unType type de la ressource (Cf Constantes.TYPE_)
 	 * @param uneURL URL de la ressource
 	 */
 	public AsyncImageDownloader(final Context unContext, final RefreshDisplayInterface parent, final int unType,
 			final String uneURL) {
-		// Mappage des attributs de cette requête
+		// Mappage des attributs de cette RequÃªte
 		monContext = unContext.getApplicationContext();
 		monParent = parent;
 		urlImage = uneURL;
@@ -81,12 +81,12 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 			// L'utilisateur demande-t-il un debug ?
 			Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
-			// Je récupère un byte[] contenant l'image
+			// Je rÃ©cupÃ¨re un byte[] contenant l'image
 			byte[] datas = Downloader.download(urlImage, monContext, Constantes.COMPRESSION_CONTENU_IMAGES);
 
-			// Vérifie que j'ai bien un retour (vs erreur DL)
+			// VÃ©rifie que j'ai bien un retour (vs erreur DL)
 			if (datas != null) {
-				// Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
+				// Calcul du nom de l'image (tout ce qui est aprÃ¨s le dernier "/", et avant un Ã©ventuel "?" ou "#")
 				String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
 				File monFichier = null;
@@ -102,23 +102,23 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 						break;
 					default:
 						if (Constantes.DEBUG) {
-							Log.e("AsyncImageDownloader", "Type Image incohérent : " + typeImage + " - URL : " + urlImage);
+							Log.e("AsyncImageDownloader", "Type Image incohÃ©rent : " + typeImage + " - URL : " + urlImage);
 						}
 						break;
 				}
 
-				// Ouverture d'un fichier en écrasement
+				// Ouverture d'un fichier en Ã©crasement
 				FileOutputStream monFOS = null;
 				try {
 
-					// Gestion de la mise à jour de l'application depuis une ancienne version
+					// Gestion de la MÃ J de l'application depuis une ancienne version
 					try {
 						monFOS = new FileOutputStream(monFichier, false);
 					} catch (FileNotFoundException e) {
-						// Création du répertoire...
+						// CrÃ©ation du rÃ©pertoire...
 						File leParent = new File(monFichier.getParent());
 						leParent.mkdirs();
-						// On retente la même opération
+						// On retente la mÃªme opÃ©ration
 						monFOS = new FileOutputStream(monFichier, false);
 					}
 
@@ -134,7 +134,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 					}
 					// Retour utilisateur ?
 					if (debug) {
-						Toast monToast = Toast.makeText(monContext, "[AsyncImageDownloader] Erreur à l'enregistrement de "
+						Toast monToast = Toast.makeText(monContext, "[AsyncImageDownloader] Erreur Ã  l'enregistrement de "
 								+ urlImage + " => " + e.getCause(), Toast.LENGTH_LONG);
 						monToast.show();
 					}

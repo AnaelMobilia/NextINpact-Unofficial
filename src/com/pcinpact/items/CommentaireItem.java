@@ -59,13 +59,13 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 	}
 
 	/**
-	 * Date de publication formatée.
+	 * Date de publication formatÃ©e.
 	 * 
 	 * @return date de publication
 	 */
 	public String getFullDatePublication() {
 		Date maDate = new Date(this.getTimeStampPublication());
-		// Format souhaité
+		// Format souhaitÃ©
 		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Locale.getDefault());
 
 		return dfm.format(maDate);

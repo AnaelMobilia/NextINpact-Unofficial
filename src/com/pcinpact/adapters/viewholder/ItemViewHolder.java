@@ -21,7 +21,7 @@ package com.pcinpact.adapters.viewholder;
 import com.pcinpact.items.Item;
 
 /**
- * Objet générique ViewHolder.
+ * Objet gÃ©nÃ©rique ViewHolder.
  * 
  * @author Anael
  *

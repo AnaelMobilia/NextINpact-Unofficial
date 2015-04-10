@@ -63,13 +63,13 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		setContentView(R.layout.article);
 		setSupportProgressBarIndeterminateVisibility(false);
 
-		// ID de l'article concerné
+		// ID de l'article concernÃ©
 		int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 		
 		// Liste des commentaires
 		ListView monListView = (ListView) this.findViewById(R.id.contenuArticle);
 
-		// Adapter pour l'affichage des données
+		// Adapter pour l'affichage des donnÃ©es
 		monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
 		monListView.setAdapter(monItemsAdapter);
 
@@ -91,7 +91,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		ContenuArticleItem toto = new ContenuArticleItem();
 		toto.setContenu(monArticle.getContenu());
 		monAR.add(toto);
-		// Mise à jour de l'affichage
+		// MÃ J de l'affichage
 		monItemsAdapter.updateListeItems(monAR);
 	}
 
@@ -106,7 +106,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 		// Get the provider and hold onto it to set/change the share intent.
 		ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-		// Création de mon intent
+		// CrÃ©ation de mon intent
 		Intent monIntent = new Intent(Intent.ACTION_SEND);
 		monIntent.setType("text/plain");
 		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());

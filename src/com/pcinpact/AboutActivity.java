@@ -32,12 +32,12 @@ public class AboutActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
+		// Je lance l'activitÃ©
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.about);
 
-		// Affichage du numéro de version
+		// Affichage du numÃ©ro de version
 		Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
 				Toast.LENGTH_LONG);
 		monToast.show();

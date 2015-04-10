@@ -37,7 +37,7 @@ public class DebugActivity extends ActionBarActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
+		// Je lance l'activitÃ©
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.debug);
@@ -52,7 +52,7 @@ public class DebugActivity extends ActionBarActivity {
 				// Effacement du cache
 				Cache.effacerCache(getApplicationContext());
 
-				// Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
+				// Notification Ã  ListeArticlesActivity (modification d'une fausse option, suivie par l'activitÃ©)
 				Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, R.bool.defautOptionDebugEffacerCache);
 				Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 				

@@ -95,7 +95,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	private SwipeRefreshLayout monSwipeRefreshLayout;
 	/**
-	 * TextView "Dernière synchro...".
+	 * TextView "DerniÃ¨re synchro...".
 	 */
 	private TextView headerTextView;
 	/**
@@ -109,9 +109,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		// On définit la vue
+		// On dÃ©finit la vue
 		setContentView(R.layout.liste_articles);
-		// On récupère les éléments GUI
+		// On rÃ©cupÃ¨re les Ã©lÃ©ments GUI
 		monListView = (ListView) findViewById(R.id.listeArticles);
 		monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 		headerTextView = (TextView) findViewById(R.id.header_text);
@@ -131,7 +131,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 		});
 
-		// On active le SwipeRefreshLayout uniquement si on est en haut de la listview
+		// On active le SwipeRefreshLayout ssi on est en haut de la listview
 		monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -157,18 +157,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 		// J'active la BDD
 		monDAO = DAO.getInstance(getApplicationContext());
-		// Chargement des articles & MàJ de l'affichage
+		// Chargement des articles & MÃ J de l'affichage
 		monItemsAdapter.updateListeItems(prepareAffichage());
 
 		// Est-ce la premiere utilisation de l'application ?
 		Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
 				R.string.idOptionInstallationApplication, R.bool.defautOptionInstallationApplication);
-		// Si première utilisation : on affiche un disclaimer
+		// Si premiÃ¨re utilisation : on affiche un disclaimer
 		if (premiereUtilisation) {
 			// Effacement du cache de l'application v < 1.8.0
 			Cache.effacerCacheV180(getApplicationContext());
 
-			// Lancement d'un téléchargement des articles
+			// Lancement d'un tÃ©lÃ©chargement des articles
 			telechargeListeArticles();
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -179,7 +179,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Bouton d'action
 			builder.setCancelable(false);
 			builder.setPositiveButton("Ok", null);
-			// On crée & affiche
+			// On crÃ©e & affiche
 			builder.create().show();
 
 			// Enregistrement de l'affichage
@@ -227,7 +227,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				}
 			}
 		};
-		// Attachement du superviseur aux préférences
+		// Attachement du superviseur aux prÃ©fÃ©rences
 		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
 				listenerOptions);
 
@@ -235,7 +235,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Je garde le menu pour pouvoir l'animer après
+		// Je garde le menu pour pouvoir l'animer aprÃ¨s
 		monMenu = menu;
 
 		// Je charge mon menu dans l'actionBar
@@ -259,9 +259,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			inflater.inflate(R.menu.liste_articles_activity_actions, monMenu);
 		}
 
-		// Je lance l'animation si un DL est déjà en cours
+		// Je lance l'animation si un DL est dÃ©jÃ  en cours
 		if (dlInProgress != 0) {
-			// Hack : il n'y avait pas d'accès à la GUI sur onCreate
+			// Hack : il n'y avait pas d'accÃ¨s Ã  la GUI sur onCreate
 			dlInProgress--;
 			nouveauChargementGUI();
 		}
@@ -274,12 +274,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// Récupère l'article en question
+		// rÃ©cupÃ¨re l'article en question
 		ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
 		// Marque l'article comme lu
 		monArticle.setLu(true);
-		// Mise à jour graphique
+		// MÃ J graphique
 		monItemsAdapter.notifyDataSetChanged();
 
 		// Lance l'ouverture de l'article
@@ -287,12 +287,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		monIntent.putExtra("ARTICLE_ID", monArticle.getId());
 		startActivity(monIntent);
 
-		// Mise à jour en DB
+		// MÃ J en DB
 		monDAO.marquerArticleLu(monArticle);
 	}
 
 	/**
-	 * Ouverture du menu de l'action bar à l'utilisation du bouton menu.
+	 * Ouverture du menu de l'actionbar Ã  l'utilisation du bouton menu.
 	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -321,7 +321,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gestion des clic dans le menu d'options de l'activité.
+	 * Gestion des clic dans le menu d'options de l'activitÃ©.
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem pItem) {
@@ -333,7 +333,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 				// Menu Options
 			case R.id.action_settings:
-				// Je lance l'activité options
+				// Je lance l'activitÃ© options
 				Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
 				startActivity(intentOptions);
 				return true;
@@ -356,11 +356,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Arrêt de l'activité.
+	 * ArrÃªt de l'activitÃ©.
 	 */
 	@Override
 	protected void onDestroy() {
-		// Détachement du listener pour la taille des textes
+		// DÃ©tachement du listener pour la taille des textes
 		PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
 				listenerOptions);
 
@@ -371,7 +371,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Lance le téléchargement de la liste des articles.
+	 * Lance le tÃ©lÃ©chargement de la liste des articles.
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles() {
@@ -380,9 +380,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			Log.i("ListeArticlesActivity", "telechargeListeArticles()");
 		}
 
-		// Uniquement si on est pas déjà en train de faire un refresh...
+		// Uniquement si on est pas dÃ©jÃ  en train de faire un refresh...
 		if (dlInProgress == 0) {
-			// GUI : activité en cours...
+			// GUI : activitÃ© en cours...
 			nouveauChargementGUI();
 
 			/**
@@ -391,25 +391,25 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			Cache.nettoyerCache(getApplicationContext());
 
 			/**
-			 * Téléchargement des articles dont le contenu n'avait pas été téléchargé
+			 * TÃ©lÃ©chargement des articles dont le contenu n'avait pas Ã©tÃ© tÃ©lÃ©chargÃ©
 			 */
 			telechargeListeArticles(monDAO.chargerArticlesATelecharger());
 
 			/**
-			 * Téléchargement des pages de liste d'articles
+			 * tÃ©lÃ©chargement des pages de liste d'articles
 			 */
 			int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
 					R.string.defautOptionNbArticles);
 			int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
-			// Téléchargement de chaque page...
+			// tÃ©lÃ©chargement de chaque page...
 			for (int numPage = 1; numPage <= nbPages; numPage++) {
 				// Le retour en GUI
 				nouveauChargementGUI();
 
-				// Ma tâche de DL
+				// Ma tÃ¢che de DL
 				AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
 						Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO, getApplicationContext());
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				// ParallÃ©lisation des tÃ©lÃ©chargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
@@ -418,7 +418,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 
 			/**
-			 * Téléchargement des miniatures manquantes
+			 * tÃ©lÃ©chargement des miniatures manquantes
 			 */
 			// Les miniatures que je devrais avoir
 			HashMap<String, String> miniaturesItem = new HashMap<>();
@@ -429,11 +429,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Les miniatures que j'ai
 			String[] miniaturesFS = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
-			// Ssi j'ai déjà des miniatures...
+			// Ssi j'ai dÃ©jÃ  des miniatures...
 			if (miniaturesFS != null) {
 				// Pour chaque miniature que j'ai...
 				for (String uneMiniature : miniaturesFS) {
-					// Si elle est aussi dans la liste des miniatures à avoir
+					// Si elle est aussi dans la liste des miniatures Ã  avoir
 					if (miniaturesItem.containsKey(uneMiniature)) {
 						// Je l'efface
 						miniaturesItem.remove(uneMiniature);
@@ -443,10 +443,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 			// Miniatures restantes == miniatures manquantes
 			for (String uneMiniature : miniaturesItem.values()) {
-				// Je lance le téléchargement
+				// Je lance le tÃ©lÃ©chargement
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
 						Constantes.IMAGE_MINIATURE_ARTICLE, uneMiniature);
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				// ParallÃ©lisation des tÃ©lÃ©chargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
@@ -455,45 +455,45 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 				nouveauChargementGUI();
 			}
 
-			// GUI : fin de l'activité en cours...
+			// GUI : fin de l'activitÃ© en cours...
 			finChargementGUI();
 		}
 	}
 
 	/**
-	 * Lance le téléchargement des articles.
+	 * Lance le tÃ©lÃ©chargement des articles.
 	 * 
-	 * @param desItems liste d'articles à télécharger
+	 * @param desItems liste d'articles Ã  tÃ©lÃ©charger
 	 */
 	@SuppressLint("NewApi")
 	private void telechargeListeArticles(final ArrayList<? extends Item> desItems) {
 		for (Item unItem : desItems) {
-			// Tâche de DL HTML
+			// TÃ¢che de DL HTML
 			AsyncHTMLDownloader monAHD;
 			// DL de l'image d'illustration ?
 			boolean dlIllustration = true;
 
-			// Est-ce un article abonné ?
+			// Est-ce un article abonnÃ© ?
 			if (((ArticleItem) unItem).isAbonne()) {
 				boolean isConnecteRequis = false;
 
-				// Ai-je déjà la version publique de l'article ?
+				// Ai-je dÃ©jÃ  la version publique de l'article ?
 				if (!((ArticleItem) unItem).getContenu().equals("")) {
-					// Je requiert d'être connecté (sinon le DL ne sert à rien)
+					// Je requiert d'Ãªtre connectÃ© (sinon le DL ne sert Ã  rien)
 					isConnecteRequis = true;
 					// Je ne veux pas DL l'image de l'article
 					dlIllustration = false;
 				}
-				// Téléchargement de la ressource
+				// tÃ©lÃ©chargement de la ressource
 				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
 						getApplicationContext(), true, isConnecteRequis);
 			} else {
-				// Téléchargement de la ressource
+				// tÃ©lÃ©chargement de la ressource
 				monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
 						getApplicationContext());
 			}
 
-			// Parallèlisation des téléchargements pour l'ensemble de l'application
+			// ParallÃ©lisation des tÃ©lÃ©chargements pour l'ensemble de l'application
 			if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 				monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			} else {
@@ -501,12 +501,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			}
 			nouveauChargementGUI();
 
-			// Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
+			// Pas de DL des miniatures pour les articles abonnÃ©s dont je tente de rÃ©cupÃ©rer le contenu
 			if (dlIllustration) {
-				// Je lance le téléchargement de sa miniature
+				// Je lance le tÃ©lÃ©chargement de sa miniature
 				AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
 						Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				// ParallÃ©lisation des tÃ©lÃ©chargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
 					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
@@ -519,24 +519,24 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
 	@Override
 	public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
-		// Si c'est un refresh général
+		// Si c'est un refresh gÃ©nÃ©ral
 		if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
-			// Le asyncDL ne me retourne que des articles non présents en DB => à DL
+			// Le asyncDL ne me retourne que des articles non prÃ©sents en BDD => Ã  DL
 			telechargeListeArticles(desItems);
 		}
 
-		// gestion du téléchargement GUI
+		// gestion du tÃ©lÃ©chargement GUI
 		finChargementGUI();
 	}
 
 	@Override
 	public void downloadImageFini(final String uneURL) {
-		// gestion du téléchargement GUI
+		// gestion du tÃ©lÃ©chargement GUI
 		finChargementGUI();
 	}
 
 	/**
-	 * Fournit une liste d'articles triés par date + sections.
+	 * Fournit une liste d'articles triÃ©s par date + sections.
 	 * 
 	 * @return Liste d'articles
 	 */
@@ -544,16 +544,16 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 		ArrayList<Item> monRetour = new ArrayList<Item>();
 		String jourActuel = "";
 
-		// Nombre d'articles à afficher
+		// Nombre d'articles Ã  afficher
 		int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
 				R.string.defautOptionNbArticles);
-		// Chargement des articles depuis la BDD (trié, limité)
+		// Chargement des articles depuis la BDD (triÃ©, limitÃ©)
 		mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
 
 		for (ArticleItem article : mesArticles) {
-			// Si ce n'est pas la même journée que l'article précédent
+			// Si ce n'est pas la mÃªme journÃ©e que l'article prÃ©cÃ©dent
 			if (!article.getDatePublication().equals(jourActuel)) {
-				// Je met à jour ma date
+				// Je met Ã  jour ma date
 				jourActuel = article.getDatePublication();
 				// J'ajoute un sectionItem
 				monRetour.add(new SectionItem(jourActuel));
@@ -563,14 +563,14 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			monRetour.add(article);
 		}
 
-		// Mise à jour de la date de dernier refresh
+		// MÃ J de la date de dernier refresh
 		long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
 
 		if (dernierRefresh == 0) {
 			// Jamais synchro...
 			headerTextView.setText(getString(R.string.lastUpdateNever));
 		} else {
-			// Une màj à déjà été faite
+			// Une MÃ J Ã  dÃ©jÃ  Ã©tÃ© faite
 			headerTextView.setText(getString(R.string.lastUpdate)
 					+ new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
 		}
@@ -579,7 +579,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement.
+	 * GÃ¨re les animations de tÃ©lÃ©chargement.
 	 */
 	private void nouveauChargementGUI() {
 		// Si c'est le premier => activation des gri-gri GUI
@@ -598,13 +598,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 			// Lance la rotation du logo dans le header
 			setSupportProgressBarIndeterminateVisibility(true);
 
-			// Supprime l'icône refresh dans le header
+			// Supprime l'icÃ´ne refresh dans le header
 			if (monMenu != null) {
 				monMenu.findItem(R.id.action_refresh).setVisible(false);
 			}
 		}
 
-		// Je note le téléchargement en cours
+		// Je note le tÃ©lÃ©chargement en cours
 		dlInProgress++;
 		// DEBUG
 		if (Constantes.DEBUG) {
@@ -613,31 +613,31 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 	}
 
 	/**
-	 * Gère les animations de téléchargement.
+	 * GÃ¨re les animations de tÃ©lÃ©chargement.
 	 */
 	private void finChargementGUI() {
-		// Je note la fin du téléchargement
+		// Je note la fin du tÃ©lÃ©chargement
 		dlInProgress--;
 
-		// Si c'est le premier => activation des gri-gri GUI
+		// Si c'est le dernier => arrÃªt des gri-gri GUI
 		if (dlInProgress == 0) {
 			// DEBUG
 			if (Constantes.DEBUG) {
-				Log.w("finChargementGUI", "Arrêt animation");
+				Log.w("finChargementGUI", "ArrÃªt animation");
 			}
 
 			// On stoppe l'animation du SwipeRefreshLayout
 			monSwipeRefreshLayout.setRefreshing(false);
 
-			// Arrêt de la rotation du logo dans le header
+			// ArrÃªt de la rotation du logo dans le header
 			setSupportProgressBarIndeterminateVisibility(false);
 
-			// Affiche l'icône refresh dans le header
+			// Affiche l'icÃ´ne refresh dans le header
 			if (monMenu != null) {
 				monMenu.findItem(R.id.action_refresh).setVisible(true);
 			}
 
-			// Je met à jour les données
+			// Je met Ã  jour les donnÃ©es
 			monItemsAdapter.updateListeItems(prepareAffichage());
 			// Je notifie le changement pour un rafraichissement du contenu
 			monItemsAdapter.notifyDataSetChanged();

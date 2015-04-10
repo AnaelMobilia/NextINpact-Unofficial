@@ -19,7 +19,7 @@
 package com.pcinpact.items;
 
 /**
- * Objet générique Item.
+ * Objet gÃ©nÃ©rique Item.
  * 
  * @author Anael
  *

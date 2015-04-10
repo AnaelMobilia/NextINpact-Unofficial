@@ -36,19 +36,19 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * Téléchargement des ressources.
+ * tÃ©lÃ©chargement des ressources.
  * 
  * @author Anael
  *
  */
 public class Downloader {
 	/**
-	 * Téléchargement sans être connecté en tant qu'abonné.
+	 * tÃ©lÃ©chargement sans Ãªtre connectÃ© en tant qu'abonnÃ©.
 	 * 
-	 * @param uneURL URL de la ressource à télécharger
+	 * @param uneURL URL de la ressource Ã  tÃ©lÃ©charger
 	 * @param unContext context de l'application
 	 * @param compression true = demander au serveur une compression gzip
-	 * @return ressource demandée brute
+	 * @return ressource demandÃ©e brute
 	 */
 	public static byte[] download(final String uneURL, final Context unContext, final boolean compression) {
 
@@ -56,12 +56,12 @@ public class Downloader {
 	}
 
 	/**
-	 * Téléchargement d'une ressource en tant qu'abonné.
-	 * @param uneURL URL de la ressource à télécharger
+	 * tÃ©lÃ©chargement d'une ressource en tant qu'abonnÃ©.
+	 * @param uneURL URL de la ressource Ã  tÃ©lÃ©charger
 	 * @param unContext context de l'application
 	 * @param compression true = demander au serveur une compression gzip
-	 * @param monHTTPContext HTTPcontext contenant le cookie de connexion au compte abonné NXI
-	 * @return ressource demandée brute
+	 * @param monHTTPContext HTTPcontext contenant le cookie de connexion au compte abonnÃ© NXI
+	 * @return ressource demandÃ©e brute
 	 */
 	public static byte[] download(final String uneURL, final Context unContext, final boolean compression, final HttpContext monHTTPContext) {
 		// Retour
@@ -70,11 +70,11 @@ public class Downloader {
 		// L'utilisateur demande-t-il un debug ?
 		Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
-		// Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
+		// InspirÃ© de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
 		AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
 		HttpGet getRequest = new HttpGet(uneURL);
 
-		// Réponse à la requête
+		// RÃ©ponse Ã  la requÃªte
 		HttpEntity entity = null;
 
 		if (compression) {
@@ -83,7 +83,7 @@ public class Downloader {
 		}
 
 		try {
-			// Lancement de la requête
+			// Lancement de la RequÃªte
 			HttpResponse response = client.execute(getRequest, monHTTPContext);
 			final int statusCode = response.getStatusLine().getStatusCode();
 
@@ -106,10 +106,10 @@ public class Downloader {
 					});
 				}
 			} else {
-				// Chargement de la réponse du serveur
+				// Chargement de la rÃ©ponse du serveur
 				entity = response.getEntity();
 
-				// Récupération d'un IS degzipé si requis
+				// RÃ©cupÃ©ration d'un IS degzipÃ© si requis
 				InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
 				// Passage en byte[]
 				datas = IOUtils.toByteArray(monIS);
@@ -117,10 +117,10 @@ public class Downloader {
 				monIS.close();
 			}
 		} catch (Exception e) {
-			// J'arrête la requête
+			// J'ArrÃªte la RequÃªte
 			getRequest.abort();
 
-			// Retour utilisateur obligatoire : probable problème de connexion
+			// Retour utilisateur obligatoire : probable problÃ¨me de connexion
 			Handler handler = new Handler(unContext.getMainLooper());
 			handler.post(new Runnable() {
 				@Override
@@ -148,7 +148,7 @@ public class Downloader {
 			}
 		} finally {
 			if (entity != null) {
-				// Je vide la requête HTTP
+				// Je vide la RequÃªte HTTP
 				try {
 					entity.consumeContent();
 				} catch (IOException e) {
