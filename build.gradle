@@ -72,4 +72,11 @@ android {
 		 */
 		/**androidTest.setRoot('tests')*/
 	}
+
+    /**
+     * Lint - pas d'arrêt en cas d'erreurs
+     */
+	lintOptions {
+	    abortOnError false
+	}
 }
