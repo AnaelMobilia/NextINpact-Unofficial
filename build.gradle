@@ -49,6 +49,7 @@ dependencies {
 	compile 'org.jsoup:jsoup:1.8.1'
 	compile 'commons-io:commons-io:2.2'
 	testCompile 'junit:junit:4.12'
+	instrumentTestCompile 'junit:junit:4.12'
 }
 
 
@@ -99,31 +100,4 @@ android {
 	    // Affichage des erreurs sur stdout
 	    textOutput 'stdout'
 	}
-
-/**
- * Test unitaires
- *--/
-sourceSets {
-    unitTest {
-        java.srcDir file('src/com/pcinpact/tests')
-        //resources.srcDir file('src/test/resources')
-    }
-}
-
-configurations {
-    unitTestCompile.extendsFrom runtime
-    unitTestRuntime.extendsFrom unitTestCompile
-}
-
-dependencies {
-    unitTestCompile files("$project.buildDir/classes/release")
-}
-
-task unitTest(type:Test, dependsOn: assemble) {
-    description = "run unit tests"
-    testClassesDir = project.sourceSets.unitTest.output.classesDir
-    classpath = project.sourceSets.unitTest.runtimeClasspath
-}
-
-check.dependsOn unitTest*/
 }
