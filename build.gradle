@@ -9,7 +9,7 @@
  apply plugin: 'com.android.application'
 
 /**
- * Dépôt & version de gradle à utiliser
+ * DÃ©pÃ´t & version de gradle Ã  utiliser
  */
  buildscript {
  	repositories {
@@ -38,10 +38,11 @@ dependencies {
 */
 	compile 'com.android.support:appcompat-v7:21.+'
 	compile 'org.jsoup:jsoup:1.8.1'
+	compile 'commons-io:commons-io:2.2'
 }
 
 /**
- * Configuration Android avancée
+ * Configuration Android avancÃ©e
  */
 android {
 	/**
