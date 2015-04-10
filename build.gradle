@@ -81,7 +81,7 @@ android {
 		/**
 		 * Path des tests
 		 */
-		androidTest.setRoot('tests')
+		androidTest.setRoot('src/com/pcinpact/tests')
 	}
 
     /**
@@ -102,7 +102,7 @@ android {
 
 /**
  * Test unitaires
- */
+ *--/
 sourceSets {
     unitTest {
         java.srcDir file('src/com/pcinpact/tests')
@@ -125,5 +125,5 @@ task unitTest(type:Test, dependsOn: assemble) {
     classpath = project.sourceSets.unitTest.runtimeClasspath
 }
 
-check.dependsOn unitTest
+check.dependsOn unitTest*/
 }
