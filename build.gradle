@@ -32,10 +32,6 @@ allprojects {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 /**
  * Librairies additionnelles du projet
  */
