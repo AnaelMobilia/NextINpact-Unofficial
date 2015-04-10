@@ -32,6 +32,15 @@ allprojects {
     }
 }
 
+
+/**
+ * Mes dépôts
+ */
+repositories {
+    mavenCentral()
+}
+
+
 /**
  * Librairies additionnelles du projet
  */
@@ -41,6 +50,7 @@ dependencies {
 	compile 'commons-io:commons-io:2.2'
 	testCompile 'junit:junit:4.12'
 }
+
 
 /**
  * Configuration Android avancée
