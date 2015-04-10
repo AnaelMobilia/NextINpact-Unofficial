@@ -39,7 +39,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 /**
- * Smileys dans les commentaires. Si image non présente en cache, la téléchargera.
+ * Smileys dans les commentaires. Si image non prÃ©sente en cache, la tÃ©lÃ©chargera.
  * 
  * @author Anael
  *
@@ -50,15 +50,19 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 */
 	private Context monContext;
 	/**
-	 * TextView dans laquelle l'image est affichée.
+	 * TextView dans laquelle l'image est affichÃ©e.
 	 */
 	private TextView maTextView;
+	/**
+	 * Contenu de la textView;
+	 */
+	private CharSequence contenuTextView;
 	/**
 	 * Texte du commentaire (pour recharger quand le smiley est dispo).
 	 */
 	private String monCommentaire;
 	/**
-	 * #176 - Est-ce un appel interne pour MàJ une image ?
+	 * #176 - Est-ce un appel interne pour MÃ J une image ?
 	 */
 	private boolean isCallback = false;
 
@@ -66,14 +70,17 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * Constructeur.
 	 * 
 	 * @param unContext context de l'application
-	 * @param uneTextView textView concernée
-	 * @param unCommentaire commentaire affiché dans la textView
+	 * @param uneTextView textView concernÃ©e
+	 * @param unCommentaire commentaire affichÃ© dans la textView
 	 */
 	public URLImageProvider(final Context unContext, final TextView uneTextView, final String unCommentaire) {
 		super();
 		monContext = unContext.getApplicationContext();
 		maTextView = uneTextView;
 		monCommentaire = unCommentaire;
+
+		// Sauvegarde du contenu de la textview
+		contenuTextView = maTextView.getText();
 	}
 
 	@SuppressLint("NewApi")
@@ -85,13 +92,13 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		// Image de retour
 		Drawable monRetour;
 
-		// Détermination de l'ID du smiley
+		// DÃ©termination de l'ID du smiley
 		String nomSmiley = urlSource.substring(Constantes.NEXT_INPACT_URL_SMILEYS.length());
 
 		// Le smiley existe-t-il en local ?
 		File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, nomSmiley);
 		if (monFichier.exists()) {
-			// Je récupère directement mon image
+			// Je rÃ©cupÃ¨re directement mon image
 			monRetour = gestionTaille(Drawable.createFromPath(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS
 					+ nomSmiley));
 			// DEBUG
@@ -103,7 +110,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 			if (!isCallback) {
 				// Lancement du DL
 				AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, Constantes.IMAGE_SMILEY, urlSource);
-				// Parallèlisation des téléchargements pour l'ensemble de l'application
+				// ParallÃ©lisation des tÃ©lÃ©chargements pour l'ensemble de l'application
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				} else {
@@ -112,14 +119,14 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 
 				// DEBUG
 				if (Constantes.DEBUG) {
-					Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
+					Log.w("URLImageProvider", nomSmiley + " tÃ©lÃ©chargement en cours...");
 				}
 
 				// #176 - Je note que le prochain appel sera un callback pour le rendu uniquement
 				isCallback = true;
 			}
 
-			// Retour d'une image générique (logo NXI)
+			// Retour d'une image gÃ©nÃ©rique (logo NXI)
 			monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
 		}
 		// Je retourne mon image
@@ -130,12 +137,12 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 	 * Charge et zoome une image.
 	 * 
 	 * @param uneImage ressource Image
-	 * @return Drawable redimensionnée si besoin
+	 * @return Drawable redimensionnÃ©e si besoin
 	 */
 	private Drawable gestionTaille(final Drawable uneImage) {
-		// Taile par défaut
+		// Taile par dÃ©faut
 		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
-		// L'option selectionnée
+		// L'option selectionnÃ©e
 		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
 		float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
 
@@ -145,21 +152,21 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 		int monCoeff;
 		if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
 			/**
-			 * Si on est sur la résolution par défaut, on reste à 1
+			 * Si on est sur la rÃ©solution par dÃ©faut, on reste Ã  1
 			 */
 			monCoeff = Math.round(1 * monCoeffZoom);
 		} else {
 			/**
-			 * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
+			 * Sinon, calcul du zoom Ã  appliquer (coeff 2 Ã©vite les images trop petites)
 			 */
 			monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
 		}
-		// On évite un coeff inférieur à 1 (image non affichée !)
+		// On Ã©vite un coeff infÃ©rieur Ã  1 (image non affichÃ©e !)
 		if (monCoeff < 1) {
 			monCoeff = 1;
 		}
 
-		// On définit la taille de l'image
+		// On dÃ©finit la taille de l'image
 		uneImage.setBounds(0, 0, (uneImage.getIntrinsicWidth() * monCoeff), (uneImage.getIntrinsicHeight() * monCoeff));
 
 		// DEBUG
@@ -183,9 +190,24 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 			Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);
 		}
 
-		// J'actualise le commentaire
-		Spanned spannedContent = Html.fromHtml(monCommentaire, this, null);
-		maTextView.setText(spannedContent);
-	}
+		Log.e("NXI", contenuTextView.toString());
+		Log.e("NXI", maTextView.getText().toString());
 
+		// VÃ©rification du non recyclage de la textview (mÃªme contenu)
+		if (contenuTextView.equals(maTextView.getText())) {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.d("URLImageProvider", "Contenu de la textview conforme => MÃ J " + uneURL);
+			}
+
+			// J'actualise le commentaire
+			Spanned spannedContent = Html.fromHtml(monCommentaire, this, null);
+			maTextView.setText(spannedContent);
+		} else {
+			// DEBUG
+			if (Constantes.DEBUG) {
+				Log.d("URLImageProvider", "Contenu de la textview NON conforme " + uneURL);
+			}
+		}
+	}
 }
