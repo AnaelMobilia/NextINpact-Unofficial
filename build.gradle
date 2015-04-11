@@ -4,11 +4,6 @@
  */
 
 /**
- * Type du projet 
- */
- apply plugin: 'com.android.application'
-
-/**
  * Dépôt & version de gradle à utiliser
  */
  buildscript {
@@ -18,9 +13,15 @@
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.1.3'
+		classpath 'com.android.tools.build:gradle:0.10+'
   	}
   }
+
+
+/**
+ * Type du projet 
+ */
+ apply plugin: 'com.android.application'
 
 
 /**
@@ -38,19 +39,6 @@ allprojects {
  */
 repositories {
     mavenCentral()
-}
-
-
-/**
- * Librairies additionnelles du projet
- */
-dependencies {
-	compile 'com.android.support:appcompat-v7:21.+'
-	compile 'org.jsoup:jsoup:1.8.1'
-	compile 'commons-io:commons-io:2.2'
-	compile 'junit:junit:4.12'
-	testCompile 'junit:junit:4.12'
-	androidTestCompile 'junit:junit:4.12'
 }
 
 
@@ -91,6 +79,18 @@ android {
           resources.srcDirs = ['src/com/pcinpact/tests']
         }*/
 	}
+
+    /**
+     * Librairies additionnelles du projet
+     */
+    dependencies {
+        compile 'com.android.support:appcompat-v7:21.+'
+        compile 'org.jsoup:jsoup:1.8.1'
+        compile 'commons-io:commons-io:2.2'
+        compile 'junit:junit:4.12'
+        testCompile 'junit:junit:4.12'
+        androidTestCompile 'junit:junit:4.12'
+    }
 
     /**
      * Configuration de Lint
