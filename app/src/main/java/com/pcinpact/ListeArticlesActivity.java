@@ -105,9 +105,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         // On définit la vue
         setContentView(R.layout.liste_articles);
         // On récupère les éléments GUI
@@ -115,7 +113,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         headerTextView = (TextView) findViewById(R.id.header_text);
 
-        setSupportProgressBarIndeterminateVisibility(false);
+//        setSupportProgressBarIndeterminateVisibility(false);
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), mesArticles);

@@ -30,18 +30,10 @@
     <!-- Gestion des tablettes -->
     <supports-screens
         android:largeScreens="true"
-        android:xlargeScreens="true"></supports-screens>
+        android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="21" />
-    <!--
-    minSdkVersion est la version minimum pour faire tourner l'application (2.2)
-    targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-    -->
 
     <application
         android:allowBackup="true"
@@ -60,48 +52,48 @@
         </activity>
         <activity
             android:name=".ArticleActivity"
-            android:parentActivityName="com.pcinpact.ListeArticlesActivity"
+            android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pcinpact.ListeArticlesActivity" />
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".CommentairesActivity"
-            android:parentActivityName="com.pcinpact.ListeArticlesActivity"
+            android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pcinpact.ListeArticlesActivity" />
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".OptionsActivity"
-            android:parentActivityName="com.pcinpact.ListeArticlesActivity"
+            android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pcinpact.ListeArticlesActivity" />
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".AboutActivity"
-            android:parentActivityName="com.pcinpact.ListeArticlesActivity"
+            android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pcinpact.ListeArticlesActivity" />
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".DebugActivity"
-            android:parentActivityName="com.pcinpact.DebugActivity"
+            android:parentActivityName=".DebugActivity"
             android:screenOrientation="user"
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pcinpact.ListeArticlesActivity" />
+                android:value=".ListeArticlesActivity" />
         </activity>
     </application>
 

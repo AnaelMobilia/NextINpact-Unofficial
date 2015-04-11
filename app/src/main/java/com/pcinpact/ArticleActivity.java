@@ -58,9 +58,8 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Partie graphique
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.article);
-        setSupportProgressBarIndeterminateVisibility(false);
 
         // ID de l'article concerné
         int articleID = getIntent().getExtras().getInt("ARTICLE_ID");

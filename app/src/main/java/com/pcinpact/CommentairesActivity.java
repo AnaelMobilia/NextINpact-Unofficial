@@ -97,8 +97,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Partie graphique
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.liste_commentaires);
         setSupportProgressBarIndeterminateVisibility(false);
 
