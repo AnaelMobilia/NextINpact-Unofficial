@@ -13,4 +13,4 @@ android:
         - extra-android-m2repository
 
 # Script pour les tests unitaires
-script: gradelw test --continue
+script: ./gradelw test --continue
