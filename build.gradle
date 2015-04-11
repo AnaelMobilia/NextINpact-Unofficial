@@ -84,12 +84,12 @@ android {
 		 * Path des tests
 		 */
 		androidTest.setRoot('src/com/pcinpact/tests')
-        androidTest {
+/**        androidTest {
           java.srcDirs = ['src/com/pcinpact/tests']
           res.srcDirs = ['src/com/pcinpact/tests']
           assets.srcDirs = ['src/com/pcinpact/tests']
           resources.srcDirs = ['src/com/pcinpact/tests']
-        }
+        }*/
 	}
 
     /**
