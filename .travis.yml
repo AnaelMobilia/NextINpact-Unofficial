@@ -12,5 +12,9 @@ android:
         - extra-google-m2repository
         - extra-android-m2repository
 
+# chmod du wrapper gradle
+before_install:
+    - chmod +x gradelw
+
 # Script pour les tests unitaires
 script: ./gradelw test --continue
