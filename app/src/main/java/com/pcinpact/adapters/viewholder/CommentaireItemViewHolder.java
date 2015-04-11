@@ -18,36 +18,35 @@
  */
 package com.pcinpact.adapters.viewholder;
 
-import com.pcinpact.items.Item;
-
 import android.widget.TextView;
+
+import com.pcinpact.items.Item;
 
 /**
  * ViewHolder pour un CommentaireItem.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class CommentaireItemViewHolder implements ItemViewHolder {
-	/**
-	 * Auteur et date.
-	 */
-	public TextView auteurDateCommentaire;
-	/**
-	 * Numéro.
-	 */
-	public TextView numeroCommentaire;
-	/**
-	 * Contenu.
-	 */
-	public TextView commentaire;
+    /**
+     * Auteur et date.
+     */
+    public TextView auteurDateCommentaire;
+    /**
+     * Numéro.
+     */
+    public TextView numeroCommentaire;
+    /**
+     * Contenu.
+     */
+    public TextView commentaire;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.pcinpact.items.Item#getType()
-	 */
-	@Override
-	public int getType() {
-		return Item.TYPE_COMMENTAIRE;
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
+     */
+    @Override
+    public int getType() {
+        return Item.TYPE_COMMENTAIRE;
+    }
 }

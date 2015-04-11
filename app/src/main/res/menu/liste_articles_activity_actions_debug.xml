@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2014, 2015 Anael Mobilia
  * 
@@ -17,16 +16,17 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
+ */
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
-        yourapp:showAsAction="ifRoom"/>
+        yourapp:showAsAction="ifRoom" />
 
     <!-- Overflow (...) -->
     <item
@@ -41,19 +41,19 @@
                 android:id="@+id/action_settings"
                 android:icon="@drawable/ic_sysbar_quicksettings"
                 android:title="@string/action_settings"
-                yourapp:showAsAction="ifRoom"/>
+                yourapp:showAsAction="ifRoom" />
 
             <!-- A propos -->
             <item
                 android:id="@+id/action_about"
                 android:icon="@drawable/ic_menu_info_details"
-                android:title="@string/action_about"/>
+                android:title="@string/action_about" />
 
             <!-- DEBUG -->
             <item
                 android:id="@+id/action_debug"
                 android:icon="@drawable/ic_menu_preferences"
-                android:title="@string/action_debug"/>
+                android:title="@string/action_debug" />
         </menu>
     </item>
 

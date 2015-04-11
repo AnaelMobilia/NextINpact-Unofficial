@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2014, 2015 Anael Mobilia
  * 
@@ -17,30 +16,31 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ */
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Options génériques -->
-    <PreferenceCategory android:title="@string/optionsGenerales" >
+    <PreferenceCategory android:title="@string/optionsGenerales">
 
         <!-- Compte abonné -->
         <PreferenceScreen
             android:summary="@string/optionAbonneDetail"
-            android:title="@string/optionAbonne" >
-            <PreferenceCategory android:title="Configurer mon compte abonné" >
+            android:title="@string/optionAbonne">
+            <PreferenceCategory android:title="Configurer mon compte abonné">
                 <CheckBoxPreference
-                    android:summary="@string/optionAbonneDisclaimer"
+                    android:defaultValue="@bool/defautOptionAbonne"
                     android:key="@string/idOptionAbonne"
-                    android:defaultValue="@bool/defautOptionAbonne" />
+                    android:summary="@string/optionAbonneDisclaimer" />
                 <EditTextPreference
-                    android:dependency="@string/idOptionAbonne"
                     android:defaultValue="@string/defautOptionLogin"
+                    android:dependency="@string/idOptionAbonne"
                     android:key="@string/idOptionLogin"
                     android:summary="@string/optionLoginDetail"
                     android:title="@string/optionLogin" />
                 <EditTextPreference
-                    android:dependency="@string/idOptionAbonne"
                     android:defaultValue="@string/defautOptionPassword"
+                    android:dependency="@string/idOptionAbonne"
                     android:inputType="textPassword"
                     android:key="@string/idOptionPassword"
                     android:summary="@string/optionPasswordDetail"
@@ -57,7 +57,7 @@
             android:title="@string/optionTailleTexte" />
     </PreferenceCategory>
     <!-- Options spécifiques aux articles -->
-    <PreferenceCategory android:title="@string/optionsArticles" >
+    <PreferenceCategory android:title="@string/optionsArticles">
         <ListPreference
             android:defaultValue="@string/defautOptionNbArticles"
             android:entries="@array/nbArticles"
@@ -73,7 +73,7 @@
             android:title="@string/optionActiverLiensArticle" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
-    <PreferenceCategory android:title="@string/optionsCommentaires" >
+    <PreferenceCategory android:title="@string/optionsCommentaires">
 
         <!-- <CheckBoxPreference -->
         <!-- android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
@@ -92,7 +92,7 @@
             android:title="@string/optionCommentairesTelechargementContinu" />
     </PreferenceCategory>
     <!-- Développement -->
-    <PreferenceCategory android:title="@string/optionsDeveloppement" >
+    <PreferenceCategory android:title="@string/optionsDeveloppement">
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionDebug"
             android:key="@string/idOptionDebug"

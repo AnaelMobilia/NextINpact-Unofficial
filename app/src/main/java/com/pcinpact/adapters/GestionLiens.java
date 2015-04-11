@@ -18,35 +18,34 @@
  */
 package com.pcinpact.adapters;
 
-import com.pcinpact.Constantes;
-
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.pcinpact.Constantes;
+
 /**
  * Vérifie que le clic sur un lien saura bien être géré (évite crash car pas d'application capable...).
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class GestionLiens extends LinkMovementMethod {
-	@Override
-	public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-		Boolean monRetour = false;
+    @Override
+    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+        Boolean monRetour = false;
 
-		try {
-			// Gestion du clic...
-			monRetour = super.onTouchEvent(widget, buffer, event);
-		} catch (Exception e) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.e("gestionLiens", "Exception : ", e);
-			}
-		}
+        try {
+            // Gestion du clic...
+            monRetour = super.onTouchEvent(widget, buffer, event);
+        } catch (Exception e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("gestionLiens", "Exception : ", e);
+            }
+        }
 
-		return monRetour;
-	}
+        return monRetour;
+    }
 }

@@ -18,54 +18,53 @@
  */
 package com.pcinpact.adapters.viewholder;
 
-import com.pcinpact.items.Item;
-
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pcinpact.items.Item;
+
 /**
  * ViewHolder pour un ArticleItem.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ArticleItemViewHolder implements ItemViewHolder {
-	/**
-	 * Illustration.
-	 */
-	public ImageView imageArticle;
-	/**
-	 * Label abonné.
-	 */
-	public TextView labelAbonne;
-	/**
-	 * Titre.
-	 */
-	public TextView titreArticle;
-	/**
-	 * Heure.
-	 */
-	public TextView heureArticle;
-	/**
-	 * Sous titre.
-	 */
-	public TextView sousTitreArticle;
-	/**
-	 * Nombre de commentaires.
-	 */
-	public TextView commentairesArticle;
-	/**
-	 * Relative Layout - couleur de fond.
-	 */
-	public RelativeLayout relativeLayout;
+    /**
+     * Illustration.
+     */
+    public ImageView imageArticle;
+    /**
+     * Label abonné.
+     */
+    public TextView labelAbonne;
+    /**
+     * Titre.
+     */
+    public TextView titreArticle;
+    /**
+     * Heure.
+     */
+    public TextView heureArticle;
+    /**
+     * Sous titre.
+     */
+    public TextView sousTitreArticle;
+    /**
+     * Nombre de commentaires.
+     */
+    public TextView commentairesArticle;
+    /**
+     * Relative Layout - couleur de fond.
+     */
+    public RelativeLayout relativeLayout;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.pcinpact.items.Item#getType()
-	 */
-	@Override
-	public int getType() {
-		return Item.TYPE_ARTICLE;
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
+     */
+    @Override
+    public int getType() {
+        return Item.TYPE_ARTICLE;
+    }
 }

@@ -20,7 +20,7 @@ package com.pcinpact.parseur;
 
 /**
  * Parse le contenu d'un article.
- * 
+ *
  * @author Anael
  */
 public class ParseurArticle {

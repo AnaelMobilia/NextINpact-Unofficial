@@ -18,30 +18,30 @@
  */
 package com.pcinpact.network;
 
-import java.util.ArrayList;
 import com.pcinpact.items.Item;
+
+import java.util.ArrayList;
 
 /**
  * Interface générique de callback à la fin des téléchargements HTML / Image.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public interface RefreshDisplayInterface {
 
-	/**
-	 * Une ressource HTML à été téléchargée.
-	 * 
-	 * @param uneURL URL de la page
-	 * @param mesItems liste d'*Itemstéléchargés
-	 */
-	void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> mesItems);
+    /**
+     * Une ressource HTML à été téléchargée.
+     *
+     * @param uneURL   URL de la page
+     * @param mesItems liste d'*Itemstéléchargés
+     */
+    void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> mesItems);
 
-	/**
-	 * Une ressource image a été téléchargée.
-	 * 
-	 * @param uneURL URL de l'image
-	 */
-	void downloadImageFini(final String uneURL);
+    /**
+     * Une ressource image a été téléchargée.
+     *
+     * @param uneURL URL de l'image
+     */
+    void downloadImageFini(final String uneURL);
 
 }

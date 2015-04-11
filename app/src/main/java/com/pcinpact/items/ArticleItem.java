@@ -18,263 +18,262 @@
  */
 package com.pcinpact.items;
 
+import com.pcinpact.Constantes;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.pcinpact.Constantes;
-
 /**
  * Objet Article.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ArticleItem implements Item {
 
-	/**
-	 * ID de l'article.
-	 */
-	private int id;
-	/**
-	 * Titre de l'article.
-	 */
-	private String titre;
-	/**
-	 * Sous-titre de l'article.
-	 */
-	private String sousTitre = "";
-	/**
-	 * Est-ce un article abonné ?
-	 */
-	private boolean isAbonne;
-	/**
-	 * Nombre de commentaires de l'article.
-	 */
-	private int nbCommentaires;
-	/**
-	 * URL de l'article.
-	 */
-	private String url;
-	/**
-	 * URL de la miniature de l'article.
-	 */
-	private String urlIllustration = "";
-	/**
-	 * Contenu de l'article.
-	 */
-	private String contenu = "";
-	/**
-	 * Timestamp de publication de l'article.
-	 */
-	private long timeStampPublication;
-	/**
-	 * L'article est-il déjà lu ?
-	 */
-	private boolean isLu;
-	/**
-	 * Le contenu abonné a-t-il été téléchargé ?
-	 */
-	private boolean isDlContenuAbonne;
+    /**
+     * ID de l'article.
+     */
+    private int id;
+    /**
+     * Titre de l'article.
+     */
+    private String titre;
+    /**
+     * Sous-titre de l'article.
+     */
+    private String sousTitre = "";
+    /**
+     * Est-ce un article abonné ?
+     */
+    private boolean isAbonne;
+    /**
+     * Nombre de commentaires de l'article.
+     */
+    private int nbCommentaires;
+    /**
+     * URL de l'article.
+     */
+    private String url;
+    /**
+     * URL de la miniature de l'article.
+     */
+    private String urlIllustration = "";
+    /**
+     * Contenu de l'article.
+     */
+    private String contenu = "";
+    /**
+     * Timestamp de publication de l'article.
+     */
+    private long timeStampPublication;
+    /**
+     * L'article est-il déjà lu ?
+     */
+    private boolean isLu;
+    /**
+     * Le contenu abonné a-t-il été téléchargé ?
+     */
+    private boolean isDlContenuAbonne;
 
-	@Override
-	public int getType() {
-		return Item.TYPE_ARTICLE;
-	}
+    @Override
+    public int getType() {
+        return Item.TYPE_ARTICLE;
+    }
 
-	/**
-	 * Heure et minute de la publication sous forme textuelle.
-	 * 
-	 * @return Heure & minute de la publication
-	 */
-	public String getHeureMinutePublication() {
-		Date maDate = new Date(this.getTimeStampPublication());
-		// Format souhaité
-		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Locale.getDefault());
+    /**
+     * Heure et minute de la publication sous forme textuelle.
+     *
+     * @return Heure & minute de la publication
+     */
+    public String getHeureMinutePublication() {
+        Date maDate = new Date(this.getTimeStampPublication());
+        // Format souhaité
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Locale.getDefault());
 
-		return dfm.format(maDate);
-	}
+        return dfm.format(maDate);
+    }
 
-	/**
-	 * Date de la publication sous forme textuelle.
-	 * 
-	 * @return Date de la publication
-	 */
-	public String getDatePublication() {
-		Date maDate = new Date(this.getTimeStampPublication());
-		// Format souhaité
-		DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
-		String laDate = dfm.format(maDate);
+    /**
+     * Date de la publication sous forme textuelle.
+     *
+     * @return Date de la publication
+     */
+    public String getDatePublication() {
+        Date maDate = new Date(this.getTimeStampPublication());
+        // Format souhaité
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
+        String laDate = dfm.format(maDate);
 
-		// Première lettre en majuscule
-		laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Locale.getDefault()) + laDate.substring(1);
+        // Première lettre en majuscule
+        laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Locale.getDefault()) + laDate.substring(1);
 
-		return laDate;
-	}
+        return laDate;
+    }
 
-	/**
-	 * Nom de l'image.
-	 * 
-	 * @return image.ext
-	 */
-	public String getImageName() {
-		String urlImage = this.getUrlIllustration();
-		return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-	}
+    /**
+     * Nom de l'image.
+     *
+     * @return image.ext
+     */
+    public String getImageName() {
+        String urlImage = this.getUrlIllustration();
+        return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+    }
 
-	/**
-	 * @return id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @param id id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * @param id id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	/**
-	 * @return titre
-	 */
-	public String getTitre() {
-		return titre;
-	}
+    /**
+     * @return titre
+     */
+    public String getTitre() {
+        return titre;
+    }
 
-	/**
-	 * @param titre titre
-	 */
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
+    /**
+     * @param titre titre
+     */
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
 
-	/**
-	 * @return sousTitre
-	 */
-	public String getSousTitre() {
-		return sousTitre;
-	}
+    /**
+     * @return sousTitre
+     */
+    public String getSousTitre() {
+        return sousTitre;
+    }
 
-	/**
-	 * @param sousTitre sousTitre
-	 */
-	public void setSousTitre(String sousTitre) {
-		this.sousTitre = sousTitre;
-	}
+    /**
+     * @param sousTitre sousTitre
+     */
+    public void setSousTitre(String sousTitre) {
+        this.sousTitre = sousTitre;
+    }
 
-	/**
-	 * @return isAbonne
-	 */
-	public boolean isAbonne() {
-		return isAbonne;
-	}
+    /**
+     * @return isAbonne
+     */
+    public boolean isAbonne() {
+        return isAbonne;
+    }
 
-	/**
-	 * @param isAbonne isAbonne
-	 */
-	public void setAbonne(boolean isAbonne) {
-		this.isAbonne = isAbonne;
-	}
+    /**
+     * @param isAbonne isAbonne
+     */
+    public void setAbonne(boolean isAbonne) {
+        this.isAbonne = isAbonne;
+    }
 
-	/**
-	 * @return nbCommentaires
-	 */
-	public int getNbCommentaires() {
-		return nbCommentaires;
-	}
+    /**
+     * @return nbCommentaires
+     */
+    public int getNbCommentaires() {
+        return nbCommentaires;
+    }
 
-	/**
-	 * @param nbCommentaires nbCommentaires
-	 */
-	public void setNbCommentaires(int nbCommentaires) {
-		this.nbCommentaires = nbCommentaires;
-	}
+    /**
+     * @param nbCommentaires nbCommentaires
+     */
+    public void setNbCommentaires(int nbCommentaires) {
+        this.nbCommentaires = nbCommentaires;
+    }
 
-	/**
-	 * @return url
-	 */
-	public String getUrl() {
-		return url;
-	}
+    /**
+     * @return url
+     */
+    public String getUrl() {
+        return url;
+    }
 
-	/**
-	 * @param url url
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    /**
+     * @param url url
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	/**
-	 * @return urlIllustration
-	 */
-	public String getUrlIllustration() {
-		return urlIllustration;
-	}
+    /**
+     * @return urlIllustration
+     */
+    public String getUrlIllustration() {
+        return urlIllustration;
+    }
 
-	/**
-	 * @param urlIllustration urlIllustration
-	 */
-	public void setUrlIllustration(String urlIllustration) {
-		this.urlIllustration = urlIllustration;
-	}
+    /**
+     * @param urlIllustration urlIllustration
+     */
+    public void setUrlIllustration(String urlIllustration) {
+        this.urlIllustration = urlIllustration;
+    }
 
-	/**
-	 * @return contenu
-	 */
-	public String getContenu() {
-		return contenu;
-	}
+    /**
+     * @return contenu
+     */
+    public String getContenu() {
+        return contenu;
+    }
 
-	/**
-	 * @param contenu contenu
-	 */
-	public void setContenu(String contenu) {
-		this.contenu = contenu;
-	}
+    /**
+     * @param contenu contenu
+     */
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
 
-	/**
-	 * @return timeStampPublication
-	 */
-	public long getTimeStampPublication() {
-		return timeStampPublication;
-	}
+    /**
+     * @return timeStampPublication
+     */
+    public long getTimeStampPublication() {
+        return timeStampPublication;
+    }
 
-	/**
-	 * @param timeStampPublication timeStampPublication
-	 */
-	public void setTimeStampPublication(long timeStampPublication) {
-		this.timeStampPublication = timeStampPublication;
-	}
+    /**
+     * @param timeStampPublication timeStampPublication
+     */
+    public void setTimeStampPublication(long timeStampPublication) {
+        this.timeStampPublication = timeStampPublication;
+    }
 
-	/**
-	 * @return isLu
-	 */
-	public boolean isLu() {
-		return isLu;
-	}
+    /**
+     * @return isLu
+     */
+    public boolean isLu() {
+        return isLu;
+    }
 
-	/**
-	 * @param isLu isLu
-	 */
-	public void setLu(boolean isLu) {
-		this.isLu = isLu;
-	}
+    /**
+     * @param isLu isLu
+     */
+    public void setLu(boolean isLu) {
+        this.isLu = isLu;
+    }
 
-	/**
-	 * @return isDlContenuAbonne
-	 */
-	public boolean isDlContenuAbonne() {
-		return isDlContenuAbonne;
-	}
+    /**
+     * @return isDlContenuAbonne
+     */
+    public boolean isDlContenuAbonne() {
+        return isDlContenuAbonne;
+    }
 
-	/**
-	 * @param isDlContenuAbonne isDlContenuAbonne
-	 */
-	public void setDlContenuAbonne(boolean isDlContenuAbonne) {
-		this.isDlContenuAbonne = isDlContenuAbonne;
-	}
+    /**
+     * @param isDlContenuAbonne isDlContenuAbonne
+     */
+    public void setDlContenuAbonne(boolean isDlContenuAbonne) {
+        this.isDlContenuAbonne = isDlContenuAbonne;
+    }
 
 }

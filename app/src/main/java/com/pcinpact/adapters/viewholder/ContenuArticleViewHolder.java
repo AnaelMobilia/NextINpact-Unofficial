@@ -24,23 +24,22 @@ import com.pcinpact.items.Item;
 
 /**
  * ViewHolder pour un ContenuArticleItem.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ContenuArticleViewHolder implements ItemViewHolder {
-	/**
-	 * Contenu.
-	 */
-	public TextView contenu;
+    /**
+     * Contenu.
+     */
+    public TextView contenu;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.pcinpact.items.Item#getType()
-	 */
-	@Override
-	public int getType() {
-		return Item.TYPE_CONTENU_ARTICLE;
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
+     */
+    @Override
+    public int getType() {
+        return Item.TYPE_CONTENU_ARTICLE;
+    }
 
 }

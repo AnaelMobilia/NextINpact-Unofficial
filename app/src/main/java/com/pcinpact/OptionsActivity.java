@@ -23,16 +23,15 @@ import android.preference.PreferenceActivity;
 
 /**
  * Options de l'application.
- * 
+ *
  * @author Anael
- * 
  */
 public class OptionsActivity extends PreferenceActivity {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        // Je lance l'activité
+        super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.options);
-	}
+        addPreferencesFromResource(R.xml.options);
+    }
 }

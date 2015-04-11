@@ -18,28 +18,27 @@
  */
 package com.pcinpact.adapters.viewholder;
 
-import com.pcinpact.items.Item;
-
 import android.widget.TextView;
+
+import com.pcinpact.items.Item;
 
 /**
  * ViewHolder pour un SectionItem.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class SectionItemViewHolder implements ItemViewHolder {
-	/**
-	 * Titre de la Section.
-	 */
-	public TextView sectionView;
+    /**
+     * Titre de la Section.
+     */
+    public TextView sectionView;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.pcinpact.items.Item#getType()
-	 */
-	@Override
-	public int getType() {
-		return Item.TYPE_SECTION;
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
+     */
+    @Override
+    public int getType() {
+        return Item.TYPE_SECTION;
+    }
 }

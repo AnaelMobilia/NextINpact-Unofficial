@@ -24,23 +24,22 @@ import android.widget.Toast;
 
 /**
  * A propos...
- * 
+ *
  * @author Anael
- * 
  */
 public class AboutActivity extends ActionBarActivity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// Je lance l'activité
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        // Je lance l'activité
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.about);
+        setContentView(R.layout.about);
 
-		// Affichage du numéro de version
-		Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
-				Toast.LENGTH_LONG);
-		monToast.show();
+        // Affichage du numéro de version
+        Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
+                Toast.LENGTH_LONG);
+        monToast.show();
 
-	}
+    }
 }

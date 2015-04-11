@@ -18,9 +18,6 @@
  */
 package com.pcinpact;
 
-import com.pcinpact.datastorage.DAO;
-import com.pcinpact.items.ArticleItem;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -37,120 +34,124 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
+
 /**
  * Affiche un article.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ArticleActivityWebview extends ActionBarActivity {
-	/**
-	 * ID de l'article.
-	 */
-	private int articleID;
-	/**
-	 * ArticleItem.
-	 */
-	private ArticleItem monArticle;
+    /**
+     * ID de l'article.
+     */
+    private int articleID;
+    /**
+     * ArticleItem.
+     */
+    private ArticleItem monArticle;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+        articleID = getIntent().getExtras().getInt("ARTICLE_ID");
 
-		setContentView(R.layout.article_webview);
+        setContentView(R.layout.article_webview);
 
-		WebView webview = (WebView) findViewById(R.id.webview);
+        WebView webview = (WebView) findViewById(R.id.webview);
 
-		// Liens cliquables ? option utilisateur !
-		Boolean lienClickable = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionLiensDansArticles,
-				R.bool.defautOptionLiensDansArticles);
-		if (!lienClickable) {
-			// Désactivation du clic
-			webview.setWebViewClient(new WebViewClient() {
+        // Liens cliquables ? option utilisateur !
+        Boolean lienClickable = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionLiensDansArticles,
+                R.bool.defautOptionLiensDansArticles);
+        if (!lienClickable) {
+            // Désactivation du clic
+            webview.setWebViewClient(new WebViewClient() {
 
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					return true;
-				};
-			});
-		}
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return true;
+                }
 
-		// Mise en forme de la webview
-		webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+                ;
+            });
+        }
 
-		// Gestion du zoom - option utilisateur
-		// taille par défaut
-		int tailleDefaut = Integer.valueOf(getResources().getString(R.string.defautOptionZoomTexte));
-		// L'option selectionnée
-		int tailleUtilisateur = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionZoomTexte,
-				R.string.defautOptionZoomTexte);
+        // Mise en forme de la webview
+        webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		if (tailleUtilisateur != tailleDefaut) {
-			// On applique la taille demandée
-			WebSettings webSettings = webview.getSettings();
-			webSettings.setDefaultFontSize(tailleUtilisateur);
-		}
+        // Gestion du zoom - option utilisateur
+        // taille par défaut
+        int tailleDefaut = Integer.valueOf(getResources().getString(R.string.defautOptionZoomTexte));
+        // L'option selectionnée
+        int tailleUtilisateur = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionZoomTexte,
+                R.string.defautOptionZoomTexte);
 
-		// Désactivation de la sélection du texte
-		webview.setOnLongClickListener(new OnLongClickListener() {
+        if (tailleUtilisateur != tailleDefaut) {
+            // On applique la taille demandée
+            WebSettings webSettings = webview.getSettings();
+            webSettings.setDefaultFontSize(tailleUtilisateur);
+        }
 
-			@Override
-			public boolean onLongClick(View v) {
-				// Déclaration de l'événement comme étant traité
-				return true;
-			}
-		});
-		// Désactivation du retour vibreur
-		webview.setHapticFeedbackEnabled(false);
+        // Désactivation de la sélection du texte
+        webview.setOnLongClickListener(new OnLongClickListener() {
 
-		// Chargement de la DB
-		DAO monDAO = DAO.getInstance(getApplicationContext());
-		monArticle = monDAO.chargerArticle(articleID);
-		String data = monArticle.getContenu();
+            @Override
+            public boolean onLongClick(View v) {
+                // Déclaration de l'événement comme étant traité
+                return true;
+            }
+        });
+        // Désactivation du retour vibreur
+        webview.setHapticFeedbackEnabled(false);
 
-		if (data.equals("")) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.w("ArticleActivityWebview", "Article vide");
-			}
-			data = getString(R.string.articleVideErreurHTML);
-		}
+        // Chargement de la DB
+        DAO monDAO = DAO.getInstance(getApplicationContext());
+        monArticle = monDAO.chargerArticle(articleID);
+        String data = monArticle.getContenu();
 
-		webview.loadDataWithBaseURL(null, data, "text/html", Constantes.NEXT_INPACT_ENCODAGE, null);
+        if (data.equals("")) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.w("ArticleActivityWebview", "Article vide");
+            }
+            data = getString(R.string.articleVideErreurHTML);
+        }
 
-	}
+        webview.loadDataWithBaseURL(null, data, "text/html", Constantes.NEXT_INPACT_ENCODAGE, null);
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Je charge mon menu dans l'actionBar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.article_activity_actions, menu);
+    }
 
-		// Get the menu item.
-		MenuItem shareItem = menu.findItem(R.id.action_share);
-		// Get the provider and hold onto it to set/change the share intent.
-		ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Je charge mon menu dans l'actionBar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.article_activity_actions, menu);
 
-		// Création de mon intent
-		Intent monIntent = new Intent(Intent.ACTION_SEND);
-		monIntent.setType("text/plain");
-		monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
-		mShareActionProvider.setShareIntent(monIntent);
+        // Get the menu item.
+        MenuItem shareItem = menu.findItem(R.id.action_share);
+        // Get the provider and hold onto it to set/change the share intent.
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-		return super.onCreateOptionsMenu(menu);
-	}
+        // Création de mon intent
+        Intent monIntent = new Intent(Intent.ACTION_SEND);
+        monIntent.setType("text/plain");
+        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
+        mShareActionProvider.setShareIntent(monIntent);
 
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem pItem) {
-		// Afficher les commentaires
-		if (pItem.getItemId() == R.id.action_comments) {
-			Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-			intentComms.putExtra("ARTICLE_ID", articleID);
-			startActivity(intentComms);
-		}
+        return super.onCreateOptionsMenu(menu);
+    }
 
-		return super.onOptionsItemSelected(pItem);
-	}
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem pItem) {
+        // Afficher les commentaires
+        if (pItem.getItemId() == R.id.action_comments) {
+            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+            intentComms.putExtra("ARTICLE_ID", articleID);
+            startActivity(intentComms);
+        }
+
+        return super.onOptionsItemSelected(pItem);
+    }
 }

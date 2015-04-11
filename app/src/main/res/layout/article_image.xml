@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2015 Anael Mobilia
  * 
@@ -19,8 +18,7 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
  
--->
-<!-- Contenu image dans un article -->
+--><!-- Contenu image dans un article -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutArticle"
     android:layout_width="match_parent"
@@ -31,7 +29,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="?android:attr/scrollbarSize"
     android:paddingStart="5dp"
-    android:paddingTop="5dp" >
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/imageArticle"

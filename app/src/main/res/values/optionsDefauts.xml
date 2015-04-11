@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2014, 2015 Anael Mobilia
  * 
@@ -17,15 +16,15 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
- */-->
-<!-- Valeurs par défaut des options de l'application -->
+ */
+--><!-- Valeurs par défaut des options de l'application -->
 
 <resources>
 
     <bool name="defautOptionLiensDansArticles">true</bool>
     <bool name="defautOptionLiensDansCommentaires">true</bool>
     <bool name="defautOptionCommentairesTelechargementContinu">true</bool>
- 	<string name="defautOptionZoomTexte">16</string>
+    <string name="defautOptionZoomTexte">16</string>
     <bool name="defautOptionInstallationApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>
@@ -35,5 +34,5 @@
     <string name="defautOptionPassword"></string>
     <bool name="defautOptionInfoCompteAbonne">true</bool>
     <bool name="defautOptionDebugEffacerCache">false</bool>
-    
+
 </resources>

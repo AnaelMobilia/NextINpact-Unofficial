@@ -18,23 +18,6 @@
  */
 package com.pcinpact.adapters;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-
-import com.pcinpact.Constantes;
-import com.pcinpact.R;
-import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
-import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
-import com.pcinpact.adapters.viewholder.ContenuArticleViewHolder;
-import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
-import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.CommentaireItem;
-import com.pcinpact.items.ContenuArticleItem;
-import com.pcinpact.items.Item;
-import com.pcinpact.items.SectionItem;
-import com.pcinpact.network.URLImageProvider;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -49,337 +32,353 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pcinpact.Constantes;
+import com.pcinpact.R;
+import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
+import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
+import com.pcinpact.adapters.viewholder.ContenuArticleViewHolder;
+import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.ContenuArticleItem;
+import com.pcinpact.items.Item;
+import com.pcinpact.items.SectionItem;
+import com.pcinpact.network.URLImageProvider;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
 /**
  * Adapter pour le rendu des *Item.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ItemsAdapter extends BaseAdapter {
-	/**
-	 * Context de l'application.
-	 */
-	private Context monContext;
-	/**
-	 * Layout inflater.
-	 */
-	private LayoutInflater monLayoutInflater;
-	/**
-	 * Items à afficher.
-	 */
-	private ArrayList<? extends Item> mesItems;
+    /**
+     * Context de l'application.
+     */
+    private Context monContext;
+    /**
+     * Layout inflater.
+     */
+    private LayoutInflater monLayoutInflater;
+    /**
+     * Items à afficher.
+     */
+    private ArrayList<? extends Item> mesItems;
 
-	/**
-	 * Constructeur.
-	 * 
-	 * @param unContext contect de l'application
-	 * @param desItems items à afficher
-	 */
-	public ItemsAdapter(final Context unContext, final ArrayList<? extends Item> desItems) {
-		// Je charge le bouzin
-		monContext = unContext.getApplicationContext();
-		mesItems = desItems;
-		monLayoutInflater = LayoutInflater.from(monContext);
-	}
+    /**
+     * Constructeur.
+     *
+     * @param unContext contect de l'application
+     * @param desItems  items à afficher
+     */
+    public ItemsAdapter(final Context unContext, final ArrayList<? extends Item> desItems) {
+        // Je charge le bouzin
+        monContext = unContext.getApplicationContext();
+        mesItems = desItems;
+        monLayoutInflater = LayoutInflater.from(monContext);
+    }
 
-	/**
-	 * MàJ les données de la liste d'items.
-	 * 
-	 * @param nouveauxItems liste d'items
-	 */
-	public void updateListeItems(final ArrayList<? extends Item> nouveauxItems) {
-		mesItems = nouveauxItems;
-	}
+    /**
+     * MàJ les données de la liste d'items.
+     *
+     * @param nouveauxItems liste d'items
+     */
+    public void updateListeItems(final ArrayList<? extends Item> nouveauxItems) {
+        mesItems = nouveauxItems;
+    }
 
-	@Override
-	public int getCount() {
-		return mesItems.size();
-	}
+    @Override
+    public int getCount() {
+        return mesItems.size();
+    }
 
-	@Override
-	public Item getItem(int arg0) {
-		return mesItems.get(arg0);
-	}
+    @Override
+    public Item getItem(int arg0) {
+        return mesItems.get(arg0);
+    }
 
-	@Override
-	public long getItemId(int arg0) {
-		return arg0;
-	}
+    @Override
+    public long getItemId(int arg0) {
+        return arg0;
+    }
 
-	/**
-	 * Nombre de type d'items existants.
-	 */
-	@Override
-	public int getViewTypeCount() {
-		return Item.NOMBRE_DE_TYPES;
-	}
+    /**
+     * Nombre de type d'items existants.
+     */
+    @Override
+    public int getViewTypeCount() {
+        return Item.NOMBRE_DE_TYPES;
+    }
 
-	/**
-	 * Type de l'itemt à la position (pour définir le bon type de vue à fournir).
-	 */
-	@Override
-	public int getItemViewType(int position) {
-		return mesItems.get(position).getType();
-	}
+    /**
+     * Type de l'itemt à la position (pour définir le bon type de vue à fournir).
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return mesItems.get(position).getType();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
-		// Pas de recyclage
-		if (convertView == null) {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
-			}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
+        // Pas de recyclage
+        if (convertView == null) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
+            }
 
-			// Je crée la vue qui va bien...
-			switch (getItemViewType(position)) {
-				case Item.TYPE_SECTION:
-					// Je charge mon layout
-					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
-					// Ses propriétés
-					convertView.setOnClickListener(null);
-					convertView.setOnLongClickListener(null);
+            // Je crée la vue qui va bien...
+            switch (getItemViewType(position)) {
+                case Item.TYPE_SECTION:
+                    // Je charge mon layout
+                    convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
+                    // Ses propriétés
+                    convertView.setOnClickListener(null);
+                    convertView.setOnLongClickListener(null);
 
-					// Je crée mon viewHolder
-					SectionItemViewHolder sectionVH = new SectionItemViewHolder();
-					// Je prépare mon holder
-					sectionVH.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
-					// Et l'assigne
-					convertView.setTag(sectionVH);
-					break;
+                    // Je crée mon viewHolder
+                    SectionItemViewHolder sectionVH = new SectionItemViewHolder();
+                    // Je prépare mon holder
+                    sectionVH.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
+                    // Et l'assigne
+                    convertView.setTag(sectionVH);
+                    break;
 
-				case Item.TYPE_ARTICLE:
-					// Je charge mon layout
-					convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
+                case Item.TYPE_ARTICLE:
+                    // Je charge mon layout
+                    convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 
-					// Je crée mon viewHolder
-					ArticleItemViewHolder articleVH = new ArticleItemViewHolder();
-					// Je prépare mon holder
-					articleVH.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
-					articleVH.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
-					articleVH.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
-					articleVH.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
-					articleVH.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
-					articleVH.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
-					articleVH.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
-					// Et l'assigne
-					convertView.setTag(articleVH);
-					break;
+                    // Je crée mon viewHolder
+                    ArticleItemViewHolder articleVH = new ArticleItemViewHolder();
+                    // Je prépare mon holder
+                    articleVH.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
+                    articleVH.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
+                    articleVH.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
+                    articleVH.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
+                    articleVH.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
+                    articleVH.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
+                    articleVH.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
+                    // Et l'assigne
+                    convertView.setTag(articleVH);
+                    break;
 
-				case Item.TYPE_COMMENTAIRE:
-					// Je charge mon layout
-					convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
+                case Item.TYPE_COMMENTAIRE:
+                    // Je charge mon layout
+                    convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
 
-					// Je crée mon viewHolder
-					CommentaireItemViewHolder commentaireVH = new CommentaireItemViewHolder();
-					// Je prépare mon holder
-					commentaireVH.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
-					commentaireVH.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
-					commentaireVH.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
-					// Et l'assigne
-					convertView.setTag(commentaireVH);
-					break;
+                    // Je crée mon viewHolder
+                    CommentaireItemViewHolder commentaireVH = new CommentaireItemViewHolder();
+                    // Je prépare mon holder
+                    commentaireVH.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
+                    commentaireVH.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
+                    commentaireVH.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
+                    // Et l'assigne
+                    convertView.setTag(commentaireVH);
+                    break;
 
-					
-				case Item.TYPE_CONTENU_ARTICLE:
-					// Je charge mon layout
-					convertView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
 
-					// Je crée mon viewHolder
-					ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
-					// Je prépare mon holder
-					contenuVH.contenu = (TextView) convertView.findViewById(R.id.texteArticle);
-					// Et l'assigne
-					convertView.setTag(contenuVH);
-					break;
-					
-				default:
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.e("ItemsAdapter", "getView : getItemViewType incorrect : " + getItemViewType(position));
-					}
-					break;
-			}
-		} else {
-			// DEBUG
-			if (Constantes.DEBUG) {
-				// 0...n vs 1...(n+1)
-				Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + (position + 1) + ")");
-			}
-		}
+                case Item.TYPE_CONTENU_ARTICLE:
+                    // Je charge mon layout
+                    convertView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
 
-		Item i = mesItems.get(position);
+                    // Je crée mon viewHolder
+                    ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
+                    // Je prépare mon holder
+                    contenuVH.contenu = (TextView) convertView.findViewById(R.id.texteArticle);
+                    // Et l'assigne
+                    convertView.setTag(contenuVH);
+                    break;
 
-		if (i != null) {
-			switch (i.getType()) {
-				case Item.TYPE_SECTION:
-					// Je charge mon ItemsViewHolder (lien vers les *View)
-					SectionItemViewHolder sectionVH = (SectionItemViewHolder) convertView.getTag();
+                default:
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ItemsAdapter", "getView : getItemViewType incorrect : " + getItemViewType(position));
+                    }
+                    break;
+            }
+        } else {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                // 0...n vs 1...(n+1)
+                Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + (position + 1) + ")");
+            }
+        }
 
-					SectionItem si = (SectionItem) i;
+        Item i = mesItems.get(position);
 
-					sectionVH.sectionView.setText(si.getTitre());
+        if (i != null) {
+            switch (i.getType()) {
+                case Item.TYPE_SECTION:
+                    // Je charge mon ItemsViewHolder (lien vers les *View)
+                    SectionItemViewHolder sectionVH = (SectionItemViewHolder) convertView.getTag();
 
-					// On applique le zoom éventuel
-					appliqueZoom(sectionVH.sectionView, Constantes.TEXT_SIZE_MEDIUM);
-					break;
+                    SectionItem si = (SectionItem) i;
 
-				case Item.TYPE_ARTICLE:
-					// Je charge mon ItemsViewHolder (lien vers les *View)
-					ArticleItemViewHolder articleVH = (ArticleItemViewHolder) convertView.getTag();
-					/**
-					 * Article
-					 */
-					ArticleItem ai = (ArticleItem) i;
+                    sectionVH.sectionView.setText(si.getTitre());
 
-					// L'article est-il déjà lu ?
-					if (ai.isLu()) {
-						// Couleur lu
-						articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
-					} else {
-						// Couleur non lu
-						articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
-					}
+                    // On applique le zoom éventuel
+                    appliqueZoom(sectionVH.sectionView, Constantes.TEXT_SIZE_MEDIUM);
+                    break;
 
-					// Gestion du badge abonné
-					if (ai.isAbonne()) {
-						articleVH.labelAbonne.setVisibility(View.VISIBLE);
-					} else {
-						articleVH.labelAbonne.setVisibility(View.GONE);
-					}
-					// Remplissage des textview
-					articleVH.titreArticle.setText(ai.getTitre());
-					articleVH.heureArticle.setText(ai.getHeureMinutePublication());
-					articleVH.sousTitreArticle.setText(ai.getSousTitre());
-					articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
-					// Gestion de l'image
-					FileInputStream in;
-					try {
-						// Ouverture du fichier en cache
-						File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES
-								+ ai.getImageName());
-						in = new FileInputStream(monFichier);
-						articleVH.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
-						in.close();
-					} catch (Exception e) {
-						// Si le fichier n'est pas trouvé, je fournis une image par défaut
-						articleVH.imageArticle
-								.setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
+                case Item.TYPE_ARTICLE:
+                    // Je charge mon ItemsViewHolder (lien vers les *View)
+                    ArticleItemViewHolder articleVH = (ArticleItemViewHolder) convertView.getTag();
+                    /**
+                     * Article
+                     */
+                    ArticleItem ai = (ArticleItem) i;
 
-						// DEBUG
-						if (Constantes.DEBUG) {
-							Log.e("ItemsAdapter", "getView -> Article", e);
-						}
-					}
+                    // L'article est-il déjà lu ?
+                    if (ai.isLu()) {
+                        // Couleur lu
+                        articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
+                    } else {
+                        // Couleur non lu
+                        articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
+                    }
 
-					// On applique le zoom éventuel
-					appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
-					appliqueZoom(articleVH.heureArticle, Constantes.TEXT_SIZE_SMALL);
-					appliqueZoom(articleVH.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
-					appliqueZoom(articleVH.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
-					appliqueZoom(articleVH.labelAbonne, Constantes.TEXT_SIZE_SMALL);
-					break;
+                    // Gestion du badge abonné
+                    if (ai.isAbonne()) {
+                        articleVH.labelAbonne.setVisibility(View.VISIBLE);
+                    } else {
+                        articleVH.labelAbonne.setVisibility(View.GONE);
+                    }
+                    // Remplissage des textview
+                    articleVH.titreArticle.setText(ai.getTitre());
+                    articleVH.heureArticle.setText(ai.getHeureMinutePublication());
+                    articleVH.sousTitreArticle.setText(ai.getSousTitre());
+                    articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
+                    // Gestion de l'image
+                    FileInputStream in;
+                    try {
+                        // Ouverture du fichier en cache
+                        File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES
+                                + ai.getImageName());
+                        in = new FileInputStream(monFichier);
+                        articleVH.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
+                        in.close();
+                    } catch (Exception e) {
+                        // Si le fichier n'est pas trouvé, je fournis une image par défaut
+                        articleVH.imageArticle
+                                .setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
 
-				case Item.TYPE_COMMENTAIRE:
-					// Je charge mon ItemsViewHolder (lien vers les *View)
-					CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) convertView.getTag();
-					/**
-					 * Commentaire
-					 */
-					CommentaireItem ci = (CommentaireItem) i;
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView -> Article", e);
+                        }
+                    }
 
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.i("ItemsAdapter", "Commentaire #" + ci.getId());
-					}
+                    // On applique le zoom éventuel
+                    appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
+                    appliqueZoom(articleVH.heureArticle, Constantes.TEXT_SIZE_SMALL);
+                    appliqueZoom(articleVH.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
+                    appliqueZoom(articleVH.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
+                    appliqueZoom(articleVH.labelAbonne, Constantes.TEXT_SIZE_SMALL);
+                    break;
 
-					// Remplissage des textview
-					commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
-					commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
+                case Item.TYPE_COMMENTAIRE:
+                    // Je charge mon ItemsViewHolder (lien vers les *View)
+                    CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) convertView.getTag();
+                    /**
+                     * Commentaire
+                     */
+                    CommentaireItem ci = (CommentaireItem) i;
 
-					Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
-							commentaireVH.commentaire, ci.getCommentaire()), null);
-					commentaireVH.commentaire.setText(spannedCommentaire);
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ItemsAdapter", "Commentaire #" + ci.getId());
+                    }
 
-					// Liens cliquables ? option utilisateur !
-					Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
-							R.bool.defautOptionLiensDansCommentaires);
-					if (lienClickable) {
-						// Active les liens a href
-						commentaireVH.commentaire.setMovementMethod(new GestionLiens());
-					} else {
-						// Désactivation de l'effet de click
-						convertView.setOnClickListener(null);
-						convertView.setOnLongClickListener(null);
-					}
+                    // Remplissage des textview
+                    commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
+                    commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
-					// On applique le zoom éventuel
-					appliqueZoom(commentaireVH.auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
-					appliqueZoom(commentaireVH.numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
-					appliqueZoom(commentaireVH.commentaire, Constantes.TEXT_SIZE_SMALL);
-					break;
+                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
+                            commentaireVH.commentaire, ci.getCommentaire()), null);
+                    commentaireVH.commentaire.setText(spannedCommentaire);
 
-					
-				case Item.TYPE_CONTENU_ARTICLE:
-					// Je charge mon ItemsViewHolder (lien vers les *View)
-					ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) convertView.getTag();
-					/**
-					 * Contenu
-					 */
-					ContenuArticleItem cai = (ContenuArticleItem) i;
+                    // Liens cliquables ? option utilisateur !
+                    Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
+                            R.bool.defautOptionLiensDansCommentaires);
+                    if (lienClickable) {
+                        // Active les liens a href
+                        commentaireVH.commentaire.setMovementMethod(new GestionLiens());
+                    } else {
+                        // Désactivation de l'effet de click
+                        convertView.setOnClickListener(null);
+                        convertView.setOnLongClickListener(null);
+                    }
 
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.i("ItemsAdapter", "Contenu Article #" + cai.getContenu());
-					}
+                    // On applique le zoom éventuel
+                    appliqueZoom(commentaireVH.auteurDateCommentaire, Constantes.TEXT_SIZE_MICRO);
+                    appliqueZoom(commentaireVH.numeroCommentaire, Constantes.TEXT_SIZE_MICRO);
+                    appliqueZoom(commentaireVH.commentaire, Constantes.TEXT_SIZE_SMALL);
+                    break;
 
-					// Remplissage des textview
-					Spanned spannedContenu = Html.fromHtml(cai.getContenu(), null, null);
-					contenuVH.contenu.setText(spannedContenu);
 
-					// On applique le zoom éventuel
-					appliqueZoom(contenuVH.contenu, Constantes.TEXT_SIZE_SMALL);
-					break;
-					
-				default:
-					// DEBUG
-					if (Constantes.DEBUG) {
-						Log.e("ItemsAdapter", "getView : i.getType() incorrect : " + i.getType());
-					}
-					break;
+                case Item.TYPE_CONTENU_ARTICLE:
+                    // Je charge mon ItemsViewHolder (lien vers les *View)
+                    ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) convertView.getTag();
+                    /**
+                     * Contenu
+                     */
+                    ContenuArticleItem cai = (ContenuArticleItem) i;
 
-			}
-		}
-		return convertView;
-	}
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ItemsAdapter", "Contenu Article #" + cai.getContenu());
+                    }
 
-	/**
-	 * Applique un zoom sur une textview.
-	 * 
-	 * @param uneTextView textView cible
-	 * @param defaultSize taille par défaut
-	 */
-	private void appliqueZoom(final TextView uneTextView, final int defaultSize) {
-		// Taile par défaut
-		int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
-		// L'option selectionnée
-		int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
+                    // Remplissage des textview
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), null, null);
+                    contenuVH.contenu.setText(spannedContenu);
 
-		float monCoeffZoom = 1;
+                    // On applique le zoom éventuel
+                    appliqueZoom(contenuVH.contenu, Constantes.TEXT_SIZE_SMALL);
+                    break;
 
-		// Faut-il applique un zoom ?
-		if (tailleUtilisateur != tailleDefaut) {
-			monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
-		}
+                default:
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ItemsAdapter", "getView : i.getType() incorrect : " + i.getType());
+                    }
+                    break;
 
-		float nouvelleTaille = defaultSize * monCoeffZoom;
-		uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, nouvelleTaille);
+            }
+        }
+        return convertView;
+    }
 
-		// DEBUG
-		if (Constantes.DEBUG) {
-			Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize + " => "
-					+ nouvelleTaille);
-		}
-	}
+    /**
+     * Applique un zoom sur une textview.
+     *
+     * @param uneTextView textView cible
+     * @param defaultSize taille par défaut
+     */
+    private void appliqueZoom(final TextView uneTextView, final int defaultSize) {
+        // Taile par défaut
+        int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
+        // L'option selectionnée
+        int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
+
+        float monCoeffZoom = 1;
+
+        // Faut-il applique un zoom ?
+        if (tailleUtilisateur != tailleDefaut) {
+            monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
+        }
+
+        float nouvelleTaille = defaultSize * monCoeffZoom;
+        uneTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, nouvelleTaille);
+
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize + " => "
+                    + nouvelleTaille);
+        }
+    }
 }

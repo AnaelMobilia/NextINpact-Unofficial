@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2013, 2014, 2015 Sami Ferhah, Anael Mobilia
  * 
@@ -22,7 +21,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pcinpact"
     android:versionCode="186"
-    android:versionName="1.8.6" >
+    android:versionName="1.8.6">
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
@@ -31,8 +30,7 @@
     <!-- Gestion des tablettes -->
     <supports-screens
         android:largeScreens="true"
-        android:xlargeScreens="true" >
-    </supports-screens>
+        android:xlargeScreens="true"></supports-screens>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -48,12 +46,12 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_nextinpact"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
         <activity
             android:name=".ListeArticlesActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +62,7 @@
             android:name=".ArticleActivity"
             android:parentActivityName="com.pcinpact.ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />
@@ -73,7 +71,7 @@
             android:name=".CommentairesActivity"
             android:parentActivityName="com.pcinpact.ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />
@@ -82,7 +80,7 @@
             android:name=".OptionsActivity"
             android:parentActivityName="com.pcinpact.ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />
@@ -91,7 +89,7 @@
             android:name=".AboutActivity"
             android:parentActivityName="com.pcinpact.ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />
@@ -100,7 +98,7 @@
             android:name=".DebugActivity"
             android:parentActivityName="com.pcinpact.DebugActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme" >
+            android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pcinpact.ListeArticlesActivity" />

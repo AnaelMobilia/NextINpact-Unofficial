@@ -22,10 +22,9 @@ import com.pcinpact.items.Item;
 
 /**
  * Objet générique ViewHolder.
- * 
- * @author Anael
  *
+ * @author Anael
  */
-public interface ItemViewHolder extends Item{
- 
+public interface ItemViewHolder extends Item {
+
 }

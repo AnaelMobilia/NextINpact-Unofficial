@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2015 Anael Mobilia
  * 
@@ -31,7 +30,7 @@
     android:paddingLeft="5dp"
     android:paddingRight="?android:attr/scrollbarSize"
     android:paddingStart="5dp"
-    android:paddingTop="5dp" >
+    android:paddingTop="5dp">
 
     <TextView
         android:id="@+id/titreArticle"

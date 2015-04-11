@@ -20,38 +20,37 @@ package com.pcinpact.items;
 
 /**
  * Contenu textuel d'un article.
- * 
- * @author Anael
  *
+ * @author Anael
  */
 public class ContenuArticleItem implements com.pcinpact.items.Item {
 
-	/**
-	 * Contenu de l'article.
-	 */
-	private String contenu;
+    /**
+     * Contenu de l'article.
+     */
+    private String contenu;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.pcinpact.items.Item#getType()
-	 */
-	@Override
-	public int getType() {
-		return Item.TYPE_CONTENU_ARTICLE;
-	}
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
+     */
+    @Override
+    public int getType() {
+        return Item.TYPE_CONTENU_ARTICLE;
+    }
 
-	/**
-	 * @return contenu
-	 */
-	public String getContenu() {
-		return contenu;
-	}
+    /**
+     * @return contenu
+     */
+    public String getContenu() {
+        return contenu;
+    }
 
-	/**
-	 * @param contenu contenu
-	 */
-	public void setContenu(String contenu) {
-		this.contenu = contenu;
-	}
+    /**
+     * @param contenu contenu
+     */
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
 
 }
