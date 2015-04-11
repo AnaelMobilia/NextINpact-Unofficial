@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-3c7d652fbbcc8f82227e1e5e4daee19719716acf.jar" />
+    </item>
+    <item
+        jar="C:\Users\Anael\.gradle\caches\modules-2\files-2.1\commons-io\commons-io\2.2\83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a\commons-io-2.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="83b5b8a7ba1c08f9e8c8ff2373724e33d3c1e22a">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\commons-io-2.2-563276af651f2304989a817e87dcf990ba0eb75b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\classes-959469868289b8c5347ab84878c2a5a56a904f3d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Anael\.gradle\caches\modules-2\files-2.1\org.jsoup\jsoup\1.8.1\1eb6690b0c629d7000c77a72df5e822fb974f521\jsoup-1.8.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1eb6690b0c629d7000c77a72df5e822fb974f521">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\jsoup-1.8.1-05bb0ab50d7ef304b6fb6bdd094097c085421cf1.jar" />
+    </item>
+    <item
+        jar="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\classes-cd0cd4110f4eaad5416f46f9fed99fe62d7fed16.jar" />
+    </item>
+    <item
+        jar="C:\Users\Anael\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\Anael\Android studioProjects\NextINpact-Unofficial\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-c7dee1add11a21dcb820eced168228975e1ee16e.jar" />
+    </item>
+
+</items>
