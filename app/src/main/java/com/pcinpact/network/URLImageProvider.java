@@ -37,6 +37,7 @@ import com.pcinpact.items.Item;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Smileys dans les commentaires. Si image non présente en cache, la téléchargera.
@@ -53,26 +54,30 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     private TextView maTextView;
     /**
-     * Texte du commentaire (pour recharger quand le smiley est dispo).
+     * Texte du contenu (pour recharger lorsque l'image sera disponible.
      */
-    private String monCommentaire;
+    private String monContenu;
     /**
-     * #176 - Est-ce un appel interne pour MàJ une image ?
+     * Liste des fichiers déjà en cours de DL
      */
-    private boolean isCallback = false;
+    private HashSet<String> mesDL;
 
     /**
-     * Constructeur.
+     * Constructeur. Sera appelé n fois pour un seul élément View
      *
      * @param unContext     context de l'application
      * @param uneTextView   textView concernée
-     * @param unCommentaire commentaire affiché dans la textView
+     * @param unContenu     contenu affiché dans la textView
      */
-    public URLImageProvider(final Context unContext, final TextView uneTextView, final String unCommentaire) {
+    public URLImageProvider(final Context unContext, final TextView uneTextView, final String unContenu) {
         super();
         monContext = unContext.getApplicationContext();
+        // La textView
         maTextView = uneTextView;
-        monCommentaire = unCommentaire;
+        // Son contenu actuel (permet d'éviter un affichage des smileys si le contenu à changé)
+        monContenu = unContenu;
+        // Initialisation de la liste des images en cours de DL
+        mesDL = new HashSet<>();
     }
 
     @SuppressLint("NewApi")
@@ -98,8 +103,18 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
                 Log.i("URLImageProvider", nomSmiley + " fourni depuis le cache");
             }
         } else {
-            // #176 - Est-ce le premier appel ou un callback pour le rendu ?
-            if (!isCallback) {
+            // L'image est-elle déjà en DL (ou à déjà échoué) ?
+            if(mesDL.contains(urlSource)) {
+                // DEBUG
+                if(Constantes.DEBUG) {
+                    Log.i("URLImageProvider", "DL déjà en cours - " + urlSource);
+                }
+            }
+            // Sinon on lance le DL !
+            else {
+                // Je note le DL de l'image
+                mesDL.add(urlSource);
+
                 // Lancement du DL
                 AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, Constantes.IMAGE_SMILEY, urlSource);
                 // Parallélisation des téléchargements pour l'ensemble de l'application
@@ -113,9 +128,6 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
                 if (Constantes.DEBUG) {
                     Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
                 }
-
-                // #176 - Je note que le prochain appel sera un callback pour le rendu uniquement
-                isCallback = true;
             }
 
             // Retour d'une image générique (logo NXI)
@@ -184,7 +196,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // Je calcule le rendu du commentaire (html brut)
         // Dans le constructeur, la textview n'a pas encore de contenu (on le fabrique...)
-        CharSequence contenuTextView = Html.fromHtml(monCommentaire);
+        CharSequence contenuTextView = Html.fromHtml(monContenu);
 
         // Vérification du non recyclage de la textview (même contenu)
         if (contenuTextView.toString().contentEquals(maTextView.getText())) {
@@ -194,7 +206,7 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
             }
 
             // J'actualise le commentaire
-            Spanned spannedContent = Html.fromHtml(monCommentaire, new URLImageProvider(monContext, maTextView, monCommentaire), null);
+            Spanned spannedContent = Html.fromHtml(monContenu, this, null);
             maTextView.setText(spannedContent);
         } else {
             // DEBUG
