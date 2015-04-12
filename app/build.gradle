@@ -22,6 +22,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+
+    /**
+    * Configuration de lint
+    */
+    lintOptions {
+        // Affichage sur stdout des erreurs
+        textReport true
+        textOutput 'stdout'
+    }
 }
 
 dependencies {
