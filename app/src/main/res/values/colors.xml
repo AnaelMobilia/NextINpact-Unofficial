@@ -28,4 +28,5 @@
     <!-- Blanc Header -->
     <color name="refreshBlanc">#ffffff</color>
 
+    <color name="___defautTexte">#000000</color>
 </resources>
