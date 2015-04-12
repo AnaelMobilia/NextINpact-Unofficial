@@ -2,3 +2,4 @@ app/build
 .gradle
 build
 .idea
+local.properties
