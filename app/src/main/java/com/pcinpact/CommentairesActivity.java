@@ -213,7 +213,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.commentaires_activity_actions, menu);
+        inflater.inflate(R.menu.activity_commentaires_actions, menu);
 
         // Ticket #86 : un chargement automatique a-t-il lieu (sera lancé avant de créer le menu)
         if (isLoading) {

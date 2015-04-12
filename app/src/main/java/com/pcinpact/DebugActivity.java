@@ -39,7 +39,7 @@ public class DebugActivity extends ActionBarActivity {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.debug);
+        setContentView(R.layout.activity_debug);
 
         /**
          * Boutton : effacement du cache

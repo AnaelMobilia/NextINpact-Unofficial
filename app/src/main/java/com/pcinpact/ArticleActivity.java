@@ -59,7 +59,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         super.onCreate(savedInstanceState);
         // Partie graphique
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.article);
+        setContentView(R.layout.activity_article);
 
         // ID de l'article concerné
         int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
@@ -97,7 +97,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
     public boolean onCreateOptionsMenu(Menu menu) {
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.article_activity_actions, menu);
+        inflater.inflate(R.menu.activity_article_actions, menu);
 
         // Get the menu item.
         MenuItem shareItem = menu.findItem(R.id.action_share);

@@ -19,7 +19,7 @@
  */
 -->
 
-<!-- Contenu textuel dans un article -->
+<!-- Contenu textuel dans un activity_article -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutArticle"
     android:layout_width="match_parent"

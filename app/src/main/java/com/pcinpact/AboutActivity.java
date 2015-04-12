@@ -34,7 +34,7 @@ public class AboutActivity extends ActionBarActivity {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.about);
+        setContentView(R.layout.activity_about);
 
         // Affichage du numéro de version
         Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),

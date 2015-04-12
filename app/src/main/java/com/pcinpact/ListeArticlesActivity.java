@@ -107,7 +107,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         // On définit la vue
-        setContentView(R.layout.liste_articles);
+        setContentView(R.layout.activity_liste_articles);
         // On récupère les éléments GUI
         monListView = (ListView) findViewById(R.id.listeArticles);
         monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -250,10 +250,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // Chargement du fichier XML
         if (modeDebug) {
             // Mode DEBUG
-            inflater.inflate(R.menu.liste_articles_activity_actions_debug, monMenu);
+            inflater.inflate(R.menu.activity_liste_articles_debug__actions, monMenu);
         } else {
             // Mode standard
-            inflater.inflate(R.menu.liste_articles_activity_actions, monMenu);
+            inflater.inflate(R.menu.activity_liste_articles_actions, monMenu);
         }
 
         // Je lance l'animation si un DL est déjà en cours

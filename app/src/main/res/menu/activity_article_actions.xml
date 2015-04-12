@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2013, 2014 Sami Ferhah
+ * Copyright 2014, 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -17,16 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
+
+
 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    <!-- Share -->
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_menu_share"
+        android:title="@string/action_share"
+        yourapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        yourapp:showAsAction="ifRoom" />
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!-- Commentaires -->
+    <item
+        android:id="@+id/action_comments"
+        android:icon="@drawable/ic_menu_start_conversation"
+        android:title="@string/action_comments"
+        yourapp:showAsAction="ifRoom" />
 
-</LinearLayout>
+</menu>
