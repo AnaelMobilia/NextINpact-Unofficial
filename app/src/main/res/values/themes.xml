@@ -18,11 +18,11 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- the theme applied to the application or activity -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle">@style/NextInpactActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar</item>
     </style>
