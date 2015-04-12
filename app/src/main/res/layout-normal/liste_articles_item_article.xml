@@ -74,7 +74,7 @@
         android:layout_marginRight="2dp"
         android:layout_toEndOf="@id/heureArticle"
         android:layout_toRightOf="@id/heureArticle"
-        android:background="@layout/liste_articles_item_article_background_badge_abonne"
+        android:background="@drawable/liste_articles_item_article_background_badge_abonne"
         android:text="@string/accueilBadgeAbonne"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
