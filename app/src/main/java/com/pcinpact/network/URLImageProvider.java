@@ -53,10 +53,6 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     private TextView maTextView;
     /**
-     * Contenu de la textView;
-     */
-    private CharSequence contenuTextView;
-    /**
      * Texte du commentaire (pour recharger quand le smiley est dispo).
      */
     private String monCommentaire;
@@ -77,9 +73,6 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
         monContext = unContext.getApplicationContext();
         maTextView = uneTextView;
         monCommentaire = unCommentaire;
-
-        // Sauvegarde du contenu de la textview
-        contenuTextView = maTextView.getText();
     }
 
     @SuppressLint("NewApi")
@@ -189,18 +182,19 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
             Log.i("URLImageProvider", "Callback DL smiley fini - " + uneURL);
         }
 
-        Log.e("NXI", contenuTextView.toString());
-        Log.e("NXI", maTextView.getText().toString());
+        // Je calcule le rendu du commentaire (html brut)
+        // Dans le constructeur, la textview n'a pas encore de contenu (on le fabrique...)
+        CharSequence contenuTextView = Html.fromHtml(monCommentaire);
 
         // Vérification du non recyclage de la textview (même contenu)
-        if (contenuTextView.equals(maTextView.getText())) {
+        if (contenuTextView.toString().contentEquals(maTextView.getText())) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.d("URLImageProvider", "Contenu de la textview conforme => MàJ " + uneURL);
             }
 
             // J'actualise le commentaire
-            Spanned spannedContent = Html.fromHtml(monCommentaire, this, null);
+            Spanned spannedContent = Html.fromHtml(monCommentaire, new URLImageProvider(monContext, maTextView, monCommentaire), null);
             maTextView.setText(spannedContent);
         } else {
             // DEBUG
