@@ -80,6 +80,10 @@ public class Constantes {
      */
     public static final String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
     /**
+     * URL des illustrations des articles.
+     */
+    public static final String NEXT_INPACT_URL_ILLUSTRATIONS = "http://az664837.vo.msecnd.net/images/bd/news/";
+    /**
      * Nb de commentaires par page.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;

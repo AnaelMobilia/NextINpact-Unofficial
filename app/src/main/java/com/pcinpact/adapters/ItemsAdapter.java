@@ -298,7 +298,7 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
-                            commentaireVH.commentaire, ci.getCommentaire()), null);
+                            commentaireVH.commentaire, ci.getCommentaire(), Constantes.IMAGE_SMILEY), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Liens cliquables ? option utilisateur !
@@ -334,7 +334,7 @@ public class ItemsAdapter extends BaseAdapter {
                     }
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), null, null);
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new URLImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE), null);
                     contenuVH.contenu.setText(spannedContenu);
 
                     // On applique le zoom éventuel

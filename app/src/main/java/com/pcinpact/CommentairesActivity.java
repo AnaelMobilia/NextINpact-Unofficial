@@ -56,7 +56,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     /**
      * Les commentaires.
      */
-    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
+    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
      * ID de l'article.
      */

@@ -50,6 +50,10 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     private Context monContext;
     /**
+     * Type d'images.
+     */
+    private int monTypeImages;
+    /**
      * TextView dans laquelle l'image est affichée.
      */
     private TextView maTextView;
@@ -58,20 +62,22 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     private String monContenu;
     /**
-     * Liste des fichiers déjà en cours de DL
+     * Liste des fichiers déjà en cours de DL.
      */
     private HashSet<String> mesDL;
 
     /**
-     * Constructeur. Sera appelé n fois pour un seul élément View
+     * Constructeur. Sera appelé une fois pour un seul élément View
      *
-     * @param unContext     context de l'application
-     * @param uneTextView   textView concernée
-     * @param unContenu     contenu affiché dans la textView
+     * @param unContext   context de l'application
+     * @param uneTextView textView concernée
+     * @param unContenu   contenu affiché dans la textView
      */
-    public URLImageProvider(final Context unContext, final TextView uneTextView, final String unContenu) {
+    public URLImageProvider(final Context unContext, final TextView uneTextView, final String unContenu, final int unTypeImages) {
         super();
         monContext = unContext.getApplicationContext();
+        // Le type d'images.
+        monTypeImages = unTypeImages;
         // La textView
         maTextView = uneTextView;
         // Son contenu actuel (permet d'éviter un affichage des smileys si le contenu à changé)
@@ -83,53 +89,81 @@ public class URLImageProvider implements ImageGetter, RefreshDisplayInterface {
     @SuppressLint("NewApi")
     @Override
     /**
-     * Fournir une image (URL)
+     * Fournir une image (URL). Sera appelé n fois pour un seul élément View
      */
     public Drawable getDrawable(final String urlSource) {
         // Image de retour
         Drawable monRetour;
 
-        // Détermination de l'ID du smiley
-        String nomSmiley = urlSource.substring(Constantes.NEXT_INPACT_URL_SMILEYS.length());
+        // Nom du fichier
+        String nomFichier;
+        // Path du fichier
+        String pathFichier;
 
-        // Le smiley existe-t-il en local ?
-        File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, nomSmiley);
-        if (monFichier.exists()) {
+        // Détermination de l'ID & du path du fichier
+        switch (monTypeImages) {
+            // Smiley
+            case Constantes.IMAGE_SMILEY:
+                nomFichier = urlSource.substring(Constantes.NEXT_INPACT_URL_SMILEYS.length());
+                pathFichier = monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS;
+                break;
+
+            // Illustration d'un article
+            case Constantes.IMAGE_CONTENU_ARTICLE:
+                nomFichier = urlSource.substring(Constantes.NEXT_INPACT_URL_ILLUSTRATIONS.length());
+                pathFichier = monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS;
+                break;
+
+            // Défaut...
+            default:
+                nomFichier = null;
+                pathFichier = null;
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("URLImageProvider", "Cas défaut pour " + urlSource + " - type : " + monTypeImages);
+                }
+                break;
+        }
+
+        // Le fichier existe-t-il en local ?
+        File leFichier = new File(pathFichier, nomFichier);
+        if (leFichier.exists()) {
             // Je récupère directement mon image
-            monRetour = gestionTaille(Drawable.createFromPath(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS
-                    + nomSmiley));
+            monRetour = gestionTaille(Drawable.createFromPath(pathFichier + nomFichier));
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.i("URLImageProvider", nomSmiley + " fourni depuis le cache");
+                Log.i("URLImageProvider", nomFichier + " fourni depuis le cache");
             }
         } else {
             // L'image est-elle déjà en DL (ou à déjà échoué) ?
-            if(mesDL.contains(urlSource)) {
+            if (mesDL.contains(urlSource)) {
                 // DEBUG
-                if(Constantes.DEBUG) {
-                    Log.i("URLImageProvider", "DL déjà en cours - " + urlSource);
+                if (Constantes.DEBUG) {
+                    Log.i("URLImageProvider", "DL déjà traité - " + urlSource);
                 }
             }
             // Sinon on lance le DL !
             else {
-                // Je note le DL de l'image
-                mesDL.add(urlSource);
+                // Protection contre un fichier "défaut"
+                if (nomFichier != null) {
+                    // Je note le DL de l'image
+                    mesDL.add(urlSource);
 
-                // Lancement du DL
-                AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, Constantes.IMAGE_SMILEY, urlSource);
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAID.execute();
-                }
+                    // Lancement du DL
+                    AsyncImageDownloader monAID = new AsyncImageDownloader(monContext, this, monTypeImages, urlSource);
+                    // Parallélisation des téléchargements pour l'ensemble de l'application
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } else {
+                        monAID.execute();
+                    }
 
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.w("URLImageProvider", nomSmiley + " téléchargement en cours...");
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.w("URLImageProvider", nomFichier + " téléchargement en cours...");
+                    }
                 }
             }
-
             // Retour d'une image générique (logo NXI)
             monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
         }
