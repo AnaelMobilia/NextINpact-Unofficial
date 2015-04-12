@@ -277,7 +277,7 @@ public class ParseurHTML {
                  * Déchet (cath all)
                  */
                 monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
-                        + "\"><img src=\"file:///android_res/drawable/iframe_non_supporte.png\" /></a>");
+                        + "\"><img src=\"file:///android_res/drawable/iframe_non_supportee.png\" /></a>");
 
                 // DEBUG
                 if (Constantes.DEBUG) {
