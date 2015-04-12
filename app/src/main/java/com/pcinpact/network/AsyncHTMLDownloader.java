@@ -124,7 +124,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     @Override
     protected ArrayList<Item> doInBackground(String... params) {
         // Retour
-        ArrayList<Item> mesItems = new ArrayList<Item>();
+        ArrayList<Item> mesItems = new ArrayList<>();
 
         try {
             // Date du refresh

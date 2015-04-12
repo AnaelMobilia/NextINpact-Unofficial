@@ -51,7 +51,7 @@ public class ParseurHTML {
      * @return liste d'articleItem
      */
     public static ArrayList<ArticleItem> getListeArticles(final String unContenu, final String urlPage) {
-        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<ArticleItem>();
+        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         // Lancement du parseur sur la page
         Document pageNXI = Jsoup.parse(unContenu, urlPage);
@@ -168,7 +168,7 @@ public class ParseurHTML {
         Elements lesImagesLiens = lArticle.select("a[href] > img");
 
         // Set assure l'unicité de la balise (ex : <a...> <img... /> <img... /> </a>)
-        HashSet<Element> baliseA = new HashSet<Element>();
+        HashSet<Element> baliseA = new HashSet<>();
         // Récupération de toutes les balises <a...> avant <img...>
         for (Element uneImage : lesImagesLiens) {
             // J'enregistre le lien <a...>
@@ -350,7 +350,7 @@ public class ParseurHTML {
      * @return liste de CommentaireItem
      */
     public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final String urlPage) {
-        ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<CommentaireItem>();
+        ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
         // Lancement du parseur sur la page
         Document pageNXI = Jsoup.parse(unContenu, urlPage);

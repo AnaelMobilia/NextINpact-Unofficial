@@ -85,7 +85,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         }
 
 
-        ArrayList<ContenuArticleItem> monAR = new ArrayList<ContenuArticleItem>();
+        ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
         ContenuArticleItem toto = new ContenuArticleItem();
         toto.setContenu(monArticle.getContenu());
         monAR.add(toto);

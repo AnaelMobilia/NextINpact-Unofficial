@@ -68,7 +68,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     /**
      * Les articles.
      */
-    private ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+    private ArrayList<ArticleItem> mesArticles = new ArrayList<>();
     /**
      * ItemAdapter.
      */
@@ -538,7 +538,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
      * @return Liste d'articles
      */
     private ArrayList<Item> prepareAffichage() {
-        ArrayList<Item> monRetour = new ArrayList<Item>();
+        ArrayList<Item> monRetour = new ArrayList<>();
         String jourActuel = "";
 
         // Nombre d'articles à afficher

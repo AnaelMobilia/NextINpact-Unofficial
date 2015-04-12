@@ -66,7 +66,7 @@ public class Cache {
                  * Données à conserver
                  */
                 // Protection des images présentes dans les articles à conserver
-                ArrayList<String> imagesLegit = new ArrayList<String>();
+                ArrayList<String> imagesLegit = new ArrayList<>();
                 for (int i = 0; i < maLimite; i++) {
                     imagesLegit.add(mesArticles.get(i).getImageName());
                 }
@@ -180,7 +180,7 @@ public class Cache {
     /**
      * Effacement du cache v < 1.8.0
      *
-     * @param unContext
+     * @param unContext contexte de l'application
      */
     public static void effacerCacheV180(Context unContext) {
         // Protection du context

@@ -356,7 +356,7 @@ public final class DAO extends SQLiteOpenHelper {
             monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, null, null, null, null, "4 DESC", String.valueOf(nbVoulu));
         }
 
-        ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+        ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
         // Je passe tous les résultats
         while (monCursor.moveToNext()) {
@@ -391,7 +391,7 @@ public final class DAO extends SQLiteOpenHelper {
         Cursor monCursor = maBDD.query(true, BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE
                 + "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)", contenu, null, null, null, null);
 
-        ArrayList<ArticleItem> mesArticles = new ArrayList<ArticleItem>();
+        ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
         // Je passe tous les résultats
         while (monCursor.moveToNext()) {
@@ -513,7 +513,7 @@ public final class DAO extends SQLiteOpenHelper {
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?",
                 new String[]{String.valueOf(articleID)}, null, null, "2");
 
-        ArrayList<CommentaireItem> mesCommentaires = new ArrayList<CommentaireItem>();
+        ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;
         // Je passe tous les résultats
         while (monCursor.moveToNext()) {

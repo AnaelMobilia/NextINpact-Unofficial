@@ -225,7 +225,7 @@ public class CompteAbonne {
             HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
 
             // Paramètres de la requête
-            ArrayList<NameValuePair> mesParametres = new ArrayList<NameValuePair>();
+            ArrayList<NameValuePair> mesParametres = new ArrayList<>();
             mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_USERNAME, username));
             mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_PASSWORD, password));
 
