@@ -204,7 +204,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 // Menu debug
                 else if (key.equals(getResources().getString(R.string.idOptionDebug))) {
                     // invalidation du menu
-                    invalidateOptionsMenu();
+                    supportInvalidateOptionsMenu();
 
                     // DEBUG
                     if (Constantes.DEBUG) {
