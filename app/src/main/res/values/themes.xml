@@ -21,8 +21,8 @@
 <resources>
     <!-- the theme applied to the application or activity -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- Thème de l'action Bar -->
         <item name="android:actionBarStyle">@style/NextInpactActionBar</item>
-
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar</item>
     </style>
@@ -36,22 +36,8 @@
         <item name="background">@drawable/actionbar_background</item>
     </style>
 
-    <!-- Style personnalisé -->
+    <!-- Taille de texte personalisée -->
     <style name="textAppearanceMicro" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
     </style>
-
-    <!-- Reprise des autres valeurs de taille de texte -->
-    <style name="textAppearanceSmall" parent="@android:style/TextAppearance">
-        <item name="android:textSize">?android:attr/textAppearanceSmall</item>
-    </style>
-
-    <style name="textAppearanceMedium" parent="@android:style/TextAppearance">
-        <item name="android:textSize">?android:attr/textAppearanceMedium</item>
-    </style>
-
-    <style name="textAppearanceLarge" parent="@android:style/TextAppearance">
-        <item name="android:textSize">?android:attr/textAppearanceLarge</item>
-    </style>
-
 </resources>
