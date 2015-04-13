@@ -35,7 +35,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 
 /**
  * Parseur du code HTML.
@@ -423,7 +422,7 @@ public class ParseurHTML {
      * @return timestamp
      */
     private static long convertToTimeStamp(final String uneDate, final String unFormatDate) {
-        DateFormat dfm = new SimpleDateFormat(unFormatDate, Locale.getDefault());
+        DateFormat dfm = new SimpleDateFormat(unFormatDate, Constantes.LOCALE);
         long laDateTS = 0;
         try {
             // Récupération du timestamp

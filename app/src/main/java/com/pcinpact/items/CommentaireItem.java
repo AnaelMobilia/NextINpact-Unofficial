@@ -23,7 +23,6 @@ import com.pcinpact.Constantes;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Objet Commentaire.
@@ -65,7 +64,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     public String getFullDatePublication() {
         Date maDate = new Date(this.getTimeStampPublication());
         // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Locale.getDefault());
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
         return dfm.format(maDate);
     }

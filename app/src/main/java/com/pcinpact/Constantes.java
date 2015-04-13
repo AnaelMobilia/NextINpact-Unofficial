@@ -22,9 +22,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import java.util.Locale;
 
 /**
  * Constantes et outils.
@@ -47,6 +48,10 @@ public class Constantes {
     /**
      * PARAMETRES GENERAUX
      */
+    /**
+     * Locale à utiliser pour les timestamp
+     */
+    public static final Locale LOCALE = Locale.FRANCE;
     /**
      * Encodage des pages.
      */
@@ -95,14 +100,14 @@ public class Constantes {
      * Utilisation d'une compression pour les contenus textes.
      */
     public static final Boolean COMPRESSION_CONTENU_TEXTES = true;
-
-    /**
-     * TYPES DE TELECHARGEMENTS.
-     */
     /**
      * Utilisation d'une compression pour les contenus image.
      */
     public static final Boolean COMPRESSION_CONTENU_IMAGES = false;
+
+    /**
+     * TYPES DE TELECHARGEMENTS.
+     */
     /**
      * Type : liste des articles.
      */
@@ -123,22 +128,19 @@ public class Constantes {
      * Type : image -> du contenu d'un article.
      */
     public static final int IMAGE_CONTENU_ARTICLE = 5;
+    /**
+     * Type : image -> smiley dans commentaires.
+     */
+    public static final int IMAGE_SMILEY = 6;
+
 
     /**
      * FORMATS DU SITE POUR LE PARSEUR.
      */
     /**
-     * Type : image -> smiley dans commentaires.
-     */
-    public static final int IMAGE_SMILEY = 6;
-    /**
      * Format des dates des articles sur le site.
      */
     public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-
-    /**
-     * PATH DES FICHIERS LOCAUX.
-     */
     /**
      * Format des dates des commentaires sur le site.
      */
@@ -147,14 +149,15 @@ public class Constantes {
      * Date et Heure de publication d'un commentaire.
      */
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
+
+
+    /**
+     * PATH DES FICHIERS LOCAUX.
+     */
     /**
      * Path des miniatures des articles.
      */
     public static final String PATH_IMAGES_MINIATURES = "/MINIATURES/";
-
-    /**
-     * FORMATS D'AFFICHAGE.
-     */
     /**
      * Path des images de contenu des articles.
      */
@@ -163,6 +166,10 @@ public class Constantes {
      * Path des smileys.
      */
     public static final String PATH_IMAGES_SMILEYS = "/SMILEYS/";
+
+    /**
+     * FORMATS D'AFFICHAGE.
+     */
     /**
      * Date des sections sur la listeArticlesActivity.
      */
@@ -171,22 +178,22 @@ public class Constantes {
      * Heure de publication des articles sur la listeArticlesActivity.
      */
     public static final String FORMAT_AFFICHAGE_ARTICLE_HEURE = "HH:mm";
-
-    /**
-     * CONSTANTES EN BDD.
-     */
     /**
      * Date et Heure de dernière synchro.
      */
     public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
 
     /**
-     * TAILLE DES TEXTES. http://developer.android.com/design/style/typography.html
+     * CONSTANTES EN BDD.
      */
     /**
      * ID du refresh de la liste des articles.
      */
     public static final int DB_REFRESH_ID_LISTE_ARTICLES = 0;
+
+    /**
+     * TAILLE DES TEXTES. http://developer.android.com/design/style/typography.html
+     */
     /**
      * Taille de texte MICRO.
      */
@@ -203,10 +210,6 @@ public class Constantes {
      * Taille de texte LARGE.
      */
     public static final int TEXT_SIZE_LARGE = 22;
-
-    /**
-     * COULEURS D'AFFICHAGE.
-     */
     /**
      * Taille de texte XLARGE.
      */

@@ -57,7 +57,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * Liste des articles.
@@ -569,7 +568,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         } else {
             // Une MàJ à déjà été faite
             headerTextView.setText(getString(R.string.lastUpdate)
-                    + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
+                    + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Constantes.LOCALE).format(dernierRefresh));
         }
 
         return monRetour;

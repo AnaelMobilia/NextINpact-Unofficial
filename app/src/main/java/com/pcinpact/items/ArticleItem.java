@@ -23,7 +23,6 @@ import com.pcinpact.Constantes;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Objet Article.
@@ -90,7 +89,7 @@ public class ArticleItem implements Item {
     public String getHeureMinutePublication() {
         Date maDate = new Date(this.getTimeStampPublication());
         // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Locale.getDefault());
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Constantes.LOCALE);
 
         return dfm.format(maDate);
     }
@@ -103,11 +102,11 @@ public class ArticleItem implements Item {
     public String getDatePublication() {
         Date maDate = new Date(this.getTimeStampPublication());
         // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Locale.getDefault());
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Constantes.LOCALE);
         String laDate = dfm.format(maDate);
 
         // Première lettre en majuscule
-        laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Locale.getDefault()) + laDate.substring(1);
+        laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
 
         return laDate;
     }

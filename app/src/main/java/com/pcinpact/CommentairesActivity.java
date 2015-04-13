@@ -45,7 +45,6 @@ import com.pcinpact.network.RefreshDisplayInterface;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 /**
  * Affichage des commentaires.
@@ -354,7 +353,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         } else {
             // Une MàJ à déjà été faite
             headerTextView.setText(getString(R.string.lastUpdate)
-                    + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Locale.getDefault()).format(dernierRefresh));
+                    + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Constantes.LOCALE).format(dernierRefresh));
         }
     }
 }
