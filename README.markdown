@@ -3,7 +3,7 @@
 ## Librairies utilisées par le projet :
   - [jsoup v1.8.1a] (http://jsoup.org/) : Parsage du code HTML
 
-  - [Commons-io v2.2 (http://commons.apache.org/proper/commons-io/)] : Méthode de gestion de flux de fichiers (entre autres)
+  - [Commons-io v2.2] (http://commons.apache.org/proper/commons-io/) : Gestion de flux de fichiers (entre autres)
 
 ## Outils pratiques :
   - [Voir les icônes Android existantes] (http://androiddrawables.com)
