@@ -23,10 +23,17 @@ android {
         }
     }
 
+    /**
+     * VS bug dans les tests sinon
+     * https://sites.google.com/a/android.com/tools/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
+     */
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
     /**
-    * Configuration de lint
-    */
+     * Configuration de lint
+     */
     lintOptions {
         // Affichage sur stdout des erreurs
         textReport true

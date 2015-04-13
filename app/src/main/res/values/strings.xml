@@ -133,10 +133,11 @@ http://www.nextinpact.com/abonnement"
     <string name="commentairesChargement">Chargement...</string>
 
     <!-- Debug -->
-    <string name="debug">"Configuration avancée de l'application"</string>
-    <string name="effacerCache">"Effacer TOUT le cache de l'application"</string>
-    <string name="effacerCacheToast">"Effacement du cache de l'application !"</string>
-    <string name="effacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
-    <string name="effacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
+    <string name="debugTitre">"Configuration avancée de l'application"</string>
+    <string name="debugEffacerCache">"Effacer TOUT le cache de l'application"</string>
+    <string name="debugEffacerCacheToast">"Effacement du cache de l'application !"</string>
+    <string name="debugEffacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
+    <string name="debugEffacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
+    <string name="debugGenererArrayList">"Développement - Log.e(ArrayList[ArticleItem])"</string>
 
 </resources>

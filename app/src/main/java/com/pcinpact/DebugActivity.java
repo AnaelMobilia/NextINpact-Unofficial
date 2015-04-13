@@ -20,12 +20,17 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.pcinpact.datastorage.Cache;
+import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
+
+import java.util.ArrayList;
 
 /**
  * Debug de l'application.
@@ -42,7 +47,7 @@ public class DebugActivity extends ActionBarActivity {
         setContentView(R.layout.activity_debug);
 
         /**
-         * Boutton : effacement du cache
+         * Bouton : effacement du cache
          */
         Button buttonCache = (Button) this.findViewById(R.id.buttonDeleteCache);
         buttonCache.setOnClickListener(new OnClickListener() {
@@ -57,13 +62,13 @@ public class DebugActivity extends ActionBarActivity {
 
                 // Retour utilisateur
                 Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.effacerCacheToast), Toast.LENGTH_LONG);
+                        getApplicationContext().getString(R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
 
         /**
-         * Boutton : effacement des smileys
+         * Bouton : effacement des smileys
          */
         Button buttonSmileys = (Button) this.findViewById(R.id.buttonDeleteCacheSmiley);
         buttonSmileys.setOnClickListener(new OnClickListener() {
@@ -74,8 +79,73 @@ public class DebugActivity extends ActionBarActivity {
 
                 // Retour utilisateur
                 Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.effacerCacheSmileyToast), Toast.LENGTH_LONG);
+                        getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast), Toast.LENGTH_LONG);
                 monToast.show();
+            }
+        });
+
+        /**
+         * Boutton : génération ArrayList<ArticleItem>
+         */
+        Button buttonArrayList = (Button) this.findViewById(R.id.debugGenererArrayListArticleItem);
+        buttonArrayList.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                /**
+                 * Récupération des articles
+                 */
+                // DAO
+                DAO monDAO = DAO.getInstance(getApplicationContext());
+                // Arraylist de retour
+                ArrayList<ArticleItem> mesArticles = new ArrayList<>();
+                // Chargement depuis BDD
+                mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
+
+
+                /**
+                 * Génération du texte...
+                 */
+                // La sortie...
+                String monRetour;
+                // Génération de l'arraylist
+                monRetour = "ArrayList<ArticleItem> mesArticles = new ArrayList<>();";
+                // Génération des objets
+                monRetour += "\nArticleItem unArticle;";
+                for (ArticleItem unArticle : mesArticles) {
+                    // Contenu de l'objet
+                    monRetour += "\nunArticle = new ArticleItem();\n" +
+                            "unArticle.setId(" + unArticle.getId() + ");\n" +
+                            "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n" +
+                            "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n" +
+                            "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" +
+                            "unArticle.setTitre(\"" + unArticle.getTitre() + "\");\n" +
+                            "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n" +
+                            "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" +
+                            "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+
+                    // Insertion de l'objet dans l'arraylist
+                    monRetour += "\nmesArticles.add(unArticle);";
+                }
+
+                /**
+                 * Affichage
+                 */
+                if (Constantes.DEBUG) {
+                    // Buffer limité à 4k chr...
+                    if (monRetour.length() > 4000) {
+                        int chunkCount = monRetour.length() / 4000;
+                        for (int i = 0; i <= chunkCount; i++) {
+                            int max = 4000 * (i + 1);
+                            if (max >= monRetour.length()) {
+                                Log.e("DebugActivity", monRetour.substring(4000 * i));
+                            } else {
+                                Log.e("DebugActivity", monRetour.substring(4000 * i, max));
+                            }
+                        }
+                    } else {
+                        Log.e("DebugActivity", monRetour);
+                    }
+                }
             }
         });
     }
