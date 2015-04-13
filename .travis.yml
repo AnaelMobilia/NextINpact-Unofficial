@@ -1,8 +1,12 @@
 language: android
 
+# Utilisation du JDK8
 jdk:
   - oraclejdk8
 
 android:
     components:
         - build-tools-20.0.0
+
+# Lancement du xrapper gradle + niveau info
+script: ./gradlew build connectedCheck --info
