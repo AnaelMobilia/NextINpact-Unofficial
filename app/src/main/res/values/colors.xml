@@ -27,6 +27,11 @@
     <color name="refreshBleu">#3e6d8e</color>
     <!-- Blanc Header -->
     <color name="refreshBlanc">#ffffff</color>
-
+    <!-- Couleur par défaut pour le texte -->
     <color name="___defautTexte">#000000</color>
+
+    <!-- Couleur de fond des articles non lus -->
+    <color name="_article_non_lu">@android:color/white</color>
+    <!-- Couleur de fond des articles  lus -->
+    <color name="_article_lu">#D3D3D3</color>
 </resources>

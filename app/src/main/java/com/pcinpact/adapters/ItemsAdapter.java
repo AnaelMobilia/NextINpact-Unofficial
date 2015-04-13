@@ -235,10 +235,10 @@ public class ItemsAdapter extends BaseAdapter {
                     // L'article est-il déjà lu ?
                     if (ai.isLu()) {
                         // Couleur lu
-                        articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_LU);
+                        articleVH.relativeLayout.setBackgroundColor(monContext.getResources().getColor(R.color._article_lu));
                     } else {
                         // Couleur non lu
-                        articleVH.relativeLayout.setBackgroundColor(Constantes.COULEUR_ARTICLE_NON_LU);
+                        articleVH.relativeLayout.setBackgroundColor(monContext.getResources().getColor(R.color._article_non_lu));
                     }
 
                     // Gestion du badge abonné

@@ -211,18 +211,10 @@ public class Constantes {
      * Taille de texte XLARGE.
      */
     public static final int TEXT_SIZE_XLARGE = 26;
-    /**
-     * Couleur de fond - article non lu.
-     */
-    public static final int COULEUR_ARTICLE_NON_LU = Color.WHITE;
 
     /**
      * PARAMETRES D'AUTHENTIFICATION.
      */
-    /**
-     * Couleur de fond - article lu.
-     */
-    public static final int COULEUR_ARTICLE_LU = Color.parseColor("#D3D3D3");
     /**
      * Paramêtre utilisateur.
      */
