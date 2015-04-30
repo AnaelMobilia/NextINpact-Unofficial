@@ -73,7 +73,7 @@ http://www.nextinpact.com/abonnement"
     <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
     <string name="articleVideErreurHTML">"Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation. Désolé."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
-    <string name="infoOptionAbonne">"Vous pouvez configurer votre compte abonné NXI dans les options de l'application.\nVous pourrez ainsi lire les articles abonnés !"</string>
+    <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
 
     <!-- Vue "Options" -->
     <!-- Options : Générales -->
