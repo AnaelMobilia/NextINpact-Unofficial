@@ -44,6 +44,7 @@ import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.URLImageProvider;
+import com.pcinpact.parseur.TagHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -334,7 +335,7 @@ public class ItemsAdapter extends BaseAdapter {
                     }
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new URLImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE), null);
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new URLImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE), new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
 
                     // On applique le zoom éventuel
