@@ -49,10 +49,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
      * ArticleItem.
      */
     private ArticleItem monArticle;
-    /**
-     * ItemAdapter.
-     */
-    private ItemsAdapter monItemsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         ListView monListView = (ListView) this.findViewById(R.id.contenuArticle);
 
         // Adapter pour l'affichage des données
-        monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
         monListView.setAdapter(monItemsAdapter);
 
         // Chargement de la DB
@@ -84,10 +80,10 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
             data = getString(R.string.articleVideErreurHTML);
         }
 
-
         ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
         ContenuArticleItem toto = new ContenuArticleItem();
         toto.setContenu(monArticle.getContenu());
+        toto.setArticleID(articleID);
         monAR.add(toto);
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(monAR);

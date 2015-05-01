@@ -112,16 +112,6 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Nom de l'image.
-     *
-     * @return image.ext
-     */
-    public String getImageName() {
-        String urlImage = this.getUrlIllustration();
-        return urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-    }
-
-    /**
      * @return id
      */
     public int getId() {
