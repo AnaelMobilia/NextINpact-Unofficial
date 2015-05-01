@@ -29,6 +29,10 @@ public class ContenuArticleItem implements com.pcinpact.items.Item {
      * Contenu de l'article.
      */
     private String contenu;
+    /**
+     * ID de l'article associé.
+     */
+    private int articleID;
 
     /*
      * (non-Javadoc)
@@ -53,4 +57,17 @@ public class ContenuArticleItem implements com.pcinpact.items.Item {
         this.contenu = contenu;
     }
 
+    /**
+     * @return ID de l'article
+     */
+    public int getArticleID() {
+        return articleID;
+    }
+
+    /**
+     * @param articleID ID de l'article
+     */
+    public void setArticleID(int articleID) {
+        this.articleID = articleID;
+    }
 }
