@@ -67,4 +67,5 @@ public class ArticleItemViewHolder implements ItemViewHolder {
     public int getType() {
         return Item.TYPE_ARTICLE;
     }
+
 }
