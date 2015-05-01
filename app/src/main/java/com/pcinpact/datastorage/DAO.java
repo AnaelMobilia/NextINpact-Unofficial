@@ -666,6 +666,8 @@ public final class DAO extends SQLiteOpenHelper {
         maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
         // Date de refresh
         maBDD.delete(BDD_TABLE_REFRESH, null, null);
+        // Cache
+        maBDD.delete(BDD_TABLE_CACHE_IMAGE, null, null);
     }
 
     /**
