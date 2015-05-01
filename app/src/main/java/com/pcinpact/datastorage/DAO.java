@@ -40,7 +40,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma).
      */
-    private static final int BDD_VERSION = 3;
+    private static final int BDD_VERSION = 4;
     /**
      * Nom de la BDD.
      */
@@ -134,6 +134,23 @@ public final class DAO extends SQLiteOpenHelper {
     private static final String REFRESH_TIMESTAMP = "timestamp";
 
     /**
+     * Table cacheImage.
+     */
+    private static final String BDD_TABLE_CACHE_IMAGE = "cacheImage";
+    /**
+     * Champ cacheImage => md5 de l'URL de l'image
+     */
+    private static final String CACHE_IMAGE_MD5 = "md5";
+    /**
+     * Champ cacheImage => ID de l'article
+     */
+    private static final String CACHE_IMAGE_ID_ARTICLE = "idArticle";
+    /**
+     * Champ cacheImage => Type d'image
+     */
+    private static final String CACHE_IMAGE_TYPE_IMAGE = "typeImage";
+
+    /**
      * BDD SQLite.
      */
     private static SQLiteDatabase maBDD = null;
@@ -194,6 +211,11 @@ public final class DAO extends SQLiteOpenHelper {
         String reqCreateRefresh = "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_ID + " INTEGER PRIMARY KEY,"
                 + REFRESH_TIMESTAMP + " INTEGER);";
         db.execSQL(reqCreateRefresh);
+
+        // Table du cache des images
+        String reqCreateCacheImage = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER,"
+                + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER);";
+        db.execSQL(reqCreateRefresh);
     }
 
     /**
@@ -210,6 +232,16 @@ public final class DAO extends SQLiteOpenHelper {
                 String reqUpdateFrom2 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DL_CONTENU_ABONNE
                         + " BOOLEAN;";
                 db.execSQL(reqUpdateFrom2);
+
+            case 3:
+                String reqUpdateFrom3 = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER,"
+                        + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER);";
+                ;
+                db.execSQL(reqUpdateFrom3);
+
+
+                // A mettre avant le default !
+                break;
 
             default:
                 // DEBUG
@@ -634,6 +666,31 @@ public final class DAO extends SQLiteOpenHelper {
         maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
         // Date de refresh
         maBDD.delete(BDD_TABLE_REFRESH, null, null);
+    }
+
+    /**
+     * Cache - enregistrement d'une image.
+     *
+     * @param idArticle ID de l'article
+     * @param md5URL    MD5 de l'URL de l'image (nom sur le FS)
+     * @param typeImage Type d'image (cf Constantes)
+     */
+    public void cacheEnregistrerImage(final int idArticle, final String md5URL, final int typeImage) {
+        ContentValues insertValues = new ContentValues();
+        insertValues.put(CACHE_IMAGE_ID_ARTICLE, idArticle);
+        insertValues.put(CACHE_IMAGE_MD5, md5URL);
+        insertValues.put(CACHE_IMAGE_TYPE_IMAGE, typeImage);
+
+        maBDD.insert(BDD_TABLE_CACHE_IMAGE, null, insertValues);
+    }
+
+    /**
+     * Cache - suppression des images d'un article.
+     *
+     * @param idArticle
+     */
+    public void cacheSupprimer(final int idArticle) {
+        maBDD.delete(BDD_TABLE_CACHE_IMAGE, CACHE_IMAGE_ID_ARTICLE + "=?", new String[]{String.valueOf(idArticle)});
     }
 
 }
