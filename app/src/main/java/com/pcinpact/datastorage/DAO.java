@@ -29,7 +29,10 @@ import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 
+import org.apache.commons.codec.digest.Md5Crypt;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Abstraction de la BDD sqlite.
@@ -149,6 +152,10 @@ public final class DAO extends SQLiteOpenHelper {
      * Champ cacheImage => Type d'image
      */
     private static final String CACHE_IMAGE_TYPE_IMAGE = "typeImage";
+    /**
+     * Champ cacheImage => URL de l'image
+     */
+    private static final String CACHE_IMAGE_URL_IMAGE = "urlImage";
 
     /**
      * BDD SQLite.
@@ -214,7 +221,7 @@ public final class DAO extends SQLiteOpenHelper {
 
         // Table du cache des images
         String reqCreateCacheImage = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER,"
-                + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER);";
+                + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, " + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
         db.execSQL(reqCreateRefresh);
     }
 
@@ -235,7 +242,7 @@ public final class DAO extends SQLiteOpenHelper {
 
             case 3:
                 String reqUpdateFrom3 = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER,"
-                        + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER);";
+                        + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, " + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
                 ;
                 db.execSQL(reqUpdateFrom3);
 
@@ -674,14 +681,15 @@ public final class DAO extends SQLiteOpenHelper {
      * Cache - enregistrement d'une image.
      *
      * @param idArticle ID de l'article
-     * @param md5URL    MD5 de l'URL de l'image (nom sur le FS)
+     * @param UrlImage  URL de l'image
      * @param typeImage Type d'image (cf Constantes)
      */
-    public void cacheEnregistrerImage(final int idArticle, final String md5URL, final int typeImage) {
+    public void cacheEnregistrerImage(final int idArticle, final String UrlImage, final int typeImage) {
         ContentValues insertValues = new ContentValues();
         insertValues.put(CACHE_IMAGE_ID_ARTICLE, idArticle);
-        insertValues.put(CACHE_IMAGE_MD5, md5URL);
+        insertValues.put(CACHE_IMAGE_MD5, Md5Crypt.md5Crypt(UrlImage.getBytes()));
         insertValues.put(CACHE_IMAGE_TYPE_IMAGE, typeImage);
+        insertValues.put(CACHE_IMAGE_URL_IMAGE, UrlImage);
 
         maBDD.insert(BDD_TABLE_CACHE_IMAGE, null, insertValues);
     }
@@ -689,10 +697,43 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Cache - suppression des images d'un article.
      *
-     * @param idArticle
+     * @param idArticle ID de l'article concerné
      */
     public void cacheSupprimer(final int idArticle) {
         maBDD.delete(BDD_TABLE_CACHE_IMAGE, CACHE_IMAGE_ID_ARTICLE + "=?", new String[]{String.valueOf(idArticle)});
     }
+
+    /**
+     * Cache - liste toutes les images d'un type.
+     *
+     * @param typeImage type d'image souhaité
+     * @return liste d'images
+     */
+    public HashMap<String, String> cacheChargerImage(final int typeImage) {
+        // Retour
+        HashMap<String, String> monRetour = new HashMap<>();
+
+        // Les colonnes à récupérer
+        String[] mesColonnes = new String[]{CACHE_IMAGE_MD5, CACHE_IMAGE_URL_IMAGE};
+
+        // Requête sur la BDD
+        Cursor monCursor = maBDD.query(BDD_TABLE_CACHE_IMAGE, mesColonnes, CACHE_IMAGE_TYPE_IMAGE + "=?",
+                new String[]{String.valueOf(typeImage)}, null, null, null);
+
+        // Je passe tous les résultats
+        while (monCursor.moveToNext()) {
+            // Je charge les données de l'objet
+            String md5 = monCursor.getString(0);
+            String url = monCursor.getString(1);
+
+            // Et l'enregistre
+            monRetour.put(md5, url);
+        }
+        // Fermeture du curseur
+        monCursor.close();
+
+        return monRetour;
+    }
+
 
 }
