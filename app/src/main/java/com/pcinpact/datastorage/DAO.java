@@ -709,7 +709,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param typeImage type d'image souhaité
      * @return liste d'images
      */
-    public HashMap<String, String> cacheChargerImage(final int typeImage) {
+    public HashMap<String, String> cacheListeImages(final int typeImage) {
         // Retour
         HashMap<String, String> monRetour = new HashMap<>();
 
