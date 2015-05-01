@@ -707,7 +707,7 @@ public final class DAO extends SQLiteOpenHelper {
      * Cache - liste toutes les images d'un type.
      *
      * @param typeImage type d'image souhaité
-     * @return liste d'images
+     * @return liste d'images <MD5, URL>
      */
     public HashMap<String, String> cacheListeImages(final int typeImage) {
         // Retour
