@@ -32,6 +32,14 @@
         android:paddingRight="?android:attr/scrollbarSize"
         android:text="@string/debugTitre" />
 
+    <TextView
+        android:id="@+id/textViewBetaTest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="5dp"
+        android:paddingRight="?android:attr/scrollbarSize"
+        android:text="@string/debugPubBeta" />
+
     <Button
         android:id="@+id/buttonDeleteCache"
         android:layout_width="wrap_content"

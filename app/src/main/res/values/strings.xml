@@ -129,6 +129,7 @@ http://www.nextinpact.com/abonnement"</string>
 
     <!-- Debug -->
     <string name="debugTitre">"Configuration avancée de l'application"</string>
+    <string name="debugPubBeta">"Activez les versions beta ! Cf description de l'app sur le Play Store !"</string>
     <string name="debugEffacerCache">"Effacer TOUT le cache de l'application"</string>
     <string name="debugEffacerCacheToast">"Effacement du cache de l'application !"</string>
     <string name="debugEffacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
