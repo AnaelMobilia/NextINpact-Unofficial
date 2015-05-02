@@ -287,6 +287,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             // Miniature d'un article
             case Constantes.IMAGE_MINIATURE_ARTICLE:
                 pathFichier = monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES;
+                break;
 
                 // Défaut...
             default:
@@ -294,7 +295,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 pathFichier = null;
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("ImageProvider", "imageEnCache() - Cas défaut pour " + urlImage + " - type : " + typeImage);
+                    Log.e("ImageProvider", "getPathAndFile() - Cas défaut pour " + urlImage + " - type : " + typeImage);
                 }
                 break;
         }
