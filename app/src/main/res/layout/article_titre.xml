@@ -17,18 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
- 
--->
-
+ -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutArticle"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="?android:attr/scrollbarSize"
-    android:paddingTop="5dp">
+                android:id="@+id/relativeLayoutArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="?android:attr/scrollbarSize"
+                android:paddingTop="5dp">
 
     <TextView
         android:id="@+id/titreArticle"
@@ -45,5 +43,4 @@
         android:layout_below="@+id/titreArticle"
         android:textAppearance="@style/textAppearanceMicro"
         android:textColor="#8A979D" />
-
 </RelativeLayout>

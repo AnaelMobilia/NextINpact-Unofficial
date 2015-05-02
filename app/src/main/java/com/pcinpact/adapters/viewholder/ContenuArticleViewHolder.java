@@ -41,5 +41,4 @@ public class ContenuArticleViewHolder implements ItemViewHolder {
     public int getType() {
         return Item.TYPE_CONTENU_ARTICLE;
     }
-
 }

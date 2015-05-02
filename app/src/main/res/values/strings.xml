@@ -17,10 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-
 -->
 <resources>
-
     <!-- Action Bar -->
     <string name="action_refresh">Synchroniser</string>
     <string name="action_overflow">Plus...</string>
@@ -40,8 +38,7 @@
     <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next INpact.
 			\nLes contenus affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
 			\nSi vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
-			\nBonne lecture !"
-</string>
+			\nBonne lecture !"</string>
 
     <!-- A propos -->
     <string name="aboutContent">"NextINpact (Unofficial) est une application développée bénévolement par un lecteur passionné de NextINpact.
@@ -66,8 +63,7 @@ L'ensemble des contenus affichés dans l'application (textes, images et logos) s
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
 Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
-http://www.nextinpact.com/abonnement"
-</string>
+http://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
     <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
@@ -124,7 +120,6 @@ http://www.nextinpact.com/abonnement"
     <!-- Option sans GUI, sert à notifier l'effacement uniquement -->
     <string name="idOptionDebugEffacerCache">14</string>
 
-
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
 
@@ -139,5 +134,4 @@ http://www.nextinpact.com/abonnement"
     <string name="debugEffacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
     <string name="debugEffacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
     <string name="debugGenererArrayList">"Développement - Log.e(ArrayList[ArticleItem])"</string>
-
 </resources>

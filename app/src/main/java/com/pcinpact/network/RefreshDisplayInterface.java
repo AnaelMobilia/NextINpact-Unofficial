@@ -43,5 +43,4 @@ public interface RefreshDisplayInterface {
      * @param uneURL URL de l'image
      */
     void downloadImageFini(final String uneURL);
-
 }

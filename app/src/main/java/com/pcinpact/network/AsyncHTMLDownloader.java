@@ -135,7 +135,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
                 datas = CompteAbonne.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
-                        uniquementSiConnecte);
+                                                           uniquementSiConnecte);
             } else {
                 // Je récupère mon contenu HTML directement
                 datas = Downloader.download(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES);
@@ -153,8 +153,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("AsyncHTMLDownloader", "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
-                                    + " résultats");
+                            Log.i("AsyncHTMLDownloader",
+                                  "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux articles
@@ -216,8 +216,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
-                                    + " résultats");
+                            Log.i("AsyncHTMLDownloader",
+                                  "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size() + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux commentaires
@@ -259,7 +259,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.w("AsyncHTMLDownloader",
-                            "contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
+                          "contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
                 }
             }
         } catch (Exception e) {

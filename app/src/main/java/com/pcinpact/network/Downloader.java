@@ -66,7 +66,8 @@ public class Downloader {
      * @param monHTTPContext HTTPcontext contenant le cookie de connexion au compte abonné NXI
      * @return ressource demandée brute
      */
-    public static byte[] download(final String uneURL, final Context unContext, final boolean compression, final HttpContext monHTTPContext) {
+    public static byte[] download(final String uneURL, final Context unContext, final boolean compression,
+                                  final HttpContext monHTTPContext) {
         // Retour
         byte[] datas = null;
 
@@ -103,7 +104,7 @@ public class Downloader {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " + uneURL,
-                                    Toast.LENGTH_LONG);
+                                                            Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });
@@ -129,7 +130,7 @@ public class Downloader {
                 @Override
                 public void run() {
                     Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet),
-                            Toast.LENGTH_LONG);
+                                                    Toast.LENGTH_LONG);
                     monToast.show();
                 }
             });

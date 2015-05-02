@@ -40,8 +40,7 @@ public class AboutActivity extends ActionBarActivity {
 
         // Affichage du numéro de version
         Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
-                Toast.LENGTH_LONG);
+                                        Toast.LENGTH_LONG);
         monToast.show();
-
     }
 }

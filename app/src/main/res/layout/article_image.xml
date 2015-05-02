@@ -17,21 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
- 
---><!-- Contenu image dans un activity_article -->
+ -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutArticle"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="?android:attr/scrollbarSize"
-    android:paddingTop="5dp">
+                android:id="@+id/relativeLayoutArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="?android:attr/scrollbarSize"
+                android:paddingTop="5dp">
 
+    <!-- Contenu image dans ArticleActivity -->
     <ImageView
         android:id="@+id/imageArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 </RelativeLayout>

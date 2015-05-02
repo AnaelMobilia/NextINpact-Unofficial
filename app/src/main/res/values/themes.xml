@@ -19,7 +19,7 @@
  */
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- the theme applied to the application or activity -->
+    <!-- Thème de l'application -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
         <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar</item>

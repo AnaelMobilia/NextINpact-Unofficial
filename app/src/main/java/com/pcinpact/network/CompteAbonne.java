@@ -125,12 +125,12 @@ public class CompteAbonne {
             // Chargement des identifiants
             String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
             String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-                    R.string.defautOptionPassword);
+                                                               R.string.defautOptionPassword);
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // Les options sont-elles bien saisies ? Identifiants déjà essayés ?
-            if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")
-                    || (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+            if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("") ||
+                (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
                 // Quid de la demande ?
                 if (uniquementSiConnecte) {
                     // DEBUG
@@ -150,7 +150,7 @@ public class CompteAbonne {
 
                 // Information sur l'existance du compte abonné dans les options
                 boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
-                        R.bool.defautOptionInfoCompteAbonne);
+                                                                 R.bool.defautOptionInfoCompteAbonne);
 
                 // Dois-je notifier l'utilisateur ?
                 if (infoAbonne) {
@@ -160,7 +160,7 @@ public class CompteAbonne {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
-                                    Toast.LENGTH_LONG);
+                                                            Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });
@@ -257,7 +257,7 @@ public class CompteAbonne {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
-                                    Toast.LENGTH_LONG);
+                                                            Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });
@@ -288,7 +288,7 @@ public class CompteAbonne {
             // Chargement des identifiants
             String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
             String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-                    R.string.defautOptionPassword);
+                                                               R.string.defautOptionPassword);
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // Les options sont-elles bien saisies ?

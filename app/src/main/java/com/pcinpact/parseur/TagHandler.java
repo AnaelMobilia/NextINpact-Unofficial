@@ -32,8 +32,7 @@ public class TagHandler implements Html.TagHandler {
     int index = 1;
 
     @Override
-    public void handleTag(boolean opening, String tag, Editable output,
-                          XMLReader xmlReader) {
+    public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
 
         // Liste ordonnée ou simple ?
         if (tag.equals("ul")) {
@@ -52,14 +51,12 @@ public class TagHandler implements Html.TagHandler {
                 } else {
                     first = true;
                 }
+            } else if (first) {
+                output.append("\n\t" + index + ". ");
+                first = false;
+                index++;
             } else {
-                if (first) {
-                    output.append("\n\t" + index + ". ");
-                    first = false;
-                    index++;
-                } else {
-                    first = true;
-                }
+                first = true;
             }
         }
     }

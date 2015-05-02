@@ -18,11 +18,10 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/header_text"
@@ -38,5 +37,4 @@
         android:id="@+id/listeCommentaires"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </LinearLayout>

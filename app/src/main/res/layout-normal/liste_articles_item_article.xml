@@ -18,16 +18,15 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayoutArticle"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="?android:attr/scrollbarSize"
-    android:paddingTop="5dp">
+                android:id="@+id/relativeLayoutArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="?android:attr/scrollbarSize"
+                android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/imageArticle"
@@ -44,8 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"
-        android:textColor="@color/___defautTexte" />
+        android:textColor="@color/___defautTexte"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/heureArticle"
@@ -91,5 +90,4 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/___defautTexte"
         android:visibility="gone" />
-
 </RelativeLayout>

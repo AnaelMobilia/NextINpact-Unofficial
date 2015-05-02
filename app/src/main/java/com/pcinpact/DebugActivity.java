@@ -58,12 +58,13 @@ public class DebugActivity extends ActionBarActivity {
                 CacheManager.effacerCache(getApplicationContext());
 
                 // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
-                Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, R.bool.defautOptionDebugEffacerCache);
+                Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
+                                                                     R.bool.defautOptionDebugEffacerCache);
                 Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
                 // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(
+                        R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -79,8 +80,8 @@ public class DebugActivity extends ActionBarActivity {
                 CacheManager.effacerCacheSmiley(getApplicationContext());
 
                 // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(
+                        R.string.debugEffacerCacheSmileyToast), Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -115,14 +116,14 @@ public class DebugActivity extends ActionBarActivity {
                 for (ArticleItem unArticle : mesArticles) {
                     // Contenu de l'objet
                     monRetour += "\nunArticle = new ArticleItem();\n" +
-                            "unArticle.setId(" + unArticle.getId() + ");\n" +
-                            "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n" +
-                            "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n" +
-                            "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" +
-                            "unArticle.setTitre(\"" + unArticle.getTitre() + "\");\n" +
-                            "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n" +
-                            "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" +
-                            "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+                                 "unArticle.setId(" + unArticle.getId() + ");\n" +
+                                 "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n" +
+                                 "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n" +
+                                 "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" +
+                                 "unArticle.setTitre(\"" + unArticle.getTitre() + "\");\n" +
+                                 "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n" +
+                                 "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" +
+                                 "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
 
                     // Insertion de l'objet dans l'arraylist
                     monRetour += "\nmesArticles.add(unArticle);";

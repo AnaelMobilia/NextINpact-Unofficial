@@ -78,10 +78,14 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
         return this.getAuteur() + " " + this.getFullDatePublication();
     }
 
-    @Override
+
     /**
      * Comparaison entre objets.
+     *
+     * @param unCommentaireItem item de comparaison
+     * @return
      */
+    @Override
     public int compareTo(CommentaireItem unCommentaireItem) {
         Integer unID = unCommentaireItem.getId();
         Integer monID = this.getId();
@@ -167,5 +171,4 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     public void setTimeStampPublication(long timeStampPublication) {
         this.timeStampPublication = timeStampPublication;
     }
-
 }

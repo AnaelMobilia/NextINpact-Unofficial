@@ -148,8 +148,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
                     // téléchargement automatique en continu des commentaires ?
                     Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
-                            R.string.idOptionCommentairesTelechargementContinu,
-                            R.bool.defautOptionCommentairesTelechargementContinu);
+                                                                      R.string.idOptionCommentairesTelechargementContinu,
+                                                                      R.bool.defautOptionCommentairesTelechargementContinu);
                     // Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
                     if (telecharger && !isLoading && !isFinCommentaires) {
                         // téléchargement de 10 commentaires en plus
@@ -157,8 +157,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("CommentairesActivity", "Chargement continu -> lancement chargement commentaires - "
-                                    + visibleItemCount);
+                            Log.i("CommentairesActivity",
+                                  "Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
                         }
                     }
                 }
@@ -192,12 +192,13 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
         // Création de l'URL
-        String monURL = Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID
-                + "=" + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+        String monURL =
+                Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
+                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
 
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
-                getApplicationContext());
+                                                             getApplicationContext());
         // Parallélisation des téléchargements pour l'ensemble de l'application
         if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
             monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -238,7 +239,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         }
 
         return super.onOptionsItemSelected(pItem);
-
     }
 
     /**
@@ -350,11 +350,11 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         if (dernierRefresh == 0) {
             // Jamais synchro...
             headerTextView.setText(getString(R.string.lastUpdateNever));
-
         } else {
             // Une MàJ à déjà été faite
-            headerTextView.setText(getString(R.string.lastUpdate)
-                    + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Constantes.LOCALE).format(dernierRefresh));
+            headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
+                                                                                         Constantes.LOCALE).format(
+                    dernierRefresh));
         }
     }
 }

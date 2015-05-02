@@ -17,10 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-
 -->
 <resources>
-
     <!-- Menu options -> taille du texte -->
     <string-array name="tailleTexteLiteral">
         <item>50 %</item>
@@ -42,5 +40,4 @@
         <item>60</item>
         <item>90</item>
     </string-array>
-
 </resources>

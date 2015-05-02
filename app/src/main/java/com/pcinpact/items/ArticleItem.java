@@ -264,5 +264,4 @@ public class ArticleItem implements Item {
     public void setDlContenuAbonne(boolean isDlContenuAbonne) {
         this.isDlContenuAbonne = isDlContenuAbonne;
     }
-
 }

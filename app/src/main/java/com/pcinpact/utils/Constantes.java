@@ -293,8 +293,8 @@ public class Constantes {
     public static int getOptionInt(final Context unContext, final int idOption, final int defautOption) {
         SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
-        return Integer
-                .valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
+        return Integer.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(
+                defautOption)));
     }
 
     /**

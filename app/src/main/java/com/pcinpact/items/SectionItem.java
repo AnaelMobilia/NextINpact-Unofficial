@@ -56,5 +56,4 @@ public class SectionItem implements Item {
     public void setTitre(String titre) {
         this.titre = titre;
     }
-
 }

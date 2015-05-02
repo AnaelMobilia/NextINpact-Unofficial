@@ -19,7 +19,6 @@
  */
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <!-- Options génériques -->
     <PreferenceCategory android:title="@string/optionsGenerales">
 
@@ -99,5 +98,4 @@
             android:summary="@string/optionDebugDetail"
             android:title="@string/optionDebug" />
     </PreferenceCategory>
-
 </PreferenceScreen>

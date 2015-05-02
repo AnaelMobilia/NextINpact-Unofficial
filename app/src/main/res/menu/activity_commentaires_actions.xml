@@ -19,7 +19,7 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Rafraichir -->
     <item
@@ -27,6 +27,4 @@
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
         yourapp:showAsAction="ifRoom" />
-
-
 </menu>

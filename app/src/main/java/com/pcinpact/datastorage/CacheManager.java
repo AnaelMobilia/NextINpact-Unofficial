@@ -96,7 +96,6 @@ public class CacheManager {
 
             // Illustrations des articles
             nettoyerCacheImages(monContext, Constantes.IMAGE_CONTENU_ARTICLE, Constantes.PATH_IMAGES_ILLUSTRATIONS);
-
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {

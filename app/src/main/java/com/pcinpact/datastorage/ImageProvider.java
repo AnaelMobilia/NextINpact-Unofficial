@@ -84,7 +84,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param unContenu    Contenu de la textview
      * @param unTypeImages type d'images
      */
-    public ImageProvider(final Context unContext, final TextView uneTextView, final String unContenu, final int unTypeImages, final int articleID) {
+    public ImageProvider(final Context unContext, final TextView uneTextView, final String unContenu, final int unTypeImages,
+                         final int articleID) {
         monContext = unContext.getApplicationContext();
         // Type d'images
         monTypeImages = unTypeImages;
@@ -112,10 +113,11 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         idArticle = articleID;
     }
 
-    @Override
+
     /**
      * Fournit une image (URL). Peut être appelé n fois pour un même élément View
      */
+    @Override
     public Drawable getDrawable(final String urlSource) {
         // Image de retour
         Drawable monRetour;
@@ -197,8 +199,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.d("URLImageProvider",
-                    "gestionTaille : coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight()
-                            + " - largeur = " + uneImage.getIntrinsicWidth());
+                  "gestionTaille : coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight() + " - largeur = "
+                  + uneImage.getIntrinsicWidth());
         }
         return uneImage;
     }
@@ -212,7 +214,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param unContext context applicatif
      */
     @SuppressLint("NewApi")
-    public static void telechargerImage(final String URL, final int type, final int articleID, final Context unContext, final RefreshDisplayInterface parent) {
+    public static void telechargerImage(final String URL, final int type, final int articleID, final Context unContext,
+                                        final RefreshDisplayInterface parent) {
         /**
          * Enregistrement en BDD - cache
          */

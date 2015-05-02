@@ -16,12 +16,12 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
+ */
 -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/debugTextView"
@@ -47,11 +47,11 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="@color/refreshOrange"/>
+        android:background="@color/refreshOrange" />
 
     <Button
         android:id="@+id/debugGenererArrayListArticleItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/debugGenererArrayList"/>
+        android:text="@string/debugGenererArrayList" />
 </LinearLayout>

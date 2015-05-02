@@ -17,10 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-
 -->
 <resources>
-
     <!-- Orange logo -->
     <color name="refreshOrange">#e88228</color>
     <!-- Bleu header -->

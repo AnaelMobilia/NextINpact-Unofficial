@@ -251,8 +251,7 @@ public class ItemsAdapter extends BaseAdapter {
                     articleVH.sousTitreArticle.setText(ai.getSousTitre());
                     articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
                     // Gestion de l'image
-                    ImageProvider monImageProvider = new ImageProvider(monContext, articleVH
-                            .imageArticle, ai.getId());
+                    ImageProvider monImageProvider = new ImageProvider(monContext, articleVH.imageArticle, ai.getId());
                     articleVH.imageArticle.setImageDrawable(monImageProvider.getDrawable(ai.getUrlIllustration()));
 
                     // On applique le zoom éventuel
@@ -281,12 +280,15 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new ImageProvider(monContext,
-                            commentaireVH.commentaire, ci.getCommentaire(), Constantes.IMAGE_SMILEY, ci.getArticleId()), null);
+                                                                                                      commentaireVH.commentaire,
+                                                                                                      ci.getCommentaire(),
+                                                                                                      Constantes.IMAGE_SMILEY,
+                                                                                                      ci.getArticleId()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
-                            R.bool.defautOptionLiensDansCommentaires);
+                                                                        R.bool.defautOptionLiensDansCommentaires);
                     if (lienClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
@@ -317,7 +319,11 @@ public class ItemsAdapter extends BaseAdapter {
                     }
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new ImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE, cai.getArticleID()), new TagHandler());
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new ImageProvider(monContext, contenuVH.contenu,
+                                                                                               cai.getContenu(),
+                                                                                               Constantes.IMAGE_CONTENU_ARTICLE,
+                                                                                               cai.getArticleID()),
+                                                           new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
 
                     // On applique le zoom éventuel
@@ -330,7 +336,6 @@ public class ItemsAdapter extends BaseAdapter {
                         Log.e("ItemsAdapter", "getView : i.getType() incorrect : " + i.getType());
                     }
                     break;
-
             }
         }
         return convertView;
@@ -360,8 +365,8 @@ public class ItemsAdapter extends BaseAdapter {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize + " => "
-                    + nouvelleTaille);
+            Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize +
+                                  " => " + nouvelleTaille);
         }
     }
 }

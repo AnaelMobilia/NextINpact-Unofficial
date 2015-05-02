@@ -188,7 +188,7 @@ public class ParseurHTML {
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
         // généralisation de l'URL en dehors du scheme
-        String[] schemes = {"https://", "http://", "//"};
+        String[] schemes = { "https://", "http://", "//" };
         // Pour chaque iframe
         for (Element uneIframe : lesIframes) {
             // URL du lecteur
@@ -219,69 +219,68 @@ public class ParseurHTML {
                 // Recalcul de l'ID de la vidéo (cas particulier)
                 idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
                 monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
-
-            } else if (urlLecteur.startsWith("www.youtube.com/embed/")
-                    || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
-                /**
-                 * Youtube
-                 */
-                monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_youtube.png\" /></a>");
-
-            } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
-                /**
-                 * Dailymotion
-                 */
-                monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_dailymotion.png\" /></a>");
-            } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
-                /**
-                 * VIMEO
-                 */
-                monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_vimeo.png\" /></a>");
-            } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
-                /**
-                 * Videos.gouv.fr
-                 */
-                monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_videos_gouv_fr.png\" /></a>");
-            } else if (urlLecteur.startsWith("vid.me")) {
-                /**
-                 * Vidme
-                 */
-                monRemplacement.html("<a href=\"https://vid.me/" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" /></a>");
-            } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
-                /**
-                 * Soundcloud (l'URL commence bien par w.soundcloud !)
-                 */
-                monRemplacement.html("<a href=\"" + idVideo
-                        + "\"><img src=\"file:///android_res/drawable/iframe_soundcloud.png\" /></a>");
-            } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
-                /**
-                 * Scribd
-                 */
-                monRemplacement.html("<a href=\"" + urlLecteur
-                        + "\"><img src=\"file:///android_res/drawable/iframe_scribd.png\" /></a>");
-
-            } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
-                /**
-                 * Canal+
-                 */
-                monRemplacement.html("<a href=\"" + urlLecteur
-                        + "\"><img src=\"file:///android_res/drawable/iframe_canalplus.png\" /></a>");
+                                     + "\"><img src=\"file:///android_res/drawable/iframe_liste_youtube.png\" /></a>");
             } else {
-                /**
-                 * Déchet (cath all)
-                 */
-                monRemplacement.html("<a href=\"" + uneIframe.absUrl("src")
-                        + "\"><img src=\"file:///android_res/drawable/iframe_non_supportee.png\" /></a>");
+                if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
+                    /**
+                     * Youtube
+                     */
+                    monRemplacement.html("<a href=\"http://www.youtube.com/watch?v=" + idVideo
+                                         + "\"><img src=\"file:///android_res/drawable/iframe_youtube.png\" /></a>");
+                } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+                    /**
+                     * Dailymotion
+                     */
+                    monRemplacement.html("<a href=\"http://www.dailymotion.com/video/" + idVideo
+                                         + "\"><img src=\"file:///android_res/drawable/iframe_dailymotion.png\" /></a>");
+                } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+                    /**
+                     * VIMEO
+                     */
+                    monRemplacement.html("<a href=\"http://www.vimeo.com/" + idVideo
+                                         + "\"><img src=\"file:///android_res/drawable/iframe_vimeo.png\" /></a>");
+                } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+                    /**
+                     * Videos.gouv.fr
+                     */
+                    monRemplacement.html("<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
+                                         + "\"><img src=\"file:///android_res/drawable/iframe_videos_gouv_fr.png\" " + "/></a>");
+                } else if (urlLecteur.startsWith("vid.me")) {
+                    /**
+                     * Vidme
+                     */
+                    monRemplacement.html("<a href=\"https://vid.me/" + idVideo
+                                         + "\"><img src=\"file:///android_res/drawable/iframe_vidme.png\" " + "/></a>");
+                } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+                    /**
+                     * Soundcloud (l'URL commence bien par w.soundcloud !)
+                     */
+                    monRemplacement.html("<a href=\"" + idVideo + "\"><img src=\"file:///android_res/drawable/iframe_soundcloud"
+                                         + ".png\" /></a>");
+                } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+                    /**
+                     * Scribd
+                     */
+                    monRemplacement.html("<a href=\"" + urlLecteur + "\"><img src=\"file:///android_res/drawable/iframe_scribd"
+                                         + ".png\" /></a>");
+                } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
+                    /**
+                     * Canal+
+                     */
+                    monRemplacement.html(
+                            "<a href=\"" + urlLecteur + "\"><img " + "src=\"file:///android_res/drawable/iframe_canalplus"
+                            + ".png\" /></a>");
+                } else {
+                    /**
+                     * Déchet (cath all)
+                     */
+                    monRemplacement.html("<a href=\"" + uneIframe.absUrl("src") + "\"><img "
+                                         + "src=\"file:///android_res/drawable/iframe_non_supportee" + ".png\" /></a>");
 
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.e("ParseurHTML", "iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                    }
                 }
             }
 

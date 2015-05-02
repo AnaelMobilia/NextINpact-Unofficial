@@ -17,11 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-
-
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Share -->
     <item
@@ -37,5 +35,4 @@
         android:icon="@drawable/ic_menu_start_conversation"
         android:title="@string/action_comments"
         yourapp:showAsAction="ifRoom" />
-
 </menu>

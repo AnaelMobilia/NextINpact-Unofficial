@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
---><!-- Valeurs par défaut des options de l'application -->
-
+-->
 <resources>
-
+    <!-- Valeurs par défaut des options de l'application -->
     <bool name="defautOptionLiensDansArticles">true</bool>
     <bool name="defautOptionLiensDansCommentaires">true</bool>
     <bool name="defautOptionCommentairesTelechargementContinu">true</bool>
@@ -34,5 +33,4 @@
     <string name="defautOptionPassword">""</string>
     <bool name="defautOptionInfoCompteAbonne">true</bool>
     <bool name="defautOptionDebugEffacerCache">false</bool>
-
 </resources>

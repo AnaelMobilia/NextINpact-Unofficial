@@ -19,7 +19,7 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Rafraichir -->
     <item
@@ -56,5 +56,4 @@
                 android:title="@string/action_debug" />
         </menu>
     </item>
-
 </menu>
