@@ -41,6 +41,7 @@ import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
+import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

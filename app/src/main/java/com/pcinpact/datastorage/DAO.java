@@ -25,9 +25,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.utils.Constantes;
 
 import org.apache.commons.codec.digest.Md5Crypt;
 

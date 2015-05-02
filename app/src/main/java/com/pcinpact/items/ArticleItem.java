@@ -18,7 +18,7 @@
  */
 package com.pcinpact.items;
 
-import com.pcinpact.Constantes;
+import com.pcinpact.utils.Constantes;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -23,8 +23,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.R;
+import com.pcinpact.utils.Constantes;
 
 import java.io.File;
 import java.io.FileNotFoundException;

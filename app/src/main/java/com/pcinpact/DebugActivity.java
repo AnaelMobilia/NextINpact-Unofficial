@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 

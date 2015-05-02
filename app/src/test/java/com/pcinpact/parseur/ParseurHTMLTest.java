@@ -1,7 +1,7 @@
 package com.pcinpact.parseur;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.utils.Constantes;
 
 import org.junit.Test;
 

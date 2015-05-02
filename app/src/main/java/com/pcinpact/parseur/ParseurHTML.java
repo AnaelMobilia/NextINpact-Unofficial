@@ -20,9 +20,9 @@ package com.pcinpact.parseur;
 
 import android.util.Log;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.utils.Constantes;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -24,7 +24,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.pcinpact.Constantes;
+import com.pcinpact.utils.Constantes;
 
 /**
  * Vérifie que le clic sur un lien saura bien être géré (évite crash car pas d'application capable...).

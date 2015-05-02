@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact;
+package com.pcinpact.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

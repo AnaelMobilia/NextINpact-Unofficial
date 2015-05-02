@@ -21,9 +21,9 @@ package com.pcinpact.datastorage;
 import android.content.Context;
 import android.util.Log;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.utils.Constantes;
 
 import java.io.File;
 import java.util.ArrayList;

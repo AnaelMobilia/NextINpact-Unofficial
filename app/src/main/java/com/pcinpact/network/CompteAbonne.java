@@ -24,8 +24,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.R;
+import com.pcinpact.utils.Constantes;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

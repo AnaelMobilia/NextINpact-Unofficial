@@ -36,6 +36,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.RefreshDisplayInterface;
+import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 

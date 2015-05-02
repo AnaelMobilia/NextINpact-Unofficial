@@ -33,12 +33,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncImageDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.parseur.TagHandler;
+import com.pcinpact.utils.Constantes;
 
 import org.apache.commons.codec.digest.Md5Crypt;
 

@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.R;
 import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
 import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
@@ -44,6 +43,7 @@ import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.parseur.TagHandler;
+import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 

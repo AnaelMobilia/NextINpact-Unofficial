@@ -22,12 +22,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.pcinpact.Constantes;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
+import com.pcinpact.utils.Constantes;
 
 import org.apache.commons.io.IOUtils;
 
