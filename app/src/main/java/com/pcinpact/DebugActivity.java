@@ -26,7 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.pcinpact.datastorage.Cache;
+import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 
@@ -54,7 +54,7 @@ public class DebugActivity extends ActionBarActivity {
             @Override
             public void onClick(View arg0) {
                 // Effacement du cache
-                Cache.effacerCache(getApplicationContext());
+                CacheManager.effacerCache(getApplicationContext());
 
                 // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
                 Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, R.bool.defautOptionDebugEffacerCache);
@@ -75,7 +75,7 @@ public class DebugActivity extends ActionBarActivity {
             @Override
             public void onClick(View arg0) {
                 // Effacement du cache
-                Cache.effacerCacheSmiley(getApplicationContext());
+                CacheManager.effacerCacheSmiley(getApplicationContext());
 
                 // Retour utilisateur
                 Toast monToast = Toast.makeText(getApplicationContext(),

@@ -80,14 +80,7 @@ public class Constantes {
      * Paramêtre numéro de page (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
-    /**
-     * URL des smileys.
-     */
-    public static final String NEXT_INPACT_URL_SMILEYS = "http://cloudstatic.pcinpact.com/smileys/";
-    /**
-     * URL des illustrations des articles.
-     */
-    public static final String NEXT_INPACT_URL_ILLUSTRATIONS = "http://az664837.vo.msecnd.net/images/bd/news/";
+
     /**
      * Nb de commentaires par page.
      */

@@ -19,7 +19,6 @@
 package com.pcinpact.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -38,16 +37,14 @@ import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
 import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
 import com.pcinpact.adapters.viewholder.ContenuArticleViewHolder;
 import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
+import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
-import com.pcinpact.network.URLImageProvider;
 import com.pcinpact.parseur.TagHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -254,24 +251,9 @@ public class ItemsAdapter extends BaseAdapter {
                     articleVH.sousTitreArticle.setText(ai.getSousTitre());
                     articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
                     // Gestion de l'image
-                    FileInputStream in;
-                    try {
-                        // Ouverture du fichier en cache
-                        File monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES
-                                + ai.getImageName());
-                        in = new FileInputStream(monFichier);
-                        articleVH.imageArticle.setImageBitmap(BitmapFactory.decodeStream(in));
-                        in.close();
-                    } catch (Exception e) {
-                        // Si le fichier n'est pas trouvé, je fournis une image par défaut
-                        articleVH.imageArticle
-                                .setImageDrawable(monContext.getResources().getDrawable(R.drawable.logo_nextinpact));
-
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.e("ItemsAdapter", "getView -> Article", e);
-                        }
-                    }
+                    ImageProvider monImageProvider = new ImageProvider(monContext, articleVH
+                            .imageArticle, ai.getId());
+                    articleVH.imageArticle.setImageDrawable(monImageProvider.getDrawable(ai.getUrlIllustration()));
 
                     // On applique le zoom éventuel
                     appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
@@ -298,8 +280,8 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
-                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new URLImageProvider(monContext,
-                            commentaireVH.commentaire, ci.getCommentaire(), Constantes.IMAGE_SMILEY), null);
+                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new ImageProvider(monContext,
+                            commentaireVH.commentaire, ci.getCommentaire(), Constantes.IMAGE_SMILEY, ci.getArticleId()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Liens cliquables ? option utilisateur !
@@ -335,7 +317,7 @@ public class ItemsAdapter extends BaseAdapter {
                     }
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new URLImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE), new TagHandler());
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new ImageProvider(monContext, contenuVH.contenu, cai.getContenu(), Constantes.IMAGE_CONTENU_ARTICLE, cai.getArticleID()), new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
 
                     // On applique le zoom éventuel

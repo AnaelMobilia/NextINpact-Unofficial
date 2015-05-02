@@ -44,19 +44,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
-import com.pcinpact.datastorage.Cache;
+import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
+import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.AsyncHTMLDownloader;
-import com.pcinpact.network.AsyncImageDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Liste des articles.
@@ -162,7 +160,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // Si première utilisation : on affiche un disclaimer
         if (premiereUtilisation) {
             // Effacement du cache de l'application v < 1.8.0
-            Cache.effacerCacheV180(getApplicationContext());
+            CacheManager.effacerCacheV180(getApplicationContext());
 
             // Lancement d'un téléchargement des articles
             telechargeListeArticles();
@@ -356,12 +354,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
      */
     @Override
     protected void onDestroy() {
-        // Détachement du listener pour la taille des textes
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
-                listenerOptions);
+        try {
+            // Détachement du listener pour la taille des textes
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
+                    listenerOptions);
+        } catch (Exception e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ListeArticlesActivity", "onDestroy", e);
+            }
+        }
 
         // Nettoyage du cache de l'application
-        Cache.nettoyerCache(getApplicationContext());
+        CacheManager.nettoyerCache(getApplicationContext());
 
         super.onDestroy();
     }
@@ -384,7 +389,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             /**
              * Nettoyage du cache
              */
-            Cache.nettoyerCache(getApplicationContext());
+            CacheManager.nettoyerCache(getApplicationContext());
 
             /**
              * Téléchargement des articles dont le contenu n'avait pas été téléchargé
@@ -392,7 +397,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             telechargeListeArticles(monDAO.chargerArticlesATelecharger());
 
             /**
-             * téléchargement des pages de liste d'articles
+             * Téléchargement des pages de liste d'articles
              */
             int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
                     R.string.defautOptionNbArticles);
@@ -414,47 +419,23 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             }
 
             /**
-             * téléchargement des miniatures manquantes
+             * Téléchargement des miniatures manquantes
              */
-            // Les miniatures que je devrais avoir
-            HashMap<String, String> miniaturesItem = new HashMap<>();
-            int nbItems = mesArticles.size();
-            for (int i = 0; i < nbItems; i++) {
-                miniaturesItem.put(mesArticles.get(i).getImageName(), mesArticles.get(i).getUrlIllustration());
-            }
-
-            // Les miniatures que j'ai
-            String[] miniaturesFS = new File(getApplicationContext().getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
-            // Ssi j'ai déjà des miniatures...
-            if (miniaturesFS != null) {
-                // Pour chaque miniature que j'ai...
-                for (String uneMiniature : miniaturesFS) {
-                    // Si elle est aussi dans la liste des miniatures à avoir
-                    if (miniaturesItem.containsKey(uneMiniature)) {
-                        // Je l'efface
-                        miniaturesItem.remove(uneMiniature);
-                    }
-                }
-            }
-
-            // Miniatures restantes == miniatures manquantes
-            for (String uneMiniature : miniaturesItem.values()) {
-                // Je lance le téléchargement
-                AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-                        Constantes.IMAGE_MINIATURE_ARTICLE, uneMiniature);
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                    monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAID.execute();
-                }
+            // Miniatures manquantes
+            ArrayList<String> miniaturesManquantes = CacheManager.getMiniaturesATelecharger(getApplicationContext());
+            // Pour chacune...
+            for (String imageURL : miniaturesManquantes) {
+                // Je lance son DL (sans log en BDD imageCache)
+                ImageProvider.telechargerImage(imageURL, Constantes.IMAGE_MINIATURE_ARTICLE, 0, getApplicationContext(), this);
+                // Je note la dde de DL
                 nouveauChargementGUI();
             }
-
-            // GUI : fin de l'activité en cours...
-            finChargementGUI();
         }
+
+        // GUI : fin de l'activité en cours...
+        finChargementGUI();
     }
+
 
     /**
      * Lance le téléchargement des articles.
@@ -464,6 +445,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     @SuppressLint("NewApi")
     private void telechargeListeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
+            ArticleItem monItem = (ArticleItem) unItem;
+
             // Tâche de DL HTML
             AsyncHTMLDownloader monAHD;
             // DL de l'image d'illustration ?
@@ -481,11 +464,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                     dlIllustration = false;
                 }
                 // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,
                         getApplicationContext(), true, isConnecteRequis);
             } else {
                 // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, ((ArticleItem) unItem).getUrl(), monDAO,
+                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,
                         getApplicationContext());
             }
 
@@ -500,14 +483,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             // Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
             if (dlIllustration) {
                 // Je lance le téléchargement de sa miniature
-                AsyncImageDownloader monAID = new AsyncImageDownloader(getApplicationContext(), this,
-                        Constantes.IMAGE_MINIATURE_ARTICLE, ((ArticleItem) unItem).getUrlIllustration());
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                    monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAID.execute();
-                }
+                ImageProvider.telechargerImage(monItem.getUrlIllustration(), Constantes.IMAGE_MINIATURE_ARTICLE, monItem.getId(), getApplicationContext(), this);
                 nouveauChargementGUI();
             }
         }

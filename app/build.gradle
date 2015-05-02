@@ -39,6 +39,14 @@ android {
         textReport true
         textOutput 'stdout'
     }
+
+    /**
+     * Configuration du packaging de l'APK (vs crash apache-commons-* avec les même fichiers)
+     */
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 /**
@@ -49,6 +57,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'commons-io:commons-io:2.2'
+    compile 'commons-codec:commons-codec:1.10'
     testCompile 'junit:junit:4.12'
 }
 

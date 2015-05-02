@@ -31,7 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
- * téléchargement asynchrone d'image.
+ * Téléchargement asynchrone d'image.
  *
  * @author Anael
  */
@@ -49,25 +49,25 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
      */
     private String urlImage;
     /**
-     * Type d'image.
+     * Path du fichier.
      */
-    private int typeImage;
+    private String pathFichier;
 
     /**
-     * DL sans gestion du statu abonné.
+     * DL sans gestion du statut abonné.
      *
-     * @param unContext context de l'application
-     * @param parent    parent à callback à la fin
-     * @param unType    type de la ressource (Cf Constantes.TYPE_)
-     * @param uneURL    URL de la ressource
+     * @param unContext     context de l'application
+     * @param parent        parent à callback à la fin
+     * @param unPathFichier path du fichier à enregistrer
+     * @param uneURL        URL de la ressource
      */
-    public AsyncImageDownloader(final Context unContext, final RefreshDisplayInterface parent, final int unType,
+    public AsyncImageDownloader(final Context unContext, final RefreshDisplayInterface parent, final String unPathFichier,
                                 final String uneURL) {
-        // Mappage des attributs de cette Requête
+        // Mappage des attributs de cette requête
         monContext = unContext.getApplicationContext();
         monParent = parent;
         urlImage = uneURL;
-        typeImage = unType;
+        pathFichier = unPathFichier;
         // DEBUG
         if (Constantes.DEBUG) {
             Log.i("AsyncImageDownloader", urlImage);
@@ -85,30 +85,12 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 
             // Vérifie que j'ai bien un retour (vs erreur DL)
             if (datas != null) {
-                // Calcul du nom de l'image (tout ce qui est après le dernier "/", et avant un éventuel "?" ou "#")
-                String imgName = urlImage.substring(urlImage.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-
-                File monFichier = null;
-                switch (typeImage) {
-                    case Constantes.IMAGE_CONTENU_ARTICLE:
-                        monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, imgName);
-                        break;
-                    case Constantes.IMAGE_MINIATURE_ARTICLE:
-                        monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, imgName);
-                        break;
-                    case Constantes.IMAGE_SMILEY:
-                        monFichier = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, imgName);
-                        break;
-                    default:
-                        if (Constantes.DEBUG) {
-                            Log.e("AsyncImageDownloader", "Type Image incohérent : " + typeImage + " - URL : " + urlImage);
-                        }
-                        break;
-                }
-
-                // Ouverture d'un fichier en écrasement
-                FileOutputStream monFOS = null;
                 try {
+                    // Fichier de sortie
+                    File monFichier = new File(pathFichier);
+
+                    // Ouverture d'un fichier en écrasement
+                    FileOutputStream monFOS = null;
 
                     // Gestion de la MàJ de l'application depuis une ancienne version
                     try {
@@ -150,6 +132,8 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        monParent.downloadImageFini(urlImage);
+        if (monParent != null) {
+            monParent.downloadImageFini(urlImage);
+        }
     }
 }
