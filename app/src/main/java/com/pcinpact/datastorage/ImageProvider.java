@@ -38,6 +38,7 @@ import com.pcinpact.R;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncImageDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
+import com.pcinpact.parseur.TagHandler;
 
 import org.apache.commons.codec.digest.Md5Crypt;
 
@@ -358,7 +359,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 }
 
                 // J'actualise le commentaire
-                Spanned spannedContent = Html.fromHtml(monContenu, this, null);
+                Spanned spannedContent = Html.fromHtml(monContenu, this, new TagHandler());
                 ((TextView) maView).setText(spannedContent);
             } else {
                 // DEBUG
