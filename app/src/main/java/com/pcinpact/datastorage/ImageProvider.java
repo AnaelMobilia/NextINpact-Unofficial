@@ -113,7 +113,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         idArticle = articleID;
     }
 
-    @SuppressLint("NewApi")
     @Override
     /**
      * Fournit une image (URL). Peut être appelé n fois pour un même élément View
@@ -124,7 +123,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // Path & nom du fichier
         String pathFichier = getPathAndFile(urlSource, monContext, monTypeImages);
-
+        Log.e("ddd", pathFichier);
+        Log.e("ddd", "" + imageEnCache(urlSource, monContext, monTypeImages));
         // Le fichier existe-t-il en local ?
         if (imageEnCache(urlSource, monContext, monTypeImages) && pathFichier != null) {
             // Je récupère directement mon image
@@ -212,6 +212,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param articleID ID de l'article associé (0 s'il ne faut pas logguer en BDD)
      * @param unContext context applicatif
      */
+    @SuppressLint("NewApi")
     public static void telechargerImage(final String URL, final int type, final int articleID, final Context unContext, final RefreshDisplayInterface parent) {
         /**
          * Enregistrement en BDD - cache
@@ -338,12 +339,14 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
     public void downloadImageFini(final String uneURL) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ImageProvider", "Callback DL smiley fini - " + uneURL);
+            Log.i("ImageProvider", "Callback DL fini - " + uneURL);
         }
 
         // ImageView
         if (monTypeImages == Constantes.IMAGE_MINIATURE_ARTICLE) {
-            ((ImageView) maView).setImageDrawable(getDrawable(uneURL));
+            ImageView monImageView = (ImageView) maView;
+            monImageView.setImageDrawable(getDrawable(uneURL));
+            monImageView.postInvalidate();
         }
         // TextView
         else {
