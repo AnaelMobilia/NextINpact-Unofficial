@@ -18,8 +18,7 @@
  */
 package com.pcinpact.utils;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
+import java.security.MessageDigest;
 
 /**
  * Outils divers pour l'application.
@@ -35,6 +34,28 @@ public class Tools {
      * @return MD5(datas)
      */
     public static String md5(final String datas) {
-        return new String(Hex.encodeHex(DigestUtils.md5(datas)));
+        // Retour
+        String monRetour = "";
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(datas.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < messageDigest.length; i++) {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            monRetour = hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return monRetour;
     }
 }
