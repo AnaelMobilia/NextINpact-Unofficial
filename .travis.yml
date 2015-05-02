@@ -8,5 +8,9 @@ android:
     components:
         - build-tools-20.0.0
 
+# Attribution des droits pour linux
+before_install:
+  - chmod +x gradlew
+
 # Lancement du xrapper gradle + niveau info
 script: ./gradlew build connectedCheck --info
