@@ -28,8 +28,7 @@ import android.util.Log;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.utils.Constantes;
-
-import org.apache.commons.codec.digest.Md5Crypt;
+import com.pcinpact.utils.Tools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -687,7 +686,7 @@ public final class DAO extends SQLiteOpenHelper {
     public void cacheEnregistrerImage(final int idArticle, final String UrlImage, final int typeImage) {
         ContentValues insertValues = new ContentValues();
         insertValues.put(CACHE_IMAGE_ID_ARTICLE, idArticle);
-        insertValues.put(CACHE_IMAGE_MD5, Md5Crypt.md5Crypt(UrlImage.getBytes()));
+        insertValues.put(CACHE_IMAGE_MD5, Tools.md5(UrlImage));
         insertValues.put(CACHE_IMAGE_TYPE_IMAGE, typeImage);
         insertValues.put(CACHE_IMAGE_URL_IMAGE, UrlImage);
 

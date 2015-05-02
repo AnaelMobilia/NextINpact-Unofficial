@@ -39,8 +39,7 @@ import com.pcinpact.network.AsyncImageDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.parseur.TagHandler;
 import com.pcinpact.utils.Constantes;
-
-import org.apache.commons.codec.digest.Md5Crypt;
+import com.pcinpact.utils.Tools;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -224,7 +223,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // 0 est un indicateur de DL d'une image déjà présente en BDD, mais pas sur le FS.
         if (articleID != 0) {
             // Calcul du md5 de l'image
-            String monMD5 = Md5Crypt.md5Crypt(URL.getBytes());
+            String monMD5 = Tools.md5(URL);
             // Enregistrement pour la gestion du cache
             monDAO.cacheEnregistrerImage(articleID, monMD5, type);
         }
@@ -270,7 +269,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         Context monContext = unContext.getApplicationContext();
 
         // Nom du fichier
-        String nomFichier = Md5Crypt.md5Crypt(urlImage.getBytes());
+        String nomFichier = Tools.md5(urlImage);
         // Path du fichier
         String pathFichier;
 
@@ -291,7 +290,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 pathFichier = monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES;
                 break;
 
-                // Défaut...
+            // Défaut...
             default:
                 nomFichier = null;
                 pathFichier = null;
