@@ -19,9 +19,9 @@
  */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pcinpact"
-    android:versionCode="186"
-    android:versionName="1.8.6">
+          package="com.pcinpact"
+          android:versionCode="186"
+          android:versionName="1.8.6">
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
@@ -96,5 +96,4 @@
                 android:value=".ListeArticlesActivity" />
         </activity>
     </application>
-
 </manifest>
