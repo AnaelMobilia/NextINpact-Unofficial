@@ -127,6 +127,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
 
     @Override
     public void downloadImageFini(final String uneURL) {
-        // TODO Auto-generated method stub
+        // Aucune action.
     }
 }
