@@ -222,7 +222,7 @@ public final class DAO extends SQLiteOpenHelper {
         // Table du cache des images
         String reqCreateCacheImage = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER,"
                 + CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, " + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
-        db.execSQL(reqCreateRefresh);
+        db.execSQL(reqCreateCacheImage);
     }
 
     /**
