@@ -42,7 +42,7 @@ public class GestionLiens extends LinkMovementMethod {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("gestionLiens", "Exception : ", e);
+                Log.e("GestionLiens", "onTouchEvent()", e);
             }
         }
 

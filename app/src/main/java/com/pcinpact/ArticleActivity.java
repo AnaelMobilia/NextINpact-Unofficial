@@ -76,7 +76,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         if (data.equals("")) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("ArticleActivity", "Article vide");
+                Log.w("ArticleActivity", "onCreate() - Article vide");
             }
             data = getString(R.string.articleVideErreurHTML);
         }

@@ -256,7 +256,7 @@ public final class DAO extends SQLiteOpenHelper {
             default:
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("DAO", "onUpgrade => default !");
+                    Log.e("DAO", "onUpgrade() - cas default !");
                 }
         }
     }

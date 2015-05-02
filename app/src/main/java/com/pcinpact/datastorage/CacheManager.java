@@ -44,7 +44,7 @@ public class CacheManager {
     public static void nettoyerCache(final Context unContext) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("Cache", "nettoyerCache()");
+            Log.d("CacheManager", "nettoyerCache()");
         }
 
         try {
@@ -71,7 +71,7 @@ public class CacheManager {
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("Cache", "nettoyerCache() : suppression de " + article.getTitre());
+                        Log.w("CacheManager", "nettoyerCache() - suppression de " + article.getTitre());
                     }
 
                     // Suppression en DB
@@ -99,7 +99,7 @@ public class CacheManager {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Cache", "nettoyerCache()", e);
+                Log.e("CacheManager", "nettoyerCache()", e);
             }
         }
     }
@@ -112,7 +112,7 @@ public class CacheManager {
     public static void effacerCache(final Context unContext) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("Cache", "effacerCache()");
+            Log.i("CacheManager", "effacerCache()");
         }
 
         try {
@@ -144,7 +144,7 @@ public class CacheManager {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Cache", "nettoyerCache()", e);
+                Log.e("CacheManager", "nettoyerCache()", e);
             }
         }
     }

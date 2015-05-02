@@ -93,7 +93,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.w("AsyncHTMLDownloader", "(abonné) " + urlPage + " - Uniquement si connecté : " + onlyifConnecte.toString());
+            Log.w("AsyncHTMLDownloader", "AsyncHTMLDownloader() - abonné " + urlPage + " - Uniquement si connecté : " +
+                                         onlyifConnecte.toString());
         }
     }
 
@@ -117,7 +118,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("AsyncHTMLDownloader", "(NON abonné) " + urlPage);
+            Log.i("AsyncHTMLDownloader", "AsyncHTMLDownloader() - NON abonné : " + urlPage);
         }
     }
 
@@ -154,7 +155,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                  "HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size() + " résultats");
+                                  "doInBackground() - HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
+                                  + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux articles
@@ -175,7 +177,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("AsyncHTMLDownloader", "Au final, " + mesItems.size() + " résultats");
+                            Log.i("AsyncHTMLDownloader", "doInBackground() - Au final " + mesItems.size() + " résultats");
                         }
                         break;
 
@@ -217,7 +219,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                  "HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size() + " résultats");
+                                  "doInBackground() - HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+                                  + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux commentaires
@@ -245,27 +248,29 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("AsyncHTMLDownloader", "HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
+                            Log.i("AsyncHTMLDownloader", "doInBackground() - HTML_COMMENTAIRES : Au final, " + mesItems.size() +
+                                                         " résultats");
                         }
                         break;
 
                     default:
                         if (Constantes.DEBUG) {
-                            Log.e("AsyncHTMLDownloader", "Type HTML incohérent : " + typeHTML + " - URL : " + urlPage);
+                            Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " +
+                                                         urlPage);
                         }
                         break;
                 }
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("AsyncHTMLDownloader",
-                          "contenu NULL pour " + urlPage + " - abonneUniquement = " + uniquementSiConnecte.toString());
+                    Log.w("AsyncHTMLDownloader", "doInBackground() - contenu NULL pour " + urlPage + " - abonneUniquement = "
+                                                 + uniquementSiConnecte.toString());
                 }
             }
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("AsyncHTMLDownloader", "Crash doInBackground", e);
+                Log.e("AsyncHTMLDownloader", "doInBackground()", e);
             }
         }
         return mesItems;
@@ -278,7 +283,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("AsyncHTMLDownloader", "Crash onPostExecute", e);
+                Log.e("AsyncHTMLDownloader", "onPostExecute()", e);
             }
         }
     }

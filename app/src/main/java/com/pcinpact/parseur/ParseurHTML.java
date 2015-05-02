@@ -108,7 +108,7 @@ public class ParseurHTML {
 
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("ParseurHTML", "Nombre de commentaires : " + valeur + " => " + String.valueOf(total));
+                    Log.w("ParseurHTML", "getListeArticles() - Nombre de commentaires : " + valeur + " => " + total);
                 }
             }
 
@@ -119,7 +119,7 @@ public class ParseurHTML {
                 monArticleItem.setAbonne(true);
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("ParseurHTML", "[abonné] => " + monArticleItem.getTitre());
+                    Log.w("ParseurHTML", "getListeArticles() - [abonné] => " + monArticleItem.getTitre());
                 }
             } else {
                 monArticleItem.setAbonne(false);
@@ -160,7 +160,7 @@ public class ParseurHTML {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "Suppression icône catégorie", e);
+                Log.e("ParseurHTML", "getArticle() - Suppression icône catégorie", e);
             }
         }
 
@@ -200,7 +200,7 @@ public class ParseurHTML {
                     urlLecteur = urlLecteur.substring(unScheme.length());
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("ParseurHTML", "Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+                        Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
                     }
                 }
             }
@@ -279,7 +279,8 @@ public class ParseurHTML {
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("ParseurHTML", "iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                        Log.e("ParseurHTML",
+                              "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
                     }
                 }
             }
@@ -335,7 +336,7 @@ public class ParseurHTML {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ParseurHTML", "getNbCommentaires : " + nbComms);
+            Log.i("ParseurHTML", "getNbCommentaires() - " + nbComms);
         }
 
         return nbComms;
@@ -430,7 +431,7 @@ public class ParseurHTML {
             laDateTS = dfm.parse(uneDate).getTime();
         } catch (ParseException e) {
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "erreur parsage date : " + uneDate, e);
+                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
             }
         }
 

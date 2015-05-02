@@ -158,7 +158,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("CommentairesActivity",
-                                  "Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
+                                  "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
                         }
                     }
                 }
@@ -175,7 +175,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     @SuppressLint("NewApi")
     private void refreshListeCommentaires() {
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "lancement refreshListreCommentaires");
+            Log.i("CommentairesActivity", "refreshListeCommentaires()");
         }
 
         // MàJ des graphismes
@@ -247,7 +247,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     private void lancerAnimationTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "lancerAnimationTelechargement");
+            Log.i("CommentairesActivity", "lancerAnimationTelechargement()");
         }
         // J'enregistre l'état
         isLoading = true;
@@ -270,7 +270,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     private void arreterAnimationTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "arreterAnimationTelechargement");
+            Log.i("CommentairesActivity", "arreterAnimationTelechargement()");
         }
         // J'enregistre l'état
         isLoading = false;
@@ -303,7 +303,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
             }
 
             if (Constantes.DEBUG) {
-                Log.i("CommentairesActivity", "fin des commentaires");
+                Log.i("CommentairesActivity", "downloadHTMLFini() - fin des commentaires");
             }
         } else {
             // J'enregistre en mémoire les nouveaux commentaires

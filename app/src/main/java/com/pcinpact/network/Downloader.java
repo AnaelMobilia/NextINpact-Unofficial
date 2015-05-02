@@ -95,7 +95,7 @@ public class Downloader {
             if (statusCode != HttpStatus.SC_OK) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("Downloader", "Erreur " + statusCode + " au dl de " + uneURL);
+                    Log.e("Downloader", "download() - Erreur " + statusCode + " au dl de " + uneURL);
                 }
                 // Retour utilisateur ?
                 if (debug) {
@@ -137,7 +137,7 @@ public class Downloader {
 
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Downloader", "Erreur pour " + uneURL, e);
+                Log.e("Downloader", "download() - Erreur pour " + uneURL, e);
             }
             // Retour utilisateur ?
             if (debug) {
@@ -158,7 +158,7 @@ public class Downloader {
                 } catch (IOException e) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("Downloader", "entity.consumeContent", e);
+                        Log.e("Downloader", "download()", e);
                     }
                 }
             }

@@ -126,7 +126,7 @@ public class ItemsAdapter extends BaseAdapter {
         if (convertView == null) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.d("ItemsAdapter", "getView : nouvelle vue (#" + position + ")");
+                Log.d("ItemsAdapter", "getView() - nouvelle vue (#" + position + ")");
             }
 
             // Je crée la vue qui va bien...
@@ -194,7 +194,7 @@ public class ItemsAdapter extends BaseAdapter {
                 default:
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("ItemsAdapter", "getView : getItemViewType incorrect : " + getItemViewType(position));
+                        Log.e("ItemsAdapter", "getView() - getItemViewType incorrect : " + getItemViewType(position));
                     }
                     break;
             }
@@ -202,7 +202,7 @@ public class ItemsAdapter extends BaseAdapter {
             // DEBUG
             if (Constantes.DEBUG) {
                 // 0...n vs 1...(n+1)
-                Log.d("ItemsAdapter", "getView : recyclage de la vue (pour #" + (position + 1) + ")");
+                Log.d("ItemsAdapter", "getView() - recyclage de la vue (pour #" + (position + 1) + ")");
             }
         }
 
@@ -272,7 +272,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.i("ItemsAdapter", "Commentaire #" + ci.getId());
+                        Log.i("ItemsAdapter", "getView() - Commentaire #" + ci.getId());
                     }
 
                     // Remplissage des textview
@@ -313,11 +313,6 @@ public class ItemsAdapter extends BaseAdapter {
                      */
                     ContenuArticleItem cai = (ContenuArticleItem) i;
 
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.i("ItemsAdapter", "Contenu Article #" + cai.getContenu());
-                    }
-
                     // Remplissage des textview
                     Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new ImageProvider(monContext, contenuVH.contenu,
                                                                                                cai.getContenu(),
@@ -333,7 +328,7 @@ public class ItemsAdapter extends BaseAdapter {
                 default:
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("ItemsAdapter", "getView : i.getType() incorrect : " + i.getType());
+                        Log.e("ItemsAdapter", "getView() -  i.getType() incorrect : " + i.getType());
                     }
                     break;
             }
@@ -365,8 +360,8 @@ public class ItemsAdapter extends BaseAdapter {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ItemsAdapter", "Application d'un zoom : " + monCoeffZoom + " - taille originale " + defaultSize +
-                                  " => " + nouvelleTaille);
+            Log.d("ItemsAdapter",
+                  "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
         }
     }
 }

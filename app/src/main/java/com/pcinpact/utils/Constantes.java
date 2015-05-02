@@ -247,7 +247,7 @@ public class Constantes {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Constantes", "Erreur à la résolution du n° de version", e);
+                Log.e("Constantes", "getUserAgent() - Erreur à la résolution du n° de version", e);
             }
         }
 

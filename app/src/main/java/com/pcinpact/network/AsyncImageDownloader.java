@@ -70,7 +70,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         pathFichier = unPathFichier;
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("AsyncImageDownloader", urlImage);
+            Log.i("AsyncImageDownloader", "AsyncImageDownloader()" + urlImage);
         }
     }
 
@@ -111,7 +111,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
                 } catch (Exception e) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("AsyncImageDownloader", "Error while saving " + urlImage, e);
+                        Log.e("AsyncImageDownloader", "doInBackground() - erreur à l'enregistrement de " + urlImage, e);
                     }
                     // Retour utilisateur ?
                     if (debug) {
@@ -125,7 +125,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("AsyncImageDownloader", "Crash doInBackground", e);
+                Log.e("AsyncImageDownloader", "doInBackground()", e);
             }
         }
         return null;

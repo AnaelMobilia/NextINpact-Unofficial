@@ -124,22 +124,21 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // Path & nom du fichier
         String pathFichier = getPathAndFile(urlSource, monContext, monTypeImages);
-        Log.e("ddd", pathFichier);
-        Log.e("ddd", "" + imageEnCache(urlSource, monContext, monTypeImages));
+
         // Le fichier existe-t-il en local ?
         if (imageEnCache(urlSource, monContext, monTypeImages) && pathFichier != null) {
             // Je récupère directement mon image
             monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.i("ImageProvider", pathFichier + " fourni depuis le cache");
+                Log.i("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
             }
         } else {
             // L'image est-elle déjà en DL (ou à déjà échoué) ?
             if (mesDL.contains(urlSource)) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.i("ImageProvider", "DL déjà traité - " + urlSource);
+                    Log.i("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
                 }
             }
             // Sinon on lance le DL !
@@ -198,8 +197,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("URLImageProvider",
-                  "gestionTaille : coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight() + " - largeur = "
+            Log.d("ImageProvider",
+                  "gestionTaille() - coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight() + " - largeur = "
                   + uneImage.getIntrinsicWidth());
         }
         return uneImage;
@@ -254,7 +253,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("ImageProvider", URL + " téléchargement en cours...");
+                Log.w("ImageProvider", "telechargerImage() - " + URL + " téléchargement en cours...");
             }
         }
     }
@@ -299,7 +298,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 pathFichier = null;
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("ImageProvider", "getPathAndFile() - Cas défaut pour " + urlImage + " - type : " + typeImage);
+                    Log.e("ImageProvider", "getPathAndFile() - cas défaut pour " + urlImage + " - type : " + typeImage);
                 }
                 break;
         }
@@ -341,7 +340,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
     public void downloadImageFini(final String uneURL) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ImageProvider", "Callback DL fini - " + uneURL);
+            Log.i("ImageProvider", "downloadImageFini() - " + uneURL);
         }
 
         // ImageView
@@ -360,7 +359,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             if (contenuTextView.toString().contentEquals(((TextView) maView).getText())) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "Contenu de la textview conforme => MàJ " + uneURL);
+                    Log.d("ImageProvider", "downloadImageFini() - contenu de la textview identique => MàJ " + uneURL);
                 }
 
                 // J'actualise le commentaire
@@ -369,7 +368,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "Contenu de la textview NON conforme " + uneURL);
+                    Log.d("ImageProvider", "downloadImageFini() - contenu de la textview DIFFERENT " + uneURL);
                 }
             }
         }

@@ -41,7 +41,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
@@ -143,8 +142,8 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 }
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ListeArticlesActivity", "SwipeRefreshLayout - topRowVerticalPosition : " + String.valueOf(
-                            topRowVerticalPosition));
+                    Log.d("ListeArticlesActivity",
+                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
                 }
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
@@ -194,7 +193,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity", "changement taille des textes => " + Constantes.getOptionInt(
+                        Log.w("ListeArticlesActivity", "onCreate() - changement taille des textes => " + Constantes.getOptionInt(
                                 getApplicationContext(), R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte));
                     }
                 }
@@ -205,7 +204,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity", "changement option debug => " + Constantes.getOptionBoolean(
+                        Log.w("ListeArticlesActivity", "onCreate() - changement option debug => " + Constantes.getOptionBoolean(
                                 getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug));
                     }
                 }
@@ -238,7 +237,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "onCreateOptionsMenu : modeDebug => " + modeDebug);
+            Log.i("ListeArticlesActivity", "onCreateOptionsMenu() - modeDebug => " + modeDebug);
         }
 
         // Chargement du fichier XML
@@ -294,16 +293,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("ListeArticlesActivity", "onKeyUp, monMenu null");
-                }
-                // Retour utilisateur ?
-                // L'utilisateur demande-t-il un debug ?
-                Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                                                            R.bool.defautOptionDebug);
-                if (debug) {
-                    Toast monToast = Toast.makeText(getApplicationContext(), "[ListeArticlesActivity] Le menu est null (onKeyUp)",
-                                                    Toast.LENGTH_LONG);
-                    monToast.show();
+                    Log.e("ListeArticlesActivity", "onKeyUp() - monMenu est null !");
                 }
             }
         }
@@ -358,7 +348,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ListeArticlesActivity", "onDestroy", e);
+                Log.e("ListeArticlesActivity", "onDestroy()", e);
             }
         }
 
@@ -558,7 +548,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         if (dlInProgress == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("nouveauChargementGUI", "Lancement animation");
+                Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
             }
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu), getResources().getColor(
@@ -580,7 +570,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         dlInProgress++;
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("nouveauChargementGUI", String.valueOf(dlInProgress));
+            Log.i("ListeArticlesActivity", "nouveauChargementGUI() - " + dlInProgress);
         }
     }
 
@@ -595,7 +585,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         if (dlInProgress == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("finChargementGUI", "Arrêt animation");
+                Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
             }
 
             // On stoppe l'animation du SwipeRefreshLayout
@@ -616,7 +606,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         }
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("finChargementGUI", String.valueOf(dlInProgress));
+            Log.i("ListeArticlesActivity", "finChargementGUI() - " + String.valueOf(dlInProgress));
         }
     }
 }

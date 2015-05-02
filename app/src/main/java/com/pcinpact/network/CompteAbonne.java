@@ -92,7 +92,7 @@ public class CompteAbonne {
                 try {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("compteAbonne", "Attente de la fin d'utilisation pour " + uneURL);
+                        Log.w("CompteAbonne", "downloadArticleAbonne() - attente de la fin d'utilisation pour " + uneURL);
                     }
 
                     // Attente de 0 à 1 seconde...
@@ -103,7 +103,7 @@ public class CompteAbonne {
                 } catch (InterruptedException e) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("compteAbonne", "downloadArticleAbonne : crash sur le sleep", e);
+                        Log.e("CompteAbonne", "downloadArticleAbonne() - exception durant sleep", e);
                     }
                 }
             }
@@ -115,7 +115,7 @@ public class CompteAbonne {
         if (estConnecte(unContext)) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.i("compteAbonne", "déjà connecté => DL authentifié pour " + uneURL);
+                Log.i("CompteAbonne", "downloadArticleAbonne() - déjà connecté => DL authentifié pour " + uneURL);
             }
 
             // Je lance le téléchargement
@@ -135,14 +135,15 @@ public class CompteAbonne {
                 if (uniquementSiConnecte) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("compteAbonne", "Non connectable => DL non autorisé (NULL) pour " + uneURL);
+                        Log.w("CompteAbonne",
+                              "downloadArticleAbonne() - non connectable => DL non autorisé (NULL) pour " + uneURL);
                     }
 
                     monRetour = null;
                 } else {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("compteAbonne", "Non connectable => DL non authentifié pour " + uneURL);
+                        Log.w("CompteAbonne", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
                     }
 
                     monRetour = Downloader.download(uneURL, unContext, compression);
@@ -172,7 +173,7 @@ public class CompteAbonne {
                 // Peut-être connectable
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("compteAbonne", "Lancement de l'authentification pour " + uneURL);
+                    Log.w("CompteAbonne", "downloadArticleAbonne() - lancement de l'authentification pour " + uneURL);
                 }
 
                 // Je lance une authentification...
@@ -204,7 +205,7 @@ public class CompteAbonne {
         if (monHTTPContext == null) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("compteAbonne", "création du HTTPContext");
+                Log.w("CompteAbonne", "connexionAbonne() - création du HTTPContext");
             }
             // Création du HTTPContext
             monHTTPContext = new BasicHttpContext();
@@ -241,14 +242,14 @@ public class CompteAbonne {
             if (statusCode != HttpStatus.SC_OK) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("compteAbonne", "connexionAbonne : Erreur " + statusCode + " lors de l'authentification");
+                    Log.e("CompteAbonne", "connexionAbonne() - erreur " + statusCode + " lors de l'authentification");
                 }
             } else {
                 // Ai-je un cookie d'authentification ?
                 if (estConnecte(unContext)) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("compteAbonne", "connexionAbonne : Authentification réussie (cookie présent)");
+                        Log.w("CompteAbonne", "connexionAbonne() - authentification réussie (cookie présent)");
                     }
                 } else {
                     // Si non connecté
@@ -266,7 +267,7 @@ public class CompteAbonne {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("compteAbonne", "connexionAbonne : Crash sur l'authentification", e);
+                Log.e("CompteAbonne", "connexionAbonne() - exception durant l'authentification", e);
             }
         }
     }
