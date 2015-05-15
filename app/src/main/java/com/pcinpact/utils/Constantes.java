@@ -228,7 +228,6 @@ public class Constantes {
      * USER AGENT.
      */
     private static final String USER_AGENT = "NextInpact (Unofficial) v";
-
     /**
      * User agent pour les Requêtes réseau.
      *
@@ -253,6 +252,11 @@ public class Constantes {
 
         return USER_AGENT + numVersion;
     }
+
+    /**
+     * Balise pour les URL des images d'iframe présente dans drawable
+     */
+    public static final String SCHEME_IFRAME_DRAWABLE = "http://IFRAME_LOCALE/";
 
     /**
      * Retourne une option de type String.

@@ -122,16 +122,29 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // Image de retour
         Drawable monRetour;
 
-        // Path & nom du fichier
-        String pathFichier = getPathAndFile(urlSource, monContext, monTypeImages);
 
-        // Le fichier existe-t-il en local ?
-        if (imageEnCache(urlSource, monContext, monTypeImages) && pathFichier != null) {
-            // Je récupère directement mon image
-            monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.i("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
+        // Fichier ressources OU existant en cache ?
+        if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || imageEnCache(urlSource, monContext, monTypeImages)) {
+            if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE)) {
+                // Image ressource (drawable)
+                Integer idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
+                // On charge le drawable
+                monRetour = gestionTaille(monContext.getResources().getDrawable(idDrawable));
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.i("ImageProvider", "getDrawable() - Drawable " + urlSource + " fourni");
+                }
+            } else {
+                // Image "standard" en cache
+                // Path & nom du fichier
+                String pathFichier = getPathAndFile(urlSource, monContext, monTypeImages);
+
+                // Je récupère directement mon image
+                monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.i("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
+                }
             }
         } else {
             // L'image est-elle déjà en DL (ou à déjà échoué) ?
@@ -143,14 +156,11 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             }
             // Sinon on lance le DL !
             else {
-                // Protection contre un fichier "défaut"
-                if (pathFichier != null) {
-                    // Je note le DL de l'image
-                    mesDL.add(urlSource);
+                // Je note le DL de l'image
+                mesDL.add(urlSource);
 
-                    // Lancement du DL
-                    telechargerImage(urlSource, monTypeImages, monTypeImages, monContext, this);
-                }
+                // Lancement du DL
+                telechargerImage(urlSource, monTypeImages, monTypeImages, monContext, this);
             }
             // Retour d'une image générique (logo NXI)
             monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
@@ -273,7 +283,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // Nom du fichier
         String nomFichier = Tools.md5(urlImage);
         // Path du fichier
-        String pathFichier;
+        String pathFichier = "";
 
         // Détermination du path du fichier
         switch (typeImage) {
@@ -294,8 +304,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
             // Défaut...
             default:
-                nomFichier = null;
-                pathFichier = null;
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.e("ImageProvider", "getPathAndFile() - cas défaut pour " + urlImage + " - type : " + typeImage);
