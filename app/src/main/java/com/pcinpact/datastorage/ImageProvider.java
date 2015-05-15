@@ -170,7 +170,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
     }
 
     /**
-     * Charge et zoome une image.
+     * Zoome une image.
      *
      * @param uneImage ressource Image
      * @return Drawable redimensionnée si besoin
@@ -185,18 +185,23 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
 
-        int monCoeff;
-        if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
-            /**
-             * Si on est sur la résolution par défaut, on reste à 1
-             */
-            monCoeff = Math.round(1 * monCoeffZoom);
-        } else {
-            /**
-             * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
-             */
-            monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
+        int monCoeff = 1;
+
+        // Redimensionnement uniquement pour les smileys
+        if (monTypeImages == Constantes.IMAGE_SMILEY) {
+            if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
+                /**
+                 * Si on est sur la résolution par défaut, on reste à 1
+                 */
+                monCoeff = Math.round(1 * monCoeffZoom);
+            } else {
+                /**
+                 * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
+                 */
+                monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
+            }
         }
+
         // On évite un coeff inférieur à 1 (image non affichée !)
         if (monCoeff < 1) {
             monCoeff = 1;
@@ -211,6 +216,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                   "gestionTaille() - coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight() + " - largeur = "
                   + uneImage.getIntrinsicWidth());
         }
+
         return uneImage;
     }
 
