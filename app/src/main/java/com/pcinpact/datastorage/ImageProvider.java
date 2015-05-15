@@ -236,7 +236,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         String pathFichier = getPathAndFile(URL, unContext.getApplicationContext(), type);
 
         // L'image existe-t-elle déjà en cache ?
-        if (!imageEnCache(URL, unContext, type)) {
+        if (imageEnCache(URL, unContext, type)) {
             // Retour au parent que tout est OK
             parent.downloadImageFini(URL);
         }
@@ -306,7 +306,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         return pathFichier + nomFichier;
     }
 
-
     /**
      * Teste la présence en cache d'une image.
      *
@@ -326,6 +325,11 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         File leFichier = new File(pathFichier);
         if (leFichier.exists()) {
             monRetour = true;
+        }
+
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("ImageProvider", "imageEnCache() - " + urlImage + " => " + monRetour);
         }
 
         return monRetour;
