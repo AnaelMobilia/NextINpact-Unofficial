@@ -310,30 +310,34 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             // Rafraichir la liste des articles
             case R.id.action_refresh:
                 telechargeListeArticles();
-                return true;
+                break;
 
             // Menu Options
             case R.id.action_settings:
                 // Je lance l'activité options
                 Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
                 startActivity(intentOptions);
-                return true;
+                break;
 
             // A propos
             case R.id.action_about:
                 Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(intentAbout);
-                return true;
+                break;
 
             // Debug
             case R.id.action_debug:
                 Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
                 startActivity(intentDebug);
-                return true;
+                break;
 
             default:
-                return super.onOptionsItemSelected(pItem);
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
+                }
         }
+        return true;
     }
 
     /**
