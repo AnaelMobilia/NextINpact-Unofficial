@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -150,5 +152,74 @@ public class DebugActivity extends ActionBarActivity {
                 }
             }
         });
+
+
+        /**
+         * Bouton : Liste des fichiers en cache
+         */
+        Button buttonListeFichier = (Button) this.findViewById(R.id.buttonListerCache);
+        buttonListeFichier.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                // Je crée ma liste de fichiers
+                ArrayList<String> listeFichiers = getListeFichiers(getFilesDir().toString());
+
+                // Je crée mon dialogue
+                AlertDialog.Builder builder = new AlertDialog.Builder(DebugActivity.this);
+                // Titre
+                builder.setTitle(getString(R.string.debugListeFichiers));
+                // Contenu
+                StringBuilder monContenu = new StringBuilder();
+
+                for (String unFichier : listeFichiers) {
+                    monContenu.append(unFichier + "\n");
+                }
+                builder.setMessage(monContenu.toString());
+                // Bouton d'action
+                builder.setCancelable(false);
+                builder.setPositiveButton("Ok", null);
+                // On crée & affiche
+                builder.create().show();
+            }
+        });
+    }
+
+    /**
+     * Fournit une liste RECURSIVE des fichiers d'un path
+     *
+     * @param unPath path concerné
+     * @return Liste des fichiers
+     */
+    private static ArrayList<String> getListeFichiers(String unPath) {
+        // mon Retour
+        ArrayList<String> mesFichiers = new ArrayList<>();
+
+        // Répertoire de début
+        File monRep = new File(unPath);
+
+        // Listing du répertoire parent
+        File[] lesFichiers = monRep.listFiles();
+
+        // J'enregistre le répertoire parent
+        mesFichiers.add(monRep.getAbsolutePath());
+
+        // Pour chaque item...
+        for (File unFichier : lesFichiers) {
+            // Si c'est un répertoire
+            if (unFichier.isDirectory()) {
+                // Appel récursif...
+                mesFichiers.addAll(getListeFichiers(unFichier.toString()));
+            } else {
+                // Enregistrement du fichier
+                try {
+                    mesFichiers.add("  -> " + unFichier.getName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return mesFichiers;
     }
 }

@@ -41,16 +41,22 @@
         android:text="@string/debugPubBeta" />
 
     <Button
-        android:id="@+id/buttonDeleteCache"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonListerCache"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/debugEffacerCache" />
+        android:text="@string/debugListeFichiers"/>
 
     <Button
         android:id="@+id/buttonDeleteCacheSmiley"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/debugEffacerCacheSmiley" />
+
+    <Button
+        android:id="@+id/buttonDeleteCache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/debugEffacerCache"/>
 
     <View
         android:layout_width="match_parent"
@@ -59,7 +65,7 @@
 
     <Button
         android:id="@+id/debugGenererArrayListArticleItem"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/debugGenererArrayList" />
 </LinearLayout>
