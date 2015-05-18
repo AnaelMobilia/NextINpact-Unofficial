@@ -160,7 +160,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 mesDL.add(urlSource);
 
                 // Lancement du DL
-                telechargerImage(urlSource, monTypeImages, monTypeImages, monContext, this);
+                telechargerImage(urlSource, monTypeImages, idArticle, monContext, this);
             }
             // Retour d'une image générique (logo NXI)
             monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
@@ -240,10 +240,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // Enregistrement en BDD imageCache
         // 0 est un indicateur de DL d'une image déjà présente en BDD, mais pas sur le FS.
         if (articleID != 0) {
-            // Calcul du md5 de l'image
-            String monMD5 = Tools.md5(URL);
             // Enregistrement pour la gestion du cache
-            monDAO.cacheEnregistrerImage(articleID, monMD5, type);
+            monDAO.cacheEnregistrerImage(articleID, URL, type);
         }
 
         /**
