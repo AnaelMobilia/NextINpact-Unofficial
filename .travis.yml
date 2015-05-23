@@ -6,7 +6,7 @@ jdk:
 
 android:
     components:
-        - build-tools-20.0.0
+        - build-tools-22.0.1
 
 # Attribution des droits pour linux
 before_install:
