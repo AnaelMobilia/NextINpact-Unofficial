@@ -72,6 +72,19 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         if (Constantes.DEBUG) {
             Log.i("AsyncImageDownloader", "AsyncImageDownloader()" + urlImage);
         }
+
+        // QuickFix problème certificat SSL nextinpact.com
+        // issue #192
+        if (urlImage.startsWith(Constantes.NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192)) {
+            // Je remplace le scheme HTTPS par HTTP pour les images
+            urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192, Constantes.NEXT_INPACT_URL_HTTP_CDN_ISSUE_192);
+
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.d("AsyncImageDownloader", "Renomage SCHEME HTTPS => HTTP " + urlImage);
+            }
+        }
+
     }
 
     @Override

@@ -80,11 +80,20 @@ public class Constantes {
      * Paramêtre numéro de page (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+    /**
+     * URL https du CDN (issue #192)
+     */
+    public static final String NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192 = "https://cdn.nextinpact.com/images/bd";
+    /**
+     * URL http du CDN (issue #192)
+     */
+    public static final String NEXT_INPACT_URL_HTTP_CDN_ISSUE_192 = "http://cdn.nextinpact.com/images/bd";
 
     /**
      * Nb de commentaires par page.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
+
     /**
      * Nb d'articles par page.
      */
@@ -223,11 +232,15 @@ public class Constantes {
      * Nom du cookie d'authentification.
      */
     public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
-
+    /**
+     * Balise pour les URL des images d'iframe présente dans drawable
+     */
+    public static final String SCHEME_IFRAME_DRAWABLE = "http://IFRAME_LOCALE/";
     /**
      * USER AGENT.
      */
     private static final String USER_AGENT = "NextInpact (Unofficial) v";
+
     /**
      * User agent pour les Requêtes réseau.
      *
@@ -252,11 +265,6 @@ public class Constantes {
 
         return USER_AGENT + numVersion;
     }
-
-    /**
-     * Balise pour les URL des images d'iframe présente dans drawable
-     */
-    public static final String SCHEME_IFRAME_DRAWABLE = "http://IFRAME_LOCALE/";
 
     /**
      * Retourne une option de type String.
