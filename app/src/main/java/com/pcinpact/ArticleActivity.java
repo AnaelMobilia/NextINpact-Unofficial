@@ -65,7 +65,7 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         ListView monListView = (ListView) this.findViewById(R.id.contenuArticle);
 
         // Adapter pour l'affichage des données
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(getApplicationContext(), new ArrayList<Item>());
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(this, new ArrayList<Item>());
         monListView.setAdapter(monItemsAdapter);
 
         // Chargement de la DB
