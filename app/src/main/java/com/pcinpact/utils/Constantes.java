@@ -38,6 +38,10 @@ public class Constantes {
      */
     public static final Boolean DEBUG = true;
     /**
+     * Contact du développeur
+     */
+    public static final String MAIL_DEVELOPPEUR = "contrib@anael.eu";
+    /**
      * COMPATIBILITE.
      */
     /**
@@ -169,6 +173,7 @@ public class Constantes {
      */
     public static final String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
+
     /**
      * FORMATS D'AFFICHAGE.
      */
@@ -185,6 +190,7 @@ public class Constantes {
      */
     public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
 
+
     /**
      * CONSTANTES EN BDD.
      */
@@ -192,6 +198,7 @@ public class Constantes {
      * ID du refresh de la liste des articles.
      */
     public static final int DB_REFRESH_ID_LISTE_ARTICLES = 0;
+
 
     /**
      * TAILLE DES TEXTES. http://developer.android.com/design/style/typography.html
@@ -216,6 +223,7 @@ public class Constantes {
      * Taille de texte XLARGE.
      */
     public static final int TEXT_SIZE_XLARGE = 26;
+
 
     /**
      * PARAMETRES D'AUTHENTIFICATION.

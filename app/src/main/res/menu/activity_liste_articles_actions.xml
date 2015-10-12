@@ -47,6 +47,12 @@
                 android:id="@+id/action_about"
                 android:icon="@drawable/ic_menu_info_details"
                 android:title="@string/action_about" />
+
+            <!-- Support -->
+            <item
+                android:id="@+id/action_support"
+                android:icon="@drawable/ic_menu_help"
+                android:title="@string/action_support" />
         </menu>
     </item>
 </menu>

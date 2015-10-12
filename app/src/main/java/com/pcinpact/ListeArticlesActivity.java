@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -329,6 +330,23 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             case R.id.action_debug:
                 Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
                 startActivity(intentDebug);
+                break;
+
+            // Support
+            case R.id.action_support:
+                // Envoi...
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                // Mode texte
+                intent.setType("text/plain");
+                // Sujet du mail
+                intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent(getApplicationContext()));
+                // Corps du mail
+                intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
+                // A qui...
+                intent.setData(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR));
+                // Si touche retour : revient a l'application et pas aux mails
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
 
             default:
