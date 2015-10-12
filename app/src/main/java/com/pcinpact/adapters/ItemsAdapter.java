@@ -292,9 +292,9 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Liens cliquables ? option utilisateur !
-                    Boolean lienClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
+                    Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
                                                                         R.bool.defautOptionLiensDansCommentaires);
-                    if (lienClickable) {
+                    if (lienCommentaireClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
                     } else {
@@ -325,6 +325,18 @@ public class ItemsAdapter extends BaseAdapter {
                                                                                                cai.getArticleID()),
                                                            new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
+
+                    // Liens cliquables ? option utilisateur !
+                    Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
+                            R.bool.defautOptionLiensDansArticles);
+                    if (lienArticleClickable) {
+                        // Active les liens a href
+                        contenuVH.contenu.setMovementMethod(new GestionLiens());
+                    } else {
+                        // Désactivation de l'effet de click
+                        convertView.setOnClickListener(null);
+                        convertView.setOnLongClickListener(null);
+                    }
 
                     // On applique le zoom éventuel
                     appliqueZoom(contenuVH.contenu, Constantes.TEXT_SIZE_SMALL);
