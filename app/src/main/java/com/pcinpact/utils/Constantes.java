@@ -87,11 +87,11 @@ public class Constantes {
     /**
      * URL https du CDN (issue #192)
      */
-    public static final String NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192 = "https://cdn.nextinpact.com/images/bd";
+    public static final String NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192 = "https://cdn.nextinpact.com/";
     /**
      * URL http du CDN (issue #192)
      */
-    public static final String NEXT_INPACT_URL_HTTP_CDN_ISSUE_192 = "http://cdn.nextinpact.com/images/bd";
+    public static final String NEXT_INPACT_URL_HTTP_CDN_ISSUE_192 = "http://cdn.nextinpact.com/";
 
     /**
      * Nb de commentaires par page.
