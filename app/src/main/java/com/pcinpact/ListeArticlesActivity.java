@@ -244,7 +244,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // Chargement du fichier XML
         if (modeDebug) {
             // Mode DEBUG
-            inflater.inflate(R.menu.activity_liste_articles_debug__actions, monMenu);
+            inflater.inflate(R.menu.activity_liste_articles_debug_actions, monMenu);
         } else {
             // Mode standard
             inflater.inflate(R.menu.activity_liste_articles_actions, monMenu);
@@ -415,7 +415,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             for (int numPage = 1; numPage <= nbPages; numPage++) {
                 // Le retour en GUI
                 nouveauChargementGUI();
-
+                numPage = 51;
                 // Ma tâche de DL
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
