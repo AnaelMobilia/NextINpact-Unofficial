@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Anael Mobilia
+ * Copyright 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -356,7 +356,13 @@ public class ParseurHTML {
      * @return liste de CommentaireItem
      */
     public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final String urlPage) {
+        // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
+
+        // Calcul du numéro de page
+        int numeroPage = Integer.valueOf(urlPage.substring(urlPage.indexOf("&")
+                                                           + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE.length()
+                                                           + 2));
 
         // Lancement du parseur sur la page
         Document pageNXI = Jsoup.parse(unContenu, urlPage);
@@ -367,7 +373,7 @@ public class ParseurHTML {
 
         // Les commentaires
         // Passage par une regexp => https://github.com/jhy/jsoup/issues/521
-        Elements lesCommentaires = pageNXI.select("div[class~=actu_comm ]");
+        Elements lesCommentaires = pageNXI.select("div[class~=actu_comm ],div[class~=actu_comm_author]");
 
         // Contenu
         // Supprimer les liens internes (<a> => <div>)
@@ -387,6 +393,9 @@ public class ParseurHTML {
             unLien.attr("href", unLien.absUrl("href"));
         }
 
+        // Calcul de l'indice du premier commentaire (gestion des commentaires supprimés)
+        int idCommPrecedent = (numeroPage - 1) * Constantes.NB_COMMENTAIRES_PAR_PAGE;
+
         CommentaireItem monCommentaireItem;
         // Pour chaque commentaire
         for (Element unCommentaire : lesCommentaires) {
@@ -396,23 +405,54 @@ public class ParseurHTML {
             monCommentaireItem.setArticleId(idArticle);
 
             // Auteur
-            Element monAuteur = unCommentaire.select("span[class=author_name]").get(0);
-            monCommentaireItem.setAuteur(monAuteur.text());
+            Elements monAuteur = unCommentaire.select("span[class=author_name]");
+            if (!monAuteur.isEmpty()) {
+                monCommentaireItem.setAuteur(monAuteur.get(0).text());
+            } else {
+                // Gestion des commentaires supprimés
+                monCommentaireItem.setAuteur("-");
+            }
 
             // Date
-            Element maDate = unCommentaire.select("span[class=date_comm]").get(0);
-            String laDate = maDate.text();
-            monCommentaireItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_COMMENTAIRE));
+            Elements maDate = unCommentaire.select("span[class=date_comm]");
+            if (!maDate.isEmpty()) {
+                String laDate = maDate.get(0).text();
+                monCommentaireItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_COMMENTAIRE));
+            } else {
+                // Gestion des commentaires supprimés
+                monCommentaireItem.setTimeStampPublication(0);
+            }
 
             // Id du commentaire
-            Element monID = unCommentaire.select("span[class=actu_comm_num]").get(0);
-            // Le premier caractère est un "#"
-            String lID = monID.text().substring(1);
-            monCommentaireItem.setId(Integer.valueOf(lID));
+            Elements monID = unCommentaire.select("span[class=actu_comm_num]");
+            if (!monID.isEmpty()) {
+                // Le premier caractère est un "#"
+                String lID = monID.get(0).text().substring(1);
+                monCommentaireItem.setId(Integer.valueOf(lID));
+                // MàJ du numéro du dernier commentaire
+                idCommPrecedent = Integer.valueOf(lID);
+            } else {
+                // Gestion des commentaires supprimés
+                monCommentaireItem.setId(idCommPrecedent + 1);
+                // MàJ du numéro du dernier commentaire
+                idCommPrecedent++;
+            }
 
             // Contenu
-            Element monContenu = unCommentaire.select("div[class=actu_comm_content]").get(0);
-            monCommentaireItem.setCommentaire(monContenu.toString());
+            Elements monContenu = unCommentaire.select("div[class=actu_comm_content]");
+            if (!monContenu.isEmpty()) {
+                monCommentaireItem.setCommentaire(monContenu.get(0).toString());
+            } else {
+                // Gestion des commentaires supprimés - Récupération de la chaîne du détail de modération
+                monContenu = unCommentaire.select("div[class~=actu_comm_author]");
+                if (!monContenu.isEmpty()) {
+                    monCommentaireItem.setCommentaire(monContenu.get(0).toString());
+                } else {
+                    // Gestion de l'erreur de récupération de la modération (en cas de modif du code html évite une
+                    // exception... !)
+                    monCommentaireItem.setCommentaire("--- Erreur ---");
+                }
+            }
 
             // Et je le stocke
             mesCommentairesItem.add(monCommentaireItem);
