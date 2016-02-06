@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015, 2016 Anael Mobilia
+ *
+ * This file is part of NextINpact-Unofficial.
+ *
+ * NextINpact-Unofficial is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * NextINpact-Unofficial is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
+ */
 package com.pcinpact.parseur;
 
 import com.pcinpact.items.ArticleItem;
@@ -14,6 +32,8 @@ public class ParseurHTMLTest {
      * Impossible de mettre le code HTML dans un fichier resources jusqu'à Android Studio 1.3
      * https://code.google.com/p/android/issues/detail?id=136013#c28
      * https://code.google.com/p/android/issues/detail?id=64887
+     *
+     * Vérifie le bon fonctionnement du parseur entre un code HTML figé et le résultat correct attendu
      *
      * @throws Exception
      */
