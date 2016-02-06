@@ -415,7 +415,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             for (int numPage = 1; numPage <= nbPages; numPage++) {
                 // Le retour en GUI
                 nouveauChargementGUI();
-                numPage = 51;
                 // Ma tâche de DL
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
