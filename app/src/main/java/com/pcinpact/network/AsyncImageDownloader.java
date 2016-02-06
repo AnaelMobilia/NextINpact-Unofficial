@@ -73,18 +73,22 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
             Log.i("AsyncImageDownloader", "AsyncImageDownloader()" + urlImage);
         }
 
-        // QuickFix problème certificat SSL nextinpact.com
-        // issue #192
-        if (urlImage.startsWith(Constantes.NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192)) {
-            // Je remplace le scheme HTTPS par HTTP pour les images
-            urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_HTTPS_CDN_ISSUE_192, Constantes.NEXT_INPACT_URL_HTTP_CDN_ISSUE_192);
+        // Faut-il conserver les téléchargement d'images en HTTPS ?
+        Boolean imagesEnHTTP = Constantes.getOptionBoolean(monContext, R.string.idOptionImagesEnHTTP,
+                                                           R.bool.defautOptionImagesEnHTTP);
+        if (imagesEnHTTP) {
+            if (urlImage.startsWith(Constantes.NEXT_INPACT_URL_CDN_HTTPS) || urlImage.startsWith(
+                    Constantes.NEXT_INPACT_URL_CDN2_HTTPS)) {
+                // Je remplace le scheme HTTPS par HTTP pour les images
+                urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_CDN_HTTPS, Constantes.NEXT_INPACT_URL_CDN_HTTP);
+                urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_CDN2_HTTPS, Constantes.NEXT_INPACT_URL_CDN2_HTTP);
 
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.d("AsyncImageDownloader", "Renomage SCHEME HTTPS => HTTP " + urlImage);
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.d("AsyncImageDownloader", "Renomage SCHEME HTTPS => HTTP " + urlImage);
+                }
             }
         }
-
     }
 
     @Override
