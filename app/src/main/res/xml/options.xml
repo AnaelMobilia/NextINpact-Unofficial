@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -89,6 +89,11 @@
             android:key="@string/idOptionCommentairesTelechargementContinu"
             android:summary="@string/optionCommentairesTelechargementContinuDetail"
             android:title="@string/optionCommentairesTelechargementContinu" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionPositionCommentaire"
+            android:key="@string/idOptionPositionCommentaire"
+            android:summary="@string/optionPositionCommentaireDetail"
+            android:title="@string/optionPositionCommentaire"/>
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement">

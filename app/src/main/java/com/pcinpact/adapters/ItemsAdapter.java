@@ -117,7 +117,7 @@ public class ItemsAdapter extends BaseAdapter {
     }
 
     /**
-     * Type de l'itemt à la position (pour définir le bon type de vue à fournir).
+     * Type de l'item à la position (pour définir le bon type de vue à fournir).
      */
     @Override
     public int getItemViewType(int position) {

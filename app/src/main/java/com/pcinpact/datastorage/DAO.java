@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -42,7 +42,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma).
      */
-    private static final int BDD_VERSION = 4;
+    private static final int BDD_VERSION = 5;
     /**
      * Nom de la BDD.
      */
@@ -96,6 +96,10 @@ public final class DAO extends SQLiteOpenHelper {
      * Champ articles => Contenu abonnétéléchargé ?
      */
     private static final String ARTICLE_DL_CONTENU_ABONNE = "iscontenuabonnedl";
+    /**
+     * Champ articles => dernier commentaire lu
+     */
+    private static final String ARTICLE_DERNIER_COMMENTAIRE_LU = "dernierCommentaireLu";
 
     /**
      * Table commentaires.
@@ -203,8 +207,8 @@ public final class DAO extends SQLiteOpenHelper {
                                    ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
                                    + " INTEGER NOT NULL, " + ARTICLE_URL + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL
                                    + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " +
-                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
-                                   + " BOOLEAN);";
+                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " +
+                                   ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -249,6 +253,11 @@ public final class DAO extends SQLiteOpenHelper {
                 ;
                 db.execSQL(reqUpdateFrom3);
 
+            case 4:
+                String reqUpdateFrom4 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DERNIER_COMMENTAIRE_LU +
+                                        " INTEGER;";
+                ;
+                db.execSQL(reqUpdateFrom4);
 
                 // A mettre avant le default !
                 break;
@@ -307,6 +316,52 @@ public final class DAO extends SQLiteOpenHelper {
             updateNbCommentairesArticle(unArticle.getId(), unArticle.getNbCommentaires());
             return false;
         }
+    }
+
+    /**
+     * MàJ de l'ID du dernier commentaire lu
+     *
+     * @param articleID     ID de l'article
+     * @param idCommentaire ID du dernier commentaire lu
+     */
+    public void setDernierCommentaireLu(final int articleID, final int idCommentaire) {
+        // Les datas à MàJ
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
+
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(articleID) });
+    }
+
+    /**
+     * Récupération de l'ID du dernier commentaire lu
+     *
+     * @param articleID ID de l'article
+     * @return int ID du dernier commentaire lu
+     */
+    public int getDernierCommentaireLu(final int articleID) {
+        // Les colonnes à récupérer
+        String[] mesColonnes = new String[]{ ARTICLE_DERNIER_COMMENTAIRE_LU };
+
+        String[] idString = { String.valueOf(articleID) };
+
+        // Requête sur la BDD
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
+
+        int retour = 0;
+
+        // Je vais au premier (et unique) résultat
+        if (monCursor.moveToNext()) {
+            retour = monCursor.getInt(0);
+        }
+        // Fermeture du curseur
+        monCursor.close();
+
+        // Valeur par défaut...
+        if (retour < 1) {
+            retour = 0;
+        }
+
+        return retour;
     }
 
     /**

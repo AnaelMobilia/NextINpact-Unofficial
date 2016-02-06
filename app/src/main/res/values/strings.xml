@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2013, 2014, 2015 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014, 2015, 2016 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -96,10 +96,12 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionsCommentaires">Options des commentaires</string>
     <string name="optionActiverLiensCommentaire">Liens hypertextes</string>
     <string name="optionActiverLiensCommentaireDetail">Activer les liens dans les commentaires</string>
+    <string name="optionPositionCommentaire">Mémoriser la position</string>
+    <string name="optionPositionCommentaireDetail">Rouvrir au dernier commentaire lu</string>
     <!-- <string name="optionTelechargerCommentaires">Télécharger</string> -->
     <!-- <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string> -->
     <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
-    <string name="optionCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de votre lecture</string>
+    <string name="optionCommentairesTelechargementContinuDetail">Télécharger automatiquement les commentaires suivants au fil de la lecture</string>
     <!-- Options : Debug -->
     <string name="optionsDeveloppement">Paramètrages avancés</string>
     <string name="optionDebug">Activer le débuggage</string>
@@ -124,6 +126,7 @@ http://www.nextinpact.com/abonnement"</string>
     <!-- Option sans GUI, sert à notifier l'effacement uniquement -->
     <string name="idOptionDebugEffacerCache">14</string>
     <string name="idOptionImagesEnHTTP">15</string>
+    <string name="idOptionPositionCommentaire">16</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

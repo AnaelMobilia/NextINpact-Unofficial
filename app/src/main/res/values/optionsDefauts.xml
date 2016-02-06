@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -34,4 +34,5 @@
     <bool name="defautOptionInfoCompteAbonne">true</bool>
     <bool name="defautOptionDebugEffacerCache">false</bool>
     <bool name="defautOptionImagesEnHTTP">true</bool>
+    <bool name="defautOptionPositionCommentaire">true</bool>
 </resources>

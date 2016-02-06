@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -134,6 +134,16 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         // Je fait remarquer que le contenu à changé
         monItemsAdapter.notifyDataSetChanged();
 
+        /**
+         * Réouverture au dernier commentaire lu
+         */
+        Boolean reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
+                                                          R.bool.defautOptionPositionCommentaire);
+        if (reouverture) {
+            int idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID);
+            monListView.setSelection(idDernierCommentaireLu);
+        }
+
         // Système de rafraichissement de la vue
         monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -162,6 +172,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                         }
                     }
                 }
+                /**
+                 * Enregistrement de l'id du dernier commentaire affiché
+                 */
+                monDAO.setDernierCommentaireLu(articleID, firstVisibleItem);
             }
         });
 
