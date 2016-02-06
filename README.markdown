@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial.svg?branch=master)](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial)
 
 ## Librairies utilisées par le projet :
-  - [jsoup v1.8.1a] (http://jsoup.org/) : Parsage du code HTML
+  - [jsoup v1.8.3] (http://jsoup.org/) : Parsage du code HTML
   - [Commons-io v2.2] (http://commons.apache.org/proper/commons-io/) : Gestion de flux de fichiers (entre autres)
 
 ## Outils pratiques :
