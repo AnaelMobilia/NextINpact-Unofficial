@@ -207,8 +207,8 @@ public final class DAO extends SQLiteOpenHelper {
                                    ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
                                    + " INTEGER NOT NULL, " + ARTICLE_URL + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL
                                    + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " +
-                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " +
-                                   ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER);";
+                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
+                                   + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
