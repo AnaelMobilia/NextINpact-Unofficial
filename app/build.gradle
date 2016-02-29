@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.pcinpact"
-        // minSdkVersion est la version minimum pour faire tourner l'application (2.2)
-        minSdkVersion 8
+        // minSdkVersion est la version minimum pour faire tourner l'application (2.3)
+        minSdkVersion 9
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 20
         compileOptions {
