@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
  *
  * @author Anael
  */
+@SuppressLint("NewApi")
 public class DebugActivity extends ActionBarActivity {
 
     @Override
