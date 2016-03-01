@@ -1,5 +1,5 @@
 /*
- * Copyright 2014,2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,7 +19,6 @@
 package com.pcinpact.network;
 
 import android.content.Context;
-import android.net.http.AndroidHttpClient;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,24 +27,26 @@ import com.pcinpact.R;
 import com.pcinpact.utils.Constantes;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
- * téléchargement des ressources.
+ * Téléchargement des ressources.
  *
  * @author Anael
  */
 public class Downloader {
     /**
-     * téléchargement sans être connecté en tant qu'abonné.
+     * Téléchargement sans être connecté en tant qu'abonné.
      *
      * @param uneURL      URL de la ressource à télécharger
      * @param unContext   context de l'application
@@ -58,7 +59,7 @@ public class Downloader {
     }
 
     /**
-     * téléchargement d'une ressource en tant qu'abonné.
+     * Téléchargement d'une ressource en tant qu'abonné.
      *
      * @param uneURL         URL de la ressource à télécharger
      * @param unContext      context de l'application
@@ -74,28 +75,49 @@ public class Downloader {
         // L'utilisateur demande-t-il un debug ?
         Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
-        // Inspiré de http://android-developers.blogspot.de/2010/07/multithreading-for-performance.html
-        AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
-        HttpGet getRequest = new HttpGet(uneURL);
-
-        // Réponse à la requête
-        HttpEntity entity = null;
-
-        if (compression) {
-            // Utilisation d'une compression des datas !
-            AndroidHttpClient.modifyRequestToAcceptGzipResponse(getRequest);
-        }
-
         try {
-            // Lancement de la Requête
-            HttpResponse response = client.execute(getRequest, monHTTPContext);
-            final int statusCode = response.getStatusLine().getStatusCode();
+            // Je créée une URL de mon String
+            URL monURL = new URL(uneURL);
 
-            // Gestion d'un code erreur
-            if (statusCode != HttpStatus.SC_OK) {
+            try {
+                // J'ouvre une connection (et caste en HTTPS car images & textes HTTPS #195)
+                HttpsURLConnection monURLConnection = (HttpsURLConnection) monURL.openConnection();
+
+                // Vérification que tout va bien...
+                final int statusCode = monURLConnection.getResponseCode();
+                // Gestion d'un code erreur
+                if (statusCode != HttpURLConnection.HTTP_OK) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("Downloader", "download() - Erreur " + statusCode + " au dl de " + uneURL);
+                    }
+                    // Retour utilisateur ?
+                    if (debug) {
+                        Handler handler = new Handler(unContext.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
+                                                                           uneURL, Toast.LENGTH_LONG);
+                                monToast.show();
+                            }
+                        });
+                    }
+                } else {
+                    // Je récupère le flux de données
+                    InputStream monIS = new BufferedInputStream(monURLConnection.getInputStream());
+                    // Le convertit en bytes (compatiblité existant...)
+                    datas = IOUtils.toByteArray(monIS);
+                    // Ferme l'IS
+                    monIS.close();
+
+                    // Ferme ma connexion
+                    monURLConnection.disconnect();
+                }
+            } catch (IOException e) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("Downloader", "download() - Erreur " + statusCode + " au dl de " + uneURL);
+                    Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
                 }
                 // Retour utilisateur ?
                 if (debug) {
@@ -103,67 +125,30 @@ public class Downloader {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " + uneURL,
+                            Toast monToast = Toast.makeText(unContext,
+                                                            "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
                                                             Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });
                 }
-            } else {
-                // Chargement de la réponse du serveur
-                entity = response.getEntity();
-
-                // Récupération d'un IS degzipé si requis
-                InputStream monIS = AndroidHttpClient.getUngzippedContent(entity);
-                // Passage en byte[]
-                datas = IOUtils.toByteArray(monIS);
-                // Fermeture de l'IS
-                monIS.close();
             }
-        } catch (Exception e) {
-            // J'Arrête la Requête
-            getRequest.abort();
-
-            // Retour utilisateur obligatoire : probable problème de connexion
-            Handler handler = new Handler(unContext.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.chargementPasInternet),
-                                                    Toast.LENGTH_LONG);
-                    monToast.show();
-                }
-            });
-
+        } catch (MalformedURLException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Downloader", "download() - Erreur pour " + uneURL, e);
+                Log.e("Downloader", "download() - URL erronée pour " + uneURL, e);
             }
             // Retour utilisateur ?
             if (debug) {
-                handler = new Handler(unContext.getMainLooper());
+                Handler handler = new Handler(unContext.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur pour " + uneURL, Toast.LENGTH_LONG);
+                        Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
+                                                        Toast.LENGTH_LONG);
                         monToast.show();
                     }
                 });
-            }
-        } finally {
-            if (entity != null) {
-                // Je vide la Requête HTTP
-                try {
-                    entity.consumeContent();
-                } catch (IOException e) {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("Downloader", "download()", e);
-                    }
-                }
-            }
-            if (client != null) {
-                client.close();
             }
         }
         return datas;

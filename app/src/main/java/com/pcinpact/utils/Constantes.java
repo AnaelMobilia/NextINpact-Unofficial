@@ -63,7 +63,7 @@ public class Constantes {
     /**
      * URL de téléchargement.
      */
-    public static final String NEXT_INPACT_URL = "http://m.nextinpact.com";
+    public static final String NEXT_INPACT_URL = "https://m.nextinpact.com";
     /**
      * Paramêtre numéro de page (liste articles).
      */
@@ -84,22 +84,6 @@ public class Constantes {
      * Paramêtre numéro de page (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
-    /**
-     * URL https du CDN (issue #192)
-     */
-    public static final String NEXT_INPACT_URL_CDN_HTTPS = "https://cdn.nextinpact.com/";
-    /**
-     * URL http du CDN (issue #192)
-     */
-    public static final String NEXT_INPACT_URL_CDN_HTTP = "http://cdn.nextinpact.com/";
-    /**
-     * URL https du CDN2 (issue #192)
-     */
-    public static final String NEXT_INPACT_URL_CDN2_HTTPS = "https://cdn2.nextinpact.com/";
-    /**
-     * URL http du CDN2 (issue #192)
-     */
-    public static final String NEXT_INPACT_URL_CDN2_HTTP = "http://cdn2.nextinpact.com/";
 
     /**
      * Nb de commentaires par page.

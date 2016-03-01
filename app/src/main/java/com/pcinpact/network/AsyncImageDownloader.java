@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -71,23 +71,6 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.i("AsyncImageDownloader", "AsyncImageDownloader()" + urlImage);
-        }
-
-        // Faut-il conserver les téléchargement d'images en HTTPS ?
-        Boolean imagesEnHTTP = Constantes.getOptionBoolean(monContext, R.string.idOptionImagesEnHTTP,
-                                                           R.bool.defautOptionImagesEnHTTP);
-        if (imagesEnHTTP) {
-            if (urlImage.startsWith(Constantes.NEXT_INPACT_URL_CDN_HTTPS) || urlImage.startsWith(
-                    Constantes.NEXT_INPACT_URL_CDN2_HTTPS)) {
-                // Je remplace le scheme HTTPS par HTTP pour les images
-                urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_CDN_HTTPS, Constantes.NEXT_INPACT_URL_CDN_HTTP);
-                urlImage = urlImage.replace(Constantes.NEXT_INPACT_URL_CDN2_HTTPS, Constantes.NEXT_INPACT_URL_CDN2_HTTP);
-
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.d("AsyncImageDownloader", "Renomage SCHEME HTTPS => HTTP " + urlImage);
-                }
-            }
         }
     }
 

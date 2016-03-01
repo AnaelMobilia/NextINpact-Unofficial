@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Anael Mobilia
+ * Copyright 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,7 +19,7 @@
 package com.pcinpact.network;
 
 import android.content.Context;
-import android.net.http.AndroidHttpClient;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,19 +27,20 @@ import android.widget.Toast;
 import com.pcinpact.R;
 import com.pcinpact.utils.Constantes;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.protocol.BasicHttpContext;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.HttpCookie;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Connexion au compte abonné et gestion du DL des articles abonnés.
@@ -54,7 +55,7 @@ public class CompteAbonne {
     /**
      * Conteneur à cookies.
      */
-    private static BasicCookieStore monCookieStore;
+    private static CookieManager monCookieManager;
     /**
      * Dernier utilisateur essayé.
      */
@@ -202,17 +203,15 @@ public class CompteAbonne {
      */
     private static void connexionAbonne(final Context unContext, final String username, final String password) {
         // Au premier appel, j'initialise le cookie holder
-        if (monHTTPContext == null) {
+        if (monCookieManager == null) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("CompteAbonne", "connexionAbonne() - création du HTTPContext");
+                Log.w("CompteAbonne", "connexionAbonne() - création du CookieManager");
             }
-            // Création du HTTPContext
-            monHTTPContext = new BasicHttpContext();
-            // Création du cookieStore
-            monCookieStore = new BasicCookieStore();
-            // On conserve les cookies
-            monHTTPContext.setAttribute(ClientContext.COOKIE_STORE, monCookieStore);
+            monCookieManager = new CookieManager();
+            monCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            // Je définis monCookieManager comme gestionnaire des cookies
+            CookieHandler.setDefault(monCookieManager);
         }
 
         // Enregistrement des identifiants "LastTry"
@@ -221,25 +220,44 @@ public class CompteAbonne {
 
         // Authentification sur NXI
         try {
-            // Création de la requête
-            AndroidHttpClient client = AndroidHttpClient.newInstance(Constantes.getUserAgent(unContext));
-            HttpPost postRequest = new HttpPost(Constantes.AUTHENTIFICATION_URL);
+            // Création de la chaîne d'authentification
+            String query = Constantes.AUTHENTIFICATION_USERNAME + "=" + Uri.encode(username, Constantes.NEXT_INPACT_ENCODAGE)
+                           + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
+                                                                                           Constantes.NEXT_INPACT_ENCODAGE);
 
-            // Paramètres de la requête
-            ArrayList<NameValuePair> mesParametres = new ArrayList<>();
-            mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_USERNAME, username));
-            mesParametres.add(new BasicNameValuePair(Constantes.AUTHENTIFICATION_PASSWORD, password));
+            URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
+            HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
+            // On envoit des données
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            // Désactivation du cache...
+            urlConnection.setUseCaches(false);
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
-            postRequest.setEntity(new UrlEncodedFormEntity(mesParametres));
+            // Buffer des données et émission...
+            OutputStream output = new BufferedOutputStream(urlConnection.getOutputStream());
+            output.write(query.getBytes());
+            output.flush();
+            output.close();
 
-            // Exécution de la requête
-            HttpResponse response = client.execute(postRequest, monHTTPContext);
-            int statusCode = response.getStatusLine().getStatusCode();
-            // Fermeture du client
-            client.close();
+            urlConnection.connect();
+
+            int statusCode = urlConnection.getResponseCode();
+            // DEBUG
+            if (Constantes.DEBUG) {
+                //Log.d("compteAbonne", "connexionAbonne() - identifiants : " + query);
+                Log.d("compteAbonne", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
+                // Je récupère le flux de données
+                InputStream monIS = new BufferedInputStream(urlConnection.getInputStream());
+                String datas = IOUtils.toString(monIS);
+                // Ferme l'IS
+                monIS.close();
+                Log.d("compteAbonne", "connexionAbonne() - données : " + datas);
+            }
+
 
             // Gestion d'un code erreur
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpsURLConnection.HTTP_OK) {
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.e("CompteAbonne", "connexionAbonne() - erreur " + statusCode + " lors de l'authentification");
@@ -282,7 +300,7 @@ public class CompteAbonne {
         boolean monRetour = false;
 
         // Ai-je un cookieHolder ?
-        if (monCookieStore != null) {
+        if (monCookieManager != null) {
             /**
              * Vérification des options
              */
@@ -295,14 +313,21 @@ public class CompteAbonne {
             // Les options sont-elles bien saisies ?
             if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("")) {
                 // Si non, effacement des cookies
-                monCookieStore.clear();
+                monCookieManager.getCookieStore().removeAll();
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.d("CompteAbonne", "estConnecte() - effacement des cookies");
+                }
             } else {
                 // Si oui, je cherche mon cookie...
-                // Suppression des cookies expirés
-                monCookieStore.clearExpired(new Date());
 
-                // Ai-je le cookie demandé ?
-                for (Cookie unCookie : monCookieStore.getCookies()) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.d("CompteAbonne",
+                          "estConnecte() - cookies : " + monCookieManager.getCookieStore().getCookies().toString());
+                }
+
+                for (HttpCookie unCookie : monCookieManager.getCookieStore().getCookies()) {
                     // Est-le bon cookie ?
                     if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
                         monRetour = true;
