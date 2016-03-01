@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Anael Mobilia
+ * Copyright 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,6 +19,8 @@
 package com.pcinpact;
 
 import android.app.AlertDialog;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.utils.Constantes;
 
 import java.io.File;
@@ -181,6 +184,29 @@ public class DebugActivity extends ActionBarActivity {
                 builder.setPositiveButton("Ok", null);
                 // On crée & affiche
                 builder.create().show();
+            }
+        });
+
+        /**
+         * Bouton : Tester connexion
+         */
+        Button buttonTesterConnexion = (Button) this.findViewById(R.id.buttonTesterConnexion);
+        buttonTesterConnexion.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+
+                DAO monDAO = DAO.getInstance(getApplicationContext());
+
+                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(null, Constantes.HTML_LISTE_ARTICLES,
+                                                                     Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
+                                                                     true, true);
+
+                // Parallélisation des téléchargements pour l'ensemble de l'application
+                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+                    monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else {
+                    monAHD.execute();
+                }
             }
         });
     }

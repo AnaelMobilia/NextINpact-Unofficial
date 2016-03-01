@@ -58,6 +58,12 @@
         android:layout_height="wrap_content"
         android:text="@string/debugEffacerCache"/>
 
+    <Button
+        android:id="@+id/buttonTesterConnexion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/debugTesterConnexion"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
