@@ -48,8 +48,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93786);
         unArticle.setTimeStampPublication(1428841599000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1983.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93786-le-recap-bons-plans-moment-semaine-15.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1983.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93786-le-recap-bons-plans-moment-semaine-15.htm");
         unArticle.setTitre("Le récap' des bons plans du moment, semaine 15");
         unArticle.setSousTitre("Cyberattaque sur les prix !");
         unArticle.setNbCommentaires(12);
@@ -58,8 +58,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93725);
         unArticle.setTimeStampPublication(1428789600000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6218.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93725-528eme-edition-lidd-liens-idiots-du-dimanche.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6218.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93725-528eme-edition-lidd-liens-idiots-du-dimanche.htm");
         unArticle.setTitre("528ème édition des LIDD : Liens Idiots Du Dimanche");
         unArticle.setSousTitre("Il n'y a pas d'âge pour jouer aux billes");
         unArticle.setNbCommentaires(37);
@@ -68,8 +68,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93787);
         unArticle.setTimeStampPublication(1428747632000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6211.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93787-interview-le-droit-d-auteur-et-julia-reda-eurodeputeedu-parti-pirate.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6211.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93787-interview-le-droit-d-auteur-et-julia-reda-eurodeputeedu-parti-pirate.htm");
         unArticle.setTitre("[Interview] Le droit d’auteur et Julia Reda, eurodéputée du Parti Pirate");
         unArticle.setSousTitre("Quelle réforme du droit d'auteur en Europe ?");
         unArticle.setNbCommentaires(39);
@@ -78,8 +79,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93788);
         unArticle.setTimeStampPublication(1428739558000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1596.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93788-la-faille-rootpipe-corrigee-dans-yosemite-10-10-3-mais-pas-dans-autres-os-x.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1596.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93788-la-faille-rootpipe-corrigee-dans-yosemite-10-10-3-mais-pas-dans-autres-os-x.htm");
         unArticle.setTitre("La faille Rootpipe corrigée dans Yosemite 10.10.3, mais pas dans les autres OS X");
         unArticle.setSousTitre("Trop de boulot !");
         unArticle.setNbCommentaires(42);
@@ -88,8 +90,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93775);
         unArticle.setTimeStampPublication(1428699466000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/5258.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93775-windows-10-pour-smartphone-nouvelle-build-10051-pour-dizaines-lumia.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/5258.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93775-windows-10-pour-smartphone-nouvelle-build-10051-pour-dizaines-lumia.htm");
         unArticle.setTitre("Windows 10 pour smartphones : nouvelle build 10051 pour une trentaine de Lumia");
         unArticle.setSousTitre("Et paf, les serveurs Insider en rade");
         unArticle.setNbCommentaires(78);
@@ -98,8 +101,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93782);
         unArticle.setTimeStampPublication(1428681858000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6213.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93782-cyberattaque-tv5monde-on-est-dans-guerre-information.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6213.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93782-cyberattaque-tv5monde-on-est-dans-guerre-information.htm");
         unArticle.setTitre("Cyberattaque de TV5Monde : « On est dans une guerre de l'information »");
         unArticle.setSousTitre("ANSSI font les pirates");
         unArticle.setNbCommentaires(36);
@@ -108,8 +111,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93785);
         unArticle.setTimeStampPublication(1428679800000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/2743.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93785-star-wars-sfr-numerciable-propose-films-en-telechargement-a-2299-unite.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/2743.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93785-star-wars-sfr-numerciable-propose-films-en-telechargement-a-2299-unite.htm");
         unArticle.setTitre("[MàJ] Star Wars : 22,99 € le film chez Numericable-SFR, le prix de « la vraie expérience » sur TV");
         unArticle.setSousTitre("La « fameuse » règle des 30 % ?");
         unArticle.setNbCommentaires(187);
@@ -118,8 +122,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93776);
         unArticle.setTimeStampPublication(1428678744000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1799.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93776-deux-plaintes-deposees-en-france-contre-programmes-surveillance.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1799.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93776-deux-plaintes-deposees-en-france-contre-programmes-surveillance.htm");
         unArticle.setTitre("Deux plaintes déposées en France contre les programmes de surveillance");
         unArticle.setSousTitre("Pochette sur Prism");
         unArticle.setNbCommentaires(14);
@@ -128,8 +133,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93779);
         unArticle.setTimeStampPublication(1428676200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6209.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93779-renove-par-google-snapseed-2-0-fait-son-retour-sur-android-et-ios.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6209.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93779-renove-par-google-snapseed-2-0-fait-son-retour-sur-android-et-ios.htm");
         unArticle.setTitre("Rénové par Google, Snapseed 2.0 fait son retour sur Android et iOS");
         unArticle.setSousTitre("Votre smartphone ultra-moderne pourra vieillir toutes vos photos");
         unArticle.setNbCommentaires(5);
@@ -138,8 +144,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93777);
         unArticle.setTimeStampPublication(1428674400000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/3935.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93777-le-senat-favorable-a-l-open-data-sur-donnees-transport.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/3935.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93777-le-senat-favorable-a-l-open-data-sur-donnees-transport.htm");
         unArticle.setTitre("Le Sénat favorable à l’Open Data sur les données de transport");
         unArticle.setSousTitre("Métro, c'est trop");
         unArticle.setNbCommentaires(3);
@@ -148,8 +154,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93783);
         unArticle.setTimeStampPublication(1428672600000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6206.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93783-wordpress-fbi-met-en-garde-contre-vague-dattaques-par-soutiens-daesh.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6206.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93783-wordpress-fbi-met-en-garde-contre-vague-dattaques-par-soutiens-daesh.htm");
         unArticle.setTitre("Wordpress : le FBI met en garde contre une vague d'attaques par des soutiens de Daesh");
         unArticle.setSousTitre("Fox Mulder mène l'enquête");
         unArticle.setNbCommentaires(37);
@@ -158,8 +165,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93780);
         unArticle.setTimeStampPublication(1428669900000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1774.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93780-les-editeurs-se-dressent-contre-restauration-fonctions-en-ligne-jeux-abandonnes.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1774.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93780-les-editeurs-se-dressent-contre-restauration-fonctions-en-ligne-jeux-abandonnes.htm");
         unArticle.setTitre("Les éditeurs se dressent contre la restauration des fonctions en ligne de jeux abandonnés");
         unArticle.setSousTitre("Difficile de s'a-musée dans ces conditions");
         unArticle.setNbCommentaires(74);
@@ -168,8 +176,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93757);
         unArticle.setTimeStampPublication(1428667200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1553.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93757-arcep-defis-et-enjeux-qui-attendent-regulateur-telecoms.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1553.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93757-arcep-defis-et-enjeux-qui-attendent-regulateur-telecoms.htm");
         unArticle.setTitre("ARCEP : les défis et les enjeux qui attendent le régulateur des télécoms");
         unArticle.setSousTitre("Une ouverture de velours dans une neutralité de fer");
         unArticle.setNbCommentaires(13);
@@ -178,8 +186,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93784);
         unArticle.setTimeStampPublication(1428658200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6205.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93784-asustor-ameliore-son-application-looksgood-avec-transcodage-video.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6205.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93784-asustor-ameliore-son-application-looksgood-avec-transcodage-video.htm");
         unArticle.setTitre("Asustor améliore son application LooksGood avec du transcodage vidéo");
         unArticle.setSousTitre("LooksInteresting");
         unArticle.setNbCommentaires(2);
@@ -188,8 +197,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93781);
         unArticle.setTimeStampPublication(1428656413000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6204.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93781-une-manifestation-contre-loi-sur-renseignement-organisee-lundi-a-paris.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6204.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93781-une-manifestation-contre-loi-sur-renseignement-organisee-lundi-a-paris.htm");
         unArticle.setTitre("[Brève] Une manifestation contre la loi sur le renseignement organisée lundi à Paris");
         unArticle.setSousTitre("Avis aux « exégètes amateurs » et opposants de « mauvaise foi »");
         unArticle.setNbCommentaires(58);
@@ -198,8 +208,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93770);
         unArticle.setTimeStampPublication(1428654000000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/4700.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93770-deus-ex-mankind-divided-prochain-volet-serie-se-montre-enfin.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/4700.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93770-deus-ex-mankind-divided-prochain-volet-serie-se-montre-enfin.htm");
         unArticle.setTitre("[Brève] Deus Ex Mankind Divided : le prochain volet de la série se montre enfin");
         unArticle.setSousTitre("Vite, oublions The Fall");
         unArticle.setNbCommentaires(74);
@@ -208,8 +218,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93778);
         unArticle.setTimeStampPublication(1428652200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6203.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93778-des-hebergeurs-menacent-quitter-france-en-cas-d-adoption-loi-renseignement.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6203.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93778-des-hebergeurs-menacent-quitter-france-en-cas-d-adoption-loi-renseignement.htm");
         unArticle.setTitre("Des hébergeurs menacent de quitter la France en cas d’adoption de la loi renseignement");
         unArticle.setSousTitre("Direction Sainte-Hélène");
         unArticle.setNbCommentaires(190);
@@ -218,8 +229,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93774);
         unArticle.setTimeStampPublication(1428650073000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/3936.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93774-dropbox-sintegre-desormais-a-office-online.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/3936.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93774-dropbox-sintegre-desormais-a-office-online.htm");
         unArticle.setTitre("Dropbox s'intègre désormais à Office Online");
         unArticle.setSousTitre("Et réciproquement d'ailleurs");
         unArticle.setNbCommentaires(24);
@@ -228,8 +239,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93763);
         unArticle.setTimeStampPublication(1428648092000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6201.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93763-la-norme-hdmi-2-0a-est-officielle-et-prend-en-charge-hdr.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6201.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93763-la-norme-hdmi-2-0a-est-officielle-et-prend-en-charge-hdr.htm");
         unArticle.setTitre("La norme HDMI 2.0a est officielle et prend en charge le HDR");
         unArticle.setSousTitre("Même pas 36 Gb/s ?");
         unArticle.setNbCommentaires(86);
@@ -238,8 +249,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93740);
         unArticle.setTimeStampPublication(1428594468000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6192.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93740-test-nxi-cities-skylines-simcity-like-presque-parfait.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6192.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93740-test-nxi-cities-skylines-simcity-like-presque-parfait.htm");
         unArticle.setTitre("Cities Skylines : un SimCity-like presque parfait");
         unArticle.setSousTitre("Pour l'ambiance ça va, mais le plat manque un peu de piment");
         unArticle.setNbCommentaires(68);
@@ -248,8 +259,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93772);
         unArticle.setTimeStampPublication(1428591600000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1560.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93772-skype-translator-integre-italien-chinois-et-le-text-to-speech.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1560.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93772-skype-translator-integre-italien-chinois-et-le-text-to-speech.htm");
         unArticle.setTitre("Skype Translator intègre l'italien, le chinois et le « text-to-speech »");
         unArticle.setSousTitre("On attend toujours les langues de Molière et de Goethe");
         unArticle.setNbCommentaires(6);
@@ -258,8 +269,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93769);
         unArticle.setTimeStampPublication(1428588900000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/5258.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93769-microsoft-annonce-son-nano-server-tourne-vers-cloud.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/5258.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93769-microsoft-annonce-son-nano-server-tourne-vers-cloud.htm");
         unArticle.setTitre("Microsoft annonce son Windows Nano Server minimal pour 2016");
         unArticle.setSousTitre("Il en faut peu pour être heureux");
         unArticle.setNbCommentaires(92);
@@ -268,8 +279,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93771);
         unArticle.setTimeStampPublication(1428586200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/2927.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93771-mise-a-jour-thecusos-5-0-nombreuses-failles-bouchees-et-kodi-pour-certains-nas.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/2927.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93771-mise-a-jour-thecusos-5-0-nombreuses-failles-bouchees-et-kodi-pour-certains-nas.htm");
         unArticle.setTitre("Mise à jour de ThecusOS 5.0 : de nombreuses failles bouchées et Kodi pour certains NAS");
         unArticle.setSousTitre("Il était temps...");
         unArticle.setNbCommentaires(6);
@@ -278,8 +290,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93760);
         unArticle.setTimeStampPublication(1428583500000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6191.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93760-facebook-reconnaissance-faciale-serait-illegale-dans-illinois.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6191.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93760-facebook-reconnaissance-faciale-serait-illegale-dans-illinois.htm");
         unArticle.setTitre("Facebook : la légalité de la reconnaissance faciale remise en cause dans l’Illinois");
         unArticle.setSousTitre("Ce vieux, très vieux combat entre l'opt-in et l'opt-out");
         unArticle.setNbCommentaires(43);
@@ -288,8 +300,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93768);
         unArticle.setTimeStampPublication(1428580800000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6189.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93768-microsoft-planche-sur-nouvelle-extension-pour-age-of-empires-ii.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6189.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93768-microsoft-planche-sur-nouvelle-extension-pour-age-of-empires-ii.htm");
         unArticle.setTitre("Microsoft planche sur une nouvelle « extension » pour Age of Empires II");
         unArticle.setSousTitre("Les guillemets ont leur importance");
         unArticle.setNbCommentaires(155);
@@ -298,8 +311,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93765);
         unArticle.setTimeStampPublication(1428573600000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1783.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93765-youtube-prepare-terrain-a-offre-dabonnement-sans-publicite.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1783.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93765-youtube-prepare-terrain-a-offre-dabonnement-sans-publicite.htm");
         unArticle.setTitre("YouTube prépare le terrain à une offre d'abonnement sans publicité");
         unArticle.setSousTitre("Le 15 juin de nouvelles conditions de monétisation");
         unArticle.setNbCommentaires(213);
@@ -308,8 +321,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93761);
         unArticle.setTimeStampPublication(1428571265000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/3660.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93761-yosemite-10-10-3-et-ios-8-3-photos-emojis-corrections-et-multiples-ameliorations.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/3660.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93761-yosemite-10-10-3-et-ios-8-3-photos-emojis-corrections-et-multiples-ameliorations.htm");
         unArticle.setTitre("Yosemite 10.10.3 et iOS 8.3 : Photos, emojis, corrections et multiples améliorations");
         unArticle.setSousTitre("Attention à votre espace de stockage iCloud");
         unArticle.setNbCommentaires(24);
@@ -318,8 +332,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93766);
         unArticle.setTimeStampPublication(1428568200000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1777.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93766-zynga-don-mattrick-laisse-son-fauteuil-pdg-et-empoche-188-millions-dollars.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1777.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93766-zynga-don-mattrick-laisse-son-fauteuil-pdg-et-empoche-188-millions-dollars.htm");
         unArticle.setTitre("Zynga : Don Mattrick laisse son fauteuil de PDG et empoche 18,8 millions de dollars");
         unArticle.setSousTitre("Mattrick s'élève vers de nouveaux horizons");
         unArticle.setNbCommentaires(98);
@@ -328,8 +343,9 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93767);
         unArticle.setTimeStampPublication(1428566203000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/6185.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93767-tv5monde-pirate-ecran-noir-sur-11-chaines-et-propagande-sur-reseaux-sociaux.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/6185.jpg");
+        unArticle.setUrl(
+                "https://m.nextinpact.com/news/93767-tv5monde-pirate-ecran-noir-sur-11-chaines-et-propagande-sur-reseaux-sociaux.htm");
         unArticle.setTitre("TV5Monde piraté : écran noir sur les 11 chaines et propagande sur les réseaux sociaux");
         unArticle.setSousTitre("Éclipse totale des programmes");
         unArticle.setNbCommentaires(151);
@@ -338,8 +354,8 @@ public class ParseurHTMLTest {
         unArticle = new ArticleItem();
         unArticle.setId(93538);
         unArticle.setTimeStampPublication(1428563916000L);
-        unArticle.setUrlIllustration("http://az664837.vo.msecnd.net/images/bd/square-linked-media/1547.jpg");
-        unArticle.setUrl("http://m.nextinpact.com/news/93538-le-paiement-par-bitcoin-est-disponible-pour-nos-abonnements.htm");
+        unArticle.setUrlIllustration("https://az664837.vo.msecnd.net/images/bd/square-linked-media/1547.jpg");
+        unArticle.setUrl("https://m.nextinpact.com/news/93538-le-paiement-par-bitcoin-est-disponible-pour-nos-abonnements.htm");
         unArticle.setTitre("[Blog] Le paiement par Bitcoin est disponible pour nos abonnements");
         unArticle.setSousTitre("Minez, soutenez !");
         unArticle.setNbCommentaires(97);
