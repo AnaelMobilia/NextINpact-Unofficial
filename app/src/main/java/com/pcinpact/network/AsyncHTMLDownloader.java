@@ -194,7 +194,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // Article abonné ?
                         if (articleDB.isAbonne()) {
                             // Suis-je connecté ?
-                            boolean etatAbonne = Downloader.estConnecte(monContext);
+                            boolean etatAbonne = Downloader.estConnecte();
 
                             // Suis-je connecté ?
                             articleDB.setDlContenuAbonne(etatAbonne);
