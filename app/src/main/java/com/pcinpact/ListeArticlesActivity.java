@@ -403,7 +403,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             /**
              * Téléchargement des articles dont le contenu n'avait pas été téléchargé
              */
-            telechargeListeArticles(monDAO.chargerArticlesATelecharger());
+            telechargeArticles(monDAO.chargerArticlesATelecharger());
 
             /**
              * Téléchargement des pages de liste d'articles
@@ -452,7 +452,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
      * @param desItems liste d'articles à télécharger
      */
     @SuppressLint("NewApi")
-    private void telechargeListeArticles(final ArrayList<? extends Item> desItems) {
+    private void telechargeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
             ArticleItem monItem = (ArticleItem) unItem;
 
@@ -504,7 +504,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // Si c'est un refresh général
         if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
             // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
-            telechargeListeArticles(desItems);
+            telechargeArticles(desItems);
         }
 
         // gestion du téléchargement GUI
