@@ -19,6 +19,7 @@
 package com.pcinpact.network;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,12 +28,16 @@ import com.pcinpact.R;
 import com.pcinpact.utils.Constantes;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +51,24 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class Downloader {
     /**
-     * Téléchargement sans être connecté en tant qu'abonné.
+     * Conteneur à cookies.
+     */
+    private static CookieManager monCookieManager;
+    /**
+     * Dernier utilisateur essayé.
+     */
+    private static String usernameLastTry = "";
+    /**
+     * Dernier mot de passe essayé.
+     */
+    private static String passwordLastTry = "";
+    /**
+     * Jeton d'"utilisation en cours".
+     */
+    private static Boolean isRunning = false;
+
+    /**
+     * Téléchargement d'une ressource
      *
      * @param uneURL      URL de la ressource à télécharger
      * @param unContext   context de l'application
@@ -54,21 +76,11 @@ public class Downloader {
      * @return ressource demandée brute
      */
     public static byte[] download(final String uneURL, final Context unContext, final boolean compression) {
+        // Faut-il initialiser le cookie manager ?
+        if (monCookieManager == null) {
+            Downloader.initializeCookieManager();
+        }
 
-        return download(uneURL, unContext, compression, new BasicHttpContext());
-    }
-
-    /**
-     * Téléchargement d'une ressource en tant qu'abonné.
-     *
-     * @param uneURL         URL de la ressource à télécharger
-     * @param unContext      context de l'application
-     * @param compression    true = demander au serveur une compression gzip
-     * @param monHTTPContext HTTPcontext contenant le cookie de connexion au compte abonné NXI
-     * @return ressource demandée brute
-     */
-    public static byte[] download(final String uneURL, final Context unContext, final boolean compression,
-                                  final HttpContext monHTTPContext) {
         // Retour
         byte[] datas = null;
 
@@ -152,5 +164,244 @@ public class Downloader {
             }
         }
         return datas;
+    }
+
+
+    /**
+     * Télécharge un article "abonné".
+     *
+     * @param uneURL               URL de la ressource
+     * @param unContext            context de l'application
+     * @param compression          faut-il demander au serveur de compresser la ressource ?
+     * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
+     * @return code HTML de l'article brut
+     */
+    public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean compression,
+                                               final boolean uniquementSiConnecte) {
+        // Faut-il initialiser le cookie manager ?
+        if (monCookieManager == null) {
+            Downloader.initializeCookieManager();
+        }
+
+        // Retour
+        byte[] datas = null;
+
+        // Suis-je déjà connecté ?
+        if (estConnecte()) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.i("CompteAbonne", "downloadArticleAbonne() - déjà connecté => DL authentifié pour " + uneURL);
+            }
+
+            // Je lance le téléchargement
+            datas = Downloader.download(uneURL, unContext, compression);
+        } else {
+            // J'attends si j'ai déjà une connexion en cours...
+            while (isRunning) {
+                try {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.w("CompteAbonne", "downloadArticleAbonne() - attente de la fin d'utilisation pour " + uneURL);
+                    }
+
+                    // Attente de 0 à 0.25 seconde...
+                    double monCoeff = Math.random();
+                    // Evite les réveils trop simultanés (les appels l'étant...)
+                    int maDuree = (int) (250 * monCoeff);
+                    Thread.sleep(maDuree);
+                } catch (InterruptedException e) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("CompteAbonne", "downloadArticleAbonne() - exception durant sleep", e);
+                    }
+                }
+            }
+            // Je prends la place !
+            isRunning = true;
+
+            // Non connecté... suis-je connectable ?
+            // Chargement des identifiants
+            String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
+            String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
+                                                               R.string.defautOptionPassword);
+            Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
+
+            // La connexion peut-elle être demandée ?
+            if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("") ||
+                (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+                // Si non : fallback si possible
+                if (!uniquementSiConnecte) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.w("CompteAbonne", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
+                    }
+
+                    datas = Downloader.download(uneURL, unContext, compression);
+                }
+
+                // Information sur l'existance du compte abonné dans les options
+                boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
+                                                                 R.bool.defautOptionInfoCompteAbonne);
+
+                // Dois-je notifier l'utilisateur ?
+                if (infoAbonne) {
+                    // Affichage d'un toast
+                    Handler handler = new Handler(unContext.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
+                                                            Toast.LENGTH_LONG);
+                            monToast.show();
+                        }
+                    });
+
+                    // Enregistrement de l'affichage
+                    Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
+                }
+            } else {
+                // Peut-être connectable
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("CompteAbonne", "downloadArticleAbonne() - lancement de l'authentification pour " + uneURL);
+                }
+
+                // Je lance une authentification...
+                connexionAbonne(unContext, usernameOption, passwordOption);
+
+                // Je libère le jeton d'utilisation
+                isRunning = false;
+
+                // Je relance la méthode pour avoir un résultat...
+                datas = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
+            }
+        }
+
+        return datas;
+    }
+
+    /**
+     * Initialisation du cookie manager
+     */
+    public static void initializeCookieManager() {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.w("CompteAbonne", "connexionAbonne() - création du CookieManager");
+        }
+        monCookieManager = new CookieManager();
+        monCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        // Je définis monCookieManager comme gestionnaire des cookies
+        CookieHandler.setDefault(monCookieManager);
+    }
+
+    /**
+     * Connexion au compte abonné.
+     *
+     * @param unContext context de l'application
+     * @param username  nom d'utilisateur NXI
+     * @param password  mot de passe NXI
+     */
+    private static void connexionAbonne(final Context unContext, final String username, final String password) {
+        // Enregistrement des identifiants "LastTry"
+        usernameLastTry = username;
+        passwordLastTry = password;
+
+        // Authentification sur NXI
+        try {
+            // Création de la chaîne d'authentification
+            String query = Constantes.AUTHENTIFICATION_USERNAME + "=" + Uri.encode(username, Constantes.NEXT_INPACT_ENCODAGE)
+                           + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
+                                                                                           Constantes.NEXT_INPACT_ENCODAGE);
+
+            URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
+            HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
+            // On envoit des données
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            // Désactivation du cache...
+            urlConnection.setUseCaches(false);
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            // Buffer des données et émission...
+            OutputStream output = new BufferedOutputStream(urlConnection.getOutputStream());
+            output.write(query.getBytes());
+            output.flush();
+            output.close();
+
+            urlConnection.connect();
+
+            int statusCode = urlConnection.getResponseCode();
+            // DEBUG
+            if (Constantes.DEBUG) {
+                //Log.d("compteAbonne", "connexionAbonne() - identifiants : " + query);
+                Log.d("compteAbonne", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
+                // Je récupère le flux de données
+                InputStream monIS = new BufferedInputStream(urlConnection.getInputStream());
+                String datas = IOUtils.toString(monIS);
+                // Ferme l'IS
+                monIS.close();
+                Log.d("compteAbonne", "connexionAbonne() - données : " + datas);
+            }
+
+
+            // Gestion d'un code erreur
+            if (statusCode != HttpsURLConnection.HTTP_OK) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("CompteAbonne", "connexionAbonne() - erreur " + statusCode + " lors de l'authentification");
+                }
+            } else {
+                // Ai-je un cookie d'authentification ?
+                if (estConnecte()) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.w("CompteAbonne", "connexionAbonne() - authentification réussie (cookie présent)");
+                    }
+                } else {
+                    // Si non connecté
+                    Handler handler = new Handler(unContext.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
+                                                            Toast.LENGTH_LONG);
+                            monToast.show();
+                        }
+                    });
+                }
+            }
+        } catch (Exception e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("CompteAbonne", "connexionAbonne() - exception durant l'authentification", e);
+            }
+        }
+    }
+
+    /**
+     * Est-on connecté (vérification du cookie).
+     *
+     * @return true si compte utilisateur connecté chez NXI
+     */
+    public static boolean estConnecte() {
+        boolean monRetour = false;
+
+        // Ai-je un cookieManager ?
+        if (monCookieManager != null) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.d("CompteAbonne", "estConnecte() - cookies : " + monCookieManager.getCookieStore().getCookies().toString());
+            }
+
+            for (HttpCookie unCookie : monCookieManager.getCookieStore().getCookies()) {
+                // Est-le bon cookie ?
+                if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
+                    monRetour = true;
+                    // Pas besoin d'aller plus loin !
+                    break;
+                }
+            }
+        }
+        return monRetour;
     }
 }

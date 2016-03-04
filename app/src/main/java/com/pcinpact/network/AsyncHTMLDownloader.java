@@ -135,7 +135,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             byte[] datas;
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
-                datas = CompteAbonne.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
+                datas = Downloader.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
                                                            uniquementSiConnecte);
             } else {
                 // Je récupère mon contenu HTML directement
@@ -194,7 +194,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // Article abonné ?
                         if (articleDB.isAbonne()) {
                             // Suis-je connecté ?
-                            boolean etatAbonne = CompteAbonne.estConnecte(monContext);
+                            boolean etatAbonne = Downloader.estConnecte(monContext);
 
                             // Suis-je connecté ?
                             articleDB.setDlContenuAbonne(etatAbonne);
