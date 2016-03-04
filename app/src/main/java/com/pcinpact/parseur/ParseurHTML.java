@@ -257,7 +257,7 @@ public class ParseurHTML {
                 /**
                  * Soundcloud (l'URL commence bien par w.soundcloud !)
                  */
-                monRemplacement.html("<a href=\"" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                monRemplacement.html("<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                                      + R.drawable.iframe_soundcloud + "\" /></a>");
             } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                 /**
@@ -271,6 +271,12 @@ public class ParseurHTML {
                  */
                 monRemplacement.html("<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                                      + R.drawable.iframe_canalplus + "\" /></a>");
+            } else if (urlLecteur.startsWith("www.arte.tv/")) {
+                /**
+                 * Arte
+                 */
+                monRemplacement.html("<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                                     + R.drawable.iframe_arte + "\" /></a>");
             } else {
                 /**
                  * Déchet (cath all)
