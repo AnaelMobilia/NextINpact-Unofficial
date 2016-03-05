@@ -135,8 +135,7 @@ public class CacheManager {
             /**
              * Illustrations d'articles
              */
-            // Alimentation de la BDD non gérée pour le moment...
-            //effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
+            effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
 
             /**
              * Smileys
