@@ -242,6 +242,10 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         if (articleID != 0) {
             // Enregistrement pour la gestion du cache
             monDAO.cacheEnregistrerImage(articleID, URL, type);
+            if (Constantes.DEBUG) {
+                Log.d("ImageProvider",
+                      "telechargerImage() - enregistrement cache pour " + URL + " - " + articleID + " - " + type);
+            }
         }
 
         /**
