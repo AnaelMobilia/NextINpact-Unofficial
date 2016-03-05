@@ -135,7 +135,8 @@ public class CacheManager {
             /**
              * Illustrations d'articles
              */
-            effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
+            // Alimentation de la BDD non gérée pour le moment...
+            //effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
 
             /**
              * Smileys
@@ -247,7 +248,6 @@ public class CacheManager {
      */
     public static void nettoyerCacheImages(final Context unContext, final int unType, final String pathType) {
         Context monContext = unContext.getApplicationContext();
-
         /**
          * Images dixit la BDD
          */
@@ -267,7 +267,12 @@ public class CacheManager {
                 // Si elle n'est pas dans la liste des images à avoir
                 if (!imagesCache.containsKey(uneImage)) {
                     // Je l'efface du FS
-                    monContext.deleteFile(uneImage);
+                    File monFichier = new File(monContext.getFilesDir() + pathType + uneImage);
+                    if (!monFichier.delete() && Constantes.DEBUG) {
+                        Log.w("CacheManager",
+                              "nettoyerCacheImages() - erreur à la suppression de " + monContext.getFilesDir() + pathType
+                              + uneImage);
+                    }
                 }
             }
         }
