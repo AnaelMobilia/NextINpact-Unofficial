@@ -230,7 +230,7 @@ public class DebugActivity extends ActionBarActivity {
         File[] lesFichiers = monRep.listFiles();
 
         // J'enregistre le répertoire parent
-        mesFichiers.add(monRep.getAbsolutePath());
+        mesFichiers.add(monRep.getAbsolutePath() + " (" + lesFichiers.length + ")");
 
         // Pour chaque item...
         for (File unFichier : lesFichiers) {
