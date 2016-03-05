@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -136,7 +136,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
                 datas = Downloader.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
-                                                           uniquementSiConnecte);
+                                                         uniquementSiConnecte);
             } else {
                 // Je récupère mon contenu HTML directement
                 datas = Downloader.download(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES);
