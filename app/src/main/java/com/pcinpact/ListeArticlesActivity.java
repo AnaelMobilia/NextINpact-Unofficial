@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -42,6 +43,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
@@ -56,6 +58,7 @@ import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Liste des articles.
@@ -481,13 +484,39 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                                                  getApplicationContext());
             }
 
-            // Parallélisation des téléchargements pour l'ensemble de l'application
-            if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                monAHD.execute();
+            try {
+                // Parallélisation des téléchargements pour l'ensemble de l'application
+                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+                    monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } else {
+                    monAHD.execute();
+                }
+                nouveauChargementGUI();
+            } catch (RejectedExecutionException e) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("ListeArticlesActivity", "telechargeArticles() - RejectedExecutionException (trop de monde en queue)",
+                          e);
+                }
+
+                // L'utilisateur demande-t-il un debug ?
+                Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                            R.bool.defautOptionDebug);
+
+                // Retour utilisateur ?
+                if (debug) {
+                    Handler handler = new Handler(getApplicationContext().getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast monToast = Toast.makeText(getApplicationContext(),
+                                                            "[Downloader] Trop de téléchargements simultanés", Toast.LENGTH_LONG);
+                            monToast.show();
+                        }
+                    });
+                }
             }
-            nouveauChargementGUI();
+            telechargeArticles(desItems);
 
             // Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
             if (dlIllustration) {
