@@ -516,7 +516,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                     });
                 }
             }
-            telechargeArticles(desItems);
 
             // Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
             if (dlIllustration) {
