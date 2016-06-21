@@ -190,7 +190,7 @@ public class Downloader {
         if (estConnecte()) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.i("CompteAbonne", "downloadArticleAbonne() - déjà connecté => DL authentifié pour " + uneURL);
+                Log.i("Downloader", "downloadArticleAbonne() - déjà connecté => DL authentifié pour " + uneURL);
             }
 
             // Je lance le téléchargement
@@ -201,7 +201,7 @@ public class Downloader {
                 try {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("CompteAbonne", "downloadArticleAbonne() - attente de la fin d'utilisation pour " + uneURL);
+                        Log.w("Downloader", "downloadArticleAbonne() - attente de la fin d'utilisation pour " + uneURL);
                     }
 
                     // Attente de 0 à 0.25 seconde...
@@ -212,7 +212,7 @@ public class Downloader {
                 } catch (InterruptedException e) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("CompteAbonne", "downloadArticleAbonne() - exception durant sleep", e);
+                        Log.e("Downloader", "downloadArticleAbonne() - exception durant sleep", e);
                     }
                 }
             }
@@ -233,7 +233,7 @@ public class Downloader {
                 if (!uniquementSiConnecte) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("CompteAbonne", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
+                        Log.w("Downloader", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
                     }
 
                     datas = Downloader.download(uneURL, unContext, compression);
@@ -263,7 +263,7 @@ public class Downloader {
                 // Peut-être connectable
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("CompteAbonne", "downloadArticleAbonne() - lancement de l'authentification pour " + uneURL);
+                    Log.w("Downloader", "downloadArticleAbonne() - lancement de l'authentification pour " + uneURL);
                 }
 
                 // Je lance une authentification...
@@ -286,7 +286,7 @@ public class Downloader {
     public static void initializeCookieManager() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.w("CompteAbonne", "connexionAbonne() - création du CookieManager");
+            Log.w("Downloader", "connexionAbonne() - création du CookieManager");
         }
         monCookieManager = new CookieManager();
         monCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
@@ -334,13 +334,13 @@ public class Downloader {
             // DEBUG
             if (Constantes.DEBUG) {
                 //Log.d("compteAbonne", "connexionAbonne() - identifiants : " + query);
-                Log.d("compteAbonne", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
+                Log.d("Downloader", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
                 // Je récupère le flux de données
                 InputStream monIS = new BufferedInputStream(urlConnection.getInputStream());
                 String datas = IOUtils.toString(monIS);
                 // Ferme l'IS
                 monIS.close();
-                Log.d("compteAbonne", "connexionAbonne() - données : " + datas);
+                Log.d("Downloader", "connexionAbonne() - données : " + datas);
             }
 
 
@@ -348,14 +348,14 @@ public class Downloader {
             if (statusCode != HttpsURLConnection.HTTP_OK) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("CompteAbonne", "connexionAbonne() - erreur " + statusCode + " lors de l'authentification");
+                    Log.e("Downloader", "connexionAbonne() - erreur " + statusCode + " lors de l'authentification");
                 }
             } else {
                 // Ai-je un cookie d'authentification ?
                 if (estConnecte()) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("CompteAbonne", "connexionAbonne() - authentification réussie (cookie présent)");
+                        Log.w("Downloader", "connexionAbonne() - authentification réussie (cookie présent)");
                     }
                 } else {
                     // Si non connecté
@@ -373,7 +373,7 @@ public class Downloader {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("CompteAbonne", "connexionAbonne() - exception durant l'authentification", e);
+                Log.e("Downloader", "connexionAbonne() - exception durant l'authentification", e);
             }
         }
     }
@@ -390,7 +390,7 @@ public class Downloader {
         if (monCookieManager != null) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.d("CompteAbonne", "estConnecte() - cookies : " + monCookieManager.getCookieStore().getCookies().toString());
+                Log.d("Downloader", "estConnecte() - cookies : " + monCookieManager.getCookieStore().getCookies().toString());
             }
 
             for (HttpCookie unCookie : monCookieManager.getCookieStore().getCookies()) {
