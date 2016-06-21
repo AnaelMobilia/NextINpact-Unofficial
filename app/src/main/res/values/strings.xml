@@ -106,6 +106,8 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionsDeveloppement">Paramètrages avancés</string>
     <string name="optionDebug">Activer le débuggage</string>
     <string name="optionDebugDetail">"Afficher les messages d'erreurs (utile pour rapporter une erreur dans l'application)"</string>
+    <string name="optionCacherBoutonPartage">Désactiver le partage</string>
+    <string name="optionCacherBoutonPartageDetail">"Ne pas afficher le bouton de partage dans les articles"</string>
     <!-- Options : Sécurité -->
     <!-- <string name="optionImagesEnHTTP">Images en HTTP</string> -->
     <!-- <string name="optionImagesEnHTTPDetail">"Télécharger les images via HTTP (+ rapide)"</string> -->
@@ -127,6 +129,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionDebugEffacerCache">14</string>
     <!-- <string name="idOptionImagesEnHTTP">15</string> -->
     <string name="idOptionPositionCommentaire">16</string>
+    <string name="idOptionCacherBoutonPartage">17</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

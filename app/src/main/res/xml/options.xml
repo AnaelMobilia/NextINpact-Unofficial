@@ -103,6 +103,11 @@
         <!-- android:summary="@string/optionImagesEnHTTPDetail" -->
         <!-- android:title="@string/optionImagesEnHTTP"/> -->
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionCacherBoutonPartage"
+            android:key="@string/idOptionCacherBoutonPartage"
+            android:summary="@string/optionCacherBoutonPartageDetail"
+            android:title="@string/optionCacherBoutonPartage" />
+        <CheckBoxPreference
             android:defaultValue="@bool/defautOptionDebug"
             android:key="@string/idOptionDebug"
             android:summary="@string/optionDebugDetail"

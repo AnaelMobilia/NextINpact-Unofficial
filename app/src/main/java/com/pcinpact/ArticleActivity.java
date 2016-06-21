@@ -107,6 +107,13 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
         mShareActionProvider.setShareIntent(monIntent);
 
+        // Option : cacher le bouton de partage
+        Boolean cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
+                                                                  R.bool.defautOptionCacherBoutonPartage);
+        if (cacherBoutonPartage) {
+            shareItem.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 

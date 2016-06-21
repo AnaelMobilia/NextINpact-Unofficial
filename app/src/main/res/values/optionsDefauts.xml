@@ -35,4 +35,5 @@
     <bool name="defautOptionDebugEffacerCache">false</bool>
     <!-- <bool name="defautOptionImagesEnHTTP">true</bool> -->
     <bool name="defautOptionPositionCommentaire">true</bool>
+    <bool name="defautOptionCacherBoutonPartage">false</bool>
 </resources>
