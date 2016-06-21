@@ -21,8 +21,6 @@ package com.pcinpact.datastorage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
@@ -262,11 +260,11 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         else {
             // A défaut, on la télécharge, sans retour en UI !
             AsyncImageDownloader monAID = new AsyncImageDownloader(unContext, parent, pathFichier, URL);
-            // Parallélisation des téléchargements pour l'ensemble de l'application
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                monAID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                monAID.execute();
+
+            // Lancement du téléchargement
+            if (!monAID.run()) {
+                // Retour au parent de la fin du téléchargement (échoué)
+                parent.downloadImageFini(URL);
             }
 
             // DEBUG

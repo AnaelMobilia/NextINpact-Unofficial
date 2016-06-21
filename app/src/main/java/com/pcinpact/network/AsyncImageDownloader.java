@@ -20,6 +20,8 @@ package com.pcinpact.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.pcinpact.utils.Constantes;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Téléchargement asynchrone d'image.
@@ -136,5 +139,50 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         if (monParent != null) {
             monParent.downloadImageFini(urlImage);
         }
+    }
+
+    /**
+     * Lancement du téléchargement asynchrone
+     *
+     * @return résultat de la commande
+     */
+    public boolean run() {
+
+        boolean monRetour = true;
+
+        try {
+            // Parallélisation des téléchargements pour l'ensemble de l'application
+            if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
+                this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } else {
+                this.execute();
+            }
+        } catch (RejectedExecutionException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("AsyncImageDownloader", "run() - RejectedExecutionException (trop de monde en queue)", e);
+            }
+
+            // Je note l'erreur
+            monRetour = false;
+
+            // L'utilisateur demande-t-il un debug ?
+            Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
+
+            // Retour utilisateur ?
+            if (debug) {
+                Handler handler = new Handler(monContext.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés (image)",
+                                                        Toast.LENGTH_LONG);
+                        monToast.show();
+                    }
+                });
+            }
+        }
+
+        return monRetour;
     }
 }

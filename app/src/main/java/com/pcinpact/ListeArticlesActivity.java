@@ -23,10 +23,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -43,7 +40,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
@@ -58,7 +54,6 @@ import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Liste des articles.
@@ -416,17 +411,14 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
             // téléchargement de chaque page...
             for (int numPage = 1; numPage <= nbPages; numPage++) {
-                // Le retour en GUI
-                nouveauChargementGUI();
                 // Ma tâche de DL
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
                                                                      getApplicationContext());
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                    monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAHD.execute();
+                // Lancement du téléchargement
+                if (monAHD.run()) {
+                    // MàJ animation
+                    nouveauChargementGUI();
                 }
             }
 
@@ -484,40 +476,13 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                                                  getApplicationContext());
             }
 
-            try {
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                    monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAHD.execute();
-                }
+            // Lancement du téléchargement
+            if (monAHD.run()) {
+                // MàJ animation
                 nouveauChargementGUI();
-            } catch (RejectedExecutionException e) {
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.e("ListeArticlesActivity", "telechargeArticles() - RejectedExecutionException (trop de monde en queue)",
-                          e);
-                }
-
-                // L'utilisateur demande-t-il un debug ?
-                Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                                                            R.bool.defautOptionDebug);
-
-                // Retour utilisateur ?
-                if (debug) {
-                    Handler handler = new Handler(getApplicationContext().getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast monToast = Toast.makeText(getApplicationContext(),
-                                                            "[Downloader] Trop de téléchargements simultanés", Toast.LENGTH_LONG);
-                            monToast.show();
-                        }
-                    });
-                }
             }
 
-            // Pas de DL des miniatures pour les articles abonnés dont je tente de récupérer le contenu
+            // DL des miniatures des articles dont je récupère le contenu (sauf articles abonnés / contenu)
             if (dlIllustration) {
                 // Je lance le téléchargement de sa miniature
                 ImageProvider.telechargerImage(monItem.getUrlIllustration(), Constantes.IMAGE_MINIATURE_ARTICLE, monItem.getId(),

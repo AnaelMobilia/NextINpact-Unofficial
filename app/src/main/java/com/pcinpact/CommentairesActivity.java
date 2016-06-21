@@ -19,8 +19,6 @@
 package com.pcinpact;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -192,9 +190,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
             Log.i("CommentairesActivity", "refreshListeCommentaires()");
         }
 
-        // MàJ des graphismes
-        lancerAnimationTelechargement();
-
         int idDernierCommentaire = 0;
         // Si j'ai des commentaires, je récupère l'ID du dernier dans la liste
         if (!mesCommentaires.isEmpty()) {
@@ -213,11 +208,11 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
                                                              getApplicationContext());
-        // Parallélisation des téléchargements pour l'ensemble de l'application
-        if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-            monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            monAHD.execute();
+
+        // Lancement du téléchargement
+        if (monAHD.run()) {
+            // Lancement de l'animation de téléchargement
+            lancerAnimationTelechargement();
         }
     }
 

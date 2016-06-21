@@ -20,8 +20,6 @@ package com.pcinpact;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -203,12 +201,7 @@ public class DebugActivity extends ActionBarActivity {
                                                                      Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
                                                                      true, true);
 
-                // Parallélisation des téléchargements pour l'ensemble de l'application
-                if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                    monAHD.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    monAHD.execute();
-                }
+                monAHD.run();
             }
         });
     }
