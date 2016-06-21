@@ -369,24 +369,22 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         }
         // TextView
         else {
-            // Je calcule le rendu du commentaire (html brut)
-            // Dans le constructeur, la textview n'a pas encore de contenu (on le fabrique...)
-            CharSequence contenuTextView = Html.fromHtml(monContenu);
-
-            // Vérification du non recyclage de la textview (même contenu)
-            if (contenuTextView.toString().contentEquals(((TextView) maView).getText())) {
+            // Vérification que la textview concerne toujours le même article (via son ID)
+            if (maView.getId() == idArticle) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "downloadImageFini() - contenu de la textview identique => MàJ " + uneURL);
+                    Log.d("ImageProvider", "downloadImageFini() - ID de la textview identique => MàJ " + uneURL);
                 }
 
-                // J'actualise le commentaire
+                // J'actualise le texte
                 Spanned spannedContent = Html.fromHtml(monContenu, this, new TagHandler());
                 ((TextView) maView).setText(spannedContent);
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "downloadImageFini() - contenu de la textview DIFFERENT " + uneURL);
+                    Log.d("ImageProvider",
+                          "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
+                          + idArticle);
                 }
             }
         }

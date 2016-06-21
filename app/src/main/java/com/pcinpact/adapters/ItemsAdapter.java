@@ -326,6 +326,9 @@ public class ItemsAdapter extends BaseAdapter {
                                                            new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
 
+                    // Définition de l'ID du textview (pour gestion callback si dl image)
+                    contenuVH.contenu.setId(cai.getArticleID());
+
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
                             R.bool.defautOptionLiensDansArticles);
