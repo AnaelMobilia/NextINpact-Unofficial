@@ -207,7 +207,7 @@ public class Downloader {
                     // Attente de 0 à 0.25 seconde...
                     double monCoeff = Math.random();
                     // Evite les réveils trop simultanés (les appels l'étant...)
-                    int maDuree = (int) (250 * monCoeff);
+                    int maDuree = (int) (500 * monCoeff);
                     Thread.sleep(maDuree);
                 } catch (InterruptedException e) {
                     // DEBUG
@@ -229,7 +229,11 @@ public class Downloader {
             // La connexion peut-elle être demandée ?
             if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("") ||
                 (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
-                // Si non : fallback si possible
+
+                // NON : je libère le jeton d'utilisation
+                isRunning = false;
+
+                // Fallback est-il possible ?
                 if (!uniquementSiConnecte) {
                     // DEBUG
                     if (Constantes.DEBUG) {
