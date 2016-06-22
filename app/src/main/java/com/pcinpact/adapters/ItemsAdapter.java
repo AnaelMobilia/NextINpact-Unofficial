@@ -288,8 +288,11 @@ public class ItemsAdapter extends BaseAdapter {
                                                                                                       commentaireVH.commentaire,
                                                                                                       ci.getCommentaire(),
                                                                                                       Constantes.IMAGE_SMILEY,
-                                                                                                      ci.getArticleId()), null);
+                                                                                                      ci.getId()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
+
+                    // Définition de l'ID du textview (pour gestion callback si dl image)
+                    commentaireVH.commentaire.setId(ci.getId());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
