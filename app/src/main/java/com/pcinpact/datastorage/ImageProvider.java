@@ -66,24 +66,25 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     private String monContenu = null;
     /**
-     * ID de l'article associé
+     * ID de l'article / commentaire associé
      */
-    private int idArticle;
+    private int idReference;
     /**
      * Liste des fichiers déjà en cours de DL.
      */
     private HashSet<String> mesDL = new HashSet<>();
 
     /**
-     * Constructeur TextView (Smileys, ContenuArticle).
+     * Constructeur TextView (Smileys, ContenuArticle, commentaires).
      *
      * @param unContext    context de l'application
      * @param uneTextView  TextView concernée
      * @param unContenu    Contenu de la textview
      * @param unTypeImages type d'images
+     * @param IDreference  ID (unique) de l'élément
      */
     public ImageProvider(final Context unContext, final TextView uneTextView, final String unContenu, final int unTypeImages,
-                         final int articleID) {
+                         final int IDreference) {
         monContext = unContext.getApplicationContext();
         // Type d'images
         monTypeImages = unTypeImages;
@@ -91,8 +92,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         maView = uneTextView;
         // Contenu actuel de la TextView
         monContenu = unContenu;
-        // ID de l'article
-        idArticle = articleID;
+        // ID de l'article / commentaire
+        idReference = IDreference;
     }
 
     /**
@@ -100,15 +101,16 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      *
      * @param unContext    context de l'application
      * @param uneImageView ImageView concernée
+     * @param IDreference  ID (unique) de l'élément
      */
-    public ImageProvider(final Context unContext, final ImageView uneImageView, final int articleID) {
+    public ImageProvider(final Context unContext, final ImageView uneImageView, final int IDreference) {
         monContext = unContext.getApplicationContext();
         // Type d'images
         monTypeImages = Constantes.IMAGE_MINIATURE_ARTICLE;
         // ImageView
         maView = uneImageView;
-        // ID de l'article
-        idArticle = articleID;
+        // ID de l'article / commentaire
+        idReference = IDreference;
     }
 
 
@@ -158,7 +160,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 mesDL.add(urlSource);
 
                 // Lancement du DL
-                telechargerImage(urlSource, monTypeImages, idArticle, monContext, this);
+                telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
             }
             // Retour d'une image générique (logo NXI)
             monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
@@ -383,8 +385,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         }
         // TextView
         else {
-            // Vérification que la textview concerne toujours le même article (via son ID)
-            if (maView.getId() == idArticle) {
+            // Vérification que la textview concerne toujours le même article / commentaire (via son ID)
+            if (maView.getId() == idReference) {
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("ImageProvider", "downloadImageFini() - ID de la textview identique => MàJ " + uneURL);
@@ -398,7 +400,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 if (Constantes.DEBUG) {
                     Log.d("ImageProvider",
                           "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
-                          + idArticle);
+                          + idReference);
                 }
             }
         }
