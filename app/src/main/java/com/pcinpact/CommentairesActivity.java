@@ -70,7 +70,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     /**
      * téléchargement en cours ?
      */
-    private Boolean isLoading = false;
+    private int dlInProgress = 0;
     /**
      * Fin des commentaires ?
      */
@@ -159,7 +159,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                                                                       R.string.idOptionCommentairesTelechargementContinu,
                                                                       R.bool.defautOptionCommentairesTelechargementContinu);
                     // Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
-                    if (telecharger && !isLoading && !isFinCommentaires) {
+                    if (telecharger && dlInProgress == 0 && !isFinCommentaires) {
                         // téléchargement de 10 commentaires en plus
                         refreshListeCommentaires();
 
@@ -212,7 +212,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         // Lancement du téléchargement
         if (monAHD.run()) {
             // Lancement de l'animation de téléchargement
-            lancerAnimationTelechargement();
+            debutTelechargement();
         }
     }
 
@@ -226,9 +226,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         inflater.inflate(R.menu.activity_commentaires_actions, menu);
 
         // Ticket #86 : un chargement automatique a-t-il lieu (sera lancé avant de créer le menu)
-        if (isLoading) {
+        if (dlInProgress != 0) {
             // Je fait coincider les animations avec l'état réel
-            lancerAnimationTelechargement();
+            debutTelechargement();
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -239,7 +239,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         // Rafraichir la liste des commentaires
         if (pItem.getItemId() == R.id.action_refresh) {
             // Retour GUI
-            lancerAnimationTelechargement();
+            debutTelechargement();
             // téléchargement de TOUS les commentaires
             isChargementTotal = true;
 
@@ -253,13 +253,13 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     /**
      * Lance les animations indiquant un téléchargement.
      */
-    private void lancerAnimationTelechargement() {
+    private void debutTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "lancerAnimationTelechargement()");
+            Log.i("CommentairesActivity", "debutTelechargement()");
         }
         // J'enregistre l'état
-        isLoading = true;
+        dlInProgress++;
 
         // Lance la rotation du logo dans le header
         setSupportProgressBarIndeterminateVisibility(true);
@@ -276,24 +276,27 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     /**
      * Arrête les animations indiquant un téléchargement.
      */
-    private void arreterAnimationTelechargement() {
+    private void finTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "arreterAnimationTelechargement()");
+            Log.i("CommentairesActivity", "finTelechargement()");
         }
         // J'enregistre l'état
-        isLoading = false;
+        dlInProgress--;
 
-        // Arrêt de la rotation du logo dans le header
-        setSupportProgressBarIndeterminateVisibility(false);
+        // Si plus de téléchargement en cours
+        if (dlInProgress == 0) {
+            // Arrêt de la rotation du logo dans le header
+            setSupportProgressBarIndeterminateVisibility(false);
 
-        // Affiche l'icône refresh dans le header
-        if (monMenu != null) {
-            monMenu.findItem(R.id.action_refresh).setVisible(true);
+            // Affiche l'icône refresh dans le header
+            if (monMenu != null) {
+                monMenu.findItem(R.id.action_refresh).setVisible(true);
+            }
+
+            // MàJ du bouton du footer
+            buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
         }
-
-        // MàJ du bouton du footer
-        buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
     }
 
     @Override
@@ -308,7 +311,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                 // On enlève le marqueur
                 isChargementTotal = false;
                 // Suppression de l'animation GUI restante
-                arreterAnimationTelechargement();
+                finTelechargement();
             }
 
             if (Constantes.DEBUG) {
@@ -342,7 +345,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         }
 
         // Arrêt des gris-gris en GUI
-        arreterAnimationTelechargement();
+        finTelechargement();
     }
 
     @Override
@@ -360,10 +363,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
             // Jamais synchro...
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
+            String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
+                                                                                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
-            headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                                                                                         Constantes.LOCALE).format(
-                    dernierRefresh));
+            headerTextView.setText(monTexte);
         }
     }
 }
