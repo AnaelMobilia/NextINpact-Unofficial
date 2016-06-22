@@ -226,8 +226,9 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         inflater.inflate(R.menu.activity_commentaires_actions, menu);
 
         // Ticket #86 : un chargement automatique a-t-il lieu (sera lancé avant de créer le menu)
-        if (dlInProgress != 0) {
+        if (dlInProgress > 0) {
             // Je fait coincider les animations avec l'état réel
+            finTelechargement();
             debutTelechargement();
         }
 
@@ -256,7 +257,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     private void debutTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "debutTelechargement()");
+            Log.i("CommentairesActivity", "debutTelechargement() " + dlInProgress);
         }
         // J'enregistre l'état
         dlInProgress++;
@@ -279,7 +280,7 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     private void finTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "finTelechargement()");
+            Log.i("CommentairesActivity", "finTelechargement() " + dlInProgress);
         }
         // J'enregistre l'état
         dlInProgress--;
