@@ -113,7 +113,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         //        setSupportProgressBarIndeterminateVisibility(false);
 
         // Mise en place de l'itemAdapter
-        monItemsAdapter = new ItemsAdapter(this, mesArticles);
+        monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), mesArticles);
         monListView.setAdapter(monItemsAdapter);
         monListView.setOnItemClickListener(this);
 
@@ -277,18 +277,23 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // récupère l'article en question
         ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
-        // Marque l'article comme lu
+        // Marquer l'article comme lu
         monArticle.setLu(true);
-        // MàJ graphique
-        monItemsAdapter.notifyDataSetChanged();
+        monDAO.marquerArticleLu(monArticle);
 
         // Lance l'ouverture de l'article
         Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
         monIntent.putExtra("ARTICLE_ID", monArticle.getId());
         startActivity(monIntent);
+    }
 
-        // MàJ en DB
-        monDAO.marquerArticleLu(monArticle);
+    @Override
+    protected void onRestart() {
+        // Je met à jour les données qui sont potentiellement fausses suite à slide
+        monItemsAdapter.updateListeItems(prepareAffichage());
+        // Je notifie le changement pour un rafraichissement du contenu
+        monItemsAdapter.notifyDataSetChanged();
+        super.onRestart();
     }
 
     /**

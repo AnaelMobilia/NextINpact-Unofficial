@@ -18,7 +18,6 @@
  */
 package com.pcinpact.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
@@ -70,18 +69,20 @@ public class ItemsAdapter extends BaseAdapter {
     /**
      * Constructeur.
      *
-     * @param uneActivity Activity (l'application) - Requis pour pouvoir gérer les liens
+     * @param unContext Contexte application
+     * @param unLayoutInflater Layout Inflater
      * @param desItems  items à afficher
      */
-    public ItemsAdapter(final Activity uneActivity, final ArrayList<? extends Item> desItems) {
+    public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater, final ArrayList<? extends
+            Item> desItems) {
         /**
          * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité => possibilité de lancer une autre apps
          * Sinon, crash lors du click sur une URL
          */
         // Je charge le bouzin
-        monContext = uneActivity.getApplicationContext();
+        monContext = unContext;
         mesItems = desItems;
-        monLayoutInflater = uneActivity.getLayoutInflater();
+        monLayoutInflater = unLayoutInflater;
     }
 
     /**
