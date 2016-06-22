@@ -71,19 +71,19 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(getApplicationContext());
         monArticle = monDAO.chargerArticle(articleID);
-        String data = monArticle.getContenu();
+        String monContenu = monArticle.getContenu();
 
-        if (data.equals("")) {
+        if (monContenu.equals("")) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ArticleActivity", "onCreate() - Article vide");
             }
-            data = getString(R.string.articleVideErreurHTML);
+            monContenu = getString(R.string.articleVideErreurHTML);
         }
 
         ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
         ContenuArticleItem toto = new ContenuArticleItem();
-        toto.setContenu(monArticle.getContenu());
+        toto.setContenu(monContenu);
         toto.setArticleID(articleID);
         monAR.add(toto);
         // MàJ de l'affichage
