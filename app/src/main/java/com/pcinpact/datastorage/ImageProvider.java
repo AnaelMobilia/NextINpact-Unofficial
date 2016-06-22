@@ -183,7 +183,20 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) monContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
 
-        int monCoeff = 1;
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("ImageProvider",
+                  "gestionTaille() - (" + monTypeImages + ") Ecran : largeur = " + metrics.widthPixels + " hauteur = "
+                  + metrics.heightPixels + " densité = " + metrics.densityDpi);
+        }
+
+        float monCoeff = 1;
+
+        // Gestion des images trop larges (30 pixels pris pour les marges d'affichage)
+        if (uneImage.getIntrinsicWidth() > metrics.widthPixels - 30) {
+            // Mise à l'échelle de la largeur de l'écran
+            monCoeff = (float) (metrics.widthPixels - 30) / uneImage.getIntrinsicWidth();
+        }
 
         // Redimensionnement uniquement pour les smileys
         if (monTypeImages == Constantes.IMAGE_SMILEY) {
@@ -191,28 +204,29 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 /**
                  * Si on est sur la résolution par défaut, on reste à 1
                  */
-                monCoeff = Math.round(1 * monCoeffZoom);
+                monCoeff = 1 * monCoeffZoom;
             } else {
                 /**
                  * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
                  */
-                monCoeff = Math.round(2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom);
+                monCoeff = 2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom;
             }
         }
 
-        // On évite un coeff inférieur à 1 (image non affichée !)
-        if (monCoeff < 1) {
+        // On évite un coeff inférieur à 0 (image non affichée !)
+        if (Float.compare(monCoeff, 0) <= 0) {
             monCoeff = 1;
         }
 
         // On définit la taille de l'image
-        uneImage.setBounds(0, 0, (uneImage.getIntrinsicWidth() * monCoeff), (uneImage.getIntrinsicHeight() * monCoeff));
+        uneImage.setBounds(0, 0, Math.round(uneImage.getIntrinsicWidth() * monCoeff),
+                           Math.round(uneImage.getIntrinsicHeight() * monCoeff));
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ImageProvider",
-                  "gestionTaille() - coeefZoom = " + monCoeff + " => hauteur = " + uneImage.getIntrinsicHeight() + " - largeur = "
-                  + uneImage.getIntrinsicWidth());
+            Log.d("ImageProvider", "gestionTaille() - coeefZoom = " + monCoeff + " => largeur = " + Math.round(
+                    uneImage.getIntrinsicWidth() * monCoeff) + " hauteur = " + Math.round(
+                    uneImage.getIntrinsicHeight() * monCoeff));
         }
 
         return uneImage;
