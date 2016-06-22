@@ -70,7 +70,11 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
             Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + articleID);
         }
 
-        return new ArticleFragment(monContext, monLayoutInflater, articleID);
+        // Création du fragment
+        ArticleFragment monFragment = new ArticleFragment();
+        // Injection de ses paramètres (non passable via constructeur #201)
+        monFragment.initialisation(monContext, monLayoutInflater, articleID);
+        return monFragment;
     }
 
     @Override

@@ -45,7 +45,17 @@ public class ArticleFragment extends Fragment {
     private Context monContext;
     private LayoutInflater monLayoutInflater;
 
-    public ArticleFragment(Context unContext, LayoutInflater unLayoutInflater, int articleID) {
+    public ArticleFragment() {
+    }
+
+    /**
+     * Passage de toutes les valeurs requises
+     *
+     * @param unContext        Contexte de l'application
+     * @param unLayoutInflater Layout Inflater (pour charger le xml)
+     * @param articleID        ID de l'article concerné
+     */
+    public void initialisation(Context unContext, LayoutInflater unLayoutInflater, int articleID) {
         idArticle = articleID;
         monContext = unContext;
         monLayoutInflater = unLayoutInflater;
