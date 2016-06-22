@@ -321,6 +321,6 @@ public class Constantes {
 
         Editor editor = mesPrefs.edit();
         editor.putBoolean(unContext.getString(idOption), valeurOption);
-        editor.commit();
+        editor.apply();
     }
 }
