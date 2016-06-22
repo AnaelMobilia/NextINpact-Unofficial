@@ -54,6 +54,7 @@ import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Liste des articles.
@@ -76,7 +77,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     /**
      * Nombre de DL en cours.
      */
-    private int dlInProgress;
+    private int[] dlInProgress;
     /**
      * Menu.
      */
@@ -192,8 +193,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity", "onCreate() - changement taille des textes => " + Constantes.getOptionInt(
-                                getApplicationContext(), R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte));
+                        Log.w("ListeArticlesActivity",
+                              "onCreate() - changement taille des textes => " + Constantes.getOptionInt(getApplicationContext(),
+                                                                                                        R.string.idOptionZoomTexte,
+                                                                                                        R.string.defautOptionZoomTexte));
                     }
                 }
                 // Menu debug
@@ -203,23 +206,31 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity", "onCreate() - changement option debug => " + Constantes.getOptionBoolean(
-                                getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug));
+                        Log.w("ListeArticlesActivity",
+                              "onCreate() - changement option debug => " + Constantes.getOptionBoolean(getApplicationContext(),
+                                                                                                       R.string.idOptionDebug,
+                                                                                                       R.bool.defautOptionDebug));
                     }
                 }
                 // Menu debug
                 else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
                     // Je vide ma liste d'articles...
-                    nouveauChargementGUI();
+                    nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                     mesArticles.clear();
                     // Lancement du refresh de l'affichage
-                    finChargementGUI();
+                    finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                 }
             }
         };
         // Attachement du superviseur aux préférences
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
                 listenerOptions);
+
+        // Initialisation de l'array de supervision des téléchargements
+        dlInProgress = new int[5];
+        dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] = 0;
+        dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
+        dlInProgress[Constantes.HTML_ARTICLE] = 0;
     }
 
     @Override
@@ -249,10 +260,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         }
 
         // Je lance l'animation si un DL est déjà en cours
-        if (dlInProgress != 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
             // Hack : il n'y avait pas d'accès à la GUI sur onCreate
-            dlInProgress--;
-            nouveauChargementGUI();
+            dlInProgress[Constantes.HTML_LISTE_ARTICLES]--;
+            nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         }
 
         return super.onCreateOptionsMenu(monMenu);
@@ -389,9 +400,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         }
 
         // Uniquement si on est pas déjà en train de faire un refresh...
-        if (dlInProgress == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
             // GUI : activité en cours...
-            nouveauChargementGUI();
+            nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
 
             /**
              * Nettoyage du cache
@@ -418,7 +429,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 // Lancement du téléchargement
                 if (monAHD.run()) {
                     // MàJ animation
-                    nouveauChargementGUI();
+                    nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                 }
             }
 
@@ -432,12 +443,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 // Je lance son DL (sans log en BDD imageCache)
                 ImageProvider.telechargerImage(imageURL, Constantes.IMAGE_MINIATURE_ARTICLE, 0, getApplicationContext(), this);
                 // Je note la dde de DL
-                nouveauChargementGUI();
+                nouveauChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
             }
         }
 
         // GUI : fin de l'activité en cours...
-        finChargementGUI();
+        finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
     }
 
 
@@ -479,7 +490,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             // Lancement du téléchargement
             if (monAHD.run()) {
                 // MàJ animation
-                nouveauChargementGUI();
+                nouveauChargementGUI(Constantes.HTML_ARTICLE);
             }
 
             // DL des miniatures des articles dont je récupère le contenu (sauf articles abonnés / contenu)
@@ -487,7 +498,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 // Je lance le téléchargement de sa miniature
                 ImageProvider.telechargerImage(monItem.getUrlIllustration(), Constantes.IMAGE_MINIATURE_ARTICLE, monItem.getId(),
                                                getApplicationContext(), this);
-                nouveauChargementGUI();
+                nouveauChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
             }
         }
     }
@@ -498,16 +509,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
             // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
             telechargeArticles(desItems);
+            // gestion du téléchargement GUI
+            finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        } else {
+            // gestion du téléchargement GUI
+            finChargementGUI(Constantes.HTML_ARTICLE);
         }
-
-        // gestion du téléchargement GUI
-        finChargementGUI();
     }
 
     @Override
     public void downloadImageFini(final String uneURL) {
         // gestion du téléchargement GUI
-        finChargementGUI();
+        finChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
     }
 
     /**
@@ -545,10 +558,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             // Jamais synchro...
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
+            String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
+                                                                                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
-            headerTextView.setText(getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                                                                                         Constantes.LOCALE).format(
-                    dernierRefresh));
+            headerTextView.setText(monTexte);
         }
 
         return monRetour;
@@ -557,17 +570,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     /**
      * Gère les animations de téléchargement.
      */
-    private void nouveauChargementGUI() {
+    private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
-        if (dlInProgress == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
+            + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
             }
             // Couleurs du RefreshLayout
-            monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu), getResources().getColor(
-                    R.color.refreshOrange), getResources().getColor(R.color.refreshBleu), getResources().getColor(
-                    R.color.refreshBlanc));
+            monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+                                                       getResources().getColor(R.color.refreshOrange),
+                                                       getResources().getColor(R.color.refreshBleu),
+                                                       getResources().getColor(R.color.refreshBlanc));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
@@ -581,22 +596,36 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         }
 
         // Je note le téléchargement en cours
-        dlInProgress++;
+        dlInProgress[typeDL]++;
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "nouveauChargementGUI() - " + dlInProgress);
+            Log.i("ListeArticlesActivity", "nouveauChargementGUI() - " + Arrays.toString(dlInProgress));
         }
     }
 
     /**
      * Gère les animations de téléchargement.
      */
-    private void finChargementGUI() {
+    private void finChargementGUI(int typeDL) {
         // Je note la fin du téléchargement
-        dlInProgress--;
+        dlInProgress[typeDL]--;
 
-        // Si c'est le dernier => arrêt des gri-gri GUI
-        if (dlInProgress == 0) {
+        // Si la liste d'articles et de miniatures est chargée (et qu'on ne vient pas de finir de télécharger un article...)
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0
+            && typeDL != Constantes.HTML_ARTICLE) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
+            }
+            // Je met à jour les données
+            monItemsAdapter.updateListeItems(prepareAffichage());
+            // Je notifie le changement pour un rafraichissement du contenu
+            monItemsAdapter.notifyDataSetChanged();
+        }
+
+        // Si toutes les données sont téléchargées...
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] +
+            dlInProgress[Constantes.HTML_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
@@ -612,15 +641,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             if (monMenu != null) {
                 monMenu.findItem(R.id.action_refresh).setVisible(true);
             }
-
-            // Je met à jour les données
-            monItemsAdapter.updateListeItems(prepareAffichage());
-            // Je notifie le changement pour un rafraichissement du contenu
-            monItemsAdapter.notifyDataSetChanged();
         }
+
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "finChargementGUI() - " + String.valueOf(dlInProgress));
+            Log.i("ListeArticlesActivity", "finChargementGUI() - " + Arrays.toString(dlInProgress));
         }
     }
 }
