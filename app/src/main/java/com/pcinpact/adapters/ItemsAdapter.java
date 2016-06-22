@@ -69,14 +69,15 @@ public class ItemsAdapter extends BaseAdapter {
     /**
      * Constructeur.
      *
-     * @param unContext Contexte application
+     * @param unContext        Contexte application
      * @param unLayoutInflater Layout Inflater
-     * @param desItems  items à afficher
+     * @param desItems         items à afficher
      */
     public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater, final ArrayList<? extends
             Item> desItems) {
         /**
-         * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité => possibilité de lancer une autre apps
+         * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité =>
+         * possibilité de lancer une autre apps
          * Sinon, crash lors du click sur une URL
          */
         // Je charge le bouzin
@@ -255,7 +256,24 @@ public class ItemsAdapter extends BaseAdapter {
                     articleVH.titreArticle.setText(ai.getTitre());
                     articleVH.heureArticle.setText(ai.getHeureMinutePublication());
                     articleVH.sousTitreArticle.setText(ai.getSousTitre());
-                    articleVH.commentairesArticle.setText(String.valueOf(ai.getNbCommentaires()));
+
+                    // Gestion du nombre de commentaires (+ nouveaux)
+                    String texteCommentaires = String.valueOf(ai.getNbCommentaires());
+
+                    boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm,
+                                                                        R.bool.defautOptionAfficherNbNouveauComm);
+
+                    if (nbNouveauComm) {
+                        // Ssi commentaires déjà lus
+                        if (ai.getDernierCommLu() > 0) {
+                            // Calcul du nb de nouveaux commentaires
+                            int nbCommentaires = ai.getNbCommentaires() - ai.getDernierCommLu();
+                            // Insertion dans texte
+                            texteCommentaires += " (+" + nbCommentaires + ")";
+                        }
+                    }
+
+                    articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
                     ImageProvider monImageProvider = new ImageProvider(monContext, articleVH.imageArticle, ai.getId());
                     articleVH.imageArticle.setImageDrawable(monImageProvider.getDrawable(ai.getUrlIllustration()));
@@ -285,19 +303,19 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
-                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(), new ImageProvider(monContext,
-                                                                                                      commentaireVH.commentaire,
-                                                                                                      ci.getCommentaire(),
-                                                                                                      Constantes.IMAGE_SMILEY,
-                                                                                                      ci.getId()), null);
+                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
+                                                               new ImageProvider(monContext, commentaireVH.commentaire,
+                                                                                 ci.getCommentaire(), Constantes.IMAGE_SMILEY,
+                                                                                 ci.getId()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
                     commentaireVH.commentaire.setId(ci.getId());
 
                     // Liens cliquables ? option utilisateur !
-                    Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires,
-                                                                        R.bool.defautOptionLiensDansCommentaires);
+                    Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
+                                                                                   R.string.idOptionLiensDansCommentaires,
+                                                                                   R.bool.defautOptionLiensDansCommentaires);
                     if (lienCommentaireClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
@@ -323,11 +341,10 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem cai = (ContenuArticleItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new ImageProvider(monContext, contenuVH.contenu,
-                                                                                               cai.getContenu(),
-                                                                                               Constantes.IMAGE_CONTENU_ARTICLE,
-                                                                                               cai.getArticleID()),
-                                                           new TagHandler());
+                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(),
+                                                           new ImageProvider(monContext, contenuVH.contenu, cai.getContenu(),
+                                                                             Constantes.IMAGE_CONTENU_ARTICLE,
+                                                                             cai.getArticleID()), new TagHandler());
                     contenuVH.contenu.setText(spannedContenu);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
@@ -335,7 +352,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
-                            R.bool.defautOptionLiensDansArticles);
+                                                                               R.bool.defautOptionLiensDansArticles);
                     if (lienArticleClickable) {
                         // Active les liens a href
                         contenuVH.contenu.setMovementMethod(new GestionLiens());

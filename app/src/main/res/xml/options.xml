@@ -94,6 +94,11 @@
             android:key="@string/idOptionPositionCommentaire"
             android:summary="@string/optionPositionCommentaireDetail"
             android:title="@string/optionPositionCommentaire"/>
+        <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
+            android:key="@string/idOptionAfficherNbNouveauComm"
+            android:summary="@string/optionAfficherNbNouveauCommDetail"
+            android:title="@string/optionAfficherNbNouveauComm"/>
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement">

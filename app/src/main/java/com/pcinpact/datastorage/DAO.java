@@ -290,6 +290,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
         insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
+        insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
 
         maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
     }
@@ -447,7 +448,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArticleItem chargerArticle(final int idArticle) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU };
 
         String[] idString = { String.valueOf(idArticle) };
 
@@ -475,7 +478,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU };
 
         Cursor monCursor;
 
@@ -512,7 +517,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<ArticleItem> chargerArticlesATelecharger() {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU };
 
         // Articles vides et des articles abonnés non DL
         String[] contenu = new String[]{ "", "1", "0" };
@@ -584,7 +591,7 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Supprime un commentaire de la BDD (par ID de l'article).
+     * Supprime des commentaires de la BDD (par ID de l'article).
      *
      * @param articleID ID de l'article
      */
@@ -729,6 +736,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setAbonne((unCursor.getInt(8) > 0));
         monArticle.setLu((unCursor.getInt(9) > 0));
         monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
+        monArticle.setDernierCommLu(unCursor.getInt(11));
 
         return monArticle;
     }

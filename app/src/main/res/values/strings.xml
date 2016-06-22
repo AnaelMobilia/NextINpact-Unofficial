@@ -98,6 +98,8 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionActiverLiensCommentaireDetail">Activer les liens dans les commentaires</string>
     <string name="optionPositionCommentaire">Mémoriser la position</string>
     <string name="optionPositionCommentaireDetail">Rouvrir au dernier commentaire lu</string>
+    <string name="optionAfficherNbNouveauComm">Nombres non lus</string>
+    <string name="optionAfficherNbNouveauCommDetail">Afficher le nombre de commentaires non lus sous la forme (+ 12)</string>
     <!-- <string name="optionTelechargerCommentaires">Télécharger</string> -->
     <!-- <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string> -->
     <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
@@ -130,6 +132,7 @@ http://www.nextinpact.com/abonnement"</string>
     <!-- <string name="idOptionImagesEnHTTP">15</string> -->
     <string name="idOptionPositionCommentaire">16</string>
     <string name="idOptionCacherBoutonPartage">17</string>
+    <string name="idOptionAfficherNbNouveauComm">18</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

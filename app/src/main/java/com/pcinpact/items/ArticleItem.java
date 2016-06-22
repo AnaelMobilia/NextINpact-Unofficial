@@ -75,6 +75,10 @@ public class ArticleItem implements Item {
      * Le contenu abonné a-t-il été téléchargé ?
      */
     private boolean isDlContenuAbonne;
+    /**
+     * ID du dernier commentaire lu
+     */
+    private int dernierCommLu = 0;
 
     @Override
     public int getType() {
@@ -263,5 +267,19 @@ public class ArticleItem implements Item {
      */
     public void setDlContenuAbonne(boolean isDlContenuAbonne) {
         this.isDlContenuAbonne = isDlContenuAbonne;
+    }
+
+    /**
+     * @return ID dernier commentaire lu
+     */
+    public int getDernierCommLu() {
+        return dernierCommLu;
+    }
+
+    /**
+     * @param dernierCommLu ID dernier commentaire lu
+     */
+    public void setDernierCommLu(int dernierCommLu) {
+        this.dernierCommLu = dernierCommLu;
     }
 }
