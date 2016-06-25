@@ -367,6 +367,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
+                    // Peut-être clic sur menu hamburger
                 }
         }
         return true;
