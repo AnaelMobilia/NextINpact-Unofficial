@@ -122,7 +122,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // Image de retour
         Drawable monRetour;
 
-
         // Fichier ressources OU existant en cache ?
         if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || imageEnCache(urlSource, monContext, monTypeImages)) {
             if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE)) {
@@ -165,6 +164,17 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             // Retour d'une image générique (logo NXI)
             monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
         }
+
+        //#203 - Parfois des images "null"
+        if (monRetour == null) {
+            // Debug
+            if (Constantes.DEBUG) {
+                Log.e("ImageProvider", "getDrawable - uneImage == null ");
+            }
+            // Image par défaut (dépit) dans ce cas là !
+            monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
+        }
+
         // Je retourne mon image
         return monRetour;
     }
@@ -176,6 +186,15 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @return Drawable redimensionnée si besoin
      */
     private Drawable gestionTaille(final Drawable uneImage) {
+        // Fix #203 : présence d'image "null"
+        if (uneImage == null) {
+            // Debug
+            if (Constantes.DEBUG) {
+                Log.e("ImageProvider", "gestionTaille - uneImage == null ");
+            }
+            return null;
+        }
+
         // Taile par défaut
         int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
         // L'option selectionnée
