@@ -216,6 +216,13 @@ public class Constantes {
      */
     public static final int TEXT_SIZE_XLARGE = 26;
 
+    /**
+     * PARAMETRES D'AFFICHAGE
+     */
+    /**
+     * Marge à conserver à droite des images (bordure, ascenseur, ...)
+     */
+    public static final int MARGE_DROITE_IMAGE = 30;
 
     /**
      * PARAMETRES D'AUTHENTIFICATION.

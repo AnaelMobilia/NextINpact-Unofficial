@@ -195,9 +195,9 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         float monCoeff = 1;
 
         // Gestion des images trop larges (30 pixels pris pour les marges d'affichage)
-        if (uneImage.getIntrinsicWidth() > metrics.widthPixels - 30) {
+        if (uneImage.getIntrinsicWidth() > metrics.widthPixels - Constantes.MARGE_DROITE_IMAGE) {
             // Mise à l'échelle de la largeur de l'écran
-            monCoeff = (float) (metrics.widthPixels - 30) / uneImage.getIntrinsicWidth();
+            monCoeff = (float) (metrics.widthPixels - Constantes.MARGE_DROITE_IMAGE) / uneImage.getIntrinsicWidth();
         }
 
         // Redimensionnement uniquement pour les smileys
