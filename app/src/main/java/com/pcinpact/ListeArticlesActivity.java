@@ -112,6 +112,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
         //        setSupportProgressBarIndeterminateVisibility(false);
 
+        // Initialisation de l'array de supervision des téléchargements
+        dlInProgress = new int[5];
+        dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] = 0;
+        dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
+        dlInProgress[Constantes.HTML_ARTICLE] = 0;
+
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), mesArticles);
         monListView.setAdapter(monItemsAdapter);
@@ -225,12 +231,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
         // Attachement du superviseur aux préférences
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
                 listenerOptions);
-
-        // Initialisation de l'array de supervision des téléchargements
-        dlInProgress = new int[5];
-        dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] = 0;
-        dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
-        dlInProgress[Constantes.HTML_ARTICLE] = 0;
     }
 
     @Override
