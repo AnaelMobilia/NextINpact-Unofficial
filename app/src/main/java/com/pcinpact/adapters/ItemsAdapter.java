@@ -268,8 +268,12 @@ public class ItemsAdapter extends BaseAdapter {
                         if (ai.getDernierCommLu() > 0) {
                             // Calcul du nb de nouveaux commentaires
                             int nbCommentaires = ai.getNbCommentaires() - ai.getDernierCommLu();
-                            // Insertion dans texte
-                            texteCommentaires += " (+" + nbCommentaires + ")";
+
+                            // Affichage seulement si des nouveaux commentaires
+                            if (nbCommentaires > 0) {
+                                // Insertion dans texte
+                                texteCommentaires += " (+" + nbCommentaires + ")";
+                            }
                         }
                     }
 
