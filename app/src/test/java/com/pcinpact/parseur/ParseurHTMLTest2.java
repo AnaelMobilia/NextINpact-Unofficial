@@ -42,8 +42,7 @@ public class ParseurHTMLTest2 {
         /**
          * Téléchargement de la liste des articles
          */
-        byte[] datas = Downloader.download(Constantes.NEXT_INPACT_URL, new AndroidTestCase().getContext(),
-                                           Constantes.COMPRESSION_CONTENU_TEXTES);
+        byte[] datas = Downloader.download(Constantes.NEXT_INPACT_URL, new AndroidTestCase().getContext());
 
         /**
          * Traitement des données
