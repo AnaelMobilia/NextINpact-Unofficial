@@ -250,13 +250,11 @@ public final class DAO extends SQLiteOpenHelper {
                 String reqUpdateFrom3 = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER, " +
                                         CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, "
                                         + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
-                ;
                 db.execSQL(reqUpdateFrom3);
 
             case 4:
                 String reqUpdateFrom4 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DERNIER_COMMENTAIRE_LU +
                                         " INTEGER;";
-                ;
                 db.execSQL(reqUpdateFrom4);
 
                 // A mettre avant le default !
@@ -750,7 +748,6 @@ public final class DAO extends SQLiteOpenHelper {
     private CommentaireItem cursorToCommentaireItem(final Cursor unCursor) {
         CommentaireItem monCommentaire = new CommentaireItem();
 
-        monCommentaire = new CommentaireItem();
         monCommentaire.setArticleId(unCursor.getInt(0));
         monCommentaire.setId(unCursor.getInt(1));
         monCommentaire.setAuteur(unCursor.getString(2));
