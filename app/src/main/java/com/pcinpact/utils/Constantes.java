@@ -207,14 +207,7 @@ public class Constantes {
      * Taille de texte MEDIUM.
      */
     public static final int TEXT_SIZE_MEDIUM = 18;
-    /**
-     * Taille de texte LARGE.
-     */
-    public static final int TEXT_SIZE_LARGE = 22;
-    /**
-     * Taille de texte XLARGE.
-     */
-    public static final int TEXT_SIZE_XLARGE = 26;
+
 
     /**
      * PARAMETRES D'AFFICHAGE

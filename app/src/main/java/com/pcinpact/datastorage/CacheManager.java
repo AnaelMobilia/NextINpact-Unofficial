@@ -245,7 +245,7 @@ public class CacheManager {
      * @param unType    type d'image
      * @param pathType  path pour ce type d'image (cf Constantes)
      */
-    public static void nettoyerCacheImages(final Context unContext, final int unType, final String pathType) {
+    private static void nettoyerCacheImages(final Context unContext, final int unType, final String pathType) {
         Context monContext = unContext.getApplicationContext();
         /**
          * Images dixit la BDD

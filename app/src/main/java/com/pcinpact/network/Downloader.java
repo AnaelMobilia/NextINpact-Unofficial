@@ -287,7 +287,7 @@ public class Downloader {
     /**
      * Initialisation du cookie manager
      */
-    public static void initializeCookieManager() {
+    private static void initializeCookieManager() {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.w("Downloader", "connexionAbonne() - création du CookieManager");

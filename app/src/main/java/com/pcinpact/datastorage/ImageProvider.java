@@ -317,7 +317,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param typeImage type d'image
      * @return String Path FQ
      */
-    public static String getPathAndFile(final String urlImage, final Context unContext, final int typeImage) {
+    private static String getPathAndFile(final String urlImage, final Context unContext, final int typeImage) {
         // Context
         Context monContext = unContext.getApplicationContext();
 
@@ -363,7 +363,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param typeImage type d'image
      * @return boolean Existe ?
      */
-    public static boolean imageEnCache(final String urlImage, final Context unContext, final int typeImage) {
+    private static boolean imageEnCache(final String urlImage, final Context unContext, final int typeImage) {
         // Retour
         boolean monRetour = false;
 

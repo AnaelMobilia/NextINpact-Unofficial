@@ -36,11 +36,11 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Accès à la base de données
      */
-    DAO monDAO;
+    private DAO monDAO;
     /**
-     * les articles
+     * Les articles
      */
-    ArrayList<ArticleItem> mesArticles;
+    private ArrayList<ArticleItem> mesArticles;
 
     /**
      * Variables passées à ArticleFragment

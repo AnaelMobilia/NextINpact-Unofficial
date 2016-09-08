@@ -27,9 +27,9 @@ import org.xml.sax.XMLReader;
  * Gestion des éléments HTML particuliers.
  */
 public class TagHandler implements Html.TagHandler {
-    boolean first = true;
-    String parent = null;
-    int index = 1;
+    private boolean first = true;
+    private String parent = null;
+    private int index = 1;
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {

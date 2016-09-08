@@ -53,7 +53,7 @@ public class SectionItem implements Item {
     /**
      * @param titre titre
      */
-    public void setTitre(String titre) {
+    private void setTitre(String titre) {
         this.titre = titre;
     }
 }

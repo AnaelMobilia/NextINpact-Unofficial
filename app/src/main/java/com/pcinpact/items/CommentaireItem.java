@@ -57,25 +57,16 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * Date de publication formatée.
-     *
-     * @return date de publication
-     */
-    public String getFullDatePublication() {
-        Date maDate = new Date(this.getTimeStampPublication());
-        // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
-
-        return dfm.format(maDate);
-    }
-
-    /**
-     * Auteur et Date.
+     * Auteur et Date de publication formatée
      *
      * @return Auteur et date
      */
     public String getAuteurDateCommentaire() {
-        return this.getAuteur() + " " + this.getFullDatePublication();
+        Date maDate = new Date(this.getTimeStampPublication());
+        // Format souhaité
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
+
+        return this.getAuteur() + " " + dfm.format(maDate);
     }
 
 

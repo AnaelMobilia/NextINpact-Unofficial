@@ -364,45 +364,6 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Nombre d'articles en stock
-     *
-     * @return int nb d'articles disponibles
-     */
-    public int getNombreArticles() {
-        // Requête sur la BDD
-        Cursor monCursor = maBDD.rawQuery("SELECT COUNT(*) FROM " + BDD_TABLE_ARTICLES, null);
-
-        int retour = 0;
-
-        // Je vais au premier (et unique) résultat
-        if (monCursor.moveToNext()) {
-            retour = monCursor.getInt(0);
-        }
-        // Fermeture du curseur
-        monCursor.close();
-
-        return retour;
-    }
-
-    public int getArticleID(int position) {
-        String[] idString = { String.valueOf(position) };
-
-        // Requête sur la BDD
-        Cursor monCursor = maBDD.rawQuery("SELECT " + ARTICLE_ID + " FROM " + BDD_TABLE_ARTICLES + " LIMIT ?, 1", idString);
-
-        int retour = 0;
-
-        // Je vais au premier (et unique) résultat
-        if (monCursor.moveToNext()) {
-            retour = monCursor.getInt(0);
-        }
-        // Fermeture du curseur
-        monCursor.close();
-
-        return retour;
-    }
-
-    /**
      * MàJ du nb de commentaires d'un article déjà synchronisé.
      *
      * @param articleID      ID de l'article
@@ -546,7 +507,7 @@ public final class DAO extends SQLiteOpenHelper {
      *
      * @param unCommentaire CommentaireItem
      */
-    public void enregistrerCommentaire(final CommentaireItem unCommentaire) {
+    private void enregistrerCommentaire(final CommentaireItem unCommentaire) {
         supprimerCommentaire(unCommentaire);
 
         ContentValues insertValues = new ContentValues();
