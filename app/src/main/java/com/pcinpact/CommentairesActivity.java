@@ -60,6 +60,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
      */
     private int articleID;
     /**
+     * ID du dernier commentaire lu
+     */
+    private int idDernierCommentaireLu;
+    /**
      * ItemAdapter.
      */
     private ItemsAdapter monItemsAdapter;
@@ -79,6 +83,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
      * téléchargement de TOUS les commentaires ?
      */
     private Boolean isChargementTotal = false;
+    /**
+     * Réouverture au dernier commentaire lu ?
+     */
+    private Boolean reouverture;
     /**
      * Menu.
      */
@@ -135,10 +143,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         /**
          * Réouverture au dernier commentaire lu
          */
-        Boolean reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
-                                                          R.bool.defautOptionPositionCommentaire);
+        reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
+                                                  R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
-            int idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID);
+            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID);
             monListView.setSelection(idDernierCommentaireLu);
         }
 
@@ -150,9 +158,12 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // Dernier item affiché
+                int lastVisibleItem = firstVisibleItem + visibleItemCount;
+
                 // J'affiche le dernier commentaire en cache ?
-                if ((firstVisibleItem + visibleItemCount) >= (totalItemCount - 1)) {
-                    // (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dan la liste - [bouton footer])
+                if (lastVisibleItem >= (totalItemCount - 1)) {
+                    // (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dans la liste - [bouton footer])
 
                     // téléchargement automatique en continu des commentaires ?
                     Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
@@ -170,10 +181,24 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                         }
                     }
                 }
-                /**
-                 * Enregistrement de l'id du dernier commentaire affiché
-                 */
-                monDAO.setDernierCommentaireLu(articleID, firstVisibleItem);
+
+                // Si réouverture au dernier commentaire lu
+                if (reouverture) {
+                    // Et qu'on a lu plus de commentaires
+                    if (lastVisibleItem > idDernierCommentaireLu) {
+                        /**
+                         * Enregistrement de l'id du dernier commentaire affiché
+                         */
+                        monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
+                        // Mise à jour de la copie locale
+                        idDernierCommentaireLu = lastVisibleItem;
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.d("CommentairesActivity",
+                                  "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
+                        }
+                    }
+                }
             }
         });
 
