@@ -59,13 +59,15 @@ public class ArticleFragment extends Fragment {
         idArticle = articleID;
         monContext = unContext;
         monLayoutInflater = unLayoutInflater;
+
+        // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
+        this.setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View maView;
-        maView = inflater.inflate(R.layout.article_fragment, null, false);
-
+        maView = inflater.inflate(R.layout.article_fragment, container, false);
         // Liste des commentaires
         ListView monListView = (ListView) maView.findViewById(R.id.contenuArticle);
 
