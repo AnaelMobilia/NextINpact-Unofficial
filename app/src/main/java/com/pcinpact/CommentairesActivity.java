@@ -365,9 +365,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
             // Je notifie le changement pour un rafraichissement du contenu
             monItemsAdapter.notifyDataSetChanged();
 
-            // Je MàJ la date du dernier refresh
-            majDateRefresh();
-
             // Je note que je ne suis pas à la fin des commentaires
             isFinCommentaires = false;
 
@@ -377,6 +374,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
                 refreshListeCommentaires();
             }
         }
+        // Je MàJ la date du dernier refresh
+        majDateRefresh();
 
         // Arrêt des gris-gris en GUI
         finTelechargement();
