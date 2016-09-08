@@ -102,11 +102,6 @@
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement">
-        <!-- <CheckBoxPreference -->
-        <!-- android:defaultValue="@bool/defautOptionImagesEnHTTP" -->
-        <!-- android:key="@string/idOptionImagesEnHTTP" -->
-        <!-- android:summary="@string/optionImagesEnHTTPDetail" -->
-        <!-- android:title="@string/optionImagesEnHTTP"/> -->
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCacherBoutonPartage"
             android:key="@string/idOptionCacherBoutonPartage"

@@ -110,9 +110,6 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionDebugDetail">"Afficher les messages d'erreurs (utile pour rapporter une erreur dans l'application)"</string>
     <string name="optionCacherBoutonPartage">Désactiver le partage</string>
     <string name="optionCacherBoutonPartageDetail">"Ne pas afficher le bouton de partage dans les articles"</string>
-    <!-- Options : Sécurité -->
-    <!-- <string name="optionImagesEnHTTP">Images en HTTP</string> -->
-    <!-- <string name="optionImagesEnHTTPDetail">"Télécharger les images via HTTP (+ rapide)"</string> -->
 
     <!-- Options - ID des clefs -->
     <string name="idOptionLiensDansArticles">1</string>
@@ -129,6 +126,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionInfoCompteAbonne">13</string>
     <!-- Option sans GUI, sert à notifier l'effacement uniquement -->
     <string name="idOptionDebugEffacerCache">14</string>
+    <!-- Pour mémoire -->
     <!-- <string name="idOptionImagesEnHTTP">15</string> -->
     <string name="idOptionPositionCommentaire">16</string>
     <string name="idOptionCacherBoutonPartage">17</string>

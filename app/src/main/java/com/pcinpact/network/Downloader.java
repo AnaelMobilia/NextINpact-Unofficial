@@ -70,12 +70,11 @@ public class Downloader {
     /**
      * Téléchargement d'une ressource
      *
-     * @param uneURL      URL de la ressource à télécharger
-     * @param unContext   context de l'application
-     * @param compression true = demander au serveur une compression gzip
+     * @param uneURL    URL de la ressource à télécharger
+     * @param unContext context de l'application
      * @return ressource demandée brute
      */
-    public static byte[] download(final String uneURL, final Context unContext, final boolean compression) {
+    public static byte[] download(final String uneURL, final Context unContext) {
         // Faut-il initialiser le cookie manager ?
         if (monCookieManager == null) {
             Downloader.initializeCookieManager();
@@ -172,12 +171,10 @@ public class Downloader {
      *
      * @param uneURL               URL de la ressource
      * @param unContext            context de l'application
-     * @param compression          faut-il demander au serveur de compresser la ressource ?
      * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
      * @return code HTML de l'article brut
      */
-    public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean compression,
-                                               final boolean uniquementSiConnecte) {
+    public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean uniquementSiConnecte) {
         // Faut-il initialiser le cookie manager ?
         if (monCookieManager == null) {
             Downloader.initializeCookieManager();
@@ -194,7 +191,7 @@ public class Downloader {
             }
 
             // Je lance le téléchargement
-            datas = Downloader.download(uneURL, unContext, compression);
+            datas = Downloader.download(uneURL, unContext);
         } else {
             // J'attends si j'ai déjà une connexion en cours...
             while (isRunning) {
@@ -240,7 +237,7 @@ public class Downloader {
                         Log.w("Downloader", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
                     }
 
-                    datas = Downloader.download(uneURL, unContext, compression);
+                    datas = Downloader.download(uneURL, unContext);
                 }
 
                 // Information sur l'existance du compte abonné dans les options
@@ -277,7 +274,7 @@ public class Downloader {
                 isRunning = false;
 
                 // Je relance la méthode pour avoir un résultat...
-                datas = downloadArticleAbonne(uneURL, unContext, compression, uniquementSiConnecte);
+                datas = downloadArticleAbonne(uneURL, unContext, uniquementSiConnecte);
             }
         }
 

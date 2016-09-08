@@ -140,11 +140,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             byte[] datas;
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
-                datas = Downloader.downloadArticleAbonne(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES,
-                                                         uniquementSiConnecte);
+                datas = Downloader.downloadArticleAbonne(urlPage, monContext, uniquementSiConnecte);
             } else {
                 // Je récupère mon contenu HTML directement
-                datas = Downloader.download(urlPage, monContext, Constantes.COMPRESSION_CONTENU_TEXTES);
+                datas = Downloader.download(urlPage, monContext);
             }
 
             // Vérifie que j'ai bien un retour (vs erreur DL)

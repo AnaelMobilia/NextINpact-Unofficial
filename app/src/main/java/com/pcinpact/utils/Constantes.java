@@ -94,14 +94,7 @@ public class Constantes {
      * Nb d'articles par page.
      */
     public static final int NB_ARTICLES_PAR_PAGE = 30;
-    /**
-     * Utilisation d'une compression pour les contenus textes.
-     */
-    public static final Boolean COMPRESSION_CONTENU_TEXTES = true;
-    /**
-     * Utilisation d'une compression pour les contenus image.
-     */
-    public static final Boolean COMPRESSION_CONTENU_IMAGES = false;
+
 
     /**
      * TYPES DE TELECHARGEMENTS.
