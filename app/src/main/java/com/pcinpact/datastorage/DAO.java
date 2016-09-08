@@ -531,7 +531,7 @@ public final class DAO extends SQLiteOpenHelper {
         CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleId(), unCommentaire.getId());
 
         // Vérif que le commentaire n'existe pas déjà
-        if (!testItem.getIDArticleIdCommentaire().endsWith(unCommentaire.getIDArticleIdCommentaire())) {
+        if (!testItem.getIDArticleIdCommentaire().equals(unCommentaire.getIDArticleIdCommentaire())) {
             this.enregistrerCommentaire(unCommentaire);
             return true;
         }
