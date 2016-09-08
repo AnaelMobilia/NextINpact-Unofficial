@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -21,45 +21,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:gravity="center_horizontal">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHaut"
+        style="?attr/themeCommentaireBandeauFond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E7ECEF">
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
 
         <TextView
             android:id="@+id/auteurDateCommentaire"
+            style="?attr/themeCommentaireBandeauTitre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:paddingLeft="5dp"
-            android:textAppearance="@style/textAppearanceMicro"
-            android:textColor="#8A979D" />
+            android:textAppearance="@style/textAppearanceMicro"/>
 
         <TextView
             android:id="@+id/numeroCommentaire"
+            style="?attr/themeCommentaireNumero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="?android:attr/scrollbarSize"
             android:textAppearance="@style/textAppearanceMicro"
-            android:textColor="#177DAD"
-            android:textStyle="italic" />
+            android:textStyle="italic"/>
     </RelativeLayout>
 
     <TextView
         android:id="@+id/commentaire"
+        style="?attr/themeCommentaireTexte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/relativeLayoutHaut"
         android:paddingLeft="5dp"
         android:paddingRight="?android:attr/scrollbarSize"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/___defautTexte" />
+        android:paddingTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 </RelativeLayout>

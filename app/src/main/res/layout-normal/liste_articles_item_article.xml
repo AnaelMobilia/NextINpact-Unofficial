@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,8 +18,8 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/relativeLayoutArticle"
+<RelativeLayout android:id="@+id/relativeLayoutArticle"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
@@ -35,27 +35,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
-        android:contentDescription="@string/contentDescriptionImageArticle" />
+        android:contentDescription="@string/contentDescriptionImageArticle"/>
 
     <TextView
         android:id="@+id/titreArticle"
+        style="?attr/themeListeArticleTitre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/___defautTexte"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/heureArticle"
+        style="?attr/themeListeArticleHeure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
         android:layout_marginRight="2dp"
         android:layout_toRightOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#EA8211"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
     <TextView
         android:id="@+id/labelAbonne"
@@ -68,26 +68,26 @@
         android:text="@string/accueilBadgeAbonne"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/commentairesArticle"
+        style="?attr/themeListeArticleNbComs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/titreArticle"
         android:drawableLeft="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceMicro"
-        android:textColor="@color/___defautTexte" />
+        android:textAppearance="@style/textAppearanceMicro"/>
 
     <TextView
         android:id="@+id/sousTitreArticle"
+        style="?attr/themeListeArticleSousTitre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
         android:layout_marginRight="2dp"
         android:layout_toRightOf="@id/heureArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/___defautTexte"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </RelativeLayout>

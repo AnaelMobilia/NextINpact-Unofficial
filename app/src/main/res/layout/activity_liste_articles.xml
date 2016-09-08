@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2013, 2014, 2015 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014, 2015, 2016 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -18,8 +18,8 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                              android:id="@+id/swipe_container"
+<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipe_container"
+                                              xmlns:android="http://schemas.android.com/apk/res/android"
                                               android:layout_width="match_parent"
                                               android:layout_height="match_parent">
 
@@ -30,19 +30,20 @@
 
         <TextView
             android:id="@+id/header_text"
+            style="?attr/themeBanniereFond"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#427191"
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/lastUpdate"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            />
 
         <ListView
             android:id="@+id/listeArticles"
+            style="?attr/themeListeArticleFond"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#8A979D"
-            android:dividerHeight="1px" />
+            android:dividerHeight="1px"/>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

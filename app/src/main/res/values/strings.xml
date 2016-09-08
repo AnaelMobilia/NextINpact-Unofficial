@@ -79,6 +79,8 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionTailleTexteDetail">"Modifier la taille des textes de l'application"</string>
     <string name="optionAbonne">Compte abonné</string>
     <string name="optionAbonneDetail">Configurez votre compte abonné</string>
+    <string name="optionThemeSombre">Thème sombre</string>
+    <string name="optionThemeSombreDetail">Utiliser un thème sombre</string>
     <!-- Options : PreferenceScreen Abonné -->
     <string name="optionsAbonne">Configurer mon compte abonné</string>
     <string name="optionAbonneDisclaimer">"J'accepte que les identifiants de mon compte soient stockés sur cet appareil afin de me permettre de lire les contenus abonnés du site."</string>
@@ -131,6 +133,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionPositionCommentaire">16</string>
     <string name="idOptionCacherBoutonPartage">17</string>
     <string name="idOptionAfficherNbNouveauComm">18</string>
+    <string name="idOptionThemeSombre">19</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

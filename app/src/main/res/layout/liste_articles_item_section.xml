@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -25,10 +25,9 @@
 
     <TextView
         android:id="@+id/titreSection"
+        style="?attr/themeSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E7ECEE"
         android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#EA8211" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 </LinearLayout>

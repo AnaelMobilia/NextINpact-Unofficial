@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -23,12 +23,14 @@
             android:layout_height="match_parent">
 
     <LinearLayout
+        style="?attr/themeArticleFond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/aProposTextView"
+            style="?attr/themeArticleTexte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web|email"
@@ -36,6 +38,6 @@
             android:paddingEnd="?android:attr/scrollbarSize"
             android:paddingLeft="5dp"
             android:paddingRight="?android:attr/scrollbarSize"
-            android:text="@string/aboutContent" />
+            android:text="@string/aboutContent"/>
     </LinearLayout>
 </ScrollView>

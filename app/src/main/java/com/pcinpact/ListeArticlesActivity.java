@@ -102,6 +102,15 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Gestion du thème sombre (option utilisateur)
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
+                                                            R.bool.defautOptionThemeSombre);
+        if (isThemeSombre) {
+            // Si actif, on applique le style
+            setTheme(R.style.NextInpactThemeFonce);
+        }
+
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         // On définit la vue
         setContentView(R.layout.activity_liste_articles);

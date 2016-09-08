@@ -237,14 +237,31 @@ public class ItemsAdapter extends BaseAdapter {
                      */
                     ArticleItem ai = (ArticleItem) i;
 
+                    // Gestion du thème (option utilisateur=
+                    Boolean isThemeSombre = Constantes.getOptionBoolean(monContext, R.string.idOptionThemeSombre,
+                                                                        R.bool.defautOptionThemeSombre);
+
                     // L'article est-il déjà lu ?
+                    int couleurArticle;
                     if (ai.isLu()) {
                         // Couleur lu
-                        articleVH.relativeLayout.setBackgroundColor(monContext.getResources().getColor(R.color._article_lu));
+                        // Choix couleur en fonction du thème
+                        if (isThemeSombre) {
+                            couleurArticle = monContext.getResources().getColor(R.color.articleLu_fonce);
+                        } else {
+                            couleurArticle = monContext.getResources().getColor(R.color.articleLu_clair);
+                        }
                     } else {
                         // Couleur non lu
-                        articleVH.relativeLayout.setBackgroundColor(monContext.getResources().getColor(R.color._article_non_lu));
+                        // Choix couleur en fonction du thème
+                        if (isThemeSombre) {
+                            couleurArticle = monContext.getResources().getColor(R.color.articleNonLu_fonce);
+                        } else {
+                            couleurArticle = monContext.getResources().getColor(R.color.articleNonLu_clair);
+                        }
                     }
+                    // Application de la couleur
+                    articleVH.relativeLayout.setBackgroundColor(couleurArticle);
 
                     // Gestion du badge abonné
                     if (ai.isAbonne()) {

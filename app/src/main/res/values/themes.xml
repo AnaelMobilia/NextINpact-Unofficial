@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2014 Anael Mobilia
+ * Copyright 2014, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,25 +19,171 @@
  */
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Thème de l'application -->
+    <!-- Thème par défaut de l'application -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_clair</item>
         <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/NextInpactActionBar</item>
+        <item name="actionBarStyle">@style/NextInpactActionBar_clair</item>
+
+        <!-- Mes familles de style : liaison nom / style -->
+        <item name="themeBanniereFond">@style/BanniereFond_clair</item>
+        <item name="themeSection">@style/Section_clair</item>
+        <item name="themeListeArticleFond">@style/ListeArticleFond_clair</item>
+        <item name="themeListeArticleTitre">@style/ListeArticleTitre_clair</item>
+        <item name="themeListeArticleHeure">@style/ListeArticleHeure_all</item>
+        <item name="themeListeArticleSousTitre">@style/ListeArticleSousTitre_clair</item>
+        <item name="themeListeArticleNbComs">@style/ListeArticleNbComs_clair</item>
+        <item name="themeArticleFond">@style/ArticleFond_clair</item>
+        <item name="themeArticleTexte">@style/ArticleTexte_clair</item>
+        <item name="themeCommentaireBandeauFond">@style/CommentaireBandeauFond_clair</item>
+        <item name="themeCommentaireBandeauTitre">@style/CommentaireBandeauTitre_all</item>
+        <item name="themeCommentaireNumero">@style/CommentaireNumero_all</item>
+        <item name="themeCommentaireTexte">@style/CommentaireTexte_clair</item>
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="NextInpactActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <!-- Image de fond -->
-        <item name="android:background">@drawable/actionbar_background</item>
-
+    <!-- Thème foncé de l'application -->
+    <style name="NextInpactThemeFonce" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- Thème de l'action Bar -->
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_fonce</item>
         <!-- Support library compatibility -->
-        <item name="background">@drawable/actionbar_background</item>
+        <item name="actionBarStyle">@style/NextInpactActionBar_fonce</item>
+
+        <!-- Mes familles de style : liaison nom / style -->
+        <item name="themeBanniereFond">@style/BanniereFond_fonce</item>
+        <item name="themeSection">@style/Section_fonce</item>
+        <item name="themeListeArticleFond">@style/ListeArticleFond_fonce</item>
+        <item name="themeListeArticleTitre">@style/ListeArticleTitre_fonce</item>
+        <item name="themeListeArticleHeure">@style/ListeArticleHeure_all</item>
+        <item name="themeListeArticleSousTitre">@style/ListeArticleSousTitre_fonce</item>
+        <item name="themeListeArticleNbComs">@style/ListeArticleNbComs_fonce</item>
+        <item name="themeArticleFond">@style/ArticleFond_fonce</item>
+        <item name="themeArticleTexte">@style/ArticleTexte_fonce</item>
+        <item name="themeCommentaireBandeauFond">@style/CommentaireBandeauFond_fonce</item>
+        <item name="themeCommentaireBandeauTitre">@style/CommentaireBandeauTitre_all</item>
+        <item name="themeCommentaireNumero">@style/CommentaireNumero_all</item>
+        <item name="themeCommentaireTexte">@style/CommentaireTexte_fonce</item>
+    </style>
+
+
+    <!-- ActionBar styles -->
+    <style name="NextInpactActionBar_clair" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <!-- Image de fond -->
+        <item name="android:background">#064358</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/banniereFond</item>
+    </style>
+
+    <style name="NextInpactActionBar_fonce" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <!-- Image de fond -->
+        <item name="android:background">#064358</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/banniereFond</item>
     </style>
 
     <!-- Taille de texte personalisée -->
     <style name="textAppearanceMicro" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <!-- Ensemble des règles de couleurs des thèmes NXI -->
+    <style name="BanniereFond_clair">
+        <item name="android:background">#064358</item>
+    </style>
+
+    <style name="BanniereFond_fonce">
+        <item name="android:background">#064358</item>
+    </style>
+
+    <style name="Section_clair">
+        <item name="android:background">#E7ECEE</item>
+        <item name="android:textColor">#EA8211</item>
+    </style>
+
+    <style name="Section_fonce">
+        <item name="android:background">#1F2528</item>
+        <item name="android:textColor">#EA8211</item>
+    </style>
+
+
+    <style name="ListeArticleFond_clair">
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:divider">#CDD8DC</item>
+    </style>
+
+    <style name="ListeArticleFond_fonce">
+        <item name="android:background">#263236</item>
+        <item name="android:divider">#32474F</item>
+    </style>
+
+    <style name="ListeArticleTitre_clair">
+        <item name="android:textColor">#01232F</item>
+    </style>
+
+    <style name="ListeArticleTitre_fonce">
+        <item name="android:textColor">#CCD8C7</item>
+    </style>
+
+    <style name="ListeArticleHeure_all">
+        <item name="android:textColor">#EA8211</item>
+    </style>
+
+    <style name="ListeArticleSousTitre_clair">
+        <item name="android:textColor">#A8979D</item>
+    </style>
+
+    <style name="ListeArticleSousTitre_fonce">
+        <item name="android:textColor">#7D979D</item>
+    </style>
+
+    <style name="ListeArticleNbComs_clair">
+        <item name="android:textColor">#8AA4C0</item>
+    </style>
+
+    <style name="ListeArticleNbComs_fonce">
+        <item name="android:textColor">#7D9790</item>
+    </style>
+
+    <style name="ArticleFond_clair">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
+    <style name="ArticleFond_fonce">
+        <item name="android:background">#263236</item>
+    </style>
+
+    <style name="ArticleTexte_clair">
+        <item name="android:textColor">#333333</item>
+    </style>
+
+    <style name="ArticleTexte_fonce">
+        <item name="android:textColor">#CCD8DC</item>
+    </style>
+
+    <style name="CommentaireBandeauFond_clair">
+        <item name="android:background">#E7ECEF</item>
+    </style>
+
+    <style name="CommentaireBandeauFond_fonce">
+        <item name="android:background">#32474F</item>
+    </style>
+
+    <style name="CommentaireBandeauTitre_all">
+        <item name="android:textColor">#8A979D</item>
+    </style>
+
+    <style name="CommentaireNumero_all">
+        <item name="android:textColor">#177DAD</item>
+    </style>
+
+    <style name="CommentaireTexte_clair">
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:textColor">#333374</item>
+    </style>
+
+    <style name="CommentaireTexte_fonce">
+        <item name="android:background">#263236</item>
+        <item name="android:textColor">#CCD8DC</item>
+    </style>
+
 </resources>

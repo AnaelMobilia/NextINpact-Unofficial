@@ -50,6 +50,14 @@ public class DebugActivity extends ActionBarActivity {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
 
+        // Gestion du thème sombre (option utilisateur)
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
+                                                            R.bool.defautOptionThemeSombre);
+        if (isThemeSombre) {
+            // Si actif, on applique le style
+            setTheme(R.style.NextInpactThemeFonce);
+        }
+
         setContentView(R.layout.activity_debug);
 
         /**

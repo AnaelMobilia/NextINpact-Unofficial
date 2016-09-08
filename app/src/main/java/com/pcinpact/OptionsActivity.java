@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -21,6 +21,8 @@ package com.pcinpact;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+import com.pcinpact.utils.Constantes;
+
 /**
  * Options de l'application.
  *
@@ -31,6 +33,14 @@ public class OptionsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
+
+        // Gestion du thème sombre (option utilisateur)
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
+                                                            R.bool.defautOptionThemeSombre);
+        if (isThemeSombre) {
+            // Si actif, on applique le style
+            setTheme(R.style.NextInpactThemeFonce);
+        }
 
         addPreferencesFromResource(R.xml.options);
     }

@@ -59,6 +59,15 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Gestion du thème sombre (option utilisateur)
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
+                                                            R.bool.defautOptionThemeSombre);
+        if (isThemeSombre) {
+            // Si actif, on applique le style
+            setTheme(R.style.NextInpactThemeFonce);
+        }
+
         // Partie graphique
         supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_article);
