@@ -103,10 +103,8 @@ public class DebugActivity extends ActionBarActivity {
                  */
                 // DAO
                 DAO monDAO = DAO.getInstance(getApplicationContext());
-                // Arraylist de retour
-                ArrayList<ArticleItem> mesArticles = new ArrayList<>();
                 // Chargement depuis BDD
-                mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
+                ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
 
 
                 /**
@@ -176,7 +174,8 @@ public class DebugActivity extends ActionBarActivity {
                 StringBuilder monContenu = new StringBuilder();
 
                 for (String unFichier : listeFichiers) {
-                    monContenu.append(unFichier + "\n");
+                    monContenu.append(unFichier);
+                    monContenu.append("\n");
                 }
                 builder.setMessage(monContenu.toString());
                 // Bouton d'action

@@ -45,8 +45,8 @@ public class Tools {
 
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
+            for (byte unDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & unDigest);
                 while (h.length() < 2)
                     h = "0" + h;
                 hexString.append(h);

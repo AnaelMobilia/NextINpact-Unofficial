@@ -79,8 +79,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        int nbArticles = mesArticles.size();
-        return nbArticles;
+        return mesArticles.size();
     }
 
     /**
@@ -101,7 +100,6 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      */
     public int getPosition(int articleID) {
         int index = 0;
-        boolean result = false;
 
         // Parcours de l'ensemble à la recherche de mon articleID
         while (index < mesArticles.size()) {

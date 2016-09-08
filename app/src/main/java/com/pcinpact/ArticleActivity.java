@@ -48,10 +48,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
      */
     private int articleID = 0;
     /**
-     * ViewPager (pour le slide des articles)
-     */
-    private ViewPager monViewPager;
-    /**
      * Accès BDD
      */
     private DAO monDAO;
@@ -73,7 +69,8 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         // Lien sur BDD
         monDAO = DAO.getInstance(getApplicationContext());
 
-        monViewPager = (ViewPager) findViewById(R.id.article_viewpager);
+        // ViewPager (pour le slide des articles)
+        ViewPager monViewPager = (ViewPager) findViewById(R.id.article_viewpager);
         final ArticlePagerAdapter pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext(),
                                                                          getLayoutInflater());
         monViewPager.setAdapter(pagerAdapter);

@@ -93,7 +93,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
                     File monFichier = new File(pathFichier);
 
                     // Ouverture d'un fichier en écrasement
-                    FileOutputStream monFOS = null;
+                    FileOutputStream monFOS;
 
                     // Gestion de la MàJ de l'application depuis une ancienne version
                     try {

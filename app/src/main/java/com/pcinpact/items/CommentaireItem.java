@@ -83,7 +83,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * Comparaison entre objets.
      *
      * @param unCommentaireItem item de comparaison
-     * @return
+     * @return Comparaison des ID
      */
     @Override
     public int compareTo(CommentaireItem unCommentaireItem) {

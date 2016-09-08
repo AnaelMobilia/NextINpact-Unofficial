@@ -52,7 +52,9 @@ public class TagHandler implements Html.TagHandler {
                     first = true;
                 }
             } else if (first) {
-                output.append("\n\t" + index + ". ");
+                output.append("\n\t");
+                output.append(String.valueOf(index));
+                output.append(". ");
                 first = false;
                 index++;
             } else {
