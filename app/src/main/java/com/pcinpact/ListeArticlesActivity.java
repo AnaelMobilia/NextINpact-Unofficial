@@ -98,6 +98,11 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
      * Listener pour le changement de taille des textes.
      */
     private SharedPreferences.OnSharedPreferenceChangeListener listenerOptions;
+    /**
+     * Une mise à jour du thème est-elle à effectuer ?
+     */
+    private boolean updateTheme = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -227,13 +232,18 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                                                                                                        R.bool.defautOptionDebug));
                     }
                 }
-                // Menu debug
+                // Debug - Effacement du cache
                 else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
                     // Je vide ma liste d'articles...
                     nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                     mesArticles.clear();
                     // Lancement du refresh de l'affichage
                     finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                }
+                // Changement de thème
+                else if (key.equals(getResources().getString(R.string.idOptionThemeSombre))) {
+                    // Note du changement de thème
+                    updateTheme = true;
                 }
             }
         };
@@ -298,6 +308,34 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
     @Override
     protected void onRestart() {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("ListeArticlesActivity", "onRestart()");
+        }
+
+        // Changement du thème
+        if (updateTheme) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.w("ListeArticlesActivity", "onRestart() - changement du thème");
+            }
+
+            // Mise à jour du thème utilisé
+            Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
+                                                                R.bool.defautOptionThemeSombre);
+            if (isThemeSombre) {
+                setTheme(R.style.NextInpactThemeFonce);
+            } else {
+                setTheme(R.style.NextInpactTheme);
+            }
+
+            // invalidation du cache des view
+            monItemsAdapter.setResetView();
+
+            // C'est fini
+            updateTheme = false;
+        }
+
         // Je met à jour les données qui sont potentiellement fausses suite à slide
         monItemsAdapter.updateListeItems(prepareAffichage());
         // Je notifie le changement pour un rafraichissement du contenu
