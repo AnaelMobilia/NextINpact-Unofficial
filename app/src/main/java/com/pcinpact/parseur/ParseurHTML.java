@@ -279,10 +279,11 @@ public class ParseurHTML {
                                      + R.drawable.iframe_arte + "\" /></a>");
             } else {
                 /**
-                 * Déchet (cath all)
+                 * Déchet (catch all)
                  */
-                monRemplacement.html("<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\""
-                                     + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_non_supportee + "\" /></a>");
+                monRemplacement.html(
+                        "<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                        + R.drawable.iframe_non_supportee + "\" /></a>");
 
                 // DEBUG
                 if (Constantes.DEBUG) {
@@ -366,9 +367,8 @@ public class ParseurHTML {
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
         // Calcul du numéro de page
-        int numeroPage = Integer.valueOf(urlPage.substring(urlPage.indexOf("&")
-                                                           + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE.length()
-                                                           + 2));
+        int numeroPage = Integer.valueOf(
+                urlPage.substring(urlPage.indexOf("&") + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE.length() + 2));
 
         // Lancement du parseur sur la page
         Document pageNXI = Jsoup.parse(unContenu, urlPage);
@@ -409,6 +409,10 @@ public class ParseurHTML {
 
             // ID de l'article
             monCommentaireItem.setArticleId(idArticle);
+
+            // UUID du commentaire
+            String monUUID = unCommentaire.attr("data-content-id");
+            monCommentaireItem.setUuid(Integer.valueOf(monUUID));
 
             // Auteur
             Elements monAuteur = unCommentaire.select("span[class=author_name]");

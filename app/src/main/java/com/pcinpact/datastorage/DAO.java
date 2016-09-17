@@ -42,7 +42,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma).
      */
-    private static final int BDD_VERSION = 5;
+    private static final int BDD_VERSION = 6;
     /**
      * Nom de la BDD.
      */
@@ -106,6 +106,10 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String BDD_TABLE_COMMENTAIRES = "commentaires";
     /**
+     * Table commentaires temporaire (#205 - changement de primary key).
+     */
+    private static final String BDD_TABLE_COMMENTAIRES_TMP = "commentaires2";
+    /**
      * Champ commentaires => ID.
      */
     private static final String COMMENTAIRE_ID = "id";
@@ -113,6 +117,10 @@ public final class DAO extends SQLiteOpenHelper {
      * Champ commentaires => ID article.
      */
     private static final String COMMENTAIRE_ID_ARTICLE = "idarticle";
+    /**
+     * Champ commentaires => UUID du commentaire.
+     */
+    private static final String COMMENTAIRE_UUID = "uuid";
     /**
      * Champ commentaires => Auteur.
      */
@@ -214,9 +222,9 @@ public final class DAO extends SQLiteOpenHelper {
         // Table des commentaires
         String reqCreateCommentaires = "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " +
                                        COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "("
-                                       + ARTICLE_ID + "), " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP
-                                       + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE
-                                       + ", " + COMMENTAIRE_ID + "));";
+                                       + ARTICLE_ID + "), " + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR
+                                       + " TEXT, " + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU
+                                       + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_UUID + "));";
         db.execSQL(reqCreateCommentaires);
 
         // Table des refresh
@@ -257,9 +265,35 @@ public final class DAO extends SQLiteOpenHelper {
                                         " INTEGER;";
                 db.execSQL(reqUpdateFrom4);
 
+            case 5:
+                // Création de la nouvelle table
+                String reqUpdateFrom5 =
+                        "CREATE TABLE " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " +
+                        COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_ID + "), "
+                        + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP
+                        + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", "
+                        + COMMENTAIRE_UUID + "));";
+                db.execSQL(reqUpdateFrom5);
+
+                // Import des données
+                reqUpdateFrom5 = "INSERT INTO " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + ", " +
+                                 COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_UUID + ", " + COMMENTAIRE_AUTEUR + ", "
+                                 + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU + ") " + "SELECT " + COMMENTAIRE_ID + ", " +
+                                 COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_ID + ", " + COMMENTAIRE_AUTEUR + ", "
+                                 + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU + " FROM " + BDD_TABLE_COMMENTAIRES + ";";
+                db.execSQL(reqUpdateFrom5);
+
+                // Suppression ancienne table
+                reqUpdateFrom5 = "DROP TABLE " + BDD_TABLE_COMMENTAIRES + ";";
+                db.execSQL(reqUpdateFrom5);
+
+                // Renommage table temporaire
+                reqUpdateFrom5 = "ALTER TABLE " + BDD_TABLE_COMMENTAIRES_TMP + " RENAME TO " + BDD_TABLE_COMMENTAIRES + ";";
+                db.execSQL(reqUpdateFrom5);
+
+
                 // A mettre avant le default !
                 break;
-
             default:
                 // DEBUG
                 if (Constantes.DEBUG) {
@@ -512,6 +546,7 @@ public final class DAO extends SQLiteOpenHelper {
 
         ContentValues insertValues = new ContentValues();
         insertValues.put(COMMENTAIRE_ID_ARTICLE, unCommentaire.getArticleId());
+        insertValues.put(COMMENTAIRE_UUID, unCommentaire.getUuid());
         insertValues.put(COMMENTAIRE_ID, unCommentaire.getId());
         insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
         insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimeStampPublication());
@@ -528,10 +563,10 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public boolean enregistrerCommentaireSiNouveau(final CommentaireItem unCommentaire) {
         // J'essaye de charger le commentaire depuis la BDD
-        CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleId(), unCommentaire.getId());
+        CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleId(), unCommentaire.getUuid());
 
         // Vérif que le commentaire n'existe pas déjà
-        if (!testItem.getIDArticleIdCommentaire().equals(unCommentaire.getIDArticleIdCommentaire())) {
+        if (!testItem.getIDArticleUuidCommentaire().equals(unCommentaire.getIDArticleUuidCommentaire())) {
             this.enregistrerCommentaire(unCommentaire);
             return true;
         }
@@ -544,9 +579,9 @@ public final class DAO extends SQLiteOpenHelper {
      * @param unCommentaire CommentaireItem
      */
     private void supprimerCommentaire(final CommentaireItem unCommentaire) {
-        String[] mesParams = { String.valueOf(unCommentaire.getArticleId()), String.valueOf(unCommentaire.getId()) };
+        String[] mesParams = { String.valueOf(unCommentaire.getArticleId()), String.valueOf(unCommentaire.getUuid()) };
 
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID + "=?", mesParams);
+        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_UUID + "=?", mesParams);
     }
 
     /**
@@ -563,17 +598,17 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Charge un commentaire depuis la BDD.
      *
-     * @param idArticle     ID de l'article
-     * @param idCommentaire ID du commentaire
+     * @param idArticle       ID de l'article
+     * @param uuidCommentaire UUID du commentaire
      * @return le commentaire
      */
-    private CommentaireItem chargerCommentaire(final int idArticle, final int idCommentaire) {
+    private CommentaireItem chargerCommentaire(final int idArticle, final int uuidCommentaire) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
-                COMMENTAIRE_CONTENU };
+        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
+                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
 
-        String[] idArticleEtCommentaire = { String.valueOf(idArticle), String.valueOf(idCommentaire) };
-        String where = COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_ID + "=?";
+        String[] idArticleEtCommentaire = { String.valueOf(idArticle), String.valueOf(uuidCommentaire) };
+        String where = COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_UUID + "=?";
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, mesColonnes, where, idArticleEtCommentaire, null, null, null);
@@ -600,8 +635,8 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<CommentaireItem> chargerCommentairesTriParDate(final int articleID) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP,
-                COMMENTAIRE_CONTENU };
+        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
+                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?",
@@ -710,10 +745,11 @@ public final class DAO extends SQLiteOpenHelper {
         CommentaireItem monCommentaire = new CommentaireItem();
 
         monCommentaire.setArticleId(unCursor.getInt(0));
-        monCommentaire.setId(unCursor.getInt(1));
-        monCommentaire.setAuteur(unCursor.getString(2));
-        monCommentaire.setTimeStampPublication(unCursor.getLong(3));
-        monCommentaire.setCommentaire(unCursor.getString(4));
+        monCommentaire.setUuid(unCursor.getInt(1));
+        monCommentaire.setId(unCursor.getInt(2));
+        monCommentaire.setAuteur(unCursor.getString(3));
+        monCommentaire.setTimeStampPublication(unCursor.getLong(4));
+        monCommentaire.setCommentaire(unCursor.getString(5));
 
         return monCommentaire;
     }

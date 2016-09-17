@@ -31,9 +31,13 @@ import java.util.Date;
  */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     /**
-     * ID du commentaire.
+     * ID affiché du commentaire.
      */
     private int id;
+    /**
+     * UUID du commentaire.
+     */
+    private int uuid;
     /**
      * ID de l'article parent.
      */
@@ -74,23 +78,23 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * Comparaison entre objets.
      *
      * @param unCommentaireItem item de comparaison
-     * @return Comparaison des ID
+     * @return Comparaison des UUID
      */
     @Override
     public int compareTo(CommentaireItem unCommentaireItem) {
-        Integer unID = unCommentaireItem.getId();
-        Integer monID = this.getId();
+        Integer unUUID = unCommentaireItem.getUuid();
+        Integer monUUID = this.getUuid();
 
-        return monID.compareTo(unID);
+        return monUUID.compareTo(unUUID);
     }
 
     /**
-     * IdArticle-IdCommentaire.
+     * IdArticle-UuidCommentaire.
      *
-     * @return IdArticle-IdCommentaire
+     * @return IdArticle-UuiddCommentaire
      */
-    public String getIDArticleIdCommentaire() {
-        return this.getArticleId() + "-" + this.getId();
+    public String getIDArticleUuidCommentaire() {
+        return this.getArticleId() + "-" + this.getUuid();
     }
 
     /**
@@ -105,6 +109,20 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return uuid
+     */
+    public int getUuid() {
+        return uuid;
+    }
+
+    /**
+     * @param uuid uuid
+     */
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
     }
 
     /**

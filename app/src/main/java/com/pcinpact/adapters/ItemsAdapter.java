@@ -338,11 +338,11 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
                                                                new ImageProvider(monContext, commentaireVH.commentaire,
                                                                                  ci.getCommentaire(), Constantes.IMAGE_SMILEY,
-                                                                                 ci.getId()), null);
+                                                                                 ci.getUuid()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
-                    commentaireVH.commentaire.setId(ci.getId());
+                    commentaireVH.commentaire.setId(ci.getUuid());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
