@@ -155,16 +155,30 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 // Retour d'une image générique en ERREUR (logo NXI)
                 monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
             }
-            // Sinon on lance le DL !
             else {
-                // Je note le DL de l'image
-                mesDL.add(urlSource);
+                // Téléchargement des images ?
+                boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
+                                                                        R.bool.defautOptionTelechargerImages);
+                // Pas de téléchargement....
+                if (telechargerImages == false) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
+                    }
+                    // Retour d'une image générique en ERREUR (logo NXI)
+                    monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
+                }
+                // Sinon on lance le DL !
+                else {
+                    // Je note le DL de l'image
+                    mesDL.add(urlSource);
 
-                // Lancement du DL
-                telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
+                    // Lancement du DL
+                    telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
 
-                // Retour d'une image générique (logo NXI)
-                monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
+                    // Retour d'une image générique (logo NXI)
+                    monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
+                }
             }
         }
 

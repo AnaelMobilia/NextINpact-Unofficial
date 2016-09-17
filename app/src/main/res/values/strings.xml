@@ -112,6 +112,8 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="optionDebugDetail">"Afficher les messages d'erreurs (utile pour rapporter une erreur dans l'application)"</string>
     <string name="optionCacherBoutonPartage">Désactiver le partage</string>
     <string name="optionCacherBoutonPartageDetail">"Ne pas afficher le bouton de partage dans les articles"</string>
+    <string name="optionTelechargerImage">Chargement des images</string>
+    <string name="optionTelechargerImageDetail">Télécharger automatiquement les images</string>
 
     <!-- Options - ID des clefs -->
     <string name="idOptionLiensDansArticles">1</string>
@@ -134,6 +136,7 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionCacherBoutonPartage">17</string>
     <string name="idOptionAfficherNbNouveauComm">18</string>
     <string name="idOptionThemeSombre">19</string>
+    <string name="idOptionTelechargerImages">20</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

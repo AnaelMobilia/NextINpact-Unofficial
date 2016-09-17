@@ -78,6 +78,13 @@
             android:title="@string/optionActiverLiensArticle"/>
 
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionTelechargerImages"
+            android:key="@string/idOptionTelechargerImages"
+            android:summary="@string/optionTelechargerImageDetail"
+            android:title="@string/optionTelechargerImage"/>
+
+
+        <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCacherBoutonPartage"
             android:key="@string/idOptionCacherBoutonPartage"
             android:summary="@string/optionCacherBoutonPartageDetail"
