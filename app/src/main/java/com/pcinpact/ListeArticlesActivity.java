@@ -533,7 +533,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 }
                 // téléchargement de la ressource
                 monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO, getApplicationContext(),
-                                                 true, isConnecteRequis);
+                                                 isConnecteRequis);
             } else {
                 // téléchargement de la ressource
                 monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Anael Mobilia
+ * Copyright 2015, 2016 Anael Mobilia
  *
  * This file is part of NextINpact-Unofficial.
  *
@@ -44,7 +44,7 @@ public class Tools {
             byte messageDigest[] = digest.digest();
 
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
+            StringBuilder hexString = new StringBuilder();
             for (byte unDigest : messageDigest) {
                 String h = Integer.toHexString(0xFF & unDigest);
                 while (h.length() < 2)

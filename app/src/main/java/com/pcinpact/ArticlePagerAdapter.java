@@ -36,17 +36,17 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     /**
      * Accès à la base de données
      */
-    private DAO monDAO;
+    private final DAO monDAO;
     /**
      * Les articles
      */
-    private ArrayList<ArticleItem> mesArticles;
+    private final ArrayList<ArticleItem> mesArticles;
 
     /**
      * Variables passées à ArticleFragment
      */
-    private Context monContext;
-    private LayoutInflater monLayoutInflater;
+    private final Context monContext;
+    private final LayoutInflater monLayoutInflater;
 
     public ArticlePagerAdapter(FragmentManager fm, Context unContext, LayoutInflater unLayoutInflater) {
         super(fm);

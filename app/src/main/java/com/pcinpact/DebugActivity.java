@@ -76,8 +76,9 @@ public class DebugActivity extends ActionBarActivity {
                 Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
                 // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(
-                        R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(getApplicationContext(),
+                                                getApplicationContext().getString(R.string.debugEffacerCacheToast),
+                                                Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -93,8 +94,9 @@ public class DebugActivity extends ActionBarActivity {
                 CacheManager.effacerCacheSmiley(getApplicationContext());
 
                 // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(
-                        R.string.debugEffacerCacheSmileyToast), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(getApplicationContext(),
+                                                getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
+                                                Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -206,7 +208,7 @@ public class DebugActivity extends ActionBarActivity {
 
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(null, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
-                                                                     true, true);
+                                                                     true);
 
                 monAHD.run();
             }

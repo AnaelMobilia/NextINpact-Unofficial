@@ -42,19 +42,19 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
     /**
      * Context parent.
      */
-    private Context monContext;
+    private final Context monContext;
     /**
      * Parent qui sera rappelé à la fin.
      */
-    private RefreshDisplayInterface monParent;
+    private final RefreshDisplayInterface monParent;
     /**
      * URL de l'image.
      */
-    private String urlImage;
+    private final String urlImage;
     /**
      * Path du fichier.
      */
-    private String pathFichier;
+    private final String pathFichier;
 
     /**
      * DL sans gestion du statut abonné.
