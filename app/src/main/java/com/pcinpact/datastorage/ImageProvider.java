@@ -152,6 +152,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 if (Constantes.DEBUG) {
                     Log.i("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
                 }
+                // Retour d'une image générique en ERREUR (logo NXI)
+                monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
             }
             // Sinon on lance le DL !
             else {
@@ -160,9 +162,10 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
                 // Lancement du DL
                 telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
+
+                // Retour d'une image générique (logo NXI)
+                monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
             }
-            // Retour d'une image générique (logo NXI)
-            monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
         }
 
         //#203 - Parfois des images "null"
@@ -171,8 +174,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             if (Constantes.DEBUG) {
                 Log.e("ImageProvider", "getDrawable - uneImage == null ");
             }
-            // Image par défaut (dépit) dans ce cas là !
-            monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
+            // Image par défaut (erreur) dans ce cas là !
+            monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
         }
 
         // Je retourne mon image
