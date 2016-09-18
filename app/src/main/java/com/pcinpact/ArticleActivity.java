@@ -31,18 +31,14 @@ import android.view.Window;
 
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
-import com.pcinpact.items.Item;
-import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
-
-import java.util.ArrayList;
 
 /**
  * Affichage d'un article.
  *
  * @author Anael
  */
-public class ArticleActivity extends ActionBarActivity implements RefreshDisplayInterface {
+public class ArticleActivity extends ActionBarActivity {
     /**
      * ID de l'article actuel.
      */
@@ -147,15 +143,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         }
 
         return super.onOptionsItemSelected(pItem);
-    }
-
-    @Override
-    public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
-    }
-
-    @Override
-    public void downloadImageFini(final String uneURL) {
-        // Aucune action.
     }
 
     /**
