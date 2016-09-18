@@ -178,7 +178,7 @@
 
     <style name="CommentaireTexte_clair">
         <item name="android:background">#FFFFFF</item>
-        <item name="android:textColor">#333374</item>
+        <item name="android:textColor">#333333</item>
     </style>
 
     <style name="CommentaireTexte_fonce">
