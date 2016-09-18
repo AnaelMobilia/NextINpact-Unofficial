@@ -6,6 +6,7 @@ jdk:
 
 android:
     components:
+        - extra-android-m2repository
         - tools
         - build-tools-23.0.3
         - android-24
