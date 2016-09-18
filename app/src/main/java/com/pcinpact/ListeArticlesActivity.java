@@ -27,14 +27,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,7 +60,7 @@ import java.util.Arrays;
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener {
     /**
      * Les articles.
      */
@@ -116,15 +115,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             setTheme(R.style.NextInpactThemeFonce);
         }
 
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         // On définit la vue
         setContentView(R.layout.activity_liste_articles);
         // On récupère les éléments GUI
         monListView = (ListView) findViewById(R.id.listeArticles);
         monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         headerTextView = (TextView) findViewById(R.id.header_text);
-
-        //        setSupportProgressBarIndeterminateVisibility(false);
 
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[5];
@@ -633,19 +629,9 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             }
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-                                                       getResources().getColor(R.color.refreshOrange),
-                                                       getResources().getColor(R.color.refreshBleu),
-                                                       getResources().getColor(R.color.refreshBlanc));
+                                                       getResources().getColor(R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
-
-            // Lance la rotation du logo dans le header
-            setSupportProgressBarIndeterminateVisibility(true);
-
-            // Supprime l'icône refresh dans le header
-            if (monMenu != null) {
-                monMenu.findItem(R.id.action_refresh).setVisible(false);
-            }
         }
 
         // Je note le téléchargement en cours
@@ -686,14 +672,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
             // On stoppe l'animation du SwipeRefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
-
-            // Arrêt de la rotation du logo dans le header
-            setSupportProgressBarIndeterminateVisibility(false);
-
-            // Affiche l'icône refresh dans le header
-            if (monMenu != null) {
-                monMenu.findItem(R.id.action_refresh).setVisible(true);
-            }
         }
 
         // DEBUG

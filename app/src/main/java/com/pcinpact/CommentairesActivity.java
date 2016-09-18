@@ -20,14 +20,14 @@ package com.pcinpact;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -50,7 +50,7 @@ import java.util.Collections;
  *
  * @author Anael
  */
-public class CommentairesActivity extends ActionBarActivity implements RefreshDisplayInterface {
+public class CommentairesActivity extends AppCompatActivity implements RefreshDisplayInterface {
     /**
      * Les commentaires.
      */
@@ -99,6 +99,10 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
      * TextView "Dernière synchro...".
      */
     private TextView headerTextView;
+    /**
+     * SwipeRefreshLayout.
+     */
+    private SwipeRefreshLayout monSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,9 +117,19 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         }
 
         // Partie graphique
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_liste_commentaires);
-        setSupportProgressBarIndeterminateVisibility(false);
+
+        // Gestion du swipe refresh
+        monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        // onRefresh
+        monSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Chargement de tous les commentaires
+                isChargementTotal = true;
+                refreshListeCommentaires();
+            }
+        });
 
         headerTextView = (TextView) findViewById(R.id.header_text);
         // Liste des commentaires
@@ -271,8 +285,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
     public boolean onOptionsItemSelected(final MenuItem pItem) {
         // Rafraichir la liste des commentaires
         if (pItem.getItemId() == R.id.action_refresh) {
-            // Retour GUI
-            debutTelechargement();
             // téléchargement de TOUS les commentaires
             isChargementTotal = true;
 
@@ -291,19 +303,21 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
         if (Constantes.DEBUG) {
             Log.i("CommentairesActivity", "debutTelechargement() " + dlInProgress);
         }
-        // J'enregistre l'état
-        dlInProgress++;
 
-        // Lance la rotation du logo dans le header
-        setSupportProgressBarIndeterminateVisibility(true);
+        // Lancement de l'animation le cas échéant
+        if (dlInProgress == 0) {
+            // Couleurs du RefreshLayout
+            monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
+                                                       getResources().getColor(R.color.refreshOrange));
+            // Animation du RefreshLayout
+            monSwipeRefreshLayout.setRefreshing(true);
 
-        // Supprime l'icône refresh dans le header
-        if (monMenu != null) {
-            monMenu.findItem(R.id.action_refresh).setVisible(false);
+            // MàJ du bouton du footer
+            buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
         }
 
-        // MàJ du bouton du footer
-        buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
+        // J'enregistre l'état
+        dlInProgress++;
     }
 
     /**
@@ -319,13 +333,8 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
 
         // Si plus de téléchargement en cours
         if (dlInProgress == 0) {
-            // Arrêt de la rotation du logo dans le header
-            setSupportProgressBarIndeterminateVisibility(false);
-
-            // Affiche l'icône refresh dans le header
-            if (monMenu != null) {
-                monMenu.findItem(R.id.action_refresh).setVisible(true);
-            }
+            // Arrêt du RefreshLayout
+            monSwipeRefreshLayout.setRefreshing(false);
 
             // MàJ du bouton du footer
             buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
@@ -343,8 +352,6 @@ public class CommentairesActivity extends ActionBarActivity implements RefreshDi
             if (isChargementTotal) {
                 // On enlève le marqueur
                 isChargementTotal = false;
-                // Suppression de l'animation GUI restante
-                finTelechargement();
             }
 
             if (Constantes.DEBUG) {

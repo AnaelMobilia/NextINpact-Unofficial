@@ -23,8 +23,6 @@
     <color name="refreshOrange">#e88228</color>
     <!-- Bleu header -->
     <color name="refreshBleu">#3e6d8e</color>
-    <!-- Blanc Header -->
-    <color name="refreshBlanc">#ffffff</color>
 
     <!-- Bleu fond bannière -->
     <color name="banniereFond">#064358</color>

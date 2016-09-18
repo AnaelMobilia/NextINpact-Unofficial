@@ -22,12 +22,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
@@ -42,7 +41,7 @@ import java.util.ArrayList;
  *
  * @author Anael
  */
-public class ArticleActivity extends ActionBarActivity implements RefreshDisplayInterface {
+public class ArticleActivity extends AppCompatActivity implements RefreshDisplayInterface {
     /**
      * ID de l'article actuel.
      */
@@ -69,7 +68,6 @@ public class ArticleActivity extends ActionBarActivity implements RefreshDisplay
         }
 
         // Partie graphique
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_article);
 
         // ID de l'article concerné
