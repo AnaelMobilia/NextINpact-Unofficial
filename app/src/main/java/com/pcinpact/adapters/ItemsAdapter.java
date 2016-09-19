@@ -19,6 +19,7 @@
 package com.pcinpact.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -258,17 +259,17 @@ public class ItemsAdapter extends BaseAdapter {
                         // Couleur lu
                         // Choix couleur en fonction du thème
                         if (isThemeSombre) {
-                            couleurArticle = monContext.getResources().getColor(R.color.articleLu_fonce);
+                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleLu_fonce);
                         } else {
-                            couleurArticle = monContext.getResources().getColor(R.color.articleLu_clair);
+                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleLu_clair);
                         }
                     } else {
                         // Couleur non lu
                         // Choix couleur en fonction du thème
                         if (isThemeSombre) {
-                            couleurArticle = monContext.getResources().getColor(R.color.articleNonLu_fonce);
+                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleNonLu_fonce);
                         } else {
-                            couleurArticle = monContext.getResources().getColor(R.color.articleNonLu_clair);
+                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleNonLu_clair);
                         }
                     }
                     // Application de la couleur

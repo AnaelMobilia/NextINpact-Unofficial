@@ -20,6 +20,7 @@ package com.pcinpact;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -307,8 +308,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Lancement de l'animation le cas échéant
         if (dlInProgress == 0) {
             // Couleurs du RefreshLayout
-            monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-                                                       getResources().getColor(R.color.refreshOrange));
+            monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
+                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
