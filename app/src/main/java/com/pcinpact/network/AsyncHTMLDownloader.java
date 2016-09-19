@@ -33,8 +33,6 @@ import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
 
-import org.apache.commons.io.IOUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.RejectedExecutionException;
@@ -149,7 +147,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             // Vérifie que j'ai bien un retour (vs erreur DL)
             if (datas != null) {
                 // Je convertis mon byte[] en String
-                String contenu = IOUtils.toString(datas, Constantes.NEXT_INPACT_ENCODAGE);
+                String contenu = new String(datas, Constantes.NEXT_INPACT_ENCODAGE);
 
                 switch (typeHTML) {
                     case Constantes.HTML_LISTE_ARTICLES:
