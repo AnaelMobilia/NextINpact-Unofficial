@@ -46,23 +46,23 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     /**
      * Parent qui sera rappelé à la fin.
      */
-    private RefreshDisplayInterface monParent;
+    private final RefreshDisplayInterface monParent;
     /**
      * URL de la page.
      */
-    private String urlPage;
+    private final String urlPage;
     /**
      * Type de la ressource.
      */
-    private int typeHTML;
+    private final int typeHTML;
     /**
      * accès à la BDD.
      */
-    private DAO monDAO;
+    private final DAO monDAO;
     /**
      * Context de l'application.
      */
-    private Context monContext;
+    private final Context monContext;
     /**
      * Est-ce du contenu abonné ?
      */
@@ -80,18 +80,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param uneURL         URL de la ressource
      * @param unDAO          accès sur la DB
      * @param unContext      context de l'application
-     * @param contenuAbonne  est-ce un contenu abonné ?
      * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO,
-                               final Context unContext, final Boolean contenuAbonne, final Boolean onlyifConnecte) {
+                               final Context unContext, final Boolean onlyifConnecte) {
         // Mappage des attributs de cette Requête
         monParent = parent;
         urlPage = uneURL;
         typeHTML = unType;
         monDAO = unDAO;
         monContext = unContext.getApplicationContext();
-        isAbonne = contenuAbonne;
+        isAbonne = true;
         uniquementSiConnecte = onlyifConnecte;
 
         // DEBUG

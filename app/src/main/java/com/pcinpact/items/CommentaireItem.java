@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -17,6 +17,8 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 package com.pcinpact.items;
+
+import android.support.annotation.NonNull;
 
 import com.pcinpact.utils.Constantes;
 
@@ -81,7 +83,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return Comparaison des UUID
      */
     @Override
-    public int compareTo(CommentaireItem unCommentaireItem) {
+    public int compareTo(@NonNull CommentaireItem unCommentaireItem) {
         Integer unUUID = unCommentaireItem.getUuid();
         Integer monUUID = this.getUuid();
 

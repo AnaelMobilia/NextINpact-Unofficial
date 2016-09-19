@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2014, 2015, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -57,11 +57,11 @@ public class ItemsAdapter extends BaseAdapter {
     /**
      * Context de l'application.
      */
-    private Context monContext;
+    private final Context monContext;
     /**
      * Layout inflater.
      */
-    private LayoutInflater monLayoutInflater;
+    private final LayoutInflater monLayoutInflater;
     /**
      * Items à afficher.
      */
@@ -142,7 +142,7 @@ public class ItemsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
         // Pas de recyclage ou recyclage forcé (changement de thème)
-        if (convertView == null || resetView == true) {
+        if (convertView == null || resetView) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.d("ItemsAdapter", "getView() - nouvelle vue (#" + position + ")");

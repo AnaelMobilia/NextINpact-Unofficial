@@ -53,15 +53,15 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
     /**
      * Context de l'application.
      */
-    private Context monContext;
+    private final Context monContext;
     /**
      * Type d'images.
      */
-    private int monTypeImages;
+    private final int monTypeImages;
     /**
      * View dans laquelle l'image est affichée.
      */
-    private View maView;
+    private final View maView;
     /**
      * Texte du contenu si TextView.
      */
@@ -69,7 +69,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
     /**
      * ID de l'article / commentaire associé
      */
-    private int idReference;
+    private final int idReference;
     /**
      * Liste des fichiers déjà en cours de DL.
      */
@@ -160,7 +160,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
                                                                         R.bool.defautOptionTelechargerImages);
                 // Pas de téléchargement....
-                if (telechargerImages == false) {
+                if (!telechargerImages) {
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.i("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
