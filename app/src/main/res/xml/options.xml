@@ -24,7 +24,6 @@
 
         <!-- Compte abonné -->
         <PreferenceScreen
-            android:summary="@string/optionAbonneDetail"
             android:title="@string/optionAbonne">
             <PreferenceCategory android:title="Configurer mon compte abonné">
                 <CheckBoxPreference
@@ -52,47 +51,54 @@
             android:entries="@array/tailleTexteLiteral"
             android:entryValues="@array/tailleTexteValeur"
             android:key="@string/idOptionZoomTexte"
-            android:summary="@string/optionTailleTexteDetail"
             android:title="@string/optionTailleTexte"/>
 
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionThemeSombre"
             android:key="@string/idOptionThemeSombre"
-            android:summary="@string/optionThemeSombreDetail"
             android:title="@string/optionThemeSombre"/>
     </PreferenceCategory>
+
     <!-- Options spécifiques aux articles -->
-    <PreferenceCategory android:title="@string/optionsArticles">
+    <PreferenceCategory android:title="@string/optionsListeArticle">
         <ListPreference
             android:defaultValue="@string/defautOptionNbArticles"
             android:entries="@array/nbArticles"
             android:entryValues="@array/nbArticles"
             android:key="@string/idOptionNbArticles"
-            android:summary="@string/optionNbArticlesDetail"
             android:title="@string/optionNbArticles"/>
 
         <CheckBoxPreference
-            android:defaultValue="@bool/defautOptionLiensDansArticles"
-            android:key="@string/idOptionLiensDansArticles"
-            android:summary="@string/optionActiverLiensArticleDetail"
-            android:title="@string/optionActiverLiensArticle"/>
+            android:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
+            android:key="@string/idOptionAfficherNbNouveauComm"
+            android:summary="@string/optionAfficherNbNouveauCommDetail"
+            android:title="@string/optionAfficherNbNouveauComm"/>
+    </PreferenceCategory>
 
+    <!-- Options spécifiques aux articles -->
+    <PreferenceCategory android:title="@string/optionsArticles">
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionTelechargerImages"
             android:key="@string/idOptionTelechargerImages"
             android:summary="@string/optionTelechargerImageDetail"
             android:title="@string/optionTelechargerImage"/>
-
-
+        <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionLiensDansArticles"
+            android:key="@string/idOptionLiensDansArticles"
+            android:title="@string/optionActiverLiensArticle"/>
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCacherBoutonPartage"
             android:key="@string/idOptionCacherBoutonPartage"
-            android:summary="@string/optionCacherBoutonPartageDetail"
             android:title="@string/optionCacherBoutonPartage"/>
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires">
 
+        <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionPositionCommentaire"
+            android:key="@string/idOptionPositionCommentaire"
+            android:summary="@string/optionPositionCommentaireDetail"
+            android:title="@string/optionPositionCommentaire"/>
         <!-- <CheckBoxPreference -->
         <!-- android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
         <!-- android:key="@string/idOptionTelechargerCommentaires" -->
@@ -101,30 +107,18 @@
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
-            android:summary="@string/optionActiverLiensCommentaireDetail"
             android:title="@string/optionActiverLiensCommentaire"/>
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCommentairesTelechargementContinu"
             android:key="@string/idOptionCommentairesTelechargementContinu"
             android:summary="@string/optionCommentairesTelechargementContinuDetail"
             android:title="@string/optionCommentairesTelechargementContinu"/>
-        <CheckBoxPreference
-            android:defaultValue="@bool/defautOptionPositionCommentaire"
-            android:key="@string/idOptionPositionCommentaire"
-            android:summary="@string/optionPositionCommentaireDetail"
-            android:title="@string/optionPositionCommentaire"/>
-        <CheckBoxPreference
-            android:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
-            android:key="@string/idOptionAfficherNbNouveauComm"
-            android:summary="@string/optionAfficherNbNouveauCommDetail"
-            android:title="@string/optionAfficherNbNouveauComm"/>
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement">
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionDebug"
             android:key="@string/idOptionDebug"
-            android:summary="@string/optionDebugDetail"
             android:title="@string/optionDebug"/>
     </PreferenceCategory>
 </PreferenceScreen>
