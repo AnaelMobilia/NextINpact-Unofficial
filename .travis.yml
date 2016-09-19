@@ -7,6 +7,7 @@ jdk:
 android:
     components:
         # Prérequis pour utilisation dernière version Android SDK tools
+        - platform-tools
         - tools
 
         # Build tools requis par le projet
