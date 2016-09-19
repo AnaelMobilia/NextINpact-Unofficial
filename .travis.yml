@@ -6,13 +6,16 @@ jdk:
 
 android:
     components:
+        # Prérequis pour utilisation dernière version Android SDK tools
+        - tools
+
         # Build tools requis par le projet
         - build-tools-23.0.3
         # Version du SDK pour compiler le projet
         - android-24
-        #- extra-android-m2repository
-        #- tools
 
+
+        #- extra-android-m2repository
 
 # Attribution des droits pour linux
 before_install:
