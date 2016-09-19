@@ -101,6 +101,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private TextView headerTextView;
     /**
+     * ListView.
+     */
+    private ListView monListView;
+    /**
      * SwipeRefreshLayout.
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
@@ -134,7 +138,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         headerTextView = (TextView) findViewById(R.id.header_text);
         // Liste des commentaires
-        ListView monListView = (ListView) this.findViewById(R.id.listeCommentaires);
+        monListView = (ListView) this.findViewById(R.id.listeCommentaires);
         // Footer : bouton "Charger plus de commentaires"
         buttonDl10Commentaires = new Button(this);
         buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
@@ -184,7 +188,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // Dernier item affiché
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
 
-                // J'affiche le dernier commentaire en cache ?
+                /**
+                 * Gestion du téléchargement
+                 */
                 if (lastVisibleItem >= (totalItemCount - 1)) {
                     // (# du 1er commentaire affiché + nb d'items affichés) == (nb total d'item dans la liste - [bouton footer])
 
@@ -205,7 +211,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     }
                 }
 
-                // Si réouverture au dernier commentaire lu
+                /**
+                 * Gestion de la réouverture au dernier commentaire lu
+                 */
                 if (reouverture) {
                     // Et qu'on a lu plus de commentaires
                     if (lastVisibleItem > idDernierCommentaireLu) {
@@ -222,6 +230,23 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                         }
                     }
                 }
+
+                /**
+                 * Gestion du SwipeRefreshLayout
+                 */
+                int topRowVerticalPosition;
+
+                if (monListView == null || monListView.getChildCount() == 0) {
+                    topRowVerticalPosition = 0;
+                } else {
+                    topRowVerticalPosition = monListView.getFirstVisiblePosition();
+                }
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.d("CommentairesActivity",
+                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
+                }
+                monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
         });
 
