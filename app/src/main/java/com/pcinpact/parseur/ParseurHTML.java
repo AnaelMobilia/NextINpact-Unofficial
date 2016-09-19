@@ -401,6 +401,7 @@ public class ParseurHTML {
 
         // Calcul de l'indice du premier commentaire (gestion des commentaires supprimés)
         int idCommPrecedent = (numeroPage - 1) * Constantes.NB_COMMENTAIRES_PAR_PAGE;
+        int uuidCommPrecedent = 0;
 
         CommentaireItem monCommentaireItem;
         // Pour chaque commentaire
@@ -411,8 +412,17 @@ public class ParseurHTML {
             monCommentaireItem.setArticleId(idArticle);
 
             // UUID du commentaire
-            String monUUID = unCommentaire.attr("data-content-id");
-            monCommentaireItem.setUuid(Integer.valueOf(monUUID));
+            int monUUID;
+            try {
+                monUUID = Integer.valueOf(unCommentaire.attr("data-content-id"));
+            } catch (NumberFormatException e) {
+                // Commentaire supprimé : UUID précédent + 1
+                monUUID = uuidCommPrecedent + 1;
+            }
+            // Mise à jour de l'indice stocké
+            uuidCommPrecedent = monUUID;
+            // Enregistrement de l'UUID
+            monCommentaireItem.setUuid(monUUID);
 
             // Auteur
             Elements monAuteur = unCommentaire.select("span[class=author_name]");
