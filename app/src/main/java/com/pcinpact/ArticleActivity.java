@@ -84,7 +84,13 @@ public class ArticleActivity extends AppCompatActivity implements RefreshDisplay
 
         // Définition de l'article demandé !
         monViewPager.setCurrentItem(pagerAdapter.getPosition(articleID));
-        monViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+        monViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
                 // Mise à jour de l'article concerné
@@ -103,6 +109,11 @@ public class ArticleActivity extends AppCompatActivity implements RefreshDisplay
                 ArticleItem monArticle = monDAO.chargerArticle(articleID);
                 monArticle.setLu(true);
                 monDAO.marquerArticleLu(monArticle);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }
