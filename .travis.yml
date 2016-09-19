@@ -6,10 +6,13 @@ jdk:
 
 android:
     components:
-        - extra-android-m2repository
-        - tools
-        - build-tools-24.0.2
+        # Build tools requis par le projet
+        - build-tools-23.0.3
+        # Version du SDK pour compiler le projet
         - android-24
+        #- extra-android-m2repository
+        #- tools
+
 
 # Attribution des droits pour linux
 before_install:
