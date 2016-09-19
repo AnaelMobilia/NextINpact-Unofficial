@@ -21,6 +21,7 @@ package com.pcinpact.datastorage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
@@ -128,7 +129,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 // Image ressource (drawable)
                 Integer idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
                 // On charge le drawable
-                monRetour = gestionTaille(monContext.getResources().getDrawable(idDrawable));
+                monRetour = gestionTaille(ContextCompat.getDrawable(monContext, idDrawable));
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.i("ImageProvider", "getDrawable() - Drawable " + urlSource + " fourni");
@@ -153,9 +154,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                     Log.i("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
                 }
                 // Retour d'une image générique en ERREUR (logo NXI)
-                monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
-            }
-            else {
+                monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
+            } else {
                 // Téléchargement des images ?
                 boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
                                                                         R.bool.defautOptionTelechargerImages);
@@ -166,7 +166,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                         Log.i("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
                     }
                     // Retour d'une image générique en ERREUR (logo NXI)
-                    monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
+                    monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
                 }
                 // Sinon on lance le DL !
                 else {
@@ -177,7 +177,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                     telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
 
                     // Retour d'une image générique (logo NXI)
-                    monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact));
+                    monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact));
                 }
             }
         }
@@ -189,7 +189,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 Log.e("ImageProvider", "getDrawable - uneImage == null ");
             }
             // Image par défaut (erreur) dans ce cas là !
-            monRetour = gestionTaille(monContext.getResources().getDrawable(R.drawable.smiley_nextinpact_erreur));
+            monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
         }
 
         // Je retourne mon image
