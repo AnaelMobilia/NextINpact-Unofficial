@@ -20,6 +20,7 @@ package com.pcinpact;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -40,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
@@ -404,7 +406,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 intent.setData(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR));
                 // Si touche retour : revient a l'application et pas aux mails
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    // Affichage du numéro de version
+                    Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail),
+                                                    Toast.LENGTH_LONG);
+                    monToast.show();
+
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
+                    }
+                }
                 break;
 
             default:
