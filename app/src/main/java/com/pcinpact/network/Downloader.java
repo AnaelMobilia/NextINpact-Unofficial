@@ -223,7 +223,7 @@ public class Downloader {
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // La connexion peut-elle être demandée ?
-            if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("") ||
+            if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) ||
                 (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
 
                 // NON : je libère le jeton d'utilisation
