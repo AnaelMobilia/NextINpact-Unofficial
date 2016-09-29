@@ -427,6 +427,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
                     // Peut-être clic sur menu hamburger
                 }
+                break;
         }
         return true;
     }

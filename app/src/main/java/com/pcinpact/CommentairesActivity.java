@@ -214,20 +214,18 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 /**
                  * Gestion de la réouverture au dernier commentaire lu
                  */
-                if (reouverture) {
-                    // Et qu'on a lu plus de commentaires
-                    if (lastVisibleItem > idDernierCommentaireLu) {
-                        /**
-                         * Enregistrement de l'id du dernier commentaire affiché
-                         */
-                        monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
-                        // Mise à jour de la copie locale
-                        idDernierCommentaireLu = lastVisibleItem;
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.d("CommentairesActivity",
-                                  "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
-                        }
+                // Et qu'on a lu plus de commentaires
+                if (reouverture && lastVisibleItem > idDernierCommentaireLu) {
+                    /**
+                     * Enregistrement de l'id du dernier commentaire affiché
+                     */
+                    monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
+                    // Mise à jour de la copie locale
+                    idDernierCommentaireLu = lastVisibleItem;
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.d("CommentairesActivity",
+                              "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
                     }
                 }
 

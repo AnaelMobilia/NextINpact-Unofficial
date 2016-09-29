@@ -45,9 +45,6 @@ public class ArticleFragment extends Fragment {
     private Context monContext;
     private LayoutInflater monLayoutInflater;
 
-    public ArticleFragment() {
-    }
-
     /**
      * Passage de toutes les valeurs requises
      *
