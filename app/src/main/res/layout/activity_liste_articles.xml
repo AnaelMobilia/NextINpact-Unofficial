@@ -36,8 +36,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/lastUpdate"
-            android:textColor="@android:color/white"
-            />
+            android:textColor="@android:color/white"/>
 
         <ListView
             android:id="@+id/listeArticles"
