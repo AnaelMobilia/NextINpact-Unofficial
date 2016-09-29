@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial.svg?branch=master)](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6128e8ab3cb24120857aa99637f250b2)](https://www.codacy.com/app/contrib/NextINpact-Unofficial?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnaelMobilia/NextINpact-Unofficial&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6128e8ab3cb24120857aa99637f250b2)](https://www.codacy.com/app/AnaelMobilia/NextINpact-Unofficial?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnaelMobilia/NextINpact-Unofficial&amp;utm_campaign=Badge_Grade)
 
 ## Librairies utilisées par le projet :
   - [jsoup v1.9.2] (http://jsoup.org/) : Parsage du code HTML
