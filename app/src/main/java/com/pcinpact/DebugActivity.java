@@ -18,7 +18,6 @@
  */
 package com.pcinpact;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +41,6 @@ import java.util.ArrayList;
  *
  * @author Anael
  */
-@SuppressLint("NewApi")
 public class DebugActivity extends AppCompatActivity {
 
     @Override

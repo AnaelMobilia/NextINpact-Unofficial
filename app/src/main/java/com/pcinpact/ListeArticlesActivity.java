@@ -18,7 +18,6 @@
  */
 package com.pcinpact;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -457,7 +456,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Lance le téléchargement de la liste des articles.
      */
-    @SuppressLint("NewApi")
     private void telechargeListeArticles() {
         // DEBUG
         if (Constantes.DEBUG) {
@@ -522,7 +520,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      *
      * @param desItems liste d'articles à télécharger
      */
-    @SuppressLint("NewApi")
     private void telechargeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
             ArticleItem monItem = (ArticleItem) unItem;

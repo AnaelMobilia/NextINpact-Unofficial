@@ -77,7 +77,7 @@ public class ArticleFragment extends Fragment {
         ArticleItem monArticle = monDAO.chargerArticle(idArticle);
         String monContenu = monArticle.getContenu();
 
-        if (monContenu.equals("")) {
+        if ("".equals(monContenu)) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ArticleFragment", "onCreateView() - Article vide");

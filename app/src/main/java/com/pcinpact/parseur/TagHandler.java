@@ -35,16 +35,16 @@ public class TagHandler implements Html.TagHandler {
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
 
         // Liste ordonnée ou simple ?
-        if (tag.equals("ul")) {
+        if ("ul".equals(tag)) {
             parent = "ul";
-        } else if (tag.equals("ol")) {
+        } else if ("ol".equals(tag)) {
             parent = "ol";
         }
 
         // Un élément de la liste...
-        if (tag.equals("li")) {
+        if ("li".equals(tag)) {
             // Si liste simple -> point
-            if (parent.equals("ul")) {
+            if ("ul".equals(parent)) {
                 if (first) {
                     output.append("\n\t• ");
                     first = false;

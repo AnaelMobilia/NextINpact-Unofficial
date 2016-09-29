@@ -18,7 +18,6 @@
  */
 package com.pcinpact.datastorage;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -278,7 +277,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param articleID ID de l'article associé (0 s'il ne faut pas logguer en BDD)
      * @param unContext context applicatif
      */
-    @SuppressLint("NewApi")
     public static void telechargerImage(final String URL, final int type, final int articleID, final Context unContext,
                                         final RefreshDisplayInterface parent) {
         /**

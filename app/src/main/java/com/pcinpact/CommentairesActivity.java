@@ -18,7 +18,6 @@
  */
 package com.pcinpact;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -88,10 +87,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      * Réouverture au dernier commentaire lu ?
      */
     private Boolean reouverture;
-    /**
-     * Menu.
-     */
-    private Menu monMenu;
     /**
      * Bouton pour télécharger 10 commentaires en plus.
      */
@@ -255,7 +250,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     /**
      * Charge les commentaires suivants.
      */
-    @SuppressLint("NewApi")
     private void refreshListeCommentaires() {
         if (Constantes.DEBUG) {
             Log.i("CommentairesActivity", "refreshListeCommentaires()");
@@ -288,9 +282,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Je garde le menu sous la main
-        monMenu = menu;
-
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_commentaires_actions, menu);

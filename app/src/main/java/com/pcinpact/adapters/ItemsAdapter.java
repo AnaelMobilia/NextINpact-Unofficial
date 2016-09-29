@@ -140,9 +140,11 @@ public class ItemsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View maView = convertView;
+
         // Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
         // Pas de recyclage ou recyclage forcé (changement de thème)
-        if (convertView == null || resetView) {
+        if (maView == null || resetView) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.d("ItemsAdapter", "getView() - nouvelle vue (#" + position + ")");
@@ -152,62 +154,62 @@ public class ItemsAdapter extends BaseAdapter {
             switch (getItemViewType(position)) {
                 case Item.TYPE_SECTION:
                     // Je charge mon layout
-                    convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
+                    maView = monLayoutInflater.inflate(R.layout.liste_articles_item_section, parent, false);
                     // Ses propriétés
-                    convertView.setOnClickListener(null);
-                    convertView.setOnLongClickListener(null);
+                    maView.setOnClickListener(null);
+                    maView.setOnLongClickListener(null);
 
                     // Je crée mon viewHolder
                     SectionItemViewHolder sectionVH = new SectionItemViewHolder();
                     // Je prépare mon holder
-                    sectionVH.sectionView = (TextView) convertView.findViewById(R.id.titreSection);
+                    sectionVH.sectionView = (TextView) maView.findViewById(R.id.titreSection);
                     // Et l'assigne
-                    convertView.setTag(sectionVH);
+                    maView.setTag(sectionVH);
                     break;
 
                 case Item.TYPE_ARTICLE:
                     // Je charge mon layout
-                    convertView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
+                    maView = monLayoutInflater.inflate(R.layout.liste_articles_item_article, parent, false);
 
                     // Je crée mon viewHolder
                     ArticleItemViewHolder articleVH = new ArticleItemViewHolder();
                     // Je prépare mon holder
-                    articleVH.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutArticle);
-                    articleVH.imageArticle = (ImageView) convertView.findViewById(R.id.imageArticle);
-                    articleVH.labelAbonne = (TextView) convertView.findViewById(R.id.labelAbonne);
-                    articleVH.titreArticle = (TextView) convertView.findViewById(R.id.titreArticle);
-                    articleVH.heureArticle = (TextView) convertView.findViewById(R.id.heureArticle);
-                    articleVH.sousTitreArticle = (TextView) convertView.findViewById(R.id.sousTitreArticle);
-                    articleVH.commentairesArticle = (TextView) convertView.findViewById(R.id.commentairesArticle);
+                    articleVH.relativeLayout = (RelativeLayout) maView.findViewById(R.id.relativeLayoutArticle);
+                    articleVH.imageArticle = (ImageView) maView.findViewById(R.id.imageArticle);
+                    articleVH.labelAbonne = (TextView) maView.findViewById(R.id.labelAbonne);
+                    articleVH.titreArticle = (TextView) maView.findViewById(R.id.titreArticle);
+                    articleVH.heureArticle = (TextView) maView.findViewById(R.id.heureArticle);
+                    articleVH.sousTitreArticle = (TextView) maView.findViewById(R.id.sousTitreArticle);
+                    articleVH.commentairesArticle = (TextView) maView.findViewById(R.id.commentairesArticle);
                     // Et l'assigne
-                    convertView.setTag(articleVH);
+                    maView.setTag(articleVH);
                     break;
 
                 case Item.TYPE_COMMENTAIRE:
                     // Je charge mon layout
-                    convertView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
+                    maView = monLayoutInflater.inflate(R.layout.commentaires_item_commentaire, parent, false);
 
                     // Je crée mon viewHolder
                     CommentaireItemViewHolder commentaireVH = new CommentaireItemViewHolder();
                     // Je prépare mon holder
-                    commentaireVH.auteurDateCommentaire = (TextView) convertView.findViewById(R.id.auteurDateCommentaire);
-                    commentaireVH.numeroCommentaire = (TextView) convertView.findViewById(R.id.numeroCommentaire);
-                    commentaireVH.commentaire = (TextView) convertView.findViewById(R.id.commentaire);
+                    commentaireVH.auteurDateCommentaire = (TextView) maView.findViewById(R.id.auteurDateCommentaire);
+                    commentaireVH.numeroCommentaire = (TextView) maView.findViewById(R.id.numeroCommentaire);
+                    commentaireVH.commentaire = (TextView) maView.findViewById(R.id.commentaire);
                     // Et l'assigne
-                    convertView.setTag(commentaireVH);
+                    maView.setTag(commentaireVH);
                     break;
 
 
                 case Item.TYPE_CONTENU_ARTICLE:
                     // Je charge mon layout
-                    convertView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
+                    maView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
 
                     // Je crée mon viewHolder
                     ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
                     // Je prépare mon holder
-                    contenuVH.contenu = (TextView) convertView.findViewById(R.id.texteArticle);
+                    contenuVH.contenu = (TextView) maView.findViewById(R.id.texteArticle);
                     // Et l'assigne
-                    convertView.setTag(contenuVH);
+                    maView.setTag(contenuVH);
                     break;
 
                 default:
@@ -231,11 +233,14 @@ public class ItemsAdapter extends BaseAdapter {
             switch (i.getType()) {
                 case Item.TYPE_SECTION:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    SectionItemViewHolder sectionVH = (SectionItemViewHolder) convertView.getTag();
+                    SectionItemViewHolder sectionVH = (SectionItemViewHolder) maView.getTag();
 
                     SectionItem si = (SectionItem) i;
-
                     sectionVH.sectionView.setText(si.getTitre());
+
+                    // Désactivation de l'effet de click
+                    maView.setOnClickListener(null);
+                    maView.setOnLongClickListener(null);
 
                     // On applique le zoom éventuel
                     appliqueZoom(sectionVH.sectionView, Constantes.TEXT_SIZE_MEDIUM);
@@ -243,7 +248,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_ARTICLE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ArticleItemViewHolder articleVH = (ArticleItemViewHolder) convertView.getTag();
+                    ArticleItemViewHolder articleVH = (ArticleItemViewHolder) maView.getTag();
                     /**
                      * Article
                      */
@@ -291,18 +296,16 @@ public class ItemsAdapter extends BaseAdapter {
 
                     boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm,
                                                                         R.bool.defautOptionAfficherNbNouveauComm);
+                    // Ssi commentaires déjà lus
+                    if (nbNouveauComm && ai.getDernierCommLu() > 0) {
 
-                    if (nbNouveauComm) {
-                        // Ssi commentaires déjà lus
-                        if (ai.getDernierCommLu() > 0) {
-                            // Calcul du nb de nouveaux commentaires
-                            int nbCommentaires = ai.getNbCommentaires() - ai.getDernierCommLu();
+                        // Calcul du nb de nouveaux commentaires
+                        int nbCommentaires = ai.getNbCommentaires() - ai.getDernierCommLu();
 
-                            // Affichage seulement si des nouveaux commentaires
-                            if (nbCommentaires > 0) {
-                                // Insertion dans texte
-                                texteCommentaires += " (+" + nbCommentaires + ")";
-                            }
+                        // Affichage seulement si des nouveaux commentaires
+                        if (nbCommentaires > 0) {
+                            // Insertion dans texte
+                            texteCommentaires += " (+" + nbCommentaires + ")";
                         }
                     }
 
@@ -321,7 +324,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_COMMENTAIRE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) convertView.getTag();
+                    CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) maView.getTag();
                     /**
                      * Commentaire
                      */
@@ -354,8 +357,8 @@ public class ItemsAdapter extends BaseAdapter {
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
                     } else {
                         // Désactivation de l'effet de click
-                        convertView.setOnClickListener(null);
-                        convertView.setOnLongClickListener(null);
+                        maView.setOnClickListener(null);
+                        maView.setOnLongClickListener(null);
                     }
 
                     // On applique le zoom éventuel
@@ -367,7 +370,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_CONTENU_ARTICLE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) convertView.getTag();
+                    ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) maView.getTag();
                     /**
                      * Contenu
                      */
@@ -391,8 +394,8 @@ public class ItemsAdapter extends BaseAdapter {
                         contenuVH.contenu.setMovementMethod(new GestionLiens());
                     } else {
                         // Désactivation de l'effet de click
-                        convertView.setOnClickListener(null);
-                        convertView.setOnLongClickListener(null);
+                        maView.setOnClickListener(null);
+                        maView.setOnLongClickListener(null);
                     }
 
                     // On applique le zoom éventuel
@@ -407,7 +410,7 @@ public class ItemsAdapter extends BaseAdapter {
                     break;
             }
         }
-        return convertView;
+        return maView;
     }
 
     /**
