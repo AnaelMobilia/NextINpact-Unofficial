@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
     defaultConfig {
@@ -9,7 +9,7 @@ android {
         // minSdkVersion est la version minimum pour faire tourner l'application (2.3)
         minSdkVersion 9
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-        targetSdkVersion 20
+        targetSdkVersion 24
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -45,10 +45,9 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    compile 'com.android.support:support-v4:20.0.0'
-    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'org.jsoup:jsoup:1.9.2'
-    compile 'commons-io:commons-io:2.2'
     testCompile 'junit:junit:4.12'
 }
 

@@ -18,10 +18,9 @@
  */
 package com.pcinpact;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,8 +41,7 @@ import java.util.ArrayList;
  *
  * @author Anael
  */
-@SuppressLint("NewApi")
-public class DebugActivity extends ActionBarActivity {
+public class DebugActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

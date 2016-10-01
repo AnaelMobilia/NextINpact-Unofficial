@@ -34,10 +34,6 @@ import java.util.ArrayList;
 
 public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     /**
-     * Accès à la base de données
-     */
-    private final DAO monDAO;
-    /**
      * Les articles
      */
     private final ArrayList<ArticleItem> mesArticles;
@@ -53,7 +49,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
 
         monContext = unContext;
         monLayoutInflater = unLayoutInflater;
-        monDAO = DAO.getInstance(monContext);
+        DAO monDAO = DAO.getInstance(monContext);
 
         // Nombre d'articles à afficher
         int maLimite = Constantes.getOptionInt(monContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);

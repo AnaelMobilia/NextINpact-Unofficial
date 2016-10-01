@@ -18,28 +18,29 @@
  */
 package com.pcinpact;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
@@ -61,7 +62,7 @@ import java.util.Arrays;
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends ActionBarActivity implements RefreshDisplayInterface, OnItemClickListener {
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener {
     /**
      * Les articles.
      */
@@ -116,15 +117,12 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
             setTheme(R.style.NextInpactThemeFonce);
         }
 
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         // On définit la vue
         setContentView(R.layout.activity_liste_articles);
         // On récupère les éléments GUI
         monListView = (ListView) findViewById(R.id.listeArticles);
         monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         headerTextView = (TextView) findViewById(R.id.header_text);
-
-        //        setSupportProgressBarIndeterminateVisibility(false);
 
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[5];
@@ -407,7 +405,19 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 intent.setData(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR));
                 // Si touche retour : revient a l'application et pas aux mails
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    // Affichage du numéro de version
+                    Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail),
+                                                    Toast.LENGTH_LONG);
+                    monToast.show();
+
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
+                    }
+                }
                 break;
 
             default:
@@ -416,6 +426,7 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                     Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
                     // Peut-être clic sur menu hamburger
                 }
+                break;
         }
         return true;
     }
@@ -445,7 +456,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
     /**
      * Lance le téléchargement de la liste des articles.
      */
-    @SuppressLint("NewApi")
     private void telechargeListeArticles() {
         // DEBUG
         if (Constantes.DEBUG) {
@@ -510,7 +520,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
      *
      * @param desItems liste d'articles à télécharger
      */
-    @SuppressLint("NewApi")
     private void telechargeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
             ArticleItem monItem = (ArticleItem) unItem;
@@ -632,20 +641,10 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
             }
             // Couleurs du RefreshLayout
-            monSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.refreshBleu),
-                                                       getResources().getColor(R.color.refreshOrange),
-                                                       getResources().getColor(R.color.refreshBleu),
-                                                       getResources().getColor(R.color.refreshBlanc));
+            monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
+                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
-
-            // Lance la rotation du logo dans le header
-            setSupportProgressBarIndeterminateVisibility(true);
-
-            // Supprime l'icône refresh dans le header
-            if (monMenu != null) {
-                monMenu.findItem(R.id.action_refresh).setVisible(false);
-            }
         }
 
         // Je note le téléchargement en cours
@@ -686,14 +685,6 @@ public class ListeArticlesActivity extends ActionBarActivity implements RefreshD
 
             // On stoppe l'animation du SwipeRefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
-
-            // Arrêt de la rotation du logo dans le header
-            setSupportProgressBarIndeterminateVisibility(false);
-
-            // Affiche l'icône refresh dans le header
-            if (monMenu != null) {
-                monMenu.findItem(R.id.action_refresh).setVisible(true);
-            }
         }
 
         // DEBUG

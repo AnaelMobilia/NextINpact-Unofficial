@@ -26,8 +26,7 @@ import android.widget.Toast;
 
 import com.pcinpact.R;
 import com.pcinpact.utils.Constantes;
-
-import org.apache.commons.io.IOUtils;
+import com.pcinpact.utils.MyIOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -118,7 +117,7 @@ public class Downloader {
                     // Je récupère le flux de données
                     InputStream monIS = new BufferedInputStream(monURLConnection.getInputStream());
                     // Le convertit en bytes (compatiblité existant...)
-                    datas = IOUtils.toByteArray(monIS);
+                    datas = MyIOUtils.toByteArray(monIS);
                     // Ferme l'IS
                     monIS.close();
 
@@ -224,7 +223,7 @@ public class Downloader {
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // La connexion peut-elle être demandée ?
-            if (isCompteAbonne.equals(false) || usernameOption.equals("") || passwordOption.equals("") ||
+            if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) ||
                 (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
 
                 // NON : je libère le jeton d'utilisation
@@ -338,7 +337,7 @@ public class Downloader {
                 Log.d("Downloader", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
                 // Je récupère le flux de données
                 InputStream monIS = new BufferedInputStream(urlConnection.getInputStream());
-                String datas = IOUtils.toString(monIS);
+                String datas = MyIOUtils.toString(monIS, Constantes.NEXT_INPACT_ENCODAGE);
                 // Ferme l'IS
                 monIS.close();
                 Log.d("Downloader", "connexionAbonne() - données : " + datas);

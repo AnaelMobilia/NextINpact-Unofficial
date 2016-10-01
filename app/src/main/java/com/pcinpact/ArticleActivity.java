@@ -22,12 +22,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
@@ -38,7 +37,7 @@ import com.pcinpact.utils.Constantes;
  *
  * @author Anael
  */
-public class ArticleActivity extends ActionBarActivity {
+public class ArticleActivity extends AppCompatActivity {
     /**
      * ID de l'article actuel.
      */
@@ -65,7 +64,6 @@ public class ArticleActivity extends ActionBarActivity {
         }
 
         // Partie graphique
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_article);
 
         // ID de l'article concerné
@@ -82,7 +80,13 @@ public class ArticleActivity extends ActionBarActivity {
 
         // Définition de l'article demandé !
         monViewPager.setCurrentItem(pagerAdapter.getPosition(articleID));
-        monViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+        monViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
                 // Mise à jour de l'article concerné
@@ -101,6 +105,11 @@ public class ArticleActivity extends ActionBarActivity {
                 ArticleItem monArticle = monDAO.chargerArticle(articleID);
                 monArticle.setLu(true);
                 monDAO.marquerArticleLu(monArticle);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }

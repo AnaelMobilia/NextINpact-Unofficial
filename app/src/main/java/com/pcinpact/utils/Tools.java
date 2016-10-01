@@ -39,7 +39,7 @@ public class Tools {
 
         try {
             // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(datas.getBytes());
             byte messageDigest[] = digest.digest();
 

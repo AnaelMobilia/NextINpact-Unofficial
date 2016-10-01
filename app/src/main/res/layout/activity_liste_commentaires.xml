@@ -18,24 +18,30 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipe_container"
+                                              xmlns:android="http://schemas.android.com/apk/res/android"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/header_text"
-        style="?attr/themeBanniereFond"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/lastUpdate"
-        android:textColor="@android:color/white"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listeCommentaires"
-        style="?attr/themeListeArticleFond"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/header_text"
+            style="?attr/themeBanniereFond"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/lastUpdate"
+            android:textColor="@android:color/white"/>
+
+        <ListView
+            android:id="@+id/listeCommentaires"
+            style="?attr/themeListeArticleFond"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
