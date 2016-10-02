@@ -30,7 +30,9 @@ import android.widget.Toast;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
 import java.io.File;
@@ -41,12 +43,14 @@ import java.util.ArrayList;
  *
  * @author Anael
  */
-public class DebugActivity extends AppCompatActivity {
+public class DebugActivity extends AppCompatActivity implements RefreshDisplayInterface {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
+
+        final RefreshDisplayInterface monThis = this;
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
@@ -204,7 +208,7 @@ public class DebugActivity extends AppCompatActivity {
 
                 DAO monDAO = DAO.getInstance(getApplicationContext());
 
-                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(null, Constantes.HTML_LISTE_ARTICLES,
+                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
                                                                      true);
 
@@ -249,5 +253,15 @@ public class DebugActivity extends AppCompatActivity {
         }
 
         return mesFichiers;
+    }
+
+    @Override
+    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
+
+    }
+
+    @Override
+    public void downloadImageFini(String uneURL) {
+
     }
 }
