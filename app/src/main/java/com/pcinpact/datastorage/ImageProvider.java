@@ -146,42 +146,32 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 }
             }
         } else {
-            // L'image est-elle déjà en DL (ou à déjà échoué) ?
-            if (mesDL.contains(urlSource)) {
+            // Téléchargement des images ?
+            boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
+                                                                    R.bool.defautOptionTelechargerImages);
+            // L'image est-elle déjà en DL (ou à déjà échoué) ? || pas de téléchargement des images
+            if (mesDL.contains(urlSource) || !telechargerImages) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
+                    Log.d("ImageProvider", "getDrawable() - DL déjà traité || pas de téléchargement des images - " + urlSource);
                 }
                 // Retour d'une image générique en ERREUR (logo NXI)
                 monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
             } else {
-                // Téléchargement des images ?
-                boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
-                                                                        R.bool.defautOptionTelechargerImages);
-                // Pas de téléchargement....
-                if (!telechargerImages) {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.d("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
-                    }
-                    // Retour d'une image générique en ERREUR (logo NXI)
-                    monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
-                }
                 // Sinon on lance le DL !
-                else {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.i("ImageProvider", "getDrawable() - Demande de téléchargement de : " + urlSource);
-                    }
-                    // Je note le DL de l'image
-                    mesDL.add(urlSource);
 
-                    // Lancement du DL
-                    telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
-
-                    // Retour d'une image générique (logo NXI)
-                    monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact));
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.i("ImageProvider", "getDrawable() - Demande de téléchargement de : " + urlSource);
                 }
+                // Je note le DL de l'image
+                mesDL.add(urlSource);
+
+                // Lancement du DL
+                telechargerImage(urlSource, monTypeImages, idReference, monContext, this);
+
+                // Retour d'une image générique (logo NXI)
+                monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact));
             }
         }
 
