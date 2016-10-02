@@ -37,7 +37,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -90,13 +89,17 @@ public class Downloader {
             URL monURL = new URL(uneURL);
 
             try {
+                if (Constantes.DEBUG) {
+                    Log.d("Downloader", "download() - Lancement connexion");
+                }
+
                 // J'ouvre une connection (et caste en HTTPS car images & textes HTTPS #195)
                 HttpsURLConnection monURLConnection = (HttpsURLConnection) monURL.openConnection();
 
                 // Vérification que tout va bien...
                 final int statusCode = monURLConnection.getResponseCode();
                 // Gestion d'un code erreur
-                if (statusCode != HttpURLConnection.HTTP_OK) {
+                if (statusCode != HttpsURLConnection.HTTP_OK) {
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.e("Downloader", "download() - Erreur " + statusCode + " au dl de " + uneURL);
