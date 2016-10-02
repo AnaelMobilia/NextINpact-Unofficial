@@ -65,7 +65,7 @@ public class Constantes {
      */
     public static final String NEXT_INPACT_URL = "https://m.nextinpact.com";
     /**
-     * Paramêtre numéro de page (liste articles).
+     * Paramètre numéro de page (liste articles).
      */
     public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
     /**
@@ -77,11 +77,11 @@ public class Constantes {
      */
     public static final String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
     /**
-     * Paramêtre ID d'article (commentaires).
+     * Paramètre ID d'article (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
     /**
-     * Paramêtre numéro de page (commentaires).
+     * Paramètre numéro de page (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
 
@@ -214,11 +214,11 @@ public class Constantes {
      * PARAMETRES D'AUTHENTIFICATION.
      */
     /**
-     * Paramêtre utilisateur.
+     * Paramètre utilisateur.
      */
     public static final String AUTHENTIFICATION_USERNAME = "UserName";
     /**
-     * Paramêtre mot de passe.
+     * Paramètre mot de passe.
      */
     public static final String AUTHENTIFICATION_PASSWORD = "Password";
     /**
