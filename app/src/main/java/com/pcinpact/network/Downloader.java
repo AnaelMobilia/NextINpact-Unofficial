@@ -96,6 +96,10 @@ public class Downloader {
                 // J'ouvre une connection (et caste en HTTPS car images & textes HTTPS #195)
                 HttpsURLConnection monURLConnection = (HttpsURLConnection) monURL.openConnection();
 
+                // #214 - Définition d'un timeout pour les opérations réseaux
+                monURLConnection.setConnectTimeout(Constantes.TIMEOUT);
+                monURLConnection.setReadTimeout(Constantes.TIMEOUT);
+
                 // Vérification que tout va bien...
                 final int statusCode = monURLConnection.getResponseCode();
                 // Gestion d'un code erreur

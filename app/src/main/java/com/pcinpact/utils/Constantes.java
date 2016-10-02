@@ -84,6 +84,10 @@ public class Constantes {
      * Paramètre numéro de page (commentaires).
      */
     public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+    /**
+     * Timeout pour les téléchargements (en ms) - default = ~250000.
+     */
+    public static final int TIMEOUT = 15000;
 
     /**
      * Nb de commentaires par page.
