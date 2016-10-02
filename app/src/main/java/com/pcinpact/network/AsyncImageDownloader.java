@@ -73,7 +73,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
         pathFichier = unPathFichier;
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("AsyncImageDownloader", "AsyncImageDownloader()" + urlImage);
+            Log.i("AsyncImageDownloader", "AsyncImageDownloader() - URL : " + urlImage);
         }
     }
 
@@ -85,6 +85,10 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 
             // Je récupère un byte[] contenant l'image
             byte[] datas = Downloader.download(urlImage, monContext);
+
+            if (Constantes.DEBUG) {
+                Log.d("AsyncImageDownloader()", "doInBackground() - retour de Downloader.download()");
+            }
 
             // Vérifie que j'ai bien un retour (vs erreur DL)
             if (datas != null) {

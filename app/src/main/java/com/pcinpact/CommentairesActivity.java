@@ -251,6 +251,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      * Charge les commentaires suivants.
      */
     private void refreshListeCommentaires() {
+        // DEBUG
         if (Constantes.DEBUG) {
             Log.i("CommentairesActivity", "refreshListeCommentaires()");
         }
@@ -272,6 +273,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
                                                              getApplicationContext());
+
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("CommentairesActivity", "refreshListeCommentaires() : lancement téléchargement");
+        }
 
         // Lancement du téléchargement
         if (monAHD.run()) {
@@ -316,7 +322,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     private void debutTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "debutTelechargement() " + dlInProgress);
+            Log.i("CommentairesActivity", "debutTelechargement() : " + dlInProgress);
         }
 
         // Lancement de l'animation le cas échéant
