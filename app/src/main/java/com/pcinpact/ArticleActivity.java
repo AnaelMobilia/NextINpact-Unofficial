@@ -92,7 +92,10 @@ public class ArticleActivity extends AppCompatActivity {
                 // Mise à jour de l'article concerné
                 articleID = pagerAdapter.getArticleID(position);
 
-                // Mise à jour de l'intent
+                // Marquer l'article comme lu en BDD
+                monDAO.marquerArticleLu(articleID);
+
+                // MISE A JOUR DE L'INTENT
                 // Récupération du bouton de partage
                 MenuItem shareItem = monMenu.findItem(R.id.action_share);
                 // Get the provider and hold onto it to set/change the share intent.
@@ -100,11 +103,6 @@ public class ArticleActivity extends AppCompatActivity {
 
                 // Assignation de mon intent
                 mShareActionProvider.setShareIntent(genererShareIntent());
-
-                // Marquer l'article comme lu
-                ArticleItem monArticle = monDAO.chargerArticle(articleID);
-                monArticle.setLu(true);
-                monDAO.marquerArticleLu(monArticle);
             }
 
             @Override

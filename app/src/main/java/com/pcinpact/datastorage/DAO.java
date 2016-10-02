@@ -412,16 +412,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Marque un article comme étant lu.
-     *
-     * @param unArticle ArticleItem
+     * Marque un article comme étant lu
+     * @param articleID ID de l'article
      */
-    public void marquerArticleLu(final ArticleItem unArticle) {
+    public void marquerArticleLu(final int articleID) {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
-        updateValues.put(ARTICLE_IS_LU, unArticle.isLu());
+        updateValues.put(ARTICLE_IS_LU, true);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(unArticle.getId()) });
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(articleID) });
     }
 
     /**
