@@ -123,7 +123,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         Drawable monRetour;
 
         // Fichier ressources OU existant en cache ?
-        if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || imageEnCache(urlSource, monContext, monTypeImages)) {
+        if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || isImageEnCache(urlSource, monContext, monTypeImages)) {
             if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE)) {
                 // Image ressource (drawable)
                 Integer idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
@@ -131,7 +131,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 monRetour = gestionTaille(ContextCompat.getDrawable(monContext, idDrawable));
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.i("ImageProvider", "getDrawable() - Drawable " + urlSource + " fourni");
+                    Log.d("ImageProvider", "getDrawable() - Drawable " + urlSource + " fourni");
                 }
             } else {
                 // Image "standard" en cache
@@ -142,7 +142,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.i("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
+                    Log.d("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
                 }
             }
         } else {
@@ -150,7 +150,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             if (mesDL.contains(urlSource)) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.i("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
+                    Log.d("ImageProvider", "getDrawable() - DL déjà traité - " + urlSource);
                 }
                 // Retour d'une image générique en ERREUR (logo NXI)
                 monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
@@ -162,13 +162,17 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 if (!telechargerImages) {
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.i("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
+                        Log.d("ImageProvider", "getDrawable() - Option pas de téléchargement des images " + urlSource);
                     }
                     // Retour d'une image générique en ERREUR (logo NXI)
                     monRetour = gestionTaille(ContextCompat.getDrawable(monContext, R.drawable.smiley_nextinpact_erreur));
                 }
                 // Sinon on lance le DL !
                 else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ImageProvider", "getDrawable() - Demande de téléchargement de : " + urlSource);
+                    }
                     // Je note le DL de l'image
                     mesDL.add(urlSource);
 
@@ -302,12 +306,17 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         String pathFichier = getPathAndFile(URL, unContext.getApplicationContext(), type);
 
         // L'image existe-t-elle déjà en cache ?
-        if (imageEnCache(URL, unContext, type)) {
+        if (isImageEnCache(URL, unContext, type)) {
             // Retour au parent que tout est OK
             parent.downloadImageFini(URL);
         }
         // Si non, lancement du DL
         else {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.w("ImageProvider", "telechargerImage() - " + URL + " demande de téléchargement....");
+            }
+
             // A défaut, on la télécharge, sans retour en UI !
             AsyncImageDownloader monAID = new AsyncImageDownloader(unContext, parent, pathFichier, URL);
 
@@ -315,11 +324,6 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             if (!monAID.run()) {
                 // Retour au parent de la fin du téléchargement (échoué)
                 parent.downloadImageFini(URL);
-            }
-
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.w("ImageProvider", "telechargerImage() - " + URL + " téléchargement en cours...");
             }
         }
     }
@@ -378,7 +382,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      * @param typeImage type d'image
      * @return boolean Existe ?
      */
-    private static boolean imageEnCache(final String urlImage, final Context unContext, final int typeImage) {
+    private static boolean isImageEnCache(final String urlImage, final Context unContext, final int typeImage) {
         // Retour
         boolean monRetour = false;
 
@@ -393,7 +397,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ImageProvider", "imageEnCache() - " + urlImage + " => " + monRetour);
+            Log.i("ImageProvider", "isImageEnCache() - " + urlImage + " => " + monRetour);
         }
 
         return monRetour;
