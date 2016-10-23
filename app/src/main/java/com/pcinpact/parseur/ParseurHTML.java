@@ -154,14 +154,24 @@ public class ParseurHTML {
         int unID = Integer.valueOf(articleID.attr("data-id"));
         monArticleItem.setId(unID);
 
-        // Suppression de l'icône de catégorie
+        // Suppression des éléments non requis
         try {
-            Element iconeCat = pageNXI.select("div[class=actu_title_icons_collumn]").get(0);
-            iconeCat.remove();
+            // Image article
+            Element monElement = pageNXI.select("article > section").get(0);
+            monElement.remove();
+            // Légende image article
+            monElement = pageNXI.select("article > div[class=thumb-cat-container]").get(0);
+            monElement.remove();
+            // Temps de lecture
+            monElement = pageNXI.select("div[class=read-time]").get(0);
+            monElement.remove();
+            // Image auteur
+            monElement = pageNXI.select("div[class=infos-article] > div > img").get(0);
+            monElement.remove();
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "getArticle() - Suppression icône catégorie", e);
+                Log.e("ParseurHTML", "getArticle() - Nettoyage article", e);
             }
         }
 
