@@ -27,5 +27,5 @@ android:
 before_install:
   - chmod +x gradlew
 
-# Lancement du xrapper gradle + niveau info
+# Lancement du wrapper gradle + niveau info
 script: ./gradlew build connectedCheck --info
