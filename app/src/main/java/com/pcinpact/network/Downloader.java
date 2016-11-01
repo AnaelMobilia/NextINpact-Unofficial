@@ -37,8 +37,8 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -85,8 +85,27 @@ public class Downloader {
         Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
         try {
+            // Je récupère la position du dernier slash de l'URL (précède le nom de la page)
+            int positionSlash = uneURL.lastIndexOf('/');
+            // Idem pour le ?
+            int positionParam = uneURL.indexOf('?');
+            // Le début de l'URL
+            String debutURL = uneURL.substring(0, positionSlash + 1);
+            // Le nom de la page
+            String page;
+            // Paramètres
+            String param;
+            // Y a-t-il un paramètre dans l'URL ?
+            if (positionParam != -1) {
+                page = uneURL.substring(positionSlash + 1, positionParam);
+                param = uneURL.substring(positionParam);
+            } else {
+                page = uneURL.substring(positionSlash + 1);
+                param = "";
+            }
+
             // Je créée une URL de mon String
-            URL monURL = new URL(uneURL);
+            URL monURL = new URL(debutURL + URLEncoder.encode(page, "UTF-8") + param);
 
             try {
                 if (Constantes.DEBUG) {
@@ -150,7 +169,7 @@ public class Downloader {
                     });
                 }
             }
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("Downloader", "download() - URL erronée pour " + uneURL, e);
