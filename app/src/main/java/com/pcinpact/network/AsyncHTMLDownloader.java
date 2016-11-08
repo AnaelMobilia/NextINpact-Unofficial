@@ -323,7 +323,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_LONG);
+                        Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_SHORT);
                         monToast.show();
                     }
                 });

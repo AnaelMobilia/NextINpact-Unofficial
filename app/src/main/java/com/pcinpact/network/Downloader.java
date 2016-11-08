@@ -134,7 +134,7 @@ public class Downloader {
                             @Override
                             public void run() {
                                 Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
-                                                                           uneURL, Toast.LENGTH_LONG);
+                                                                           uneURL, Toast.LENGTH_SHORT);
                                 monToast.show();
                             }
                         });
@@ -163,7 +163,7 @@ public class Downloader {
                         public void run() {
                             Toast monToast = Toast.makeText(unContext,
                                                             "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
-                                                            Toast.LENGTH_LONG);
+                                                            Toast.LENGTH_SHORT);
                             monToast.show();
                         }
                     });
@@ -181,7 +181,7 @@ public class Downloader {
                     @Override
                     public void run() {
                         Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
-                                                        Toast.LENGTH_LONG);
+                                                        Toast.LENGTH_SHORT);
                         monToast.show();
                     }
                 });
