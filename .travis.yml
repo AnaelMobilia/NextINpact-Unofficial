@@ -11,9 +11,9 @@ android:
         - platform-tools
 
         # Build tools requis par le projet
-        - build-tools-24.0.3
+        - build-tools-25.0.0
         # Version du SDK pour compiler le projet
-        - android-24
+        - android-25
 
         # Dépôt supplémentaire requis pour avoir support-v4 & appcompat-v7 24.2.1
         - extra-android-m2repository
