@@ -43,6 +43,7 @@
             style="?attr/themeListeArticleFond"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="1px"/>
+            android:dividerHeight="1px"
+            android:scrollbarThumbVertical="@drawable/scrollbar"/>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

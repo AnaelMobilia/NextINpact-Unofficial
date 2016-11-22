@@ -42,6 +42,7 @@
             android:id="@+id/listeCommentaires"
             style="?attr/themeListeArticleFond"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:scrollbarThumbVertical="@drawable/scrollbar"/>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
