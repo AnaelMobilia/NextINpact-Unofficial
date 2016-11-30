@@ -94,14 +94,13 @@ public class Downloader {
             // Le nom de la page
             String page;
             // Paramètres
-            String param;
+            String param = "";
             // Y a-t-il un paramètre dans l'URL ?
             if (positionParam != -1) {
                 page = uneURL.substring(positionSlash + 1, positionParam);
                 param = uneURL.substring(positionParam);
             } else {
                 page = uneURL.substring(positionSlash + 1);
-                param = "";
             }
 
             // Je créée une URL de mon String
