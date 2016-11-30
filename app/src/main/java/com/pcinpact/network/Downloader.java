@@ -112,6 +112,8 @@ public class Downloader {
                 // #214 - Définition d'un timeout pour les opérations réseaux
                 monURLConnection.setConnectTimeout(Constantes.TIMEOUT);
                 monURLConnection.setReadTimeout(Constantes.TIMEOUT);
+                // User Agent
+                monURLConnection.setRequestProperty("User-Agent", Constantes.getUserAgent(unContext));
 
                 // Vérification que tout va bien...
                 final int statusCode = monURLConnection.getResponseCode();
@@ -335,6 +337,12 @@ public class Downloader {
 
             URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
             HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
+
+            // Gestion du timeout & useragent
+            urlConnection.setConnectTimeout(Constantes.TIMEOUT);
+            urlConnection.setReadTimeout(Constantes.TIMEOUT);
+            urlConnection.setRequestProperty("User-Agent", Constantes.getUserAgent(unContext));
+
             // On envoit des données
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
