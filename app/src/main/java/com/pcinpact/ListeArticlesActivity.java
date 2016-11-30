@@ -644,6 +644,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                                                        ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
+
+            // Grisage de l'icône d'action
+            MenuItem monItem = monMenu.findItem(R.id.action_refresh);
+            monItem.getIcon().setAlpha(130);
+            monItem.setEnabled(false);
         }
 
         // Je note le téléchargement en cours
@@ -684,6 +689,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // On stoppe l'animation du SwipeRefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
+
+            // Dégrisage de l'icône
+            MenuItem monItem = monMenu.findItem(R.id.action_refresh);
+            monItem.getIcon().setAlpha(255);
+            monItem.setEnabled(true);
         }
 
         // DEBUG

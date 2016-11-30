@@ -103,6 +103,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      * SwipeRefreshLayout.
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
+    /**
+     * Menu
+     */
+    private Menu monMenu;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -288,6 +293,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Conservation du menu
+        monMenu = menu;
+
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_commentaires_actions, menu);
@@ -335,6 +343,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
             // MàJ du bouton du footer
             buttonDl10Commentaires.setText(getString(R.string.commentairesChargement));
+
+            // Grisage de l'icône d'action
+            MenuItem monItem = monMenu.findItem(R.id.action_refresh);
+            monItem.getIcon().setAlpha(130);
+            monItem.setEnabled(false);
         }
 
         // J'enregistre l'état
@@ -359,6 +372,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
             // MàJ du bouton du footer
             buttonDl10Commentaires.setText(getString(R.string.commentairesPlusDeCommentaires));
+
+            // Dégrisage de l'icône
+            MenuItem monItem = monMenu.findItem(R.id.action_refresh);
+            monItem.getIcon().setAlpha(255);
+            monItem.setEnabled(true);
         }
     }
 
