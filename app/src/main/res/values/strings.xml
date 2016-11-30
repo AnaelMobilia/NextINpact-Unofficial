@@ -136,6 +136,7 @@ http://www.nextinpact.com/abonnement"</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
+    <string name="accueilImageArticleAlt">Image article</string>
 
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>

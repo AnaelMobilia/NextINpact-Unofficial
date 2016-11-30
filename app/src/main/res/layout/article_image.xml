@@ -33,5 +33,5 @@
         android:id="@+id/imageArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Image article"/>
+        android:contentDescription="@string/accueilImageArticleAlt"/>
 </RelativeLayout>
