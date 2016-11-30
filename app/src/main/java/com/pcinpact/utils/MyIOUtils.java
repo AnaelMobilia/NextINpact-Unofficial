@@ -44,11 +44,9 @@ public class MyIOUtils {
 
         char[] buffer = new char[1024 * 4];
 
-        int n = 0;
+        int n;
         while (EOF != (n = in.read(buffer))) {
-            if (buffer != null) {
-                sw.append(buffer, 0, n);
-            }
+            sw.append(buffer, 0, n);
         }
 
         return sw.toString();
@@ -68,7 +66,7 @@ public class MyIOUtils {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         byte[] buffer = new byte[1024 * 4];
-        int n = 0;
+        int n;
 
         while (EOF != (n = input.read(buffer))) {
             output.write(buffer, 0, n);
