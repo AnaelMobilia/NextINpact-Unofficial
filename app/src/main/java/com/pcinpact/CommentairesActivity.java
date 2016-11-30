@@ -108,7 +108,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private Menu monMenu;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +176,70 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             monListView.setSelection(idDernierCommentaireLu);
         }
 
+        // MàJ de la date de dernier refresh
+        majDateRefresh();
+    }
+
+    /**
+     * Charge les commentaires suivants.
+     */
+    private void refreshListeCommentaires() {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("CommentairesActivity", "refreshListeCommentaires()");
+        }
+
+        int idDernierCommentaire = 0;
+        // Si j'ai des commentaires, je récupère le nombre de commentaires
+        if (!mesCommentaires.isEmpty()) {
+            idDernierCommentaire = mesCommentaires.size();
+        }
+
+        // Le cast en int supprime la partie après la virgule
+        int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
+
+        // Création de l'URL
+        String monURL =
+                Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
+                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+
+        // Ma tâche de DL
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
+                                                             getApplicationContext());
+
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("CommentairesActivity", "refreshListeCommentaires() : lancement téléchargement");
+        }
+
+        // Lancement du téléchargement
+        if (monAHD.run()) {
+            // Lancement de l'animation de téléchargement
+            debutTelechargement();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        // Conservation du menu
+        monMenu = menu;
+
+        // Je charge mon menu dans l'actionBar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_commentaires_actions, menu);
+
+        // Configuration du onScroll de la listview
+        configOnScroll();
+
+        return true;
+    }
+
+    /**
+     * Configuration du scroll (listview) : Méthode séparée pour gestion propre des boutons du menu
+     */
+    private void configOnScroll() {
         // Système de rafraichissement de la vue
         monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -247,67 +310,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
         });
-
-        // MàJ de la date de dernier refresh
-        majDateRefresh();
-    }
-
-    /**
-     * Charge les commentaires suivants.
-     */
-    private void refreshListeCommentaires() {
-        // DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "refreshListeCommentaires()");
-        }
-
-        int idDernierCommentaire = 0;
-        // Si j'ai des commentaires, je récupère le nombre de commentaires
-        if (!mesCommentaires.isEmpty()) {
-            idDernierCommentaire = mesCommentaires.size();
-        }
-
-        // Le cast en int supprime la partie après la virgule
-        int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
-
-        // Création de l'URL
-        String monURL =
-                Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
-                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
-
-        // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
-                                                             getApplicationContext());
-
-        // DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "refreshListeCommentaires() : lancement téléchargement");
-        }
-
-        // Lancement du téléchargement
-        if (monAHD.run()) {
-            // Lancement de l'animation de téléchargement
-            debutTelechargement();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Conservation du menu
-        monMenu = menu;
-
-        // Je charge mon menu dans l'actionBar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_commentaires_actions, menu);
-
-        // Ticket #86 : un chargement automatique a-t-il lieu (sera lancé avant de créer le menu)
-        if (dlInProgress > 0) {
-            // Je fait coincider les animations avec l'état réel
-            finTelechargement();
-            debutTelechargement();
-        }
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
