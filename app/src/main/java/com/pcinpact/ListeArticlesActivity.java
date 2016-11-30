@@ -172,33 +172,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Chargement des articles & MàJ de l'affichage
         monItemsAdapter.updateListeItems(prepareAffichage());
 
-        // Est-ce la premiere utilisation de l'application ?
-        Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
-                                                                  R.string.idOptionInstallationApplication,
-                                                                  R.bool.defautOptionInstallationApplication);
-        // Si première utilisation : on affiche un disclaimer
-        if (premiereUtilisation) {
-            // Effacement du cache de l'application v < 1.8.0
-            CacheManager.effacerCacheV180(getApplicationContext());
-
-            // Lancement d'un téléchargement des articles
-            telechargeListeArticles();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            // Titre
-            builder.setTitle(getResources().getString(R.string.app_name));
-            // Contenu
-            builder.setMessage(getResources().getString(R.string.disclaimerContent));
-            // Bouton d'action
-            builder.setCancelable(false);
-            builder.setPositiveButton("Ok", null);
-            // On crée & affiche
-            builder.create().show();
-
-            // Enregistrement de l'affichage
-            Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
-        }
-
         // Migration de préférences
         int valeurDefaut = Integer.parseInt(getString(R.string.defautOptionTelechargerImagesv2Test));
         if (Constantes.getOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2,
@@ -271,6 +244,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(monMenu);
         // Je garde le menu pour pouvoir l'animer après
         monMenu = menu;
 
@@ -295,14 +269,34 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             inflater.inflate(R.menu.activity_liste_articles_actions, monMenu);
         }
 
-        // Je lance l'animation si un DL est déjà en cours
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
-            // Hack : il n'y avait pas d'accès à la GUI sur onCreate
-            dlInProgress[Constantes.HTML_LISTE_ARTICLES]--;
-            nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        // Est-ce la premiere utilisation de l'application ? [après création du menu]
+        Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
+                                                                  R.string.idOptionInstallationApplication,
+                                                                  R.bool.defautOptionInstallationApplication);
+        // Si première utilisation : on affiche un disclaimer
+        if (premiereUtilisation) {
+            // Effacement du cache de l'application v < 1.8.0
+            CacheManager.effacerCacheV180(getApplicationContext());
+
+            // Lancement d'un téléchargement des articles
+            telechargeListeArticles();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Titre
+            builder.setTitle(getResources().getString(R.string.app_name));
+            // Contenu
+            builder.setMessage(getResources().getString(R.string.disclaimerContent));
+            // Bouton d'action
+            builder.setCancelable(false);
+            builder.setPositiveButton("Ok", null);
+            // On crée & affiche
+            builder.create().show();
+
+            // Enregistrement de l'affichage
+            Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
         }
 
-        return super.onCreateOptionsMenu(monMenu);
+        return true;
     }
 
     /**
