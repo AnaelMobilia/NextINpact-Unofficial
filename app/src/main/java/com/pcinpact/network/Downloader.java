@@ -73,11 +73,6 @@ public class Downloader {
      * @return ressource demandée brute
      */
     public static byte[] download(final String uneURL, final Context unContext) {
-        // Faut-il initialiser le cookie manager ?
-        if (monCookieManager == null) {
-            Downloader.initializeCookieManager();
-        }
-
         // Retour
         byte[] datas = null;
 
