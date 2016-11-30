@@ -302,8 +302,8 @@ public class Constantes {
     public static int getOptionInt(final Context unContext, final int idOption, final int defautOption) {
         SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
 
-        return Integer.valueOf(mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(
-                defautOption)));
+        return Integer.valueOf(
+                mesPrefs.getString(unContext.getString(idOption), unContext.getResources().getString(defautOption)));
     }
 
     /**
@@ -318,6 +318,21 @@ public class Constantes {
 
         Editor editor = mesPrefs.edit();
         editor.putBoolean(unContext.getString(idOption), valeurOption);
+        editor.apply();
+    }
+
+    /**
+     * Enregistre un int dans les préférences.
+     *
+     * @param unContext    context d'application
+     * @param idOption     id de l'option
+     * @param valeurOption valeur à enregistrer
+     */
+    public static void setOptionInt(final Context unContext, final int idOption, final String valeurOption) {
+        SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
+
+        Editor editor = mesPrefs.edit();
+        editor.putString(unContext.getString(idOption), valeurOption);
         editor.apply();
     }
 }

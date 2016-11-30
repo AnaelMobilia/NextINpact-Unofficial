@@ -132,7 +132,9 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="idOptionCacherBoutonPartage">17</string>
     <string name="idOptionAfficherNbNouveauComm">18</string>
     <string name="idOptionThemeSombre">19</string>
+    <!-- Pour mémoire (actif car migration de valeur)-->
     <string name="idOptionTelechargerImages">20</string>
+    <string name="idOptionTelechargerImagesv2">21</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

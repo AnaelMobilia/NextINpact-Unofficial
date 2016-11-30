@@ -80,12 +80,13 @@
 
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsArticles">
-        <CheckBoxPreference
-            android:defaultValue="@bool/defautOptionTelechargerImages"
-            android:key="@string/idOptionTelechargerImages"
+        <ListPreference
+            android:defaultValue="@string/defautOptionTelechargerImagesv2"
+            android:key="@string/idOptionTelechargerImagesv2"
             android:summary="@string/optionTelechargerImageDetail"
             android:title="@string/optionTelechargerImage"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:entries="@array/affichageImagesLitteral"
+            android:entryValues="@array/affichageImagesValeur"/>
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"

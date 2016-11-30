@@ -199,6 +199,25 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
         }
 
+        // Migration de préférences
+        int valeurDefaut = Integer.parseInt(getString(R.string.defautOptionTelechargerImagesv2Test));
+        if (Constantes.getOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2,
+                                    R.string.defautOptionTelechargerImagesv2Test) == valeurDefaut) {
+            // Si pas de valeur cohérente pour l'option de téléchargement des images
+            // Ancienne valeur
+            boolean valeurOld = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionTelechargerImages,
+                                                            R.bool.defautOptionTelechargerImages);
+            // Nouvelle valeur (actif tout le temps par défaut)
+            String valeurNew = getString(R.string.defautOptionTelechargerImagesv2);
+            if (!valeurOld) {
+                // Pas de téléchargement automatique des images
+                valeurNew = "0";
+            }
+
+            Constantes.setOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2, valeurNew);
+        }
+
+
         // Gestion du changement d'options de l'application
         listenerOptions = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override

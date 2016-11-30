@@ -20,6 +20,8 @@ package com.pcinpact.datastorage;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Html.ImageGetter;
@@ -147,8 +149,25 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             }
         } else {
             // Téléchargement des images ?
-            boolean telechargerImages = Constantes.getOptionBoolean(monContext, R.string.idOptionTelechargerImages,
-                                                                    R.bool.defautOptionTelechargerImages);
+            boolean telechargerImages = true;
+
+            int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
+                                                       R.string.defautOptionTelechargerImagesv2);
+            if (valeurOption == 0) {
+                // Pas de téléchargement des images
+                telechargerImages = false;
+            } else if (valeurOption == 1) {
+                // Téléchargement uniquement en WiFi
+                ConnectivityManager cm = (ConnectivityManager) monContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+                // Est-on connecté en WiFi ?
+                if (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
+                    telechargerImages = false;
+                }
+            }
+
             // L'image est-elle déjà en DL (ou à déjà échoué) ? || pas de téléchargement des images
             if (mesDL.contains(urlSource) || !telechargerImages) {
                 // DEBUG
