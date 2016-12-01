@@ -171,7 +171,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             // L'image est-elle déjà en DL (ou à déjà échoué) ? || pas de téléchargement des images
             if (mesDL.contains(urlSource) || !telechargerImages) {
                 // DEBUG
-                if (Constantes.DEBUG) {
+                if (Constantes.DEBUG && mesDL.contains(urlSource)) {
                     Log.d("ImageProvider", "getDrawable() - DL déjà traité || pas de téléchargement des images - " + urlSource);
                 }
                 // Retour d'une image générique en ERREUR (logo NXI)
