@@ -163,7 +163,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
                 // Est-on connecté en WiFi ?
-                if (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
+                if (activeNetwork != null && activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
                     telechargerImages = false;
                 }
             }
