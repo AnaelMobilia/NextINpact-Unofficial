@@ -244,9 +244,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(monMenu);
         // Je garde le menu pour pouvoir l'animer après
         monMenu = menu;
+        super.onCreateOptionsMenu(monMenu);
 
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
