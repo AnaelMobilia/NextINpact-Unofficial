@@ -140,11 +140,21 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 // Path & nom du fichier
                 String pathFichier = getPathAndFile(urlSource, monContext, monTypeImages);
 
-                // Je récupère directement mon image
-                monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.d("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
+                try {
+                    // Je récupère directement mon image
+                    monRetour = gestionTaille(Drawable.createFromPath(pathFichier));
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.d("ImageProvider", "getDrawable() - " + pathFichier + " fourni depuis le cache");
+                    }
+                } catch (Exception e) {
+                    // Catch pour un OOM potentiel si trop d'images chargées simultanément et RAM < 2 Go
+                    // Chargera image par défaut
+                    monRetour = null;
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ImageProvider", "getDrawable() - " + pathFichier + " exception : ", e);
+                    }
                 }
             }
         } else {
