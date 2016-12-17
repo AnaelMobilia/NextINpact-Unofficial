@@ -31,17 +31,16 @@ import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.ContenuArticleItem;
-import com.pcinpact.items.Item;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
 
 /**
- * Contenu d'article Utilisé pour le slider
+ * Contenu d'article, utilisé pour le slider
  */
 public class ArticleFragment extends Fragment {
-    private int idArticle = 1;
+    private int idArticle;
     private Context monContext;
     private LayoutInflater monLayoutInflater;
 
@@ -65,12 +64,8 @@ public class ArticleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View maView;
         maView = inflater.inflate(R.layout.article_fragment, container, false);
-        // Liste des commentaires
+        // Listview qui contiendra l'article
         ListView monListView = (ListView) maView.findViewById(R.id.contenuArticle);
-
-        // Adapter pour l'affichage des données
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, monLayoutInflater, new ArrayList<Item>());
-        monListView.setAdapter(monItemsAdapter);
 
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(monContext);
@@ -85,13 +80,17 @@ public class ArticleFragment extends Fragment {
             monContenu = getString(R.string.articleVideErreurHTML);
         }
 
+        ContenuArticleItem monContenuArticle = new ContenuArticleItem();
+        monContenuArticle.setContenu(monContenu);
+        monContenuArticle.setArticleID(idArticle);
+
+        // Stockage en ArrayList pour l'itemAdapter
         ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
-        ContenuArticleItem toto = new ContenuArticleItem();
-        toto.setContenu(monContenu);
-        toto.setArticleID(idArticle);
-        monAR.add(toto);
+        monAR.add(monContenuArticle);
+
         // MàJ de l'affichage
-        monItemsAdapter.updateListeItems(monAR);
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, monLayoutInflater, monAR);
+        monListView.setAdapter(monItemsAdapter);
 
         return maView;
     }
