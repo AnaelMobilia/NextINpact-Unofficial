@@ -2,7 +2,7 @@
 build
 .idea
 local.properties
-/projectFilesBackup/
+/projectFilesBackup*
 /captures/
 .navigation/
 app/app-release.apk
