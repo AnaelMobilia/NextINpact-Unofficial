@@ -11,7 +11,7 @@ android:
         - platform-tools
 
         # Build tools requis par le projet
-        - build-tools-25.0.2
+        - build-tools-25.0.1
         # Version du SDK pour compiler le projet
         - android-25
 
