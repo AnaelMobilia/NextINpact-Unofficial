@@ -45,9 +45,9 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'org.jsoup:jsoup:1.10.1'
     testCompile 'junit:junit:4.12'
 }
 
