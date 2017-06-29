@@ -1,8 +1,9 @@
-.gradle
-build
-.idea
-local.properties
-/projectFilesBackup*
+/.gradle/
+/.idea/
+/.navigation/
+/build/
+/app/build/
+/app/app-release.apk
+/app/app.iml
 /captures/
-.navigation/
-app/app-release.apk
+local.properties
