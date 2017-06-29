@@ -1,9 +1,12 @@
 /.gradle/
 /.idea/
 /.navigation/
-/build/
 /app/build/
 /app/app-release.apk
 /app/app.iml
+/build/
 /captures/
+/gradle/
 local.properties
+gradlew
+gradlew.bat
