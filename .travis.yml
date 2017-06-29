@@ -32,4 +32,5 @@ before_install:
     - export GRADLE_HOME=$PWD/gradle-3.3
     - export PATH=$GRADLE_HOME/bin:$PATH
 
-script: gradle build connectedCheck --info
+#script: gradle build connectedCheck --info
+script : gradle build
