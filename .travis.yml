@@ -19,9 +19,7 @@ android:
         - extra-android-m2repository
 
     licenses:
-        - 'android-sdk-preview-license-.+'
-        - 'android-sdk-license-.+'
-        - 'google-gdk-license-.+'
+        - '.+'
 
 # From https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/.travis.yml
 before_install:
