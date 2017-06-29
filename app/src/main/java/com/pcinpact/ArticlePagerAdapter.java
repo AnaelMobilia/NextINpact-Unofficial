@@ -69,7 +69,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         // Création du fragment
         ArticleFragment monFragment = new ArticleFragment();
         // Injection de ses paramètres (non passable via constructeur #201)
-        monFragment.initialisation(monContext, monLayoutInflater, articleID);
+        monFragment.initialisation(monContext, articleID);
         return monFragment;
     }
 

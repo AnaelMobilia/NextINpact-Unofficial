@@ -42,19 +42,16 @@ import java.util.ArrayList;
 public class ArticleFragment extends Fragment {
     private int idArticle;
     private Context monContext;
-    private LayoutInflater monLayoutInflater;
 
     /**
      * Passage de toutes les valeurs requises
      *
      * @param unContext        Contexte de l'application
-     * @param unLayoutInflater Layout Inflater (pour charger le xml)
      * @param articleID        ID de l'article concerné
      */
-    public void initialisation(Context unContext, LayoutInflater unLayoutInflater, int articleID) {
+    public void initialisation(Context unContext, int articleID) {
         idArticle = articleID;
         monContext = unContext;
-        monLayoutInflater = unLayoutInflater;
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);
@@ -89,7 +86,7 @@ public class ArticleFragment extends Fragment {
         monAR.add(monContenuArticle);
 
         // MàJ de l'affichage
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, monLayoutInflater, monAR);
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, inflater, monAR);
         monListView.setAdapter(monItemsAdapter);
 
         return maView;
