@@ -73,45 +73,75 @@ public class ParseurHTML {
             monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_ARTICLE));
 
             // URL de l'illustration
-            Element image = unArticle.select("img[class=ded-image]").get(0);
-            monArticleItem.setUrlIllustration(image.absUrl("data-frz-src"));
+            String urlIllustration = "";
+            Elements lesImages = unArticle.select("img[class=ded-image]");
+            if (!lesImages.isEmpty()) {
+                Element image = lesImages.get(0);
+                urlIllustration = image.absUrl("data-frz-src");
+            } else {
+                if (Constantes.DEBUG) {
+                    Log.e("ParseurHTML", "getListeArticles - Pb illustration");
+                }
+            }
+            monArticleItem.setUrlIllustration(urlIllustration);
 
             // URL de l'article
-            Element url = unArticle.select("h1 > a[href]").get(0);
-            monArticleItem.setUrl(url.absUrl("href"));
+            String urlArticle = "";
+            String titreArticle = "";
+            Elements lesUrl = unArticle.select("h1 > a[href]");
+            if (!lesUrl.isEmpty()) {
+                Element url = lesUrl.get(0);
+                urlArticle = url.absUrl("href");
 
-            // Titre de l'article (liée à l'URL)
-            monArticleItem.setTitre(url.text());
+                // Titre de l'article (liée à l'URL)
+                titreArticle = url.text();
+            } else {
+                if (Constantes.DEBUG) {
+                    Log.e("ParseurHTML", "getListeArticles - Pb URL article");
+                }
+            }
+            monArticleItem.setUrl(urlArticle);
+            monArticleItem.setTitre(titreArticle);
 
             // Sous titre
-            Element sousTitre = unArticle.select("span[class=soustitre]").get(0);
-            // Je supprime le "- " en début du sous titre
-            String monSousTitre = sousTitre.text().substring(2);
+            String monSousTitre = "";
+            Elements lesSousTitres = unArticle.select("span[class=soustitre]");
+            if (!lesSousTitres.isEmpty()) {
+                Element unSousTitre = lesSousTitres.get(0);
+                // Je supprime le "- " en début du sous titre
+                monSousTitre = unSousTitre.text().substring(2);
+            } else {
+                if (Constantes.DEBUG) {
+                    Log.e("ParseurHTML", "getListeArticles - Pb sous titre");
+                }
+            }
             monArticleItem.setSousTitre(monSousTitre);
 
             // Nombre de commentaires
-            Element commentaires = unArticle.select("span[class=nbcomment]").get(0);
-            try {
-                monArticleItem.setNbCommentaires(Integer.valueOf(commentaires.text()));
-            } catch (NumberFormatException e) {
-                // Nouveaux commentaires : "172 + 5"
-                String valeur = commentaires.text();
+            int nbCommentaires = 0;
+            Elements lesCommentaires = unArticle.select("span[class=nbcomment]");
+            if (!lesCommentaires.isEmpty()) {
+                Element commentaires = lesCommentaires.get(0);
+                try {
+                    nbCommentaires = Integer.valueOf(commentaires.text());
+                } catch (NumberFormatException e) {
+                    // Nouveaux commentaires : "172 + 5"
+                    String valeur = commentaires.text();
 
-                // Récupération des éléments
-                int positionOperateur = valeur.indexOf("+");
-                String membreGauche = valeur.substring(0, positionOperateur).trim();
-                String membreDroit = valeur.substring(positionOperateur + 1).trim();
+                    // Récupération des éléments
+                    int positionOperateur = valeur.indexOf("+");
+                    String membreGauche = valeur.substring(0, positionOperateur).trim();
+                    String membreDroit = valeur.substring(positionOperateur + 1).trim();
 
-                // On additionne
-                int total = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
-                // Et on renvoit !
-                monArticleItem.setNbCommentaires(total);
-
-                // DEBUG
+                    // On additionne
+                    nbCommentaires = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
+                }
+            } else {
                 if (Constantes.DEBUG) {
-                    Log.w("ParseurHTML", "getListeArticles() - Nombre de commentaires : " + valeur + " => " + total);
+                    Log.e("ParseurHTML", "getListeArticles - Pb nb Commentaires");
                 }
             }
+            monArticleItem.setNbCommentaires(nbCommentaires);
 
             // Statut abonné
             Elements badgeAbonne = unArticle.select("img[alt=badge_abonne]");
@@ -150,24 +180,44 @@ public class ParseurHTML {
         Elements lArticle = pageNXI.select("article");
 
         // L'ID de l'article
-        Element articleID = pageNXI.select("div[class=actu_content][data-id]").get(0);
-        int unID = Integer.valueOf(articleID.attr("data-id"));
+        int unID = 0;
+        Elements articlesID = pageNXI.select("div[class=actu_content][data-id]");
+        if (!articlesID.isEmpty()) {
+            Element articleID = articlesID.get(0);
+            unID = Integer.valueOf(articleID.attr("data-id"));
+        } else {
+            if (Constantes.DEBUG) {
+                Log.e("ParseurHTML", "getArticle - Pb ID");
+            }
+        }
         monArticleItem.setId(unID);
 
         // Suppression des éléments non requis
         try {
             // Image article
-            Element monElement = pageNXI.select("article > section").get(0);
-            monElement.remove();
+            Elements mesElements = pageNXI.select("article > section");
+            if (!mesElements.isEmpty()) {
+                Element monElement = mesElements.get(0);
+                monElement.remove();
+            }
             // Légende image article
-            monElement = pageNXI.select("article > div[class=thumb-cat-container]").get(0);
-            monElement.remove();
+            mesElements = pageNXI.select("article > div[class=thumb-cat-container]");
+            if (!mesElements.isEmpty()) {
+                Element monElement = mesElements.get(0);
+                monElement.remove();
+            }
             // Temps de lecture
-            monElement = pageNXI.select("div[class=read-time]").get(0);
-            monElement.remove();
+            mesElements = pageNXI.select("div[class=read-time]");
+            if (!mesElements.isEmpty()) {
+                Element monElement = mesElements.get(0);
+                monElement.remove();
+            }
             // Image auteur
-            monElement = pageNXI.select("div[class=infos-article] > div > img").get(0);
-            monElement.remove();
+            mesElements = pageNXI.select("div[class=infos-article] > div > img");
+            if (!mesElements.isEmpty()) {
+                Element monElement = mesElements.get(0);
+                monElement.remove();
+            }
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -229,8 +279,8 @@ public class ParseurHTML {
                  */
                 // Recalcul de l'ID de la vidéo (cas particulier)
                 idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
-                monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"" +
-                                     Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>");
+                monRemplacement.html("<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\""
+                                     + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>");
             } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
                     "www.youtube-nocookie.com/embed/")) {
                 /**
