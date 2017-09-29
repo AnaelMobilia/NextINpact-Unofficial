@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2013, 2014, 2015, 2016 Sami Ferhah, Anael Mobilia
+ * Copyright 2013, 2014, 2015, 2016, 2017 Sami Ferhah, Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -20,8 +20,8 @@
 -->
 <manifest package="com.pcinpact"
           xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="225"
-          android:versionName="2.2.5">
+          android:versionCode="226"
+          android:versionName="2.2.6">
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
