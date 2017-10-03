@@ -37,6 +37,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parseur du code HTML.
@@ -181,10 +183,11 @@ public class ParseurHTML {
 
         // L'ID de l'article
         int unID = 0;
-        Elements articlesID = pageNXI.select("div[class=actu_content][data-id]");
-        if (!articlesID.isEmpty()) {
-            Element articleID = articlesID.get(0);
-            unID = Integer.valueOf(articleID.attr("data-id"));
+        // Regexp pour récupérer l'ID numérique dans l'URL
+        Pattern p = Pattern.compile("[^\\d]*([\\d]+)[^\\d]");
+        Matcher m = p.matcher(urlPage);
+        if (m.find()) {
+            unID = Integer.valueOf(m.group(1));
         } else {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getArticle - Pb ID");
