@@ -35,6 +35,13 @@ import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
+/*
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+*/
+
 
 /**
  * Contenu d'article, utilisé pour le slider
@@ -59,8 +66,7 @@ public class ArticleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View maView;
-        maView = inflater.inflate(R.layout.article_fragment, container, false);
+        View maView = inflater.inflate(R.layout.article_fragment, container, false);
         // Listview qui contiendra l'article
         ListView monListView = (ListView) maView.findViewById(R.id.contenuArticle);
 
@@ -86,7 +92,7 @@ public class ArticleFragment extends Fragment {
         monAR.add(monContenuArticle);
 
         // MàJ de l'affichage
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, inflater, monAR);
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, getActivity().getLayoutInflater(), monAR);
         monListView.setAdapter(monItemsAdapter);
 
         return maView;
