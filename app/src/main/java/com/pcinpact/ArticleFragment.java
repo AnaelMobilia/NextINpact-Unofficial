@@ -58,7 +58,7 @@ public class ArticleFragment extends Fragment {
      */
     public void initialisation(Context unContext, int articleID) {
         idArticle = articleID;
-        monContext = unContext;
+        monContext = unContext.getApplicationContext();
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);

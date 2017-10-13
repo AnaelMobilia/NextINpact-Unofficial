@@ -47,7 +47,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     public ArticlePagerAdapter(FragmentManager fm, Context unContext, LayoutInflater unLayoutInflater) {
         super(fm);
 
-        monContext = unContext;
+        monContext = unContext.getApplicationContext();
         monLayoutInflater = unLayoutInflater;
         DAO monDAO = DAO.getInstance(monContext);
 

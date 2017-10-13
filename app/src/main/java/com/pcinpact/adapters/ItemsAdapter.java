@@ -86,7 +86,7 @@ public class ItemsAdapter extends BaseAdapter {
          * Sinon, crash lors du click sur une URL
          */
         // Je charge le bouzin
-        monContext = unContext;
+        monContext = unContext.getApplicationContext();
         mesItems = desItems;
         monLayoutInflater = unLayoutInflater;
     }
