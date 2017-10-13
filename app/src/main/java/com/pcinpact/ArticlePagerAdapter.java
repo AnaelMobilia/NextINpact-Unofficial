@@ -42,13 +42,11 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      * Variables passées à ArticleFragment
      */
     private final Context monContext;
-    private final LayoutInflater monLayoutInflater;
 
     public ArticlePagerAdapter(FragmentManager fm, Context unContext, LayoutInflater unLayoutInflater) {
         super(fm);
 
         monContext = unContext.getApplicationContext();
-        monLayoutInflater = unLayoutInflater;
         DAO monDAO = DAO.getInstance(monContext);
 
         // Nombre d'articles à afficher
