@@ -121,7 +121,7 @@ public class ParseurHTML {
 
             // Nombre de commentaires
             int nbCommentaires = 0;
-            Elements lesCommentaires = unArticle.select("span[class=nbcomment]");
+            Elements lesCommentaires = unArticle.select("span[class=nb_comments]");
             if (!lesCommentaires.isEmpty()) {
                 Element commentaires = lesCommentaires.get(0);
                 try {
