@@ -92,7 +92,11 @@ public class ArticleFragment extends Fragment {
         // Chargement des données dans Jsoup
         Document pageNXI = Jsoup.parse(monArticle.getContenu(), monArticle.getUrl());
         // Récupération de tous les items de l'article
-        Elements listeItems = pageNXI.select("div[class=actu_content] > *");
+        Elements listeItems = pageNXI.select("div[class=content-header] > *, div[class=actu_content] > *");
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.w("ArticleFragment", "onCreateView() - " + listeItems.size() + " éléments à traiter");
+        }
         // Contenu HTML standard...
         String leContenu = "";
         // Item à enregistrer
