@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
- * Copyright 2015 Anael Mobilia
+ * Copyright 2014, 2016 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -16,29 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
-package com.pcinpact.adapters.viewholder;
+-->
+<LinearLayout style="?attr/themeArticleFond"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
-import android.widget.TextView;
+    <ImageView
+        android:id="@+id/zoom_image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"/>
 
-import com.pcinpact.items.Item;
-
-/**
- * ViewHolder pour un ContenuArticleItem.
- *
- * @author Anael
- */
-public class ContenuArticleViewHolder implements ItemViewHolder {
-    /**
-     * Contenu.
-     */
-    public TextView contenu;
-
-    /*
-     * (non-Javadoc)
-     * @see com.pcinpact.items.Item#getType()
-     */
-    @Override
-    public int getType() {
-        return Item.TYPE_CONTENU_ARTICLE;
-    }
-}
+</LinearLayout>

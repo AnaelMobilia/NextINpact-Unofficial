@@ -23,7 +23,7 @@ package com.pcinpact.items;
  *
  * @author Anael
  */
-public class ContenuArticleItem implements com.pcinpact.items.Item {
+public abstract class ContenuArticleItem implements Item {
 
     /**
      * Contenu de l'article.
@@ -40,7 +40,7 @@ public class ContenuArticleItem implements com.pcinpact.items.Item {
      */
     @Override
     public int getType() {
-        return Item.TYPE_CONTENU_ARTICLE;
+        return 0;
     }
 
     /**

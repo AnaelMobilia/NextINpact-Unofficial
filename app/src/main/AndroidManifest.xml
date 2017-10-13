@@ -77,6 +77,11 @@
                 android:value=".ListeArticlesActivity"/>
         </activity>
         <activity
+            android:name=".ImageActivity"
+            android:screenOrientation="user"
+            android:theme="@style/NextInpactTheme">
+        </activity>
+        <activity
             android:name=".AboutActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"

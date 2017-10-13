@@ -19,6 +19,7 @@
 package com.pcinpact.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
@@ -32,15 +33,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pcinpact.ImageActivity;
 import com.pcinpact.R;
 import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
 import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
-import com.pcinpact.adapters.viewholder.ContenuArticleViewHolder;
+import com.pcinpact.adapters.viewholder.ContenuArticleImageViewHolder;
+import com.pcinpact.adapters.viewholder.ContenuArticleTexteViewHolder;
 import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
 import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.ContenuArticleImageItem;
 import com.pcinpact.items.ContenuArticleItem;
+import com.pcinpact.items.ContenuArticleTexteItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.parseur.TagHandler;
@@ -78,8 +83,8 @@ public class ItemsAdapter extends BaseAdapter {
      * @param unLayoutInflater Layout Inflater
      * @param desItems         items à afficher
      */
-    public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater, final ArrayList<? extends
-            Item> desItems) {
+    public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater,
+                        final ArrayList<? extends Item> desItems) {
         /**
          * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité =>
          * possibilité de lancer une autre apps
@@ -200,17 +205,31 @@ public class ItemsAdapter extends BaseAdapter {
                     break;
 
 
-                case Item.TYPE_CONTENU_ARTICLE:
+                case Item.TYPE_CONTENU_ARTICLE_TEXTE:
                     // Je charge mon layout
                     maView = monLayoutInflater.inflate(R.layout.article_texte, parent, false);
 
                     // Je crée mon viewHolder
-                    ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
+                    ContenuArticleTexteViewHolder contenuArticleVH = new ContenuArticleTexteViewHolder();
                     // Je prépare mon holder
-                    contenuVH.contenu = (TextView) maView.findViewById(R.id.texteArticle);
+                    contenuArticleVH.contenu = (TextView) maView.findViewById(R.id.texteArticle);
                     // Et l'assigne
-                    maView.setTag(contenuVH);
+                    maView.setTag(contenuArticleVH);
                     break;
+
+
+                case Item.TYPE_CONTENU_ARTICLE_IMAGE:
+                    // Je charge mon layout
+                    maView = monLayoutInflater.inflate(R.layout.article_image, parent, false);
+
+                    // Je crée mon viewHolder
+                    ContenuArticleImageViewHolder contenuImageVH = new ContenuArticleImageViewHolder();
+                    // Je prépare mon holder
+                    contenuImageVH.contenu = (ImageView) maView.findViewById(R.id.imageArticle);
+                    // Et l'assigne
+                    maView.setTag(contenuImageVH);
+                    break;
+
 
                 default:
                     // DEBUG
@@ -368,30 +387,31 @@ public class ItemsAdapter extends BaseAdapter {
                     break;
 
 
-                case Item.TYPE_CONTENU_ARTICLE:
+                case Item.TYPE_CONTENU_ARTICLE_TEXTE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ContenuArticleViewHolder contenuVH = (ContenuArticleViewHolder) maView.getTag();
+                    ContenuArticleTexteViewHolder contenuTexteVH = (ContenuArticleTexteViewHolder) maView.getTag();
                     /**
                      * Contenu
                      */
-                    ContenuArticleItem cai = (ContenuArticleItem) i;
+                    ContenuArticleItem cati = (ContenuArticleTexteItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(),
-                                                           new ImageProvider(monContext, contenuVH.contenu, cai.getContenu(),
-                                                                             Constantes.IMAGE_CONTENU_ARTICLE,
-                                                                             cai.getArticleID()), new TagHandler());
-                    contenuVH.contenu.setText(spannedContenu);
+                    Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(),
+                                                                new ImageProvider(monContext, contenuTexteVH.contenu,
+                                                                                  cati.getContenu(),
+                                                                                  Constantes.IMAGE_CONTENU_ARTICLE,
+                                                                                  cati.getArticleID()), new TagHandler());
+                    contenuTexteVH.contenu.setText(spannedContenuTexte);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
-                    contenuVH.contenu.setId(cai.getArticleID());
+                    contenuTexteVH.contenu.setId(cati.getArticleID());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
                                                                                R.bool.defautOptionLiensDansArticles);
                     if (lienArticleClickable) {
                         // Active les liens a href
-                        contenuVH.contenu.setMovementMethod(new GestionLiens());
+                        contenuTexteVH.contenu.setMovementMethod(new GestionLiens());
                     } else {
                         // Désactivation de l'effet de click
                         maView.setOnClickListener(null);
@@ -399,7 +419,37 @@ public class ItemsAdapter extends BaseAdapter {
                     }
 
                     // On applique le zoom éventuel
-                    appliqueZoom(contenuVH.contenu, Constantes.TEXT_SIZE_SMALL);
+                    appliqueZoom(contenuTexteVH.contenu, Constantes.TEXT_SIZE_SMALL);
+                    break;
+
+                case Item.TYPE_CONTENU_ARTICLE_IMAGE:
+                    // Je charge mon ItemsViewHolder (lien vers les *View)
+                    ContenuArticleImageViewHolder contenuImageVH = (ContenuArticleImageViewHolder) maView.getTag();
+                    /**
+                     * Contenu
+                     */
+                    ContenuArticleItem caii = (ContenuArticleImageItem) i;
+
+                    // Récupération de l'image
+                    ImageProvider monImageProviderArticle = new ImageProvider(monContext, contenuImageVH.contenu, 1);
+                    contenuImageVH.contenu.setImageDrawable(monImageProviderArticle.getDrawable(caii.getContenu()));
+
+                    // Définition de l'ID du textview (pour gestion callback si dl image)
+                    contenuImageVH.contenu.setId(caii.getArticleID());
+
+                    // Gestion du clic
+                    final String monUrlImage = caii.getContenu();
+                    contenuImageVH.contenu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Lance l'ouverture de l'image dans une activité séparée...
+                            Intent monIntent = new Intent(monContext, ImageActivity.class);
+                            monIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            monIntent.putExtra("URL_IMAGE", monUrlImage);
+                            monContext.startActivity(monIntent);
+                        }
+                    });
+
                     break;
 
                 default:

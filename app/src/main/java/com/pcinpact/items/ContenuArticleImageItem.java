@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, 2015 Anael Mobilia
+ * Copyright 2015 Anael Mobilia
  * 
  * This file is part of NextINpact-Unofficial.
  * 
@@ -19,42 +19,17 @@
 package com.pcinpact.items;
 
 /**
- * Objet générique Item.
+ * Contenu image d'un article.
  *
  * @author Anael
  */
-public interface Item {
-
-    /**
-     * Type "Article".
+public class ContenuArticleImageItem extends ContenuArticleItem {
+    /*
+     * (non-Javadoc)
+     * @see com.pcinpact.items.Item#getType()
      */
-    int TYPE_ARTICLE = 0;
-    /**
-     * Type "Section".
-     */
-    int TYPE_SECTION = 1;
-    /**
-     * Type "Commentaire".
-     */
-    int TYPE_COMMENTAIRE = 2;
-    /**
-     * Type "ContenuArticle"
-     */
-    int TYPE_CONTENU_ARTICLE_TEXTE = 3;
-    /**
-     * Type "ContenuArticle"
-     */
-    int TYPE_CONTENU_ARTICLE_IMAGE = 4;
-
-    /**
-     * Nombre de types existants.
-     */
-    int NOMBRE_DE_TYPES = 5;
-
-    /**
-     * Type (cf Item.type*) de l'item.
-     *
-     * @return type de l'item
-     */
-    int getType();
+    @Override
+    public int getType() {
+        return Item.TYPE_CONTENU_ARTICLE_IMAGE;
+    }
 }

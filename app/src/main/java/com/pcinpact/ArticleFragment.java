@@ -30,18 +30,17 @@ import android.widget.ListView;
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.ContenuArticleImageItem;
 import com.pcinpact.items.ContenuArticleItem;
+import com.pcinpact.items.ContenuArticleTexteItem;
 import com.pcinpact.utils.Constantes;
 
-import java.util.ArrayList;
-
-/*
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-*/
 
+import java.util.ArrayList;
 
 /**
  * Contenu d'article, utilisé pour le slider
@@ -83,12 +82,51 @@ public class ArticleFragment extends Fragment {
             monContenu = getString(R.string.articleVideErreurHTML);
         }
 
-        ContenuArticleItem monContenuArticle = new ContenuArticleItem();
-        monContenuArticle.setContenu(monContenu);
-        monContenuArticle.setArticleID(idArticle);
-
         // Stockage en ArrayList pour l'itemAdapter
         ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
+
+        /**
+         * Séparation des images et du texte !
+         */
+
+        // Chargement des données dans Jsoup
+        Document pageNXI = Jsoup.parse(monArticle.getContenu(), monArticle.getUrl());
+        // Récupération de tous les items de l'article
+        Elements listeItems = pageNXI.select("div[class=actu_content] > *");
+        // Contenu HTML standard...
+        String leContenu = "";
+        // Item à enregistrer
+        ContenuArticleItem monContenuArticle;
+
+        // Pour chacun...
+        for (Element unItem : listeItems) {
+            // Si j'ai au moins un enfant et qu'il contient un attribut src... c'est une image !
+            if (unItem.children().size() > 0 && !unItem.child(0).attr("src").equals("")) {
+                // J'enregistre tout les éléments textes traités précédement...
+                monContenuArticle = new ContenuArticleTexteItem();
+                monContenuArticle.setArticleID(idArticle);
+                monContenuArticle.setContenu(leContenu);
+                monAR.add(monContenuArticle);
+
+                // J'enregistre l'image en tant que telle !
+                monContenuArticle = new ContenuArticleImageItem();
+                monContenuArticle.setArticleID(idArticle);
+                monContenuArticle.setContenu(unItem.child(0).attr("src"));
+                monAR.add(monContenuArticle);
+
+                // Je réinitialise mes variables...
+                leContenu = "";
+            } else {
+                // C'est du texte => je concatène au texte précédant
+                leContenu += unItem.outerHtml();
+            }
+        }
+        // Traitement du contenu textuel final
+        // On enregistre le contenu
+        monContenuArticle = new ContenuArticleTexteItem();
+        monContenuArticle.setContenu(leContenu);
+        monContenuArticle.setArticleID(idArticle);
+        // Et on l'ajoute à l'arraylist
         monAR.add(monContenuArticle);
 
         // MàJ de l'affichage
