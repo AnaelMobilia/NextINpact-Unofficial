@@ -278,7 +278,7 @@ public class ParseurHTML {
         // Pour chaque iframe
         for (Element uneIframe : lesIframes) {
             // URL du lecteur
-            String urlLecteur = uneIframe.attr("src");
+            String urlLecteur = uneIframe.attr("src").toLowerCase();
 
             for (String unScheme : schemes) {
                 if (urlLecteur.startsWith(unScheme)) {
