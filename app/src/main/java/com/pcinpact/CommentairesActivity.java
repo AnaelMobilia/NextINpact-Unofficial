@@ -172,7 +172,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
                                                   R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
-            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID);
+            // Réaffichage du dernier commentaire (a-t-il été lu ?)
+            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID) - 1;
             monListView.setSelection(idDernierCommentaireLu);
         }
 
