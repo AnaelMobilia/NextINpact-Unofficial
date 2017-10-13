@@ -52,8 +52,8 @@ public class ArticleFragment extends Fragment {
     /**
      * Passage de toutes les valeurs requises
      *
-     * @param unContext        Contexte de l'application
-     * @param articleID        ID de l'article concerné
+     * @param unContext Contexte de l'application
+     * @param articleID ID de l'article concerné
      */
     public void initialisation(Context unContext, int articleID) {
         idArticle = articleID;
@@ -74,55 +74,58 @@ public class ArticleFragment extends Fragment {
         ArticleItem monArticle = monDAO.chargerArticle(idArticle);
         String monContenu = monArticle.getContenu();
 
-        if ("".equals(monContenu)) {
+        // Stockage en ArrayList pour l'itemAdapter
+        ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
+        // Item à enregistrer
+        ContenuArticleItem monContenuArticle;
+        // Contenu HTML standard...
+        String leContenu = "";
+
+        // Gestion de l'absence de contenu
+        if ("".equals(monArticle.getContenu())) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ArticleFragment", "onCreateView() - Article vide");
             }
-            monContenu = getString(R.string.articleVideErreurHTML);
-        }
+            leContenu = getString(R.string.articleVideErreurHTML);
+        } else {
+            /**
+             * Séparation des images et du texte !
+             */
 
-        // Stockage en ArrayList pour l'itemAdapter
-        ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
+            // Chargement des données dans Jsoup
+            Document pageNXI = Jsoup.parse(monArticle.getContenu(), monArticle.getUrl());
+            // Récupération de tous les items de l'article
+            Elements listeItems = pageNXI.select(
+                    "div[class=content-header] > *, div[class=actu_content] > *, div[class=infos-article] > *, "
+                    + "article[class=brief-item]");
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.w("ArticleFragment", "onCreateView() - " + listeItems.size() + " éléments à traiter");
+            }
 
-        /**
-         * Séparation des images et du texte !
-         */
+            // Pour chacun...
+            for (Element unItem : listeItems) {
+                // Si j'ai au moins un enfant et qu'il contient un attribut src... c'est une image !
+                if (unItem.children().size() > 0 && !unItem.child(0).attr("src").equals("")) {
+                    // J'enregistre tout les éléments textes traités précédement...
+                    monContenuArticle = new ContenuArticleTexteItem();
+                    monContenuArticle.setArticleID(idArticle);
+                    monContenuArticle.setContenu(leContenu);
+                    monAR.add(monContenuArticle);
 
-        // Chargement des données dans Jsoup
-        Document pageNXI = Jsoup.parse(monArticle.getContenu(), monArticle.getUrl());
-        // Récupération de tous les items de l'article
-        Elements listeItems = pageNXI.select("div[class=content-header] > *, div[class=actu_content] > *");
-        // DEBUG
-        if (Constantes.DEBUG) {
-            Log.w("ArticleFragment", "onCreateView() - " + listeItems.size() + " éléments à traiter");
-        }
-        // Contenu HTML standard...
-        String leContenu = "";
-        // Item à enregistrer
-        ContenuArticleItem monContenuArticle;
+                    // J'enregistre l'image en tant que telle !
+                    monContenuArticle = new ContenuArticleImageItem();
+                    monContenuArticle.setArticleID(idArticle);
+                    monContenuArticle.setContenu(unItem.child(0).attr("src"));
+                    monAR.add(monContenuArticle);
 
-        // Pour chacun...
-        for (Element unItem : listeItems) {
-            // Si j'ai au moins un enfant et qu'il contient un attribut src... c'est une image !
-            if (unItem.children().size() > 0 && !unItem.child(0).attr("src").equals("")) {
-                // J'enregistre tout les éléments textes traités précédement...
-                monContenuArticle = new ContenuArticleTexteItem();
-                monContenuArticle.setArticleID(idArticle);
-                monContenuArticle.setContenu(leContenu);
-                monAR.add(monContenuArticle);
-
-                // J'enregistre l'image en tant que telle !
-                monContenuArticle = new ContenuArticleImageItem();
-                monContenuArticle.setArticleID(idArticle);
-                monContenuArticle.setContenu(unItem.child(0).attr("src"));
-                monAR.add(monContenuArticle);
-
-                // Je réinitialise mes variables...
-                leContenu = "";
-            } else {
-                // C'est du texte => je concatène au texte précédant
-                leContenu += unItem.outerHtml();
+                    // Je réinitialise mes variables...
+                    leContenu = "";
+                } else {
+                    // C'est du texte => je concatène au texte précédant
+                    leContenu += unItem.outerHtml();
+                }
             }
         }
         // Traitement du contenu textuel final
