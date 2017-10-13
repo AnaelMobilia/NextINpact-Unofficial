@@ -249,6 +249,28 @@ public class ParseurHTML {
             uneBalise.remove();
         }
 
+        // #Brief - suppression des liens sur les titres d'article
+        Elements leBriefLiens = lArticle.select("h2 > a[href*=/brief/]");
+
+        // Récupération de toutes les balises <a...> autour du titre
+        for (Element unLienTitreArticleBrief : leBriefLiens) {
+            // Insertion d'un hr
+            unLienTitreArticleBrief.before("<hr />");
+            // Insertion du titre en h2
+            unLienTitreArticleBrief.before("<h2>" + unLienTitreArticleBrief.html() + "</h2>");
+            // Suppression du lien originel
+            unLienTitreArticleBrief.remove();
+        }
+
+        // # Brief - suppression des nombres de commentaires
+        Elements leBriefNbComms = lArticle.select("span[class=nb_comments]");
+        // Pour chaque...
+        for (Element unBriefNbComment : leBriefNbComms) {
+            // Suppression du nb de comms
+            unBriefNbComment.remove();
+        }
+
+
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
         // généralisation de l'URL en dehors du scheme
@@ -408,7 +430,15 @@ public class ParseurHTML {
         String valeur = stringNbComms.substring(0, positionEspace).trim();
 
         // Parsage de la valeur
-        int nbComms = Integer.valueOf(valeur);
+        int nbComms = 0;
+        try {
+            // Si aucun, retour textuel...
+            nbComms = Integer.valueOf(valeur);
+        } catch (NumberFormatException e) {
+            if (Constantes.DEBUG) {
+                Log.e("ParseurHTML", "getNbCommentaires() - Erreur nb comms", e);
+            }
+        }
 
         // DEBUG
         if (Constantes.DEBUG) {
