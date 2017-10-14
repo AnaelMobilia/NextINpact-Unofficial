@@ -251,6 +251,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
 
+        // Chargement du fichier XML
+        inflater.inflate(R.menu.activity_liste_articles_actions, monMenu);
+
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
                                                         R.bool.defautOptionDebug);
@@ -259,14 +262,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         if (Constantes.DEBUG) {
             Log.i("ListeArticlesActivity", "onCreateOptionsMenu() - modeDebug => " + modeDebug);
         }
-
-        // Chargement du fichier XML
+        // Si mode debug
         if (modeDebug) {
-            // Mode DEBUG
-            inflater.inflate(R.menu.activity_liste_articles_debug_actions, monMenu);
-        } else {
-            // Mode standard
-            inflater.inflate(R.menu.activity_liste_articles_actions, monMenu);
+            // Invalidation du menu
+            invalidateOptionsMenu();
+            // Affichage du bouton de debug
+            MenuItem boutonDebug = menu.findItem(R.id.action_debug);
+            boutonDebug.setVisible(true);
         }
 
         // Est-ce la premiere utilisation de l'application ? [après création du menu]
@@ -693,8 +695,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // Si toutes les données sont téléchargées...
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] +
-            dlInProgress[Constantes.HTML_ARTICLE] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE]
+            + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
