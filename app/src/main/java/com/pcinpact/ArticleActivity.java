@@ -79,8 +79,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // ViewPager (pour le slide des articles)
         monViewPager = (ViewPager) findViewById(R.id.article_viewpager);
-        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext(),
-                                                                         getLayoutInflater());
+        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext(), getLayoutInflater());
         monViewPager.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
@@ -97,6 +96,19 @@ public class ArticleActivity extends AppCompatActivity {
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_article_actions, monMenu);
+
+        // Suis-je en mode DEBUG ?
+        Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                        R.bool.defautOptionDebug);
+
+        // Si mode debug
+        if (modeDebug) {
+            // Invalidation du menu
+            invalidateOptionsMenu();
+            // Affichage du bouton de debug
+            MenuItem boutonDebug = menu.findItem(R.id.action_debug);
+            boutonDebug.setVisible(true);
+        }
 
         // Récupération du bouton de partage
         MenuItem shareItem = monMenu.findItem(R.id.action_share);
@@ -150,11 +162,20 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        // Afficher les commentaires
-        if (pItem.getItemId() == R.id.action_comments) {
-            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-            intentComms.putExtra("ARTICLE_ID", articleID);
-            startActivity(intentComms);
+        switch (pItem.getItemId()) {
+            // Afficher les commentaires
+            case R.id.action_comments:
+                Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+                intentComms.putExtra("ARTICLE_ID", articleID);
+                startActivity(intentComms);
+                break;
+
+            // Débug - Affichage du code source HTML
+            case R.id.action_debug:
+                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+                intentDebug.putExtra("ARTICLE_ID", articleID);
+                startActivity(intentDebug);
+                break;
         }
 
         return super.onOptionsItemSelected(pItem);

@@ -27,12 +27,21 @@
         android:icon="@drawable/ic_menu_share"
         android:title="@string/action_share"
         yourapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-        yourapp:showAsAction="ifRoom" />
+        yourapp:showAsAction="ifRoom"/>
 
     <!-- Commentaires -->
     <item
         android:id="@+id/action_comments"
         android:icon="@drawable/ic_menu_start_conversation"
         android:title="@string/action_comments"
-        yourapp:showAsAction="ifRoom" />
+        yourapp:showAsAction="ifRoom"/>
+
+
+    <!-- DEBUG -->
+    <item
+        android:id="@+id/action_debug"
+        android:icon="@drawable/ic_menu_preferences"
+        android:title="@string/action_debug"
+        android:visible="false"
+        yourapp:showAsAction="ifRoom"/>
 </menu>

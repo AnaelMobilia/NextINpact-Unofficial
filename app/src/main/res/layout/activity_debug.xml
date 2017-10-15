@@ -25,8 +25,8 @@
               android:orientation="vertical">
 
     <TextView
-        style="?attr/themeArticleTexte"
         android:id="@+id/debugTextView"
+        style="?attr/themeArticleTexte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
@@ -35,8 +35,8 @@
         android:text="@string/debugTitre"/>
 
     <TextView
-        style="?attr/themeArticleTexte"
         android:id="@+id/textViewBetaTest"
+        style="?attr/themeArticleTexte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
@@ -77,4 +77,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/debugGenererArrayList"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/debugTextViewHTML"
+            style="?attr/themeArticleTexte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
 </LinearLayout>

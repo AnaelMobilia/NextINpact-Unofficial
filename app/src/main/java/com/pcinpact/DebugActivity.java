@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pcinpact.datastorage.CacheManager;
@@ -45,6 +46,9 @@ import java.util.ArrayList;
  */
 public class DebugActivity extends AppCompatActivity implements RefreshDisplayInterface {
 
+    // DAO
+    private DAO monDAO;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
@@ -59,6 +63,9 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
         }
+
+        // Chargement du DAO
+        monDAO = DAO.getInstance(getApplicationContext());
 
         setContentView(R.layout.activity_debug);
 
@@ -113,11 +120,8 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 /**
                  * Récupération des articles
                  */
-                // DAO
-                DAO monDAO = DAO.getInstance(getApplicationContext());
                 // Chargement depuis BDD
                 ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
-
 
                 /**
                  * Génération du texte...
@@ -130,15 +134,13 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 monRetour += "\nArticleItem unArticle;";
                 for (ArticleItem unArticle : mesArticles) {
                     // Contenu de l'objet
-                    monRetour += "\nunArticle = new ArticleItem();\n" +
-                                 "unArticle.setId(" + unArticle.getId() + ");\n" +
-                                 "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n" +
-                                 "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n" +
-                                 "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" +
-                                 "unArticle.setTitre(\"" + unArticle.getTitre() + "\");\n" +
-                                 "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n" +
-                                 "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" +
-                                 "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+                    monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
+                                 + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
+                                 + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
+                                 + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
+                                 + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
+                                 + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
+                                 + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
 
                     // Insertion de l'objet dans l'arraylist
                     monRetour += "\nmesArticles.add(unArticle);";
@@ -205,9 +207,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         buttonTesterConnexion.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
-                DAO monDAO = DAO.getInstance(getApplicationContext());
-
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
                                                                      Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
                                                                      true);
@@ -215,6 +214,23 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 monAHD.run();
             }
         });
+
+        /**
+         * Afficher le code source d'un article
+         */
+        // Si j'ai reçu un Intent
+        if (getIntent().getExtras() != null) {
+            // ID de l'article concerné
+            int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            // Si j'ai un article
+            if (articleID != 0) {
+                // Chargement de l'article
+                ArticleItem monArticle = monDAO.chargerArticle(articleID);
+                TextView maTextView = (TextView) findViewById(R.id.debugTextViewHTML);
+
+                maTextView.setText(monArticle.getContenu());
+            }
+        }
     }
 
     /**
