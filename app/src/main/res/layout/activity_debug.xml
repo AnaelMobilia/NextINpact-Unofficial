@@ -18,69 +18,70 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<LinearLayout style="?attr/themeArticleFond"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/debugTextView"
-        style="?attr/themeArticleTexte"
+    <LinearLayout
+        style="?attr/themeArticleFond"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="?android:attr/scrollbarSize"
-        android:text="@string/debugTitre"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewBetaTest"
-        style="?attr/themeArticleTexte"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="?android:attr/scrollbarSize"
-        android:text="@string/debugPubBeta"/>
+        <TextView
+            android:id="@+id/debugTextView"
+            style="?attr/themeArticleTexte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="?android:attr/scrollbarSize"
+            android:text="@string/debugTitre"/>
 
-    <Button
-        android:id="@+id/buttonListerCache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debugListeFichiers"/>
+        <TextView
+            android:id="@+id/textViewBetaTest"
+            style="?attr/themeArticleTexte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="?android:attr/scrollbarSize"
+            android:text="@string/debugPubBeta"/>
 
-    <Button
-        android:id="@+id/buttonDeleteCacheSmiley"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debugEffacerCacheSmiley"/>
+        <Button
+            android:id="@+id/buttonListerCache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugListeFichiers"/>
 
-    <Button
-        android:id="@+id/buttonDeleteCache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debugEffacerCache"/>
+        <Button
+            android:id="@+id/buttonDeleteCacheSmiley"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugEffacerCacheSmiley"/>
 
-    <Button
-        android:id="@+id/buttonTesterConnexion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debugTesterConnexion"/>
+        <Button
+            android:id="@+id/buttonDeleteCache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugEffacerCache"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@color/refreshOrange"/>
+        <Button
+            android:id="@+id/buttonTesterConnexion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugTesterConnexion"/>
 
-    <Button
-        android:id="@+id/debugGenererArrayListArticleItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debugGenererArrayList"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/refreshOrange"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/debugGenererArrayListArticleItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugGenererArrayList"/>
+
 
         <TextView
             android:id="@+id/debugTextViewHTML"
@@ -88,5 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </ScrollView>
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
