@@ -38,7 +38,7 @@ import com.pcinpact.utils.Constantes;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.jsoup.parser.Parser;
 
 import java.util.ArrayList;
 
@@ -76,10 +76,6 @@ public class ArticleFragment extends Fragment {
 
         // Stockage en ArrayList pour l'itemAdapter
         ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
-        // Item à enregistrer
-        ContenuArticleItem monContenuArticle;
-        // Contenu HTML standard...
-        String leContenu = "";
 
         // Gestion de l'absence de contenu
         if ("".equals(monArticle.getContenu())) {
@@ -87,59 +83,85 @@ public class ArticleFragment extends Fragment {
             if (Constantes.DEBUG) {
                 Log.w("ArticleFragment", "onCreateView() - Article vide");
             }
-            leContenu = getString(R.string.articleVideErreurHTML);
+            ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
+            monTexte.setArticleID(idArticle);
+            monTexte.setContenu(getString(R.string.articleVideErreurHTML));
+            monAR.add(monTexte);
         } else {
-            /**
-             * Séparation des images et du texte !
-             */
-
-            // Chargement des données dans Jsoup
-            Document pageNXI = Jsoup.parse(monArticle.getContenu(), monArticle.getUrl());
-            // Récupération de tous les items de l'article
-            Elements listeItems = pageNXI.select(
-                    "div[class=content-header] > *, div[class=actu_content] > *, div[class=infos-article] > *, "
-                    + "article[class=brief-item]");
-            // DEBUG
             if (Constantes.DEBUG) {
-                Log.w("ArticleFragment", "onCreateView() - " + listeItems.size() + " éléments à traiter");
+                Log.w("ArticleFragment", "onCreateView() - lancement récursion");
             }
-
-            // Pour chacun...
-            for (Element unItem : listeItems) {
-                // Si j'ai au moins un enfant et qu'il contient un attribut src... c'est une image !
-                if (unItem.children().size() > 0 && !unItem.child(0).attr("src").equals("")) {
-                    // J'enregistre tout les éléments textes traités précédement...
-                    monContenuArticle = new ContenuArticleTexteItem();
-                    monContenuArticle.setArticleID(idArticle);
-                    monContenuArticle.setContenu(leContenu);
-                    monAR.add(monContenuArticle);
-
-                    // J'enregistre l'image en tant que telle !
-                    monContenuArticle = new ContenuArticleImageItem();
-                    monContenuArticle.setArticleID(idArticle);
-                    monContenuArticle.setContenu(unItem.child(0).attr("src"));
-                    monAR.add(monContenuArticle);
-
-                    // Je réinitialise mes variables...
-                    leContenu = "";
-                } else {
-                    // C'est du texte => je concatène au texte précédant
-                    leContenu += unItem.outerHtml();
-                }
-            }
+            // Séparation récursive de l'article : texte & images
+            monAR = parseArticle(monContenu, monArticle.getUrl(), idArticle);
         }
-        // Traitement du contenu textuel final
-        // On enregistre le contenu
-        monContenuArticle = new ContenuArticleTexteItem();
-        monContenuArticle.setContenu(leContenu);
-        monContenuArticle.setArticleID(idArticle);
-        // Et on l'ajoute à l'arraylist
-        monAR.add(monContenuArticle);
 
         // MàJ de l'affichage
         ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, getActivity().getLayoutInflater(), monAR);
         monListView.setAdapter(monItemsAdapter);
 
         return maView;
+    }
+
+    /**
+     * Parse récursivement un contenu HTML pour en sortir des ArticleTexteItem & ArticleImageItem
+     *
+     * @param contenuHTML String contenu HTML à parser
+     * @param urlArticle  String URL de l'article
+     * @param idArticle   int ID de l'article
+     * @return ArrayList<ContenuArticleItem>
+     */
+    private ArrayList<ContenuArticleItem> parseArticle(String contenuHTML, String urlArticle, int idArticle) {
+        ArrayList<ContenuArticleItem> monAr = new ArrayList<>();
+        //DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("ArticleFragment", "parseArticle() - Appel avec " + contenuHTML);
+        }
+
+        // Parsage du contenu
+        Document lArticle = Jsoup.parse(contenuHTML, urlArticle, Parser.xmlParser());
+
+        // Absence d'images (ou IFRAME gérée)
+        if (lArticle.select("img:not([src^=http://IFRAME_LOCALE/])").isEmpty()) {
+            // Que du texte... on créée un objet texte
+            ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
+            monTexte.setArticleID(idArticle);
+            monTexte.setContenu(contenuHTML);
+            // Ajout à l'ArrayList
+            monAr.add(monTexte);
+
+            //DEBUG
+            if (Constantes.DEBUG) {
+                Log.i("ArticleFragment", "parseArticle() - TEXTE : " + contenuHTML);
+            }
+        } else {
+            // Il y a au moins une image dans le contenu...
+            // Présence d'un seul enfant et il a un attribut src => c'est une image
+            if (lArticle.children().size() == 1 && !lArticle.child(0).attr("src").equals("")) {
+                // Gestion des images successives - fancyimg
+                for (Element uneImage : lArticle.select("img:not([src^=http://IFRAME_LOCALE/])")) {
+                    // Une seule image => objet image
+                    ContenuArticleImageItem monImage = new ContenuArticleImageItem();
+                    monImage.setArticleID(idArticle);
+                    monImage.setContenu(uneImage.attr("src"));
+                    monAr.add(monImage);
+
+                    //DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ArticleFragment", "parseArticle() - IMAGE : " + uneImage.outerHtml());
+                    }
+                }
+            } else {
+                // Plusieurs enfants => appel récursif pour chaque enfant...
+                for (Element unItem : lArticle.children()) {
+                    //DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ArticleFragment", "parseArticle() - APPEL RECURSIF");
+                    }
+                    // Appel récursif
+                    monAr.addAll(parseArticle(unItem.html(), urlArticle, idArticle));
+                }
+            }
+        }
+        return monAr;
     }
 }
