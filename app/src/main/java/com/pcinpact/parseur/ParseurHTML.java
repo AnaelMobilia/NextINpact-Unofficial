@@ -215,13 +215,13 @@ public class ParseurHTML {
         // Récupération de toutes les balises <a...> autour du titre
         for (Element unLienTitreArticleBrief : leBriefLiens) {
             // Insertion du titre en h2
-            unLienTitreArticleBrief.before("<h2>" + unLienTitreArticleBrief.html() + "</h2>");
+            unLienTitreArticleBrief.before(unLienTitreArticleBrief.html());
             // Suppression du lien originel
             unLienTitreArticleBrief.remove();
         }
 
-        // # Brief - suppression des nombres de commentaires& réseaux sociaux
-        lArticle.select("div[class=brief-foot]").remove();
+        // # Brief - suppression des nombres de commentaires & réseaux sociaux & couleurs
+        lArticle.select("div[class=brief-foot], div[class=brief-circle-container]").remove();
 
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
