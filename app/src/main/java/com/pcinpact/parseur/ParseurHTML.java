@@ -220,8 +220,8 @@ public class ParseurHTML {
             unLienTitreArticleBrief.remove();
         }
 
-        // # Brief - suppression des nombres de commentaires
-        lArticle.select("span[class=nb_comments]").remove();
+        // # Brief - suppression des nombres de commentaires& réseaux sociaux
+        lArticle.select("div[class=brief-foot]").remove();
 
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
