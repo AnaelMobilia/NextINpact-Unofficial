@@ -6,10 +6,10 @@
 <a href="https://play.google.com/store/apps/details?id=com.pcinpact" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="100"/></a>
 
-## Librairies utilisées par le projet :
+## Bibliothèques utilisées par le projet :
   - [jsoup v1.10.3 - MIT] (http://jsoup.org/) : Parsage du code HTML
 
-## Librairies forkées par le projet
+## Bibliothèques forkées par le projet
   - [Commons IO 2.2 - Apache license, version 2.0] (https://commons.apache.org/proper/commons-io/) : InputStream .toString() &
   .toByteArray()
 
