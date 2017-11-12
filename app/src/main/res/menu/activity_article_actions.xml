@@ -29,19 +29,18 @@
         yourapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         yourapp:showAsAction="ifRoom"/>
 
-    <!-- Commentaires -->
-    <item
-        android:id="@+id/action_comments"
-        android:icon="@drawable/ic_menu_start_conversation"
-        android:title="@string/action_comments"
-        yourapp:showAsAction="ifRoom"/>
-
-
     <!-- DEBUG -->
     <item
         android:id="@+id/action_debug"
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/action_debug"
         android:visible="false"
+        yourapp:showAsAction="ifRoom"/>
+
+    <!-- Commentaires -->
+    <item
+        android:id="@+id/action_comments"
+        android:icon="@drawable/ic_menu_start_conversation"
+        android:title="@string/action_comments"
         yourapp:showAsAction="ifRoom"/>
 </menu>
