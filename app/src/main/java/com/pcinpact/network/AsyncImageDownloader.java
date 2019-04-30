@@ -171,13 +171,10 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
             // Retour utilisateur ?
             if (debug) {
                 Handler handler = new Handler(monContext.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés (image)",
-                                Toast.LENGTH_LONG);
-                        monToast.show();
-                    }
+                handler.post(() -> {
+                    Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés (image)",
+                            Toast.LENGTH_LONG);
+                    monToast.show();
                 });
             }
         }
