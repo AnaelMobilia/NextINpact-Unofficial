@@ -20,7 +20,6 @@ package com.pcinpact.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -156,11 +155,7 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Void> {
 
         try {
             // Parallélisation des téléchargements pour l'ensemble de l'application
-            if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                this.execute();
-            }
+            this.execute();
         } catch (RejectedExecutionException e) {
             // DEBUG
             if (Constantes.DEBUG) {
