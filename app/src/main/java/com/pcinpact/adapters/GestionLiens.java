@@ -34,7 +34,7 @@ import com.pcinpact.utils.Constantes;
 public class GestionLiens extends LinkMovementMethod {
     @Override
     public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-        Boolean monRetour = false;
+        boolean monRetour = false;
 
         try {
             // Gestion du clic...
