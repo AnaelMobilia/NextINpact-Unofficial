@@ -11,9 +11,9 @@ android:
         - platform-tools
 
         # Build tools requis par le projet
-        - build-tools-25.0.2
+        - build-tools-28.0.3
         # Version du SDK pour compiler le projet
-        - android-25
+        - android-28
 
         # Dépôt supplémentaire requis pour avoir support-v4 & appcompat-v7 24.2.1
         - extra-android-m2repository
@@ -22,12 +22,14 @@ android:
         - '.+'
 
 # From https://github.com/OneSignal/OneSignal-Android-SDK/blob/master/.travis.yml
-before_install:
-    - pwd
-    - ls -la
-    - wget http://services.gradle.org/distributions/gradle-3.3-bin.zip
-    - unzip gradle-3.3-bin.zip
-    - export GRADLE_HOME=$PWD/gradle-3.3
-    - export PATH=$GRADLE_HOME/bin:$PATH
+#before_install:
+#    - pwd
+#    - ls -la
+#    - wget http://services.gradle.org/distributions/gradle-3.3-bin.zip
+#    - unzip gradle-3.3-bin.zip
+#    - export GRADLE_HOME=$PWD/gradle-3.3
+#    - export PATH=$GRADLE_HOME/bin:$PATH
 
-script : gradle build
+script:
+  - gradle -v
+  - gradle build
