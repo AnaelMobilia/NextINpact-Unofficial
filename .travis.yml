@@ -18,7 +18,7 @@ android:
     # Dépôt supplémentaire requis pour avoir support-v4 & appcompat-v7 24.2.1
     - extra-android-m2repository
 
-    licenses:
+  licenses:
       - '.+'
 
 # https://gradle.org/install/#manually
