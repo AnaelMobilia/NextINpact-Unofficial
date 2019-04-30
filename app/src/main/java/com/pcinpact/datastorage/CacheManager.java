@@ -199,9 +199,6 @@ public class CacheManager {
      * @return liste d'URL
      */
     public static ArrayList<String> getMiniaturesATelecharger(final Context unContext) {
-        // Retour
-        ArrayList<String> monRetour = new ArrayList<>();
-
         Context monContext = unContext.getApplicationContext();
 
         /*
@@ -231,7 +228,7 @@ public class CacheManager {
         /*
          * Préparation du retour
          */
-        monRetour.addAll(imagesCache.values());
+        ArrayList<String> monRetour = new ArrayList<>(imagesCache.values());
 
         return monRetour;
     }
