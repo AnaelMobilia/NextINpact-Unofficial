@@ -300,11 +300,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
         try {
             // Parallélisation des téléchargements pour l'ensemble de l'application
-            if (Build.VERSION.SDK_INT >= Constantes.HONEYCOMB) {
-                this.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                this.execute();
-            }
+            this.execute();
         } catch (RejectedExecutionException e) {
             // DEBUG
             if (Constantes.DEBUG) {
