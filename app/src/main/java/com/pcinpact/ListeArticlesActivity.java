@@ -323,20 +323,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 Log.w("ListeArticlesActivity", "onRestart() - changement du thème");
             }
 
-            // Mise à jour du thème utilisé
-            Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                    R.bool.defautOptionThemeSombre);
-            if (isThemeSombre) {
-                setTheme(R.style.NextInpactThemeFonce);
-            } else {
-                setTheme(R.style.NextInpactTheme);
-            }
-
-            // invalidation du cache des view
-            monItemsAdapter.setResetView();
-
-            // C'est fini
-            updateTheme = false;
+            // On relance l'application :-)
+            recreate();
         }
 
         // Je met à jour les données qui sont potentiellement fausses suite à slide
