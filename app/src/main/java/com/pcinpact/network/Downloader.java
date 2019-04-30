@@ -126,13 +126,10 @@ public class Downloader {
                     // Retour utilisateur ?
                     if (debug) {
                         Handler handler = new Handler(unContext.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
-                                        uneURL, Toast.LENGTH_SHORT);
-                                monToast.show();
-                            }
+                        handler.post(() -> {
+                            Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
+                                    uneURL, Toast.LENGTH_SHORT);
+                            monToast.show();
                         });
                     }
                 } else {
@@ -154,14 +151,11 @@ public class Downloader {
                 // Retour utilisateur ?
                 if (debug) {
                     Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast monToast = Toast.makeText(unContext,
-                                    "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
-                                    Toast.LENGTH_SHORT);
-                            monToast.show();
-                        }
+                    handler.post(() -> {
+                        Toast monToast = Toast.makeText(unContext,
+                                "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
+                                Toast.LENGTH_SHORT);
+                        monToast.show();
                     });
                 }
             }
@@ -173,13 +167,10 @@ public class Downloader {
             // Retour utilisateur ?
             if (debug) {
                 Handler handler = new Handler(unContext.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
-                                Toast.LENGTH_SHORT);
-                        monToast.show();
-                    }
+                handler.post(() -> {
+                    Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
+                            Toast.LENGTH_SHORT);
+                    monToast.show();
                 });
             }
         }
@@ -269,13 +260,10 @@ public class Downloader {
                 if (infoAbonne) {
                     // Affichage d'un toast
                     Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
-                                    Toast.LENGTH_LONG);
-                            monToast.show();
-                        }
+                    handler.post(() -> {
+                        Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
+                                Toast.LENGTH_LONG);
+                        monToast.show();
                     });
 
                     // Enregistrement de l'affichage
@@ -388,13 +376,10 @@ public class Downloader {
                 } else {
                     // Si non connecté
                     Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
-                                    Toast.LENGTH_LONG);
-                            monToast.show();
-                        }
+                    handler.post(() -> {
+                        Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
+                                Toast.LENGTH_LONG);
+                        monToast.show();
                     });
                 }
             }
