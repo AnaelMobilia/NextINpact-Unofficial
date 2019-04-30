@@ -41,13 +41,7 @@ public class Constantes {
      * Contact du développeur
      */
     public static final String MAIL_DEVELOPPEUR = "contrib@anael.eu";
-    /*
-     * COMPATIBILITE.
-     */
-    /**
-     * Build Version Honeycomb (non dispo en 2.*). http://developer.android.com/reference/android/os/Build.VERSION_CODES.html
-     */
-    public static final int HONEYCOMB = 11;
+
 
     /*
      * PARAMETRES GENERAUX
