@@ -34,12 +34,10 @@ public class ParseurHTMLTest {
      * https://code.google.com/p/android/issues/detail?id=64887
      * <p>
      * Vérifie le bon fonctionnement du parseur entre un code HTML figé et le résultat correct attendu
-     *
-     * @throws Exception
      */
     @Test
-    public void testGetListeArticles() throws Exception {
-        /**
+    public void testGetListeArticles() {
+        /*
          * Contenu généré via DEBUG -> Développement - Log.e(ArrayList[ArticleItem])
          */
 
@@ -363,13 +361,9 @@ public class ParseurHTMLTest {
         mesArticles.add(unArticle);
 
 
-        /**
-         * Récupération du contenu du fichier HTML copié dans test\resources\ParseurHTMLTestListeArticles.html
+        /*
+         * Récupération du contenu HTML
          */
-//        InputStream is = getClass().getResourceAsStream("ParseurHTMLTestListeArticles.html");
-//        InputStream is = ClassLoader.getSystemResourceAsStream("resources/ParseurHTMLTestListeArticles.html");
-//        String contenuIS = is.toString();
-
         String contenuIS = "\n" +
                 "\n" +
                 "\n" +
@@ -1570,13 +1564,13 @@ public class ParseurHTMLTest {
                 "</body>\n" +
                 "</html>\n";
 
-        /**
+        /*
          * Traitement du fichier...
          */
         ArrayList<ArticleItem> articlesCalcules;
         articlesCalcules = ParseurHTML.getListeArticles(contenuIS, Constantes.NEXT_INPACT_URL);
 
-        /**
+        /*
          * Vérification...
          */
         for (int i = 0; i < Constantes.NB_ARTICLES_PAR_PAGE; i++) {
