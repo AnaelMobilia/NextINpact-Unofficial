@@ -196,7 +196,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @return lien sur la BDD
      */
     public static DAO getInstance(final Context unContext) {
-        /**
+        /*
          * Chargement de la BDD si non déjà présente
          */
         if (instanceOfDAO == null) {
