@@ -41,7 +41,7 @@ public class Constantes {
      * Contact du développeur
      */
     public static final String MAIL_DEVELOPPEUR = "contrib@anael.eu";
-    /**
+    /*
      * COMPATIBILITE.
      */
     /**
@@ -49,7 +49,7 @@ public class Constantes {
      */
     public static final int HONEYCOMB = 11;
 
-    /**
+    /*
      * PARAMETRES GENERAUX
      */
     /**
@@ -100,7 +100,7 @@ public class Constantes {
     public static final int NB_ARTICLES_PAR_PAGE = 30;
 
 
-    /**
+    /*
      * TYPES DE TELECHARGEMENTS.
      */
     /**
@@ -129,7 +129,7 @@ public class Constantes {
     public static final int IMAGE_SMILEY = 6;
 
 
-    /**
+    /*
      * FORMATS DU SITE POUR LE PARSEUR.
      */
     /**
@@ -146,7 +146,7 @@ public class Constantes {
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
 
 
-    /**
+    /*
      * PATH DES FICHIERS LOCAUX.
      */
     /**
@@ -163,7 +163,7 @@ public class Constantes {
     public static final String PATH_IMAGES_SMILEYS = "/SMILEYS/";
 
 
-    /**
+    /*
      * FORMATS D'AFFICHAGE.
      */
     /**
@@ -180,7 +180,7 @@ public class Constantes {
     public static final String FORMAT_DATE_DERNIER_REFRESH = "dd MMM 'à' HH:mm";
 
 
-    /**
+    /*
      * CONSTANTES EN BDD.
      */
     /**
@@ -189,7 +189,7 @@ public class Constantes {
     public static final int DB_REFRESH_ID_LISTE_ARTICLES = 0;
 
 
-    /**
+    /*
      * TAILLE DES TEXTES. http://developer.android.com/design/style/typography.html
      */
     /**
@@ -206,7 +206,7 @@ public class Constantes {
     public static final int TEXT_SIZE_MEDIUM = 18;
 
 
-    /**
+    /*
      * PARAMETRES D'AFFICHAGE
      */
     /**
@@ -214,7 +214,7 @@ public class Constantes {
      */
     public static final int MARGE_DROITE_IMAGE = 30;
 
-    /**
+    /*
      * PARAMETRES D'AUTHENTIFICATION.
      */
     /**
