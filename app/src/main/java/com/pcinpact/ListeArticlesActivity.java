@@ -136,11 +136,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         monListView.setOnItemClickListener(this);
 
         // onRefresh
-        monSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                telechargeListeArticles();
-            }
+        monSwipeRefreshLayout.setOnRefreshListener(() -> {
+            telechargeListeArticles();
         });
 
         // On active le SwipeRefreshLayout ssi on est en haut de la listview
