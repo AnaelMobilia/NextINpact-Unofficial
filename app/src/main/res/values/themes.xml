@@ -22,7 +22,8 @@
     <!-- Thème par défaut de l'application -->
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_clair</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_clair
+        </item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_clair</item>
 
@@ -45,7 +46,8 @@
     <!-- Thème foncé de l'application -->
     <style name="NextInpactThemeFonce" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_fonce</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_fonce
+        </item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_fonce</item>
 

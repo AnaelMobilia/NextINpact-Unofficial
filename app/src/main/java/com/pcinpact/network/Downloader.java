@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -130,7 +130,7 @@ public class Downloader {
                             @Override
                             public void run() {
                                 Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
-                                                                           uneURL, Toast.LENGTH_SHORT);
+                                        uneURL, Toast.LENGTH_SHORT);
                                 monToast.show();
                             }
                         });
@@ -158,8 +158,8 @@ public class Downloader {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext,
-                                                            "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
-                                                            Toast.LENGTH_SHORT);
+                                    "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
+                                    Toast.LENGTH_SHORT);
                             monToast.show();
                         }
                     });
@@ -177,7 +177,7 @@ public class Downloader {
                     @Override
                     public void run() {
                         Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
-                                                        Toast.LENGTH_SHORT);
+                                Toast.LENGTH_SHORT);
                         monToast.show();
                     }
                 });
@@ -241,12 +241,12 @@ public class Downloader {
             // Chargement des identifiants
             String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
             String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-                                                               R.string.defautOptionPassword);
+                    R.string.defautOptionPassword);
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // La connexion peut-elle être demandée ?
             if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) ||
-                (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+                    (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
 
                 // NON : je libère le jeton d'utilisation
                 isRunning = false;
@@ -263,7 +263,7 @@ public class Downloader {
 
                 // Information sur l'existance du compte abonné dans les options
                 boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
-                                                                 R.bool.defautOptionInfoCompteAbonne);
+                        R.bool.defautOptionInfoCompteAbonne);
 
                 // Dois-je notifier l'utilisateur ?
                 if (infoAbonne) {
@@ -273,7 +273,7 @@ public class Downloader {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
-                                                            Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });
@@ -332,8 +332,8 @@ public class Downloader {
         try {
             // Création de la chaîne d'authentification
             String query = Constantes.AUTHENTIFICATION_USERNAME + "=" + Uri.encode(username, Constantes.NEXT_INPACT_ENCODAGE)
-                           + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
-                                                                                           Constantes.NEXT_INPACT_ENCODAGE);
+                    + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
+                    Constantes.NEXT_INPACT_ENCODAGE);
 
             URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
             HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
@@ -392,7 +392,7 @@ public class Downloader {
                         @Override
                         public void run() {
                             Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
-                                                            Toast.LENGTH_LONG);
+                                    Toast.LENGTH_LONG);
                             monToast.show();
                         }
                     });

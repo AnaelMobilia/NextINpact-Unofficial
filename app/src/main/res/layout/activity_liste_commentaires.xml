@@ -19,14 +19,14 @@
  */
 -->
 <android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipe_container"
-                                              xmlns:android="http://schemas.android.com/apk/res/android"
-                                              android:layout_width="match_parent"
-                                              android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/header_text"
@@ -36,13 +36,13 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/lastUpdate"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
         <ListView
             android:id="@+id/listeCommentaires"
             style="?attr/themeListeArticleFond"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbarThumbVertical="@drawable/scrollbar"/>
+            android:scrollbarThumbVertical="@drawable/scrollbar" />
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

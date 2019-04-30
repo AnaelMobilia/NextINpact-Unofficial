@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -58,7 +58,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+                R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -81,13 +81,13 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
                 // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
                 Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
-                                                                     R.bool.defautOptionDebugEffacerCache);
+                        R.bool.defautOptionDebugEffacerCache);
                 Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
                 // Retour utilisateur
                 Toast monToast = Toast.makeText(getApplicationContext(),
-                                                getApplicationContext().getString(R.string.debugEffacerCacheToast),
-                                                Toast.LENGTH_LONG);
+                        getApplicationContext().getString(R.string.debugEffacerCacheToast),
+                        Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -104,8 +104,8 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
                 // Retour utilisateur
                 Toast monToast = Toast.makeText(getApplicationContext(),
-                                                getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
-                                                Toast.LENGTH_LONG);
+                        getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
+                        Toast.LENGTH_LONG);
                 monToast.show();
             }
         });
@@ -135,12 +135,12 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 for (ArticleItem unArticle : mesArticles) {
                     // Contenu de l'objet
                     monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
-                                 + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
-                                 + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
-                                 + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
-                                 + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
-                                 + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
-                                 + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+                            + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
+                            + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
+                            + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
+                            + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
+                            + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
+                            + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
 
                     // Insertion de l'objet dans l'arraylist
                     monRetour += "\nmesArticles.add(unArticle);";
@@ -208,8 +208,8 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             @Override
             public void onClick(View arg0) {
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
-                                                                     Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
-                                                                     true);
+                        Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
+                        true);
 
                 monAHD.run();
             }

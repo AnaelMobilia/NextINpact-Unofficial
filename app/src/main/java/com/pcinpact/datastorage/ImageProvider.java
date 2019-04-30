@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -162,7 +162,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             boolean telechargerImages = true;
 
             int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
-                                                       R.string.defautOptionTelechargerImagesv2);
+                    R.string.defautOptionTelechargerImagesv2);
             if (valeurOption == 0) {
                 // Pas de téléchargement des images
                 telechargerImages = false;
@@ -246,8 +246,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.d("ImageProvider",
-                  "gestionTaille() - (" + monTypeImages + ") Ecran : largeur = " + metrics.widthPixels + " hauteur = "
-                  + metrics.heightPixels + " densité = " + metrics.densityDpi);
+                    "gestionTaille() - (" + monTypeImages + ") Ecran : largeur = " + metrics.widthPixels + " hauteur = "
+                            + metrics.heightPixels + " densité = " + metrics.densityDpi);
         }
 
         float monCoeff = 1;
@@ -280,7 +280,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // On définit la taille de l'image
         uneImage.setBounds(0, 0, Math.round(uneImage.getIntrinsicWidth() * monCoeff),
-                           Math.round(uneImage.getIntrinsicHeight() * monCoeff));
+                Math.round(uneImage.getIntrinsicHeight() * monCoeff));
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -315,7 +315,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             monDAO.cacheEnregistrerImage(articleID, URL, type);
             if (Constantes.DEBUG) {
                 Log.d("ImageProvider",
-                      "telechargerImage() - enregistrement cache pour " + URL + " - " + articleID + " - " + type);
+                        "telechargerImage() - enregistrement cache pour " + URL + " - " + articleID + " - " + type);
             }
         }
 
@@ -456,8 +456,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("ImageProvider",
-                          "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
-                          + idReference);
+                            "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
+                                    + idReference);
                 }
             }
         }

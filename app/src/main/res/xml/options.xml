@@ -23,27 +23,26 @@
     <PreferenceCategory android:title="@string/optionsGenerales">
 
         <!-- Compte abonné -->
-        <PreferenceScreen
-            android:title="@string/optionAbonne">
+        <PreferenceScreen android:title="@string/optionAbonne">
             <PreferenceCategory android:title="Configurer mon compte abonné">
                 <CheckBoxPreference
                     android:defaultValue="@bool/defautOptionAbonne"
                     android:key="@string/idOptionAbonne"
                     android:summary="@string/optionAbonneDisclaimer"
-                    android:widgetLayout="@layout/options_switchpreferencecompat"/>
+                    android:widgetLayout="@layout/options_switchpreferencecompat" />
                 <EditTextPreference
                     android:defaultValue="@string/defautOptionLogin"
                     android:dependency="@string/idOptionAbonne"
                     android:key="@string/idOptionLogin"
                     android:summary="@string/optionLoginDetail"
-                    android:title="@string/optionLogin"/>
+                    android:title="@string/optionLogin" />
                 <EditTextPreference
                     android:defaultValue="@string/defautOptionPassword"
                     android:dependency="@string/idOptionAbonne"
                     android:inputType="textPassword"
                     android:key="@string/idOptionPassword"
                     android:summary="@string/optionPasswordDetail"
-                    android:title="@string/optionPassword"/>
+                    android:title="@string/optionPassword" />
             </PreferenceCategory>
         </PreferenceScreen>
 
@@ -52,13 +51,13 @@
             android:entries="@array/tailleTexteLiteral"
             android:entryValues="@array/tailleTexteValeur"
             android:key="@string/idOptionZoomTexte"
-            android:title="@string/optionTailleTexte"/>
+            android:title="@string/optionTailleTexte" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionThemeSombre"
             android:key="@string/idOptionThemeSombre"
             android:title="@string/optionThemeSombre"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
     </PreferenceCategory>
 
     <!-- Options spécifiques aux articles -->
@@ -68,14 +67,14 @@
             android:entries="@array/nbArticles"
             android:entryValues="@array/nbArticles"
             android:key="@string/idOptionNbArticles"
-            android:title="@string/optionNbArticles"/>
+            android:title="@string/optionNbArticles" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
             android:key="@string/idOptionAfficherNbNouveauComm"
             android:summary="@string/optionAfficherNbNouveauCommDetail"
             android:title="@string/optionAfficherNbNouveauComm"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
     </PreferenceCategory>
 
     <!-- Options spécifiques aux articles -->
@@ -86,17 +85,17 @@
             android:summary="@string/optionTelechargerImageDetail"
             android:title="@string/optionTelechargerImage"
             android:entries="@array/affichageImagesLitteral"
-            android:entryValues="@array/affichageImagesValeur"/>
+            android:entryValues="@array/affichageImagesValeur" />
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"
             android:title="@string/optionActiverLiensArticle"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCacherBoutonPartage"
             android:key="@string/idOptionCacherBoutonPartage"
             android:title="@string/optionCacherBoutonPartage"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
     </PreferenceCategory>
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory android:title="@string/optionsCommentaires">
@@ -106,7 +105,7 @@
             android:key="@string/idOptionPositionCommentaire"
             android:summary="@string/optionPositionCommentaireDetail"
             android:title="@string/optionPositionCommentaire"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
         <!-- <CheckBoxPreference -->
         <!-- android:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
         <!-- android:key="@string/idOptionTelechargerCommentaires" -->
@@ -117,13 +116,13 @@
             android:defaultValue="@bool/defautOptionLiensDansCommentaires"
             android:key="@string/idOptionLiensDansCommentaires"
             android:title="@string/optionActiverLiensCommentaire"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionCommentairesTelechargementContinu"
             android:key="@string/idOptionCommentairesTelechargementContinu"
             android:summary="@string/optionCommentairesTelechargementContinuDetail"
             android:title="@string/optionCommentairesTelechargementContinu"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
     </PreferenceCategory>
     <!-- Développement -->
     <PreferenceCategory android:title="@string/optionsDeveloppement">
@@ -131,6 +130,6 @@
             android:defaultValue="@bool/defautOptionDebug"
             android:key="@string/idOptionDebug"
             android:title="@string/optionDebug"
-            android:widgetLayout="@layout/options_switchpreferencecompat"/>
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
     </PreferenceCategory>
 </PreferenceScreen>

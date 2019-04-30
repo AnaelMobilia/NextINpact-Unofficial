@@ -19,14 +19,14 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
-        yourapp:showAsAction="ifRoom"/>
+        yourapp:showAsAction="ifRoom" />
 
     <!-- Overflow (...) -->
     <item
@@ -41,26 +41,26 @@
                 android:id="@+id/action_settings"
                 android:icon="@drawable/ic_sysbar_quicksettings"
                 android:title="@string/action_settings"
-                yourapp:showAsAction="ifRoom"/>
+                yourapp:showAsAction="ifRoom" />
 
             <!-- A propos -->
             <item
                 android:id="@+id/action_about"
                 android:icon="@drawable/ic_menu_info_details"
-                android:title="@string/action_about"/>
+                android:title="@string/action_about" />
 
             <!-- Support -->
             <item
                 android:id="@+id/action_support"
                 android:icon="@drawable/ic_menu_help"
-                android:title="@string/action_support"/>
+                android:title="@string/action_support" />
 
             <!-- DEBUG -->
             <item
                 android:id="@+id/action_debug"
                 android:icon="@drawable/ic_menu_preferences"
                 android:title="@string/action_debug"
-                android:visible="false"/>
+                android:visible="false" />
         </menu>
     </item>
 </menu>

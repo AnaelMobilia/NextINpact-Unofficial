@@ -22,9 +22,9 @@
     <gradient
         android:angle="45"
         android:endColor="#BD8A979D"
-        android:startColor="#BD8A979D"/>
+        android:startColor="#BD8A979D" />
     <!-- Couleur gris du titre des commentaires avec 25% de transparence -->
 
-    <size android:width="4dp"/>
+    <size android:width="4dp" />
 
 </shape>

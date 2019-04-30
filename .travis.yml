@@ -19,7 +19,7 @@ android:
     - extra-android-m2repository
 
   licenses:
-      - '.+'
+    - '.+'
 
 # https://gradle.org/install/#manually
 before_install:

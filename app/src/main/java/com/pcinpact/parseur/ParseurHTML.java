@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -226,7 +226,7 @@ public class ParseurHTML {
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
         // généralisation de l'URL en dehors du scheme
-        String[] schemes = { "https://", "http://", "//" };
+        String[] schemes = {"https://", "http://", "//"};
         // Pour chaque iframe
         for (Element uneIframe : lesIframes) {
             // URL du lecteur
@@ -257,75 +257,75 @@ public class ParseurHTML {
                 // Recalcul de l'ID de la vidéo (cas particulier)
                 idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
                 monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
+                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
                     "www.youtube-nocookie.com/embed/")) {
                 /**
                  * Youtube
                  */
                 monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
+                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
                 /**
                  * Dailymotion
                  */
                 monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
+                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
             } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
                 /**
                  * VIMEO
                  */
                 monRemplacement =
                         "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_vimeo + "\" /></a>";
+                                + R.drawable.iframe_vimeo + "\" /></a>";
             } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
                 /**
                  * Videos.gouv.fr
                  */
                 monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
             } else if (urlLecteur.startsWith("vid.me")) {
                 /**
                  * Vidme
                  */
                 monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_vidme + "\" /></a>";
+                        + R.drawable.iframe_vidme + "\" /></a>";
             } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
                 /**
                  * Soundcloud (l'URL commence bien par w.soundcloud !)
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_soundcloud + "\" /></a>";
+                        + R.drawable.iframe_soundcloud + "\" /></a>";
             } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                 /**
                  * Scribd
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_scribd + "\" /></a>";
+                        + R.drawable.iframe_scribd + "\" /></a>";
             } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
                 /**
                  * Canal+
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_canalplus + "\" /></a>";
+                        + R.drawable.iframe_canalplus + "\" /></a>";
             } else if (urlLecteur.startsWith("www.arte.tv/")) {
                 /**
                  * Arte
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_arte + "\" /></a>";
+                        + R.drawable.iframe_arte + "\" /></a>";
             } else {
                 /**
                  * Déchet (catch all)
                  */
                 monRemplacement =
                         "<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_non_supportee + "\" /></a>";
+                                + R.drawable.iframe_non_supportee + "\" /></a>";
 
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.e("ParseurHTML",
-                          "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                            "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
                 }
             }
 

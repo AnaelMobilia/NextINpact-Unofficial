@@ -19,21 +19,21 @@
  */
  -->
 <RelativeLayout android:id="@+id/relativeLayoutArticle"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingStart="5dp"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:paddingEnd="?android:attr/scrollbarSize"
-                android:paddingTop="5dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingStart="5dp"
+    android:paddingRight="?android:attr/scrollbarSize"
+    android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingTop="5dp">
 
     <!-- Contenu image dans ArticleActivity -->
     <ImageView
         android:id="@+id/imageArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/accueilImageArticleAlt"/>
+        android:contentDescription="@string/accueilImageArticleAlt" />
 </RelativeLayout>

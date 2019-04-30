@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -275,7 +275,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Gestion du thème (option utilisateur=
                     Boolean isThemeSombre = Constantes.getOptionBoolean(monContext, R.string.idOptionThemeSombre,
-                                                                        R.bool.defautOptionThemeSombre);
+                            R.bool.defautOptionThemeSombre);
 
                     // L'article est-il déjà lu ?
                     int couleurArticle;
@@ -314,7 +314,7 @@ public class ItemsAdapter extends BaseAdapter {
                     String texteCommentaires = String.valueOf(ai.getNbCommentaires());
 
                     boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm,
-                                                                        R.bool.defautOptionAfficherNbNouveauComm);
+                            R.bool.defautOptionAfficherNbNouveauComm);
                     // Ssi commentaires déjà lus
                     if (nbNouveauComm && ai.getDernierCommLu() > 0) {
 
@@ -359,9 +359,9 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
 
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                                               new ImageProvider(monContext, commentaireVH.commentaire,
-                                                                                 ci.getCommentaire(), Constantes.IMAGE_SMILEY,
-                                                                                 ci.getUuid()), null);
+                            new ImageProvider(monContext, commentaireVH.commentaire,
+                                    ci.getCommentaire(), Constantes.IMAGE_SMILEY,
+                                    ci.getUuid()), null);
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
@@ -369,8 +369,8 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
-                                                                                   R.string.idOptionLiensDansCommentaires,
-                                                                                   R.bool.defautOptionLiensDansCommentaires);
+                            R.string.idOptionLiensDansCommentaires,
+                            R.bool.defautOptionLiensDansCommentaires);
                     if (lienCommentaireClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
@@ -397,10 +397,10 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Remplissage des textview
                     Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(),
-                                                                new ImageProvider(monContext, contenuTexteVH.contenu,
-                                                                                  cati.getContenu(),
-                                                                                  Constantes.IMAGE_CONTENU_ARTICLE,
-                                                                                  cati.getArticleID()), new TagHandler());
+                            new ImageProvider(monContext, contenuTexteVH.contenu,
+                                    cati.getContenu(),
+                                    Constantes.IMAGE_CONTENU_ARTICLE,
+                                    cati.getArticleID()), new TagHandler());
                     contenuTexteVH.contenu.setText(spannedContenuTexte);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
@@ -408,7 +408,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
-                                                                               R.bool.defautOptionLiensDansArticles);
+                            R.bool.defautOptionLiensDansArticles);
                     if (lienArticleClickable) {
                         // Active les liens a href
                         contenuTexteVH.contenu.setMovementMethod(new GestionLiens());
@@ -488,7 +488,7 @@ public class ItemsAdapter extends BaseAdapter {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.d("ItemsAdapter",
-                  "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
+                    "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
         }
     }
 }

@@ -19,9 +19,9 @@
  */
 -->
 <manifest package="com.pcinpact"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="227"
-          android:versionName="2.2.7">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="227"
+    android:versionName="2.2.7">
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
@@ -30,10 +30,10 @@
     <!-- Gestion des tablettes -->
     <supports-screens
         android:largeScreens="true"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="true" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -45,8 +45,8 @@
             android:launchMode="singleTop"
             android:theme="@style/NextInpactTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -56,7 +56,7 @@
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity"/>
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".CommentairesActivity"
@@ -65,7 +65,7 @@
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity"/>
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".OptionsActivity"
@@ -74,13 +74,12 @@
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity"/>
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".ImageActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-        </activity>
+            android:theme="@style/NextInpactTheme"></activity>
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".ListeArticlesActivity"
@@ -88,7 +87,7 @@
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity"/>
+                android:value=".ListeArticlesActivity" />
         </activity>
         <activity
             android:name=".DebugActivity"
@@ -97,7 +96,7 @@
             android:theme="@style/NextInpactTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity"/>
+                android:value=".ListeArticlesActivity" />
         </activity>
     </application>
 </manifest>

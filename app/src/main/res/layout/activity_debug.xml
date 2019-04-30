@@ -19,8 +19,8 @@
  */
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <LinearLayout
         style="?attr/themeArticleFond"
@@ -38,7 +38,7 @@
             android:paddingStart="5dp"
             android:paddingRight="?android:attr/scrollbarSize"
             android:paddingEnd="?android:attr/scrollbarSize"
-            android:text="@string/debugTitre"/>
+            android:text="@string/debugTitre" />
 
         <TextView
             android:id="@+id/textViewBetaTest"
@@ -49,42 +49,42 @@
             android:paddingStart="5dp"
             android:paddingRight="?android:attr/scrollbarSize"
             android:paddingEnd="?android:attr/scrollbarSize"
-            android:text="@string/debugPubBeta"/>
+            android:text="@string/debugPubBeta" />
 
         <Button
             android:id="@+id/buttonListerCache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debugListeFichiers"/>
+            android:text="@string/debugListeFichiers" />
 
         <Button
             android:id="@+id/buttonDeleteCacheSmiley"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debugEffacerCacheSmiley"/>
+            android:text="@string/debugEffacerCacheSmiley" />
 
         <Button
             android:id="@+id/buttonDeleteCache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debugEffacerCache"/>
+            android:text="@string/debugEffacerCache" />
 
         <Button
             android:id="@+id/buttonTesterConnexion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debugTesterConnexion"/>
+            android:text="@string/debugTesterConnexion" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:background="@color/refreshOrange"/>
+            android:background="@color/refreshOrange" />
 
         <Button
             android:id="@+id/debugGenererArrayListArticleItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debugGenererArrayList"/>
+            android:text="@string/debugGenererArrayList" />
 
         <TextView
             android:id="@+id/debugTextViewHTML"
@@ -94,7 +94,7 @@
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:paddingRight="?android:attr/scrollbarSize"
-            android:paddingEnd="?android:attr/scrollbarSize"/>
+            android:paddingEnd="?android:attr/scrollbarSize" />
 
     </LinearLayout>
 </ScrollView>

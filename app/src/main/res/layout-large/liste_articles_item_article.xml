@@ -19,15 +19,15 @@
  */
 -->
 <RelativeLayout android:id="@+id/relativeLayoutArticle"
-                style="?attr/themeListeArticleFond"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:paddingEnd="?android:attr/scrollbarSize"
-                android:paddingTop="5dp">
+    style="?attr/themeListeArticleFond"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingBottom="5dp"
+    android:paddingRight="?android:attr/scrollbarSize"
+    android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/imageArticle"
@@ -38,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:contentDescription="@string/contentDescriptionImageArticle"/>
+        android:contentDescription="@string/contentDescriptionImageArticle" />
 
     <TextView
         android:id="@+id/labelAbonne"
@@ -52,7 +52,7 @@
         android:text="@string/accueilBadgeAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FFFFFF"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/titreArticle"
@@ -62,7 +62,7 @@
         android:layout_toRightOf="@id/labelAbonne"
         android:layout_toEndOf="@id/labelAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/heureArticle"
@@ -74,7 +74,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toRightOf="@id/imageArticle"
         android:layout_toEndOf="@id/imageArticle"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/sousTitreArticle"
@@ -86,7 +86,7 @@
         android:layout_marginEnd="2dp"
         android:layout_toRightOf="@id/heureArticle"
         android:layout_toEndOf="@id/heureArticle"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/commentairesArticle"
@@ -98,5 +98,5 @@
         android:layout_alignParentEnd="true"
         android:drawableLeft="@drawable/small_comms"
         android:drawableStart="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceMicro"/>
+        android:textAppearance="@style/textAppearanceMicro" />
 </RelativeLayout>

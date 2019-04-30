@@ -19,16 +19,16 @@
  */
 -->
 <RelativeLayout android:id="@+id/relativeLayoutArticle"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingStart="5dp"
-                android:paddingRight="?android:attr/scrollbarSize"
-                android:paddingEnd="?android:attr/scrollbarSize"
-                android:paddingTop="5dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingStart="5dp"
+    android:paddingRight="?android:attr/scrollbarSize"
+    android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/imageArticle"
@@ -39,7 +39,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:contentDescription="@string/contentDescriptionImageArticle"/>
+        android:contentDescription="@string/contentDescriptionImageArticle" />
 
     <TextView
         android:id="@+id/titreArticle"
@@ -49,7 +49,7 @@
         android:layout_toRightOf="@id/imageArticle"
         android:layout_toEndOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/heureArticle"
@@ -62,7 +62,7 @@
         android:layout_toRightOf="@id/imageArticle"
         android:layout_toEndOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/labelAbonne"
@@ -77,7 +77,7 @@
         android:text="@string/accueilBadgeAbonne"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/commentairesArticle"
@@ -89,7 +89,7 @@
         android:layout_below="@id/titreArticle"
         android:drawableLeft="@drawable/small_comms"
         android:drawableStart="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceMicro"/>
+        android:textAppearance="@style/textAppearanceMicro" />
 
     <TextView
         android:id="@+id/sousTitreArticle"
@@ -102,5 +102,5 @@
         android:layout_toRightOf="@id/heureArticle"
         android:layout_toEndOf="@id/heureArticle"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

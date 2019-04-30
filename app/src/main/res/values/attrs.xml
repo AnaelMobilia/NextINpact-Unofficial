@@ -17,20 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
--->
-<!-- Liste des familles "CSS" utilisables pour définir des styles d'éléments -->
+--><!-- Liste des familles "CSS" utilisables pour définir des styles d'éléments -->
 <resources>
-    <attr name="themeBanniereFond" format="reference"/>
-    <attr name="themeSection" format="reference"/>
-    <attr name="themeListeArticleFond" format="reference"/>
-    <attr name="themeListeArticleTitre" format="reference"/>
-    <attr name="themeListeArticleHeure" format="reference"/>
-    <attr name="themeListeArticleSousTitre" format="reference"/>
-    <attr name="themeListeArticleNbComs" format="reference"/>
-    <attr name="themeArticleFond" format="reference"/>
-    <attr name="themeArticleTexte" format="reference"/>
-    <attr name="themeCommentaireBandeauFond" format="reference"/>
-    <attr name="themeCommentaireBandeauTitre" format="reference"/>
-    <attr name="themeCommentaireNumero" format="reference"/>
-    <attr name="themeCommentaireTexte" format="reference"/>
+    <attr name="themeBanniereFond" format="reference" />
+    <attr name="themeSection" format="reference" />
+    <attr name="themeListeArticleFond" format="reference" />
+    <attr name="themeListeArticleTitre" format="reference" />
+    <attr name="themeListeArticleHeure" format="reference" />
+    <attr name="themeListeArticleSousTitre" format="reference" />
+    <attr name="themeListeArticleNbComs" format="reference" />
+    <attr name="themeArticleFond" format="reference" />
+    <attr name="themeArticleTexte" format="reference" />
+    <attr name="themeCommentaireBandeauFond" format="reference" />
+    <attr name="themeCommentaireBandeauTitre" format="reference" />
+    <attr name="themeCommentaireNumero" format="reference" />
+    <attr name="themeCommentaireTexte" format="reference" />
 </resources>

@@ -19,9 +19,9 @@
  */
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHaut"
@@ -41,7 +41,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:textAppearance="@style/textAppearanceMicro"/>
+            android:textAppearance="@style/textAppearanceMicro" />
 
         <TextView
             android:id="@+id/numeroCommentaire"
@@ -53,13 +53,13 @@
             android:paddingRight="?android:attr/scrollbarSize"
             android:paddingEnd="?android:attr/scrollbarSize"
             android:textAppearance="@style/textAppearanceMicro"
-            android:textStyle="italic"/>
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/uuidCommentaire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView
@@ -73,5 +73,5 @@
         android:paddingRight="?android:attr/scrollbarSize"
         android:paddingEnd="?android:attr/scrollbarSize"
         android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>

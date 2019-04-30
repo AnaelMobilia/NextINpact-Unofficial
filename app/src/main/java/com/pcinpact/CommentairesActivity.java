@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -114,7 +114,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+                R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -170,7 +170,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
          * Réouverture au dernier commentaire lu
          */
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
-                                                  R.bool.defautOptionPositionCommentaire);
+                R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
             idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID) - 1;
@@ -202,11 +202,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Création de l'URL
         String monURL =
                 Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
-                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+                        + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
 
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
-                                                             getApplicationContext());
+                getApplicationContext());
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -260,8 +260,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
                     // téléchargement automatique en continu des commentaires ?
                     Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
-                                                                      R.string.idOptionCommentairesTelechargementContinu,
-                                                                      R.bool.defautOptionCommentairesTelechargementContinu);
+                            R.string.idOptionCommentairesTelechargementContinu,
+                            R.bool.defautOptionCommentairesTelechargementContinu);
                     // Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
                     if (telecharger && dlInProgress == 0 && !isFinCommentaires) {
                         // téléchargement de 10 commentaires en plus
@@ -270,7 +270,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("CommentairesActivity",
-                                  "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
+                                    "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
                         }
                     }
                 }
@@ -289,7 +289,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.d("CommentairesActivity",
-                              "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
+                                "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
                     }
                 }
 
@@ -306,7 +306,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("CommentairesActivity",
-                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
+                            "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
                 }
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
@@ -340,7 +340,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (dlInProgress == 0) {
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+                    ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
@@ -445,7 +445,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
             String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                                                                                    Constantes.LOCALE).format(dernierRefresh);
+                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
             headerTextView.setText(monTexte);
         }

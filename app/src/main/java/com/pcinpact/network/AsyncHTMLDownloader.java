@@ -1,18 +1,18 @@
 /*
  * Copyright 2013 - 2019 Anael Mobilia and contributors
- * 
+ *
  * This file is part of NextINpact-Unofficial.
- * 
+ *
  * NextINpact-Unofficial is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * NextINpact-Unofficial is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
@@ -96,7 +96,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         // DEBUG
         if (Constantes.DEBUG) {
             Log.w("AsyncHTMLDownloader", "AsyncHTMLDownloader() - abonné " + urlPage + " - Uniquement si connecté : " +
-                                         onlyifConnecte.toString());
+                    onlyifConnecte.toString());
         }
     }
 
@@ -156,8 +156,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                  "doInBackground() - HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
-                                  + " résultats");
+                                    "doInBackground() - HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
+                                            + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux articles
@@ -220,8 +220,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                  "doInBackground() - HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
-                                  + " résultats");
+                                    "doInBackground() - HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+                                            + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux commentaires
@@ -250,14 +250,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader", "doInBackground() - HTML_COMMENTAIRES : Au final, " + mesItems.size() +
-                                                         " résultats");
+                                    " résultats");
                         }
                         break;
 
                     default:
                         if (Constantes.DEBUG) {
                             Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " +
-                                                         urlPage);
+                                    urlPage);
                         }
                         break;
                 }
@@ -265,7 +265,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.w("AsyncHTMLDownloader", "doInBackground() - contenu NULL pour " + urlPage + " - abonneUniquement = "
-                                                 + uniquementSiConnecte.toString());
+                            + uniquementSiConnecte.toString());
                 }
             }
         } catch (Exception e) {
