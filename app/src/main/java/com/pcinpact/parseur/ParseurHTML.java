@@ -247,7 +247,7 @@ public class ParseurHTML {
             String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
             // Ma substitution
-            String monRemplacement = "";
+            String monRemplacement;
 
             // Gestion des lecteurs vidéos
             if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
