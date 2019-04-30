@@ -29,8 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pcinpact.ImageActivity;
@@ -167,7 +165,7 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     SectionItemViewHolder sectionVH = new SectionItemViewHolder();
                     // Je prépare mon holder
-                    sectionVH.sectionView = (TextView) maView.findViewById(R.id.titreSection);
+                    sectionVH.sectionView = maView.findViewById(R.id.titreSection);
                     // Et l'assigne
                     maView.setTag(sectionVH);
                     break;
@@ -179,13 +177,13 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     ArticleItemViewHolder articleVH = new ArticleItemViewHolder();
                     // Je prépare mon holder
-                    articleVH.relativeLayout = (RelativeLayout) maView.findViewById(R.id.relativeLayoutArticle);
-                    articleVH.imageArticle = (ImageView) maView.findViewById(R.id.imageArticle);
-                    articleVH.labelAbonne = (TextView) maView.findViewById(R.id.labelAbonne);
-                    articleVH.titreArticle = (TextView) maView.findViewById(R.id.titreArticle);
-                    articleVH.heureArticle = (TextView) maView.findViewById(R.id.heureArticle);
-                    articleVH.sousTitreArticle = (TextView) maView.findViewById(R.id.sousTitreArticle);
-                    articleVH.commentairesArticle = (TextView) maView.findViewById(R.id.commentairesArticle);
+                    articleVH.relativeLayout = maView.findViewById(R.id.relativeLayoutArticle);
+                    articleVH.imageArticle = maView.findViewById(R.id.imageArticle);
+                    articleVH.labelAbonne = maView.findViewById(R.id.labelAbonne);
+                    articleVH.titreArticle = maView.findViewById(R.id.titreArticle);
+                    articleVH.heureArticle = maView.findViewById(R.id.heureArticle);
+                    articleVH.sousTitreArticle = maView.findViewById(R.id.sousTitreArticle);
+                    articleVH.commentairesArticle = maView.findViewById(R.id.commentairesArticle);
                     // Et l'assigne
                     maView.setTag(articleVH);
                     break;
@@ -197,9 +195,9 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     CommentaireItemViewHolder commentaireVH = new CommentaireItemViewHolder();
                     // Je prépare mon holder
-                    commentaireVH.auteurDateCommentaire = (TextView) maView.findViewById(R.id.auteurDateCommentaire);
-                    commentaireVH.numeroCommentaire = (TextView) maView.findViewById(R.id.numeroCommentaire);
-                    commentaireVH.commentaire = (TextView) maView.findViewById(R.id.commentaire);
+                    commentaireVH.auteurDateCommentaire = maView.findViewById(R.id.auteurDateCommentaire);
+                    commentaireVH.numeroCommentaire = maView.findViewById(R.id.numeroCommentaire);
+                    commentaireVH.commentaire = maView.findViewById(R.id.commentaire);
                     // Et l'assigne
                     maView.setTag(commentaireVH);
                     break;
@@ -212,7 +210,7 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     ContenuArticleTexteViewHolder contenuArticleVH = new ContenuArticleTexteViewHolder();
                     // Je prépare mon holder
-                    contenuArticleVH.contenu = (TextView) maView.findViewById(R.id.texteArticle);
+                    contenuArticleVH.contenu = maView.findViewById(R.id.texteArticle);
                     // Et l'assigne
                     maView.setTag(contenuArticleVH);
                     break;
@@ -225,7 +223,7 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     ContenuArticleImageViewHolder contenuImageVH = new ContenuArticleImageViewHolder();
                     // Je prépare mon holder
-                    contenuImageVH.contenu = (ImageView) maView.findViewById(R.id.imageArticle);
+                    contenuImageVH.contenu = maView.findViewById(R.id.imageArticle);
                     // Et l'assigne
                     maView.setTag(contenuImageVH);
                     break;
