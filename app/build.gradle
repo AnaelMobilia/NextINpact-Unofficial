@@ -45,10 +45,10 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'org.jsoup:jsoup:1.10.3'
-    testCompile 'junit:junit:4.12'
+    api 'com.android.support:support-v4:25.3.1'
+    api 'com.android.support:appcompat-v7:25.3.1'
+    api 'org.jsoup:jsoup:1.10.3'
+    testImplementation 'junit:junit:4.12'
 }
 
 /**
