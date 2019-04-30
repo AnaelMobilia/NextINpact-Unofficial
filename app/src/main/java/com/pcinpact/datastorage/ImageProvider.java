@@ -261,12 +261,12 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // Redimensionnement uniquement pour les smileys
         if (monTypeImages == Constantes.IMAGE_SMILEY) {
             if (metrics.densityDpi == DisplayMetrics.DENSITY_DEFAULT) {
-                /**
+                /*
                  * Si on est sur la résolution par défaut, on reste à 1
                  */
                 monCoeff = 1 * monCoeffZoom;
             } else {
-                /**
+                /*
                  * Sinon, calcul du zoom à appliquer (coeff 2 évite les images trop petites)
                  */
                 monCoeff = 2 * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT) * monCoeffZoom;
@@ -302,7 +302,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
      */
     public static void telechargerImage(final String URL, final int type, final int articleID, final Context unContext,
                                         final RefreshDisplayInterface parent) {
-        /**
+        /*
          * Enregistrement en BDD - cache
          */
         // Ouverture d'un lien sur la BDD
@@ -319,7 +319,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             }
         }
 
-        /**
+        /*
          * Gestion du téléchargement
          */
         String pathFichier = getPathAndFile(URL, unContext.getApplicationContext(), type);
