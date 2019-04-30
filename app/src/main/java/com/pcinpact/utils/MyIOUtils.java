@@ -35,7 +35,6 @@ public class MyIOUtils {
      *
      * @param input the <code>InputStream</code> to read from
      * @return the requested String
-     * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
      */
     public static String toString(InputStream input, String encoding) throws IOException {
@@ -59,7 +58,6 @@ public class MyIOUtils {
      *
      * @param input the <code>InputStream</code> to read from
      * @return the requested byte array
-     * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
      */
     public static byte[] toByteArray(InputStream input) throws IOException {
