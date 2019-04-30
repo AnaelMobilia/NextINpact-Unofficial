@@ -83,7 +83,7 @@ public class ItemsAdapter extends BaseAdapter {
      */
     public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater,
                         final ArrayList<? extends Item> desItems) {
-        /**
+        /*
          * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité =>
          * possibilité de lancer une autre apps
          * Sinon, crash lors du click sur une URL
@@ -266,7 +266,7 @@ public class ItemsAdapter extends BaseAdapter {
                 case Item.TYPE_ARTICLE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
                     ArticleItemViewHolder articleVH = (ArticleItemViewHolder) maView.getTag();
-                    /**
+                    /*
                      * Article
                      */
                     ArticleItem ai = (ArticleItem) i;
@@ -342,7 +342,7 @@ public class ItemsAdapter extends BaseAdapter {
                 case Item.TYPE_COMMENTAIRE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
                     CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) maView.getTag();
-                    /**
+                    /*
                      * Commentaire
                      */
                     CommentaireItem ci = (CommentaireItem) i;
@@ -388,7 +388,7 @@ public class ItemsAdapter extends BaseAdapter {
                 case Item.TYPE_CONTENU_ARTICLE_TEXTE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
                     ContenuArticleTexteViewHolder contenuTexteVH = (ContenuArticleTexteViewHolder) maView.getTag();
-                    /**
+                    /*
                      * Contenu
                      */
                     ContenuArticleItem cati = (ContenuArticleTexteItem) i;
@@ -423,7 +423,7 @@ public class ItemsAdapter extends BaseAdapter {
                 case Item.TYPE_CONTENU_ARTICLE_IMAGE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
                     ContenuArticleImageViewHolder contenuImageVH = (ContenuArticleImageViewHolder) maView.getTag();
-                    /**
+                    /*
                      * Contenu
                      */
                     ContenuArticleItem caii = (ContenuArticleImageItem) i;
