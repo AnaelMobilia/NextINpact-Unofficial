@@ -37,6 +37,7 @@
             android:autoLink="web|email"
             android:paddingBottom="5dp"
             android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingStart="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="?android:attr/scrollbarSize"
             android:text="@string/aboutContent"/>
