@@ -72,7 +72,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         /*
          * Bouton : effacement du cache
          */
-        Button buttonCache = (Button) this.findViewById(R.id.buttonDeleteCache);
+        Button buttonCache = this.findViewById(R.id.buttonDeleteCache);
         buttonCache.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -95,7 +95,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         /*
          * Bouton : effacement des smileys
          */
-        Button buttonSmileys = (Button) this.findViewById(R.id.buttonDeleteCacheSmiley);
+        Button buttonSmileys = this.findViewById(R.id.buttonDeleteCacheSmiley);
         buttonSmileys.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -113,7 +113,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         /*
          * Boutton : génération ArrayList<ArticleItem>
          */
-        Button buttonArrayList = (Button) this.findViewById(R.id.debugGenererArrayListArticleItem);
+        Button buttonArrayList = this.findViewById(R.id.debugGenererArrayListArticleItem);
         buttonArrayList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -172,7 +172,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         /*
          * Bouton : Liste des fichiers en cache
          */
-        Button buttonListeFichier = (Button) this.findViewById(R.id.buttonListerCache);
+        Button buttonListeFichier = this.findViewById(R.id.buttonListerCache);
         buttonListeFichier.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -203,7 +203,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         /*
          * Bouton : Tester connexion
          */
-        Button buttonTesterConnexion = (Button) this.findViewById(R.id.buttonTesterConnexion);
+        Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
         buttonTesterConnexion.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -226,7 +226,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             if (articleID != 0) {
                 // Chargement de l'article
                 ArticleItem monArticle = monDAO.chargerArticle(articleID);
-                TextView maTextView = (TextView) findViewById(R.id.debugTextViewHTML);
+                TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 maTextView.setText(monArticle.getContenu());
             }
