@@ -126,26 +126,20 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Gestion du swipe refresh
         monSwipeRefreshLayout = findViewById(R.id.swipe_container);
         // onRefresh
-        monSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Chargement de tous les commentaires
-                isChargementTotal = true;
-                refreshListeCommentaires();
-            }
+        monSwipeRefreshLayout.setOnRefreshListener(() -> {
+            // Chargement de tous les commentaires
+            isChargementTotal = true;
+            refreshListeCommentaires();
         });
 
-        headerTextView =  findViewById(R.id.header_text);
+        headerTextView = findViewById(R.id.header_text);
         // Liste des commentaires
-        monListView =  this.findViewById(R.id.listeCommentaires);
+        monListView = this.findViewById(R.id.listeCommentaires);
         // Footer : bouton "Charger plus de commentaires"
         buttonDl10Commentaires = new Button(this);
-        buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // téléchargement de 10 commentaires en plus
-                refreshListeCommentaires();
-            }
+        buttonDl10Commentaires.setOnClickListener((View arg0) -> {
+            // Téléchargement de 10 commentaires en plus
+            refreshListeCommentaires();
         });
         buttonDl10Commentaires.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
         monListView.addFooterView(buttonDl10Commentaires);
