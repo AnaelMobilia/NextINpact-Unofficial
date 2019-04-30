@@ -49,7 +49,7 @@ public class ImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image);
 
         // Récupération de l'imageView
-        ImageView monImageView = (ImageView) findViewById(R.id.zoom_image);
+        ImageView monImageView = findViewById(R.id.zoom_image);
 
         // Récupération de l'URL de l'image
         String urlImage = getIntent().getExtras().getString("URL_IMAGE");
