@@ -211,7 +211,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         break;
 
                     case Constantes.HTML_COMMENTAIRES:
-                        /**
+                        /*
                          * MàJ des commentaires
                          */
                         // Je passe par le parser
@@ -241,7 +241,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // MàJ de la date de rafraichissement
                         monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
 
-                        /**
+                        /*
                          * MàJ du nombre de commentaires
                          */
                         int nbCommentaires = ParseurHTML.getNbCommentaires(contenu, urlPage);
