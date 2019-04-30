@@ -78,7 +78,7 @@ public class ArticleActivity extends AppCompatActivity {
         monDAO = DAO.getInstance(getApplicationContext());
 
         // ViewPager (pour le slide des articles)
-        monViewPager = (ViewPager) findViewById(R.id.article_viewpager);
+        monViewPager = findViewById(R.id.article_viewpager);
         pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext(), getLayoutInflater());
         monViewPager.setAdapter(pagerAdapter);
 
