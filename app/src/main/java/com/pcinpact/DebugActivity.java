@@ -69,7 +69,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
         setContentView(R.layout.activity_debug);
 
-        /**
+        /*
          * Bouton : effacement du cache
          */
         Button buttonCache = (Button) this.findViewById(R.id.buttonDeleteCache);
@@ -92,7 +92,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             }
         });
 
-        /**
+        /*
          * Bouton : effacement des smileys
          */
         Button buttonSmileys = (Button) this.findViewById(R.id.buttonDeleteCacheSmiley);
@@ -110,20 +110,20 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             }
         });
 
-        /**
+        /*
          * Boutton : génération ArrayList<ArticleItem>
          */
         Button buttonArrayList = (Button) this.findViewById(R.id.debugGenererArrayListArticleItem);
         buttonArrayList.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                /**
+                /*
                  * Récupération des articles
                  */
                 // Chargement depuis BDD
                 ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
 
-                /**
+                /*
                  * Génération du texte...
                  */
                 // La sortie...
@@ -146,7 +146,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                     monRetour += "\nmesArticles.add(unArticle);";
                 }
 
-                /**
+                /*
                  * Affichage
                  */
                 if (Constantes.DEBUG) {
@@ -169,7 +169,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         });
 
 
-        /**
+        /*
          * Bouton : Liste des fichiers en cache
          */
         Button buttonListeFichier = (Button) this.findViewById(R.id.buttonListerCache);
@@ -200,7 +200,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             }
         });
 
-        /**
+        /*
          * Bouton : Tester connexion
          */
         Button buttonTesterConnexion = (Button) this.findViewById(R.id.buttonTesterConnexion);
@@ -215,7 +215,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             }
         });
 
-        /**
+        /*
          * Afficher le code source d'un article
          */
         // Si j'ai reçu un Intent
@@ -233,7 +233,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         }
     }
 
-    /**
+    /*
      * Fournit une liste RECURSIVE des fichiers d'un path
      *
      * @param unPath path concerné
