@@ -478,17 +478,17 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // GUI : activité en cours...
             nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
 
-            /**
+            /*
              * Nettoyage du cache
              */
             CacheManager.nettoyerCache(getApplicationContext());
 
-            /**
+            /*
              * Téléchargement des articles dont le contenu n'avait pas été téléchargé
              */
             telechargeArticles(monDAO.chargerArticlesATelecharger());
 
-            /**
+            /*
              * Téléchargement des pages de liste d'articles
              */
             int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
@@ -507,7 +507,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 }
             }
 
-            /**
+            /*
              * Téléchargement des miniatures manquantes
              */
             // Miniatures manquantes
