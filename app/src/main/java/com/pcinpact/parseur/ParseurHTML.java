@@ -251,7 +251,7 @@ public class ParseurHTML {
 
             // Gestion des lecteurs vidéos
             if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
-                /**
+                /*
                  * Liste de lecture Youtube
                  */
                 // Recalcul de l'ID de la vidéo (cas particulier)
@@ -260,62 +260,62 @@ public class ParseurHTML {
                         + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
                     "www.youtube-nocookie.com/embed/")) {
-                /**
+                /*
                  * Youtube
                  */
                 monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\""
                         + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
-                /**
+                /*
                  * Dailymotion
                  */
                 monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\""
                         + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
             } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
-                /**
+                /*
                  * VIMEO
                  */
                 monRemplacement =
                         "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                                 + R.drawable.iframe_vimeo + "\" /></a>";
             } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
-                /**
+                /*
                  * Videos.gouv.fr
                  */
                 monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\""
                         + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
             } else if (urlLecteur.startsWith("vid.me")) {
-                /**
+                /*
                  * Vidme
                  */
                 monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                         + R.drawable.iframe_vidme + "\" /></a>";
             } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
-                /**
+                /*
                  * Soundcloud (l'URL commence bien par w.soundcloud !)
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                         + R.drawable.iframe_soundcloud + "\" /></a>";
             } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
-                /**
+                /*
                  * Scribd
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                         + R.drawable.iframe_scribd + "\" /></a>";
             } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
-                /**
+                /*
                  * Canal+
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                         + R.drawable.iframe_canalplus + "\" /></a>";
             } else if (urlLecteur.startsWith("www.arte.tv/")) {
-                /**
+                /*
                  * Arte
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
                         + R.drawable.iframe_arte + "\" /></a>";
             } else {
-                /**
+                /*
                  * Déchet (catch all)
                  */
                 monRemplacement =
@@ -356,7 +356,7 @@ public class ParseurHTML {
         }
 
 
-        /**
+        /*
          * Gestion des images #232
          */
         // Standard
