@@ -21,7 +21,7 @@
 <resources>
     <!-- Action Bar -->
     <string name="action_refresh">Synchroniser</string>
-    <string name="action_overflow">Plus...</string>
+    <string name="action_overflow">Plus…</string>
     <string name="action_settings">Options</string>
     <string name="action_about">A propos</string>
     <string name="action_support">Support</string>
