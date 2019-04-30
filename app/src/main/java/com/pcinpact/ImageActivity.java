@@ -58,7 +58,7 @@ public class ImageActivity extends AppCompatActivity {
             urlImage = getIntent().getExtras().getString("URL_IMAGE");
         } catch (NullPointerException e) {
             // Problème sur l'intent... => Passage à une image par défaut
-            urlImage = Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.logo_nextinpact ;
+            urlImage = Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.logo_nextinpact;
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("ImageActivity", "onCreate() - Récupération URL image de l'intent", e);
@@ -70,11 +70,8 @@ public class ImageActivity extends AppCompatActivity {
         monImageView.setImageDrawable(monImageProviderArticle.getDrawable(urlImage));
 
         // Gestion de la fermeture de l'activité
-        monImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+        monImageView.setOnClickListener(() -> {
+            finish();
         });
     }
 }
