@@ -56,7 +56,7 @@ Crédits :
  - Guillaume Bour (contributeur v1.7.2)
  - Sami Ferhah (mainteneur de la v1 à la v1.7.1)
 
- - L'équipe de Jsoup pour leur bibliothèque (http://jsoup.org/)
+ - L'équipe de Jsoup pour leur bibliothèque (https://jsoup.org/)
  - L'équipe de Apache Commons IO 2.2 pour leur bibliothèque (https://commons.apache.org/proper/commons-io/)
 
 
@@ -65,7 +65,7 @@ L'ensemble des contenus affichés dans l'application (textes, images et logos) s
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
 Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
-http://www.nextinpact.com/abonnement"</string>
+https://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
     <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
