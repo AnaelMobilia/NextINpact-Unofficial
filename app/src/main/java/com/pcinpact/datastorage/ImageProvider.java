@@ -128,7 +128,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || isImageEnCache(urlSource, monContext, monTypeImages)) {
             if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE)) {
                 // Image ressource (drawable)
-                Integer idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
+                int idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
                 // On charge le drawable
                 monRetour = gestionTaille(ContextCompat.getDrawable(monContext, idDrawable));
                 // DEBUG
