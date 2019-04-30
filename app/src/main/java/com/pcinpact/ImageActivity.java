@@ -70,7 +70,7 @@ public class ImageActivity extends AppCompatActivity {
         monImageView.setImageDrawable(monImageProviderArticle.getDrawable(urlImage));
 
         // Gestion de la fermeture de l'activité
-        monImageView.setOnClickListener(() -> {
+        monImageView.setOnClickListener((View arg0) -> {
             finish();
         });
     }
