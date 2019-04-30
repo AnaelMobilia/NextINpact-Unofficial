@@ -69,7 +69,7 @@ http://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
     <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
-    <string name="articleVideErreurHTML">"Oups ... ! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
+    <string name="articleVideErreurHTML">"Oups…! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
     <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
@@ -143,7 +143,7 @@ http://www.nextinpact.com/abonnement"</string>
 
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>
-    <string name="commentairesChargement">Chargement...</string>
+    <string name="commentairesChargement">Chargement…</string>
 
     <!-- Debug -->
     <string name="debugTitre">"Configuration avancée de l'application"</string>
@@ -157,5 +157,5 @@ http://www.nextinpact.com/abonnement"</string>
     <string name="debugTesterConnexion">Tester la connexion compte abonné</string>
 
     <!-- Support -->
-    <string name="supportMessage">Vos demandes, vos commentaires, vos envies, ...</string>
+    <string name="supportMessage">Vos demandes, vos commentaires, vos envies, …</string>
 </resources>
