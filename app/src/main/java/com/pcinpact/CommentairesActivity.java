@@ -124,7 +124,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         setContentView(R.layout.activity_liste_commentaires);
 
         // Gestion du swipe refresh
-        monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        monSwipeRefreshLayout = findViewById(R.id.swipe_container);
         // onRefresh
         monSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -135,9 +135,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             }
         });
 
-        headerTextView = (TextView) findViewById(R.id.header_text);
+        headerTextView =  findViewById(R.id.header_text);
         // Liste des commentaires
-        monListView = (ListView) this.findViewById(R.id.listeCommentaires);
+        monListView =  this.findViewById(R.id.listeCommentaires);
         // Footer : bouton "Charger plus de commentaires"
         buttonDl10Commentaires = new Button(this);
         buttonDl10Commentaires.setOnClickListener(new OnClickListener() {
