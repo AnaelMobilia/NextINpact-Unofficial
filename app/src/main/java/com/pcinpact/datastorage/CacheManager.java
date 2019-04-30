@@ -231,9 +231,7 @@ public class CacheManager {
         /*
          * Préparation du retour
          */
-        for (String uneURL : imagesCache.values()) {
-            monRetour.add(uneURL);
-        }
+        monRetour.addAll(imagesCache.values());
 
         return monRetour;
     }
