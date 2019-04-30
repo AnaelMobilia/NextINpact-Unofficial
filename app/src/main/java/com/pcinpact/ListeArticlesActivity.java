@@ -120,9 +120,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // On définit la vue
         setContentView(R.layout.activity_liste_articles);
         // On récupère les éléments GUI
-        monListView = (ListView) findViewById(R.id.listeArticles);
-        monSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        headerTextView = (TextView) findViewById(R.id.header_text);
+        monListView = findViewById(R.id.listeArticles);
+        monSwipeRefreshLayout = findViewById(R.id.swipe_container);
+        headerTextView = findViewById(R.id.header_text);
 
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[5];
