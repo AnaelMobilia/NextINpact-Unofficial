@@ -321,8 +321,8 @@ public class ItemsAdapter extends BaseAdapter {
 
                         // Affichage seulement si des nouveaux commentaires
                         if (nbCommentaires > 0) {
-                            // Insertion dans texte
-                            texteCommentaires += " (+" + nbCommentaires + ")";
+                            // Insertion dans texte (+1 pour effet de bord)
+                            texteCommentaires += " (+" + ++nbCommentaires + ")";
                         }
                     }
 
