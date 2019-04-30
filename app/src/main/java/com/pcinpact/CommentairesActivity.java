@@ -160,7 +160,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Je fait remarquer que le contenu à changé
         monItemsAdapter.notifyDataSetChanged();
 
-        /**
+        /*
          * Réouverture au dernier commentaire lu
          */
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
@@ -246,7 +246,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // Dernier item affiché
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
 
-                /**
+                /*
                  * Gestion du téléchargement
                  */
                 if (lastVisibleItem >= (totalItemCount - 1)) {
@@ -269,12 +269,12 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     }
                 }
 
-                /**
+                /*
                  * Gestion de la réouverture au dernier commentaire lu
                  */
                 // Et qu'on a lu plus de commentaires
                 if (reouverture && lastVisibleItem > idDernierCommentaireLu) {
-                    /**
+                    /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
                     monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
@@ -287,7 +287,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     }
                 }
 
-                /**
+                /*
                  * Gestion du SwipeRefreshLayout
                  */
                 int topRowVerticalPosition;
