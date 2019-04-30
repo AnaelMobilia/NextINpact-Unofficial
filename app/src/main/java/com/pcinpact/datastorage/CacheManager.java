@@ -222,12 +222,7 @@ public class CacheManager {
             }
         }
 
-        /*
-         * Préparation du retour
-         */
-        ArrayList<String> monRetour = new ArrayList<>(imagesCache.values());
-
-        return monRetour;
+        return new ArrayList<>(imagesCache.values());
     }
 
     /**
