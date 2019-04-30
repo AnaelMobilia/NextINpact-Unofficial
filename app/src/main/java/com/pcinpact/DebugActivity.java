@@ -73,97 +73,88 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
          * Bouton : effacement du cache
          */
         Button buttonCache = this.findViewById(R.id.buttonDeleteCache);
-        buttonCache.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // Effacement du cache
-                CacheManager.effacerCache(getApplicationContext());
+        buttonCache.setOnClickListener((View arg0) -> {
+            // Effacement du cache
+            CacheManager.effacerCache(getApplicationContext());
 
-                // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
-                Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
-                        R.bool.defautOptionDebugEffacerCache);
-                Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
+            // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
+            Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
+                    R.bool.defautOptionDebugEffacerCache);
+            Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
-                // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.debugEffacerCacheToast),
-                        Toast.LENGTH_LONG);
-                monToast.show();
-            }
+            // Retour utilisateur
+            Toast monToast = Toast.makeText(getApplicationContext(),
+                    getApplicationContext().getString(R.string.debugEffacerCacheToast),
+                    Toast.LENGTH_LONG);
+            monToast.show();
         });
 
         /*
          * Bouton : effacement des smileys
          */
         Button buttonSmileys = this.findViewById(R.id.buttonDeleteCacheSmiley);
-        buttonSmileys.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // Effacement du cache
-                CacheManager.effacerCacheSmiley(getApplicationContext());
+        buttonSmileys.setOnClickListener((View arg0) -> {
+            // Effacement du cache
+            CacheManager.effacerCacheSmiley(getApplicationContext());
 
-                // Retour utilisateur
-                Toast monToast = Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
-                        Toast.LENGTH_LONG);
-                monToast.show();
-            }
+            // Retour utilisateur
+            Toast monToast = Toast.makeText(getApplicationContext(),
+                    getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
+                    Toast.LENGTH_LONG);
+            monToast.show();
         });
 
         /*
          * Boutton : génération ArrayList<ArticleItem>
          */
         Button buttonArrayList = this.findViewById(R.id.debugGenererArrayListArticleItem);
-        buttonArrayList.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                /*
-                 * Récupération des articles
-                 */
-                // Chargement depuis BDD
-                ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
+        buttonArrayList.setOnClickListener((View arg0) -> {
+            /*
+             * Récupération des articles
+             */
+            // Chargement depuis BDD
+            ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
 
-                /*
-                 * Génération du texte...
-                 */
-                // La sortie...
-                String monRetour;
-                // Génération de l'arraylist
-                monRetour = "ArrayList<ArticleItem> mesArticles = new ArrayList<>();";
-                // Génération des objets
-                monRetour += "\nArticleItem unArticle;";
-                for (ArticleItem unArticle : mesArticles) {
-                    // Contenu de l'objet
-                    monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
-                            + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
-                            + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
-                            + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
-                            + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
-                            + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
-                            + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+            /*
+             * Génération du texte...
+             */
+            // La sortie...
+            String monRetour;
+            // Génération de l'arraylist
+            monRetour = "ArrayList<ArticleItem> mesArticles = new ArrayList<>();";
+            // Génération des objets
+            monRetour += "\nArticleItem unArticle;";
+            for (ArticleItem unArticle : mesArticles) {
+                // Contenu de l'objet
+                monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
+                        + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
+                        + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
+                        + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
+                        + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
+                        + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
+                        + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
 
-                    // Insertion de l'objet dans l'arraylist
-                    monRetour += "\nmesArticles.add(unArticle);";
-                }
+                // Insertion de l'objet dans l'arraylist
+                monRetour += "\nmesArticles.add(unArticle);";
+            }
 
-                /*
-                 * Affichage
-                 */
-                if (Constantes.DEBUG) {
-                    // Buffer limité à 4k chr...
-                    if (monRetour.length() > 4000) {
-                        int chunkCount = monRetour.length() / 4000;
-                        for (int i = 0; i <= chunkCount; i++) {
-                            int max = 4000 * (i + 1);
-                            if (max >= monRetour.length()) {
-                                Log.e("DebugActivity", monRetour.substring(4000 * i));
-                            } else {
-                                Log.e("DebugActivity", monRetour.substring(4000 * i, max));
-                            }
+            /*
+             * Affichage
+             */
+            if (Constantes.DEBUG) {
+                // Buffer limité à 4k chr...
+                if (monRetour.length() > 4000) {
+                    int chunkCount = monRetour.length() / 4000;
+                    for (int i = 0; i <= chunkCount; i++) {
+                        int max = 4000 * (i + 1);
+                        if (max >= monRetour.length()) {
+                            Log.e("DebugActivity", monRetour.substring(4000 * i));
+                        } else {
+                            Log.e("DebugActivity", monRetour.substring(4000 * i, max));
                         }
-                    } else {
-                        Log.e("DebugActivity", monRetour);
                     }
+                } else {
+                    Log.e("DebugActivity", monRetour);
                 }
             }
         });
@@ -173,46 +164,39 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
          * Bouton : Liste des fichiers en cache
          */
         Button buttonListeFichier = this.findViewById(R.id.buttonListerCache);
-        buttonListeFichier.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
+        buttonListeFichier.setOnClickListener((View arg0) -> {
+            // Je crée ma liste de fichiers
+            ArrayList<String> listeFichiers = getListeFichiers(getFilesDir().toString());
 
-                // Je crée ma liste de fichiers
-                ArrayList<String> listeFichiers = getListeFichiers(getFilesDir().toString());
+            // Je crée mon dialogue
+            AlertDialog.Builder builder = new AlertDialog.Builder(DebugActivity.this);
+            // Titre
+            builder.setTitle(getString(R.string.debugListeFichiers));
+            // Contenu
+            StringBuilder monContenu = new StringBuilder();
 
-                // Je crée mon dialogue
-                AlertDialog.Builder builder = new AlertDialog.Builder(DebugActivity.this);
-                // Titre
-                builder.setTitle(getString(R.string.debugListeFichiers));
-                // Contenu
-                StringBuilder monContenu = new StringBuilder();
-
-                for (String unFichier : listeFichiers) {
-                    monContenu.append(unFichier);
-                    monContenu.append("\n");
-                }
-                builder.setMessage(monContenu.toString());
-                // Bouton d'action
-                builder.setCancelable(false);
-                builder.setPositiveButton("Ok", null);
-                // On crée & affiche
-                builder.create().show();
+            for (String unFichier : listeFichiers) {
+                monContenu.append(unFichier);
+                monContenu.append("\n");
             }
+            builder.setMessage(monContenu.toString());
+            // Bouton d'action
+            builder.setCancelable(false);
+            builder.setPositiveButton("Ok", null);
+            // On crée & affiche
+            builder.create().show();
         });
 
         /*
          * Bouton : Tester connexion
          */
         Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
-        buttonTesterConnexion.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
-                        Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
-                        true);
+        buttonTesterConnexion.setOnClickListener((View arg0) -> {
+            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
+                    Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
+                    true);
 
-                monAHD.run();
-            }
+            monAHD.run();
         });
 
         /*
