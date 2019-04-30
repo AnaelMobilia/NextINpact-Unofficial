@@ -437,15 +437,12 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Gestion du clic
                     final String monUrlImage = caii.getContenu();
-                    contenuImageVH.contenu.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Lance l'ouverture de l'image dans une activité séparée...
-                            Intent monIntent = new Intent(monContext, ImageActivity.class);
-                            monIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            monIntent.putExtra("URL_IMAGE", monUrlImage);
-                            monContext.startActivity(monIntent);
-                        }
+                    contenuImageVH.contenu.setOnClickListener((View view) -> {
+                        // Lance l'ouverture de l'image dans une activité séparée...
+                        Intent monIntent = new Intent(monContext, ImageActivity.class);
+                        monIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        monIntent.putExtra("URL_IMAGE", monUrlImage);
+                        monContext.startActivity(monIntent);
                     });
 
                     break;

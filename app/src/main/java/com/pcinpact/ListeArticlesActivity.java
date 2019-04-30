@@ -188,49 +188,46 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
 
         // Gestion du changement d'options de l'application
-        listenerOptions = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        listenerOptions = (SharedPreferences sharedPreferences, String key) -> {
 
-                // Taille des textes
-                if (key.equals(getResources().getString(R.string.idOptionZoomTexte))) {
-                    // Rafraichissement de l'affichage
-                    monItemsAdapter.notifyDataSetChanged();
+            // Taille des textes
+            if (key.equals(getResources().getString(R.string.idOptionZoomTexte))) {
+                // Rafraichissement de l'affichage
+                monItemsAdapter.notifyDataSetChanged();
 
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity",
-                                "onCreate() - changement taille des textes => " + Constantes.getOptionInt(getApplicationContext(),
-                                        R.string.idOptionZoomTexte,
-                                        R.string.defautOptionZoomTexte));
-                    }
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("ListeArticlesActivity",
+                            "onCreate() - changement taille des textes => " + Constantes.getOptionInt(getApplicationContext(),
+                                    R.string.idOptionZoomTexte,
+                                    R.string.defautOptionZoomTexte));
                 }
-                // Menu debug
-                else if (key.equals(getResources().getString(R.string.idOptionDebug))) {
-                    // invalidation du menu
-                    supportInvalidateOptionsMenu();
+            }
+            // Menu debug
+            else if (key.equals(getResources().getString(R.string.idOptionDebug))) {
+                // invalidation du menu
+                supportInvalidateOptionsMenu();
 
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.w("ListeArticlesActivity",
-                                "onCreate() - changement option debug => " + Constantes.getOptionBoolean(getApplicationContext(),
-                                        R.string.idOptionDebug,
-                                        R.bool.defautOptionDebug));
-                    }
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("ListeArticlesActivity",
+                            "onCreate() - changement option debug => " + Constantes.getOptionBoolean(getApplicationContext(),
+                                    R.string.idOptionDebug,
+                                    R.bool.defautOptionDebug));
                 }
-                // Debug - Effacement du cache
-                else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
-                    // Je vide ma liste d'articles...
-                    nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-                    mesArticles.clear();
-                    // Lancement du refresh de l'affichage
-                    finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-                }
-                // Changement de thème
-                else if (key.equals(getResources().getString(R.string.idOptionThemeSombre))) {
-                    // Note du changement de thème
-                    updateTheme = true;
-                }
+            }
+            // Debug - Effacement du cache
+            else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
+                // Je vide ma liste d'articles...
+                nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                mesArticles.clear();
+                // Lancement du refresh de l'affichage
+                finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+            }
+            // Changement de thème
+            else if (key.equals(getResources().getString(R.string.idOptionThemeSombre))) {
+                // Note du changement de thème
+                updateTheme = true;
             }
         };
         // Attachement du superviseur aux préférences
