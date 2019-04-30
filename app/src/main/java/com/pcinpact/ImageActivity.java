@@ -20,6 +20,7 @@ package com.pcinpact;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -51,8 +52,18 @@ public class ImageActivity extends AppCompatActivity {
         // Récupération de l'imageView
         ImageView monImageView = findViewById(R.id.zoom_image);
 
-        // Récupération de l'URL de l'image
-        String urlImage = getIntent().getExtras().getString("URL_IMAGE");
+        String urlImage;
+        try {
+            // Récupération de l'URL de l'image
+            urlImage = getIntent().getExtras().getString("URL_IMAGE");
+        } catch (NullPointerException e) {
+            // Problème sur l'intent... => Passage à une image par défaut
+            urlImage = Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.logo_nextinpact ;
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ImageActivity", "onCreate() - Récupération URL image de l'intent", e);
+            }
+        }
 
         // Chargement de l'image...
         ImageProvider monImageProviderArticle = new ImageProvider(getApplicationContext(), monImageView, 1);
