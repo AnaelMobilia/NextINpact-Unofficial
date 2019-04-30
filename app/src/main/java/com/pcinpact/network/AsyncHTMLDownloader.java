@@ -316,12 +316,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             // Retour utilisateur ?
             if (debug) {
                 Handler handler = new Handler(monContext.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_SHORT);
-                        monToast.show();
-                    }
+                handler.post(() -> {
+                    Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_SHORT);
+                    monToast.show();
                 });
             }
         }
