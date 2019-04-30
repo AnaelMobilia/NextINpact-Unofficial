@@ -217,11 +217,8 @@ public class CacheManager {
         if (miniaturesFS != null) {
             // Pour chaque miniature que j'ai...
             for (String uneMiniature : miniaturesFS) {
-                // Si elle est aussi dans la liste des miniatures à avoir
-                if (imagesCache.containsKey(uneMiniature)) {
-                    // Je l'efface
-                    imagesCache.remove(uneMiniature);
-                }
+                // Je l'efface...
+                imagesCache.remove(uneMiniature);
             }
         }
 
