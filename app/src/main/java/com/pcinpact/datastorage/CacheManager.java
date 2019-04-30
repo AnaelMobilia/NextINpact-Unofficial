@@ -63,7 +63,7 @@ public class CacheManager {
 
             // Ai-je plus d'articles que ma limite ?
             if (nbArticles > maLimite) {
-                /**
+                /*
                  * Nettoyage de la BDD
                  */
                 for (int i = maLimite; i < nbArticles; i++) {
@@ -88,7 +88,7 @@ public class CacheManager {
                 }
             }
 
-            /**
+            /*
              * Nettoyage du FS
              */
             // Miniatures articles
@@ -122,22 +122,22 @@ public class CacheManager {
             // Connexion sur la BDD
             DAO monDAO = DAO.getInstance(monContext);
 
-            /**
+            /*
              * Vidage BDD
              */
             monDAO.vider();
 
-            /**
+            /*
              * Miniatures d'articles
              */
             effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES);
 
-            /**
+            /*
              * Illustrations d'articles
              */
             effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
 
-            /**
+            /*
              * Smileys
              */
             effacerCacheSmiley(monContext);
@@ -204,7 +204,7 @@ public class CacheManager {
 
         Context monContext = unContext.getApplicationContext();
 
-        /**
+        /*
          * Miniatures dixit la BDD
          */
         // Connexion à la BDD
@@ -212,7 +212,7 @@ public class CacheManager {
         // Récupération de la liste
         HashMap<String, String> imagesCache = monDAO.cacheListeImages(Constantes.IMAGE_MINIATURE_ARTICLE);
 
-        /**
+        /*
          * Miniatures sur le FS
          */
         String[] miniaturesFS = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
@@ -228,7 +228,7 @@ public class CacheManager {
             }
         }
 
-        /**
+        /*
          * Préparation du retour
          */
         for (String uneURL : imagesCache.values()) {
@@ -247,7 +247,7 @@ public class CacheManager {
      */
     private static void nettoyerCacheImages(final Context unContext, final int unType, final String pathType) {
         Context monContext = unContext.getApplicationContext();
-        /**
+        /*
          * Images dixit la BDD
          */
         // Connexion à la BDD
@@ -255,7 +255,7 @@ public class CacheManager {
         // Récupération de la liste
         HashMap<String, String> imagesCache = monDAO.cacheListeImages(unType);
 
-        /**
+        /*
          * Images sur le FS
          */
         String[] imagesFS = new File(monContext.getFilesDir() + pathType).list();
