@@ -67,7 +67,7 @@ public class ArticleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View maView = inflater.inflate(R.layout.article_fragment, container, false);
         // Listview qui contiendra l'article
-        ListView monListView = (ListView) maView.findViewById(R.id.contenuArticle);
+        ListView monListView = maView.findViewById(R.id.contenuArticle);
 
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(monContext);
