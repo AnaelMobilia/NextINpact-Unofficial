@@ -95,13 +95,6 @@ public class ItemsAdapter extends BaseAdapter {
     }
 
     /**
-     * Réinitialisation forcée des vues (changement de thème) #208 - uniquement pour le moment du changement de thème
-     */
-    public void setResetView() {
-        resetView = true;
-    }
-
-    /**
      * MàJ les données de la liste d'items.
      *
      * @param nouveauxItems liste d'items
