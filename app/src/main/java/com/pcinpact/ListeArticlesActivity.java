@@ -327,6 +327,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             recreate();
         }
 
+        // Recréation d'un itemAdapter - #229
+        monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), mesArticles);
+        monListView.setAdapter(monItemsAdapter);
+
         // Je met à jour les données qui sont potentiellement fausses suite à slide
         monItemsAdapter.updateListeItems(prepareAffichage());
         // Je notifie le changement pour un rafraichissement du contenu
