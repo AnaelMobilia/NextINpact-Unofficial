@@ -68,7 +68,6 @@ Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
 https://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
-    <string name="chargementPasInternet">"Téléchargement impossible !\nÊtes-vous bien connecté à Internet ?"</string>
     <string name="articleVideErreurHTML">"Oups…! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
     <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
@@ -80,7 +79,6 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionsGenerales">Options générales</string>
     <string name="optionTailleTexte">Taille des textes</string>
     <string name="optionAbonne">Compte abonné</string>
-    <string name="optionAbonneDetail">Configurez votre compte abonné</string>
     <string name="optionThemeSombre">Thème sombre</string>
     <!-- Options : PreferenceScreen Abonné -->
     <string name="optionsAbonne">Configurer mon compte abonné</string>
@@ -117,6 +115,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionLiensDansArticles">1</string>
     <string name="idOptionLiensDansCommentaires">2</string>
     <string name="idOptionZoomTexte">3</string>
+    <!-- Unused now -->
     <string name="idOptionTelechargerCommentaires">4</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
