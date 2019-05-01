@@ -414,7 +414,7 @@ public class ParseurHTML {
         }
 
 
-        // Elimination des htmlentities (beacoup de &nbsp;)
+        // Elimination des htmlentities (beaucoup de &nbsp;)
         String monArticle = Parser.unescapeEntities(lArticle.toString(), true);
 
         // J'enregistre le contenu
