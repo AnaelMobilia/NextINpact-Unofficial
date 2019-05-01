@@ -96,7 +96,7 @@ public class ArticleFragment extends Fragment {
         }
 
         // MàJ de l'affichage
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, getActivity().getLayoutInflater(), monAR);
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, inflater, monAR);
         monListView.setAdapter(monItemsAdapter);
 
         return maView;
