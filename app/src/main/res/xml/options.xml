@@ -24,7 +24,7 @@
 
         <!-- Compte abonné -->
         <PreferenceScreen android:title="@string/optionAbonne">
-            <PreferenceCategory android:title="Configurer mon compte abonné">
+            <PreferenceCategory android:title="@string/optionsAbonne">
                 <CheckBoxPreference
                     android:defaultValue="@bool/defautOptionAbonne"
                     android:key="@string/idOptionAbonne"
