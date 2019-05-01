@@ -148,7 +148,17 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         monListView.setAdapter(monItemsAdapter);
 
         // ID de l'article concerné
-        articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+        try {
+            articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+        } catch (NullPointerException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("CommentairesActivity", "onCreate() - Récupération ID article de l'intent", e);
+            }
+
+            // Arrêt de l'activité
+            this.finish();
+        }
 
         // J'active la BDD
         monDAO = DAO.getInstance(getApplicationContext());
