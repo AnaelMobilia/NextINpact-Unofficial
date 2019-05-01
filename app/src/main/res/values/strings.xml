@@ -73,6 +73,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
     <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
+    <string name="erreurCompteAbonnement">"Votre abonnement NXI est expiré, les articles Abonné ne pourront pas être lus !"</string>
 
     <!-- Vue "Options" -->
     <!-- Options : Générales -->

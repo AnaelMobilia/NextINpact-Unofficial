@@ -204,6 +204,19 @@ public class Downloader {
 
             // Je lance le téléchargement
             datas = Downloader.download(uneURL, unContext);
+
+            // Je vérifie que le compte à bien un abonnement toujours en cours
+            String laPage = new String(datas);
+            if (laPage.contains("bloc_abonne_restriction")) {
+                // Le compte n'a plus d'abonnement
+                // Affichage d'un toast
+                Handler handler = new Handler(unContext.getMainLooper());
+                handler.post(() -> {
+                    Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurCompteAbonnement),
+                            Toast.LENGTH_LONG);
+                    monToast.show();
+                });
+            }
         } else {
             // J'attends si j'ai déjà une connexion en cours...
             while (isRunning) {
