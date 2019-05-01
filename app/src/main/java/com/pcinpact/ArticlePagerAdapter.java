@@ -43,7 +43,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      */
     private final Context monContext;
 
-    public ArticlePagerAdapter(FragmentManager fm, Context unContext, LayoutInflater unLayoutInflater) {
+    public ArticlePagerAdapter(FragmentManager fm, Context unContext) {
         super(fm);
 
         monContext = unContext.getApplicationContext();

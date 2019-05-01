@@ -79,7 +79,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // ViewPager (pour le slide des articles)
         monViewPager = findViewById(R.id.article_viewpager);
-        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext(), getLayoutInflater());
+        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext());
         monViewPager.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
