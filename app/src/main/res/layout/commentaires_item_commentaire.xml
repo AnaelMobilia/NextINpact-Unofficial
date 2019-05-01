@@ -41,6 +41,8 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp"
             android:textAppearance="@style/textAppearanceMicro" />
 
         <TextView
@@ -50,6 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:paddingLeft="0dp"
+            android:paddingStart="0dp"
             android:paddingRight="?android:attr/scrollbarSize"
             android:paddingEnd="?android:attr/scrollbarSize"
             android:textAppearance="@style/textAppearanceMicro"

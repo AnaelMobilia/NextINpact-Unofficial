@@ -27,6 +27,8 @@
     android:paddingBottom="5dp"
     android:paddingRight="?android:attr/scrollbarSize"
     android:paddingEnd="?android:attr/scrollbarSize"
+    android:paddingLeft="0dp"
+    android:paddingStart="0dp"
     android:paddingTop="5dp">
 
     <ImageView
