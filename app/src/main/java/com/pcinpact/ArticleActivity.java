@@ -24,6 +24,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -72,7 +73,17 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
 
         // ID de l'article concerné
-        articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+        try {
+            articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+        } catch (NullPointerException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ArticleActivity", "onCreate() - Récupération ID article de l'intent", e);
+            }
+
+            // Arrêt de l'activité
+            this.finish();
+        }
 
         // Lien sur BDD
         monDAO = DAO.getInstance(getApplicationContext());
