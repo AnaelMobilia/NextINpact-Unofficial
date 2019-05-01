@@ -69,10 +69,6 @@ public class ItemsAdapter extends BaseAdapter {
      * Items à afficher.
      */
     private ArrayList<? extends Item> mesItems;
-    /**
-     * Faut-il ne pas réutiliser les vues ? (changement de thème)
-     */
-    private boolean resetView = false;
 
     /**
      * Constructeur.
@@ -139,8 +135,8 @@ public class ItemsAdapter extends BaseAdapter {
         View maView = convertView;
 
         // Gestion du recyclage des vues - voir http://android.amberfog.com/?p=296
-        // Pas de recyclage ou recyclage forcé (changement de thème)
-        if (maView == null || resetView) {
+        // Pas de recyclage
+        if (maView == null) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.d("ItemsAdapter", "getView() - nouvelle vue (#" + position + ")");
