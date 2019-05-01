@@ -28,21 +28,23 @@
         style="?attr/themeCommentaireBandeauFond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/auteurDateCommentaire"
             style="?attr/themeCommentaireBandeauTitre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:paddingLeft="5dp"
+            android:layout_toStartOf="@+id/numeroCommentaire"
+            android:layout_toLeftOf="@+id/numeroCommentaire"
             android:paddingStart="5dp"
-            android:paddingRight="0dp"
+            android:paddingLeft="5dp"
             android:paddingEnd="0dp"
+            android:paddingRight="0dp"
             android:textAppearance="@style/textAppearanceMicro" />
 
         <TextView
@@ -50,12 +52,12 @@
             style="?attr/themeCommentaireNumero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:paddingLeft="0dp"
+            android:layout_alignParentRight="true"
             android:paddingStart="0dp"
-            android:paddingRight="?android:attr/scrollbarSize"
+            android:paddingLeft="0dp"
             android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingRight="?android:attr/scrollbarSize"
             android:textAppearance="@style/textAppearanceMicro"
             android:textStyle="italic" />
 
@@ -72,10 +74,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/relativeLayoutHaut"
-        android:paddingLeft="5dp"
         android:paddingStart="5dp"
-        android:paddingRight="?android:attr/scrollbarSize"
-        android:paddingEnd="?android:attr/scrollbarSize"
+        android:paddingLeft="5dp"
         android:paddingTop="5dp"
+        android:paddingEnd="?android:attr/scrollbarSize"
+        android:paddingRight="?android:attr/scrollbarSize"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>
