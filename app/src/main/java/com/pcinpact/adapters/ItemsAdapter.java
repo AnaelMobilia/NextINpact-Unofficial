@@ -238,8 +238,19 @@ public class ItemsAdapter extends BaseAdapter {
         if (i != null) {
             switch (i.getType()) {
                 case Item.TYPE_SECTION:
+                    SectionItemViewHolder sectionVH;
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    SectionItemViewHolder sectionVH = (SectionItemViewHolder) maView.getTag();
+                    try {
+                        sectionVH = (SectionItemViewHolder) maView.getTag();
+                    } catch (NullPointerException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Récupération de SectionItemViewHolder maView.getTag()", e);
+                        }
+
+                        // Je me rappelle moi même...
+                        return getView(position, null, parent);
+                    }
 
                     SectionItem si = (SectionItem) i;
                     sectionVH.sectionView.setText(si.getTitre());
@@ -254,7 +265,19 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_ARTICLE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ArticleItemViewHolder articleVH = (ArticleItemViewHolder) maView.getTag();
+                    ArticleItemViewHolder articleVH;
+                    try {
+                        articleVH = (ArticleItemViewHolder) maView.getTag();
+                    } catch (NullPointerException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Récupération de ArticleItemViewHolder maView.getTag()", e);
+                        }
+
+                        // Je me rappelle moi même...
+                        return getView(position, null, parent);
+                    }
+
                     /*
                      * Article
                      */
@@ -330,7 +353,18 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_COMMENTAIRE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    CommentaireItemViewHolder commentaireVH = (CommentaireItemViewHolder) maView.getTag();
+                    CommentaireItemViewHolder commentaireVH;
+                    try {
+                        commentaireVH = (CommentaireItemViewHolder) maView.getTag();
+                    } catch (NullPointerException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Récupération de CommentaireItemViewHolder maView.getTag()", e);
+                        }
+
+                        // Je me rappelle moi même...
+                        return getView(position, null, parent);
+                    }
                     /*
                      * Commentaire
                      */
@@ -376,7 +410,18 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_CONTENU_ARTICLE_TEXTE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ContenuArticleTexteViewHolder contenuTexteVH = (ContenuArticleTexteViewHolder) maView.getTag();
+                    ContenuArticleTexteViewHolder contenuTexteVH;
+                    try {
+                        contenuTexteVH = (ContenuArticleTexteViewHolder) maView.getTag();
+                    } catch (NullPointerException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Récupération de ContenuArticleTexteViewHolder maView.getTag()", e);
+                        }
+
+                        // Je me rappelle moi même...
+                        return getView(position, null, parent);
+                    }
                     /*
                      * Contenu
                      */
@@ -411,7 +456,18 @@ public class ItemsAdapter extends BaseAdapter {
 
                 case Item.TYPE_CONTENU_ARTICLE_IMAGE:
                     // Je charge mon ItemsViewHolder (lien vers les *View)
-                    ContenuArticleImageViewHolder contenuImageVH = (ContenuArticleImageViewHolder) maView.getTag();
+                    ContenuArticleImageViewHolder contenuImageVH;
+                    try {
+                        contenuImageVH = (ContenuArticleImageViewHolder) maView.getTag();
+                    } catch (NullPointerException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Récupération de ContenuArticleImageViewHolder maView.getTag()", e);
+                        }
+
+                        // Je me rappelle moi même...
+                        return getView(position, null, parent);
+                    }
                     /*
                      * Contenu
                      */
