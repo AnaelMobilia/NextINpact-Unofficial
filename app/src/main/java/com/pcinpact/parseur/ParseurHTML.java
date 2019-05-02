@@ -568,7 +568,8 @@ public class ParseurHTML {
             // Contenu
             Elements monContenu = unCommentaire.select("div[class=actu_comm_content]");
             if (!monContenu.isEmpty()) {
-                monCommentaireItem.setCommentaire(monContenu.get(0).toString());
+                monCommentaireItem.setCommentaire(monContenu.get(0).html());
+                Log.e("xx", monContenu.toString());
             } else {
                 // Gestion des commentaires supprimés - Récupération de la chaîne du détail de modération
                 monContenu = unCommentaire.select("div[class~=actu_comm_author]");
