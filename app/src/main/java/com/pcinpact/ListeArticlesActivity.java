@@ -133,7 +133,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress[Constantes.HTML_ARTICLE] = 0;
 
         // Mise en place de l'itemAdapter
-        monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), mesArticles);
+        monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
         monListView.setAdapter(monItemsAdapter);
         monListView.setOnItemClickListener(this);
 
