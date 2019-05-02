@@ -27,7 +27,7 @@ import org.xml.sax.XMLReader;
  * Gestion des éléments HTML particuliers.
  */
 public class TagHandler implements Html.TagHandler {
-    private boolean first = true;
+    private boolean debutListe = true;
     private String parent = null;
     private int index = 1;
 
@@ -43,22 +43,20 @@ public class TagHandler implements Html.TagHandler {
 
         // Un élément de la liste...
         if ("li".equals(tag)) {
-            // Si liste simple -> point
-            if ("ul".equals(parent)) {
-                if (first) {
+            // Balise ouvrante
+            if (debutListe) {
+                if ("ul".equals(parent)) {
+                    // Liste simple -> point
                     output.append("\n\t• ");
-                    first = false;
                 } else {
-                    first = true;
+                    // Liste numérotée -> n.
+                    output.append("\n\t" + String.valueOf(index) + ". ");
+                    index++;
                 }
-            } else if (first) {
-                output.append("\n\t");
-                output.append(String.valueOf(index));
-                output.append(". ");
-                first = false;
-                index++;
+                debutListe = false;
             } else {
-                first = true;
+                // Balise fermante -> on prend en compte
+                debutListe = true;
             }
         }
     }
