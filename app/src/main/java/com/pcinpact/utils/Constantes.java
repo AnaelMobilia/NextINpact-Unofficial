@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     /**
      * Contact du développeur
      */
@@ -82,6 +82,10 @@ public class Constantes {
      * Timeout pour les téléchargements (en ms) - default = ~250000.
      */
     public static final int TIMEOUT = 15000;
+    /**
+     * Balise HTML pour les citations de commentaire
+     */
+    public static final String TAG_HTML_BLOCKQUOTE = "myBlockQuote";
 
     /**
      * Nb de commentaires par page.
@@ -135,7 +139,7 @@ public class Constantes {
      */
     public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
     /**
-     * Date et Heure de publication d'un commentaire.
+     * Date et heure de publication d'un commentaire.
      */
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
 
