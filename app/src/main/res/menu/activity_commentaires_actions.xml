@@ -21,6 +21,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
+    <!-- DEBUG -->
+    <item
+        android:id="@+id/action_debug"
+        android:icon="@drawable/ic_menu_preferences"
+        android:title="@string/action_debug"
+        android:visible="false"
+        yourapp:showAsAction="ifRoom" />
+
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"

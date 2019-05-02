@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -234,6 +235,19 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_commentaires_actions, menu);
 
+        // Suis-je en mode DEBUG ?
+        Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                R.bool.defautOptionDebug);
+
+        // Si mode debug
+        if (modeDebug) {
+            // Invalidation du menu
+            invalidateOptionsMenu();
+            // Affichage du bouton de debug
+            MenuItem boutonDebug = menu.findItem(R.id.action_debug);
+            boutonDebug.setVisible(true);
+        }
+
         // Configuration du onScroll de la listview
         configOnScroll();
 
@@ -318,15 +332,24 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        // Rafraichir la liste des commentaires
-        if (pItem.getItemId() == R.id.action_refresh) {
-            // téléchargement de TOUS les commentaires
-            isChargementTotal = true;
+        switch (pItem.getItemId()) {
 
-            // Lancement du premier chargement
-            refreshListeCommentaires();
+            // Rafraichir la liste des commentaires
+            case R.id.action_refresh:
+                // téléchargement de TOUS les commentaires
+                isChargementTotal = true;
+
+                // Lancement du premier chargement
+                refreshListeCommentaires();
+                break;
+
+            // Débug - Affichage du code source HTML
+            case R.id.action_debug:
+                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+                intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articleID);
+                startActivity(intentDebug);
+                break;
         }
-
         return super.onOptionsItemSelected(pItem);
     }
 

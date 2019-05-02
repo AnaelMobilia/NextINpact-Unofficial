@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
@@ -203,6 +204,13 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
          */
         // Si j'ai reçu un Intent
         if (getIntent().getExtras() != null) {
+            // Je cache tous les boutons génériques !
+            buttonArrayList.setVisibility(View.GONE);
+            buttonCache.setVisibility(View.GONE);
+            buttonListeFichier.setVisibility(View.GONE);
+            buttonSmileys.setVisibility(View.GONE);
+            buttonTesterConnexion.setVisibility(View.GONE);
+
             // ID de l'article concerné
             int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
             // Si j'ai un article
@@ -212,6 +220,27 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 maTextView.setText(monArticle.getContenu());
+            }
+
+            // ID de l'article concerné - Affichage des commentaires
+            articleID = getIntent().getExtras().getInt("ARTICLE_ID_COMMENTAIRE");
+            // Si j'ai un article
+            if (articleID != 0) {
+                // Chargement des commentaires
+                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articleID);
+                TextView maTextView = findViewById(R.id.debugTextViewHTML);
+
+                StringBuilder monContenu = new StringBuilder();
+
+                for (CommentaireItem unComentaire : lesCommentaires) {
+                    monContenu.append("=====#" + unComentaire.getId() + " " + unComentaire.getAuteurDateCommentaire() + "=====");
+                    monContenu.append("\n");
+                    monContenu.append(unComentaire.getCommentaire());
+                    monContenu.append("\n");
+                    monContenu.append("\n");
+                }
+
+                maTextView.setText(monContenu);
             }
         }
     }
