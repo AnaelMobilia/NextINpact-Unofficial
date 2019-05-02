@@ -102,7 +102,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      * Une mise à jour du thème est-elle à effectuer ?
      */
     private boolean updateTheme = false;
-
+    /**
+     * Dernière position affichée
+     */
+    private int dernierePosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,6 +148,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // Enregistrement de l'ID du premier élément affiché
+                dernierePosition = firstVisibleItem;
+
                 int topRowVerticalPosition;
 
                 if (monListView == null || monListView.getChildCount() == 0) {
@@ -330,11 +336,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Recréation d'un itemAdapter - #229
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), mesArticles);
         monListView.setAdapter(monItemsAdapter);
-
-        // Je met à jour les données qui sont potentiellement fausses suite à slide
+        // On le remet à l'endroit où on était
+        monListView.setSelection(dernierePosition);
+        // Je pousse la mise à jour de l'affichage
         monItemsAdapter.updateListeItems(prepareAffichage());
-        // Je notifie le changement pour un rafraichissement du contenu
-        monItemsAdapter.notifyDataSetChanged();
+
         super.onRestart();
     }
 
