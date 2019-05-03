@@ -166,7 +166,8 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @param commentaire commentaire
      */
     public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
+        // Fix pour le TagHandler sinon erreur PARAGRAPH
+        this.commentaire = "<div></div>" + commentaire;
     }
 
     /**

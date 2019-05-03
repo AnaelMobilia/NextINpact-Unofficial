@@ -83,9 +83,9 @@ public class Constantes {
      */
     public static final int TIMEOUT = 15000;
     /**
-     * Balise HTML pour les citations de commentaire
+     * Balise HTML pour les citations de commentaires
      */
-    public static final String TAG_HTML_BLOCKQUOTE = "myBlockQuote";
+    public static final String TAG_HTML_QUOTE = "myQuote";
 
     /**
      * Nb de commentaires par page.

@@ -20,6 +20,11 @@ package com.pcinpact.parseur;
 
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
+import android.util.Log;
+
+import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.CustomQuoteSpan;
 
 import org.xml.sax.XMLReader;
 
@@ -31,6 +36,7 @@ public class TagHandler implements Html.TagHandler {
     private boolean debutQuote = true;
     private String parentListe = null;
     private int indexListe = 1;
+    private int posDebutQuote;
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
@@ -60,5 +66,21 @@ public class TagHandler implements Html.TagHandler {
                 debutListe = true;
             }
         }
+
+        // Citations en commentaire
+        if (Constantes.TAG_HTML_QUOTE.equals(tag)) {
+            if (debutQuote) {
+                // On enregistre la position actuelle
+                posDebutQuote = output.length();
+                debutQuote = false;
+            } else {
+                // A la fin de la citation, on applique le style voulu dessu
+                output.setSpan(new CustomQuoteSpan(), posDebutQuote, output.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                // On indique bien qu'on sort du style appliqué !
+                output.append("\r");
+                debutQuote = true;
+            }
+        }
+        Log.d("TagHandler", "handleTag() - tag " + tag);
     }
 }

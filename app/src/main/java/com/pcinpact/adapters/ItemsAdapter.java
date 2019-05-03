@@ -382,7 +382,7 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
                             new ImageProvider(monContext, commentaireVH.commentaire,
                                     ci.getCommentaire(), Constantes.IMAGE_SMILEY,
-                                    ci.getUuid()), null);
+                                    ci.getUuid()), new TagHandler());
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)

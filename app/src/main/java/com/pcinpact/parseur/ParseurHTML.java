@@ -496,7 +496,7 @@ public class ParseurHTML {
 
         // Blockquote
         Elements lesCitations = lesCommentaires.select("div[class=link_reply_to], div[class=quote_bloc]");
-        lesCitations.tagName("blockquote");
+        lesCitations.tagName(Constantes.TAG_HTML_QUOTE);
 
         // Gestion des URL relatives
         Elements lesLiens = lesCommentaires.select("a[href]");
