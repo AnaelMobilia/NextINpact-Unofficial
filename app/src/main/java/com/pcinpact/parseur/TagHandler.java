@@ -28,7 +28,8 @@ import org.xml.sax.XMLReader;
  */
 public class TagHandler implements Html.TagHandler {
     private boolean debutListe = true;
-    private String parent = null;
+    private boolean debutQuote = true;
+    private String parentListe = null;
     private int index = 1;
 
     @Override
@@ -36,16 +37,16 @@ public class TagHandler implements Html.TagHandler {
 
         // Liste ordonnée ou simple ?
         if ("ul".equals(tag)) {
-            parent = "ul";
+            parentListe = "ul";
         } else if ("ol".equals(tag)) {
-            parent = "ol";
+            parentListe = "ol";
         }
 
         // Un élément de la liste...
         if ("li".equals(tag)) {
             // Balise ouvrante
             if (debutListe) {
-                if ("ul".equals(parent)) {
+                if ("ul".equals(parentListe)) {
                     // Liste simple -> point
                     output.append("\n\t• ");
                 } else {
