@@ -206,7 +206,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         if (getIntent().getExtras() != null) {
             // Je cache tous les boutons génériques !
             buttonArrayList.setVisibility(View.GONE);
-            buttonCache.setVisibility(View.GONE);
             buttonListeFichier.setVisibility(View.GONE);
             buttonSmileys.setVisibility(View.GONE);
             buttonTesterConnexion.setVisibility(View.GONE);
