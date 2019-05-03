@@ -30,7 +30,7 @@ public class TagHandler implements Html.TagHandler {
     private boolean debutListe = true;
     private boolean debutQuote = true;
     private String parentListe = null;
-    private int index = 1;
+    private int indexListe = 1;
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
@@ -51,8 +51,8 @@ public class TagHandler implements Html.TagHandler {
                     output.append("\n\t• ");
                 } else {
                     // Liste numérotée -> n.
-                    output.append("\n\t" + String.valueOf(index) + ". ");
-                    index++;
+                    output.append("\n\t" + String.valueOf(indexListe) + ". ");
+                    indexListe++;
                 }
                 debutListe = false;
             } else {
