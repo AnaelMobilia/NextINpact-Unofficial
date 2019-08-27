@@ -144,6 +144,7 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>
     <string name="commentairesChargement">Chargement…</string>
+    <string name="commentairesErreur">Oups…! Le contenu de ce commentaire ne peut pas être affiché.</string>
 
     <!-- Debug -->
     <string name="debugTitre">"Configuration avancée de l'application"</string>

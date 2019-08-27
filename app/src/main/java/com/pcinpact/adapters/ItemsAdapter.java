@@ -381,10 +381,20 @@ public class ItemsAdapter extends BaseAdapter {
                     if (Constantes.DEBUG) {
                         Log.i("ItemsAdapter", "getView() - Commentaire : " + ci.getCommentaire());
                     }
-                    Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                            new ImageProvider(monContext, commentaireVH.commentaire,
-                                    ci.getCommentaire(), Constantes.IMAGE_SMILEY,
-                                    ci.getUuid()), new TagHandler());
+
+                    Spanned spannedCommentaire;
+                    try {
+                        spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
+                                new ImageProvider(monContext, commentaireVH.commentaire,
+                                        ci.getCommentaire(), Constantes.IMAGE_SMILEY,
+                                        ci.getUuid()), new TagHandler());
+                    }
+                    catch (Exception e) {
+                        if (Constantes.DEBUG) {
+                            Log.e("ItemsAdapter", "getView() - Html.fromHtml() ", e);
+                        }
+                        spannedCommentaire = Html.fromHtml(monContext.getString(R.string.commentairesErreur));
+                    }
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
