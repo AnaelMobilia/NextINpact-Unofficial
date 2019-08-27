@@ -26,7 +26,7 @@
         android:id="@+id/action_share"
         android:icon="@drawable/ic_menu_share"
         android:title="@string/action_share"
-        yourapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        yourapp:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         yourapp:showAsAction="ifRoom" />
 
     <!-- DEBUG -->

@@ -18,7 +18,7 @@
  */
 package com.pcinpact.items;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pcinpact.utils.Constantes;
 
