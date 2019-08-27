@@ -56,7 +56,7 @@ public class TagHandler implements Html.TagHandler {
                     output.append("\n\t• ");
                 } else {
                     // Liste numérotée -> n.
-                    output.append("\n\t" + String.valueOf(indexListe) + ". ");
+                    output.append("\n\t" + indexListe + ". ");
                     indexListe++;
                 }
                 debutListe = false;
