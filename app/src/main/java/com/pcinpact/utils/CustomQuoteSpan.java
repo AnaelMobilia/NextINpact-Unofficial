@@ -24,7 +24,6 @@ import android.text.Layout;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.LineBackgroundSpan;
 
-import com.pcinpact.R;
 
 /**
  * Bloc quote pour l'affichage des commentaires avec un style personnalisé

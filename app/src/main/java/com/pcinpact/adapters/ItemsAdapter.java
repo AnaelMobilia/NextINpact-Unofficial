@@ -378,7 +378,9 @@ public class ItemsAdapter extends BaseAdapter {
                     // Remplissage des textview
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
-
+                    if (Constantes.DEBUG) {
+                        Log.i("xx", ci.getCommentaire());
+                    }
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
                             new ImageProvider(monContext, commentaireVH.commentaire,
                                     ci.getCommentaire(), Constantes.IMAGE_SMILEY,

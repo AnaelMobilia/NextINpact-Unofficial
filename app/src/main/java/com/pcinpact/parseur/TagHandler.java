@@ -33,7 +33,6 @@ import org.xml.sax.XMLReader;
  */
 public class TagHandler implements Html.TagHandler {
     private boolean debutListe = true;
-    private boolean debutQuote = true;
     private String parentListe = null;
     private int indexListe = 1;
     private int posDebutQuote;
@@ -69,16 +68,12 @@ public class TagHandler implements Html.TagHandler {
 
         // Citations en commentaire
         if (Constantes.TAG_HTML_QUOTE.equals(tag)) {
-            if (debutQuote) {
+            if (opening) {
                 // On enregistre la position actuelle
                 posDebutQuote = output.length();
-                debutQuote = false;
             } else {
-                // A la fin de la citation, on applique le style voulu dessu
+                // A la fin de la citation, on applique le style
                 output.setSpan(new CustomQuoteSpan(), posDebutQuote, output.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                // On indique bien qu'on sort du style appliqué !
-                output.append("\r");
-                debutQuote = true;
             }
         }
         Log.d("TagHandler", "handleTag() - tag " + tag);
