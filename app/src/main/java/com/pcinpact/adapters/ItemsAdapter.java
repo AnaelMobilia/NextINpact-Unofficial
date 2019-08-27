@@ -379,7 +379,7 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
                     if (Constantes.DEBUG) {
-                        Log.i("xx", ci.getCommentaire());
+                        Log.i("ItemsAdapter", "getView() - Commentaire : " + ci.getCommentaire());
                     }
                     Spanned spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
                             new ImageProvider(monContext, commentaireVH.commentaire,
