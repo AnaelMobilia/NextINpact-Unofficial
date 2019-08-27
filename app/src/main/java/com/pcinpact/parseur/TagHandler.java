@@ -68,6 +68,10 @@ public class TagHandler implements Html.TagHandler {
 
         // Citations en commentaire
         if (Constantes.TAG_HTML_QUOTE.equals(tag)) {
+            if(Constantes.DEBUG) {
+                Log.i("TagHandler", "handleTag() - opening " + opening + " - posDebutQuote " + posDebutQuote);
+                Log.i("TagHandler", "handleTag() - output (" + output.length() + ") : " + output);
+            }
             if (opening) {
                 // On enregistre la position actuelle
                 posDebutQuote = output.length();

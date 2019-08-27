@@ -159,7 +159,8 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return commentaire
      */
     public String getCommentaire() {
-        return commentaire;
+        // Fix #246
+        return "<div></div>" + commentaire;
     }
 
     /**
