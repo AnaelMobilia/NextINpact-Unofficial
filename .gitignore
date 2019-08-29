@@ -1,11 +1,9 @@
 /.gradle/
 /.idea/
-/.navigation/
 /app/build/
-/app/app-release.apk
+/app/release/
 /app/app.iml
 /build/
-/captures/
 /gradle/
 local.properties
 gradlew
