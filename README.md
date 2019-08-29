@@ -2,9 +2,11 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6128e8ab3cb24120857aa99637f250b2)](https://www.codacy.com/app/AnaelMobilia/NextINpact-Unofficial?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnaelMobilia/NextINpact-Unofficial&amp;utm_campaign=Badge_Grade)
 
 <a href="https://f-droid.org/packages/com.pcinpact/" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"/></a>
+  <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">
+</a>
 <a href="https://play.google.com/store/apps/details?id=com.pcinpact" target="_blank">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="100"/></a>
+  <img src="https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png" alt="Disponible sur Google Play" height="100"/>
+</a>
 
 ## Bibliothèques utilisées par le projet :
   - [jsoup v1.11.3 - MIT] (http://jsoup.org/) : Parsage du code HTML
