@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 - 2019 Anael Mobilia and contributors
+ * Copyright 2013 - 2020 Anael Mobilia and contributors
  *
  * This file is part of NextINpact-Unofficial.
  *
@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     /**
      * Contact du développeur
      */
