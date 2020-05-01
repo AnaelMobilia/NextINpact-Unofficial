@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial.svg?branch=master)](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6128e8ab3cb24120857aa99637f250b2)](https://www.codacy.com/app/AnaelMobilia/NextINpact-Unofficial?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnaelMobilia/NextINpact-Unofficial&amp;utm_campaign=Badge_Grade)
 
 <a href="https://f-droid.org/packages/com.pcinpact/" target="_blank">
   <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">
@@ -9,7 +8,7 @@
 </a>
 
 ## Bibliothèques utilisées par le projet :
-  - [jsoup v1.11.3 - MIT] (http://jsoup.org/) : Parsage du code HTML
+  - [jsoup v1.13.1 - MIT] (http://jsoup.org/) : Parsage du code HTML
 
 ## Bibliothèques forkées par le projet
   - [Commons IO 2.2 - Apache license, version 2.0] (https://commons.apache.org/proper/commons-io/) : InputStream .toString() &
