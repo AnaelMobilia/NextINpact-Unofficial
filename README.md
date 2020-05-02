@@ -8,11 +8,11 @@
 </a>
 
 ## Bibliothèques utilisées par le projet :
-  - [jsoup v1.13.1 - MIT] (http://jsoup.org/) : Parsage du code HTML
+  - [jsoup v1.13.1 - MIT](http://jsoup.org/) : Parsage du code HTML
   - [PhotoView v2.3.0 -Apachz 2.0](https://github.com/chrisbanes/PhotoView) : zoom sur les images
 
 ## Bibliothèques forkées par le projet
-  - [Commons IO 2.2 - Apache license, version 2.0] (https://commons.apache.org/proper/commons-io/) : InputStream .toString() &
+  - [Commons IO 2.2 - Apache license, version 2.0](https://commons.apache.org/proper/commons-io/) : InputStream .toString() &
   .toByteArray()
 
 ## Outils pratiques :
