@@ -67,7 +67,7 @@ public class ParseurHTML {
             monArticleItem = new ArticleItem();
 
             // ID de l'article
-            monArticleItem.setId(Integer.valueOf(unArticle.attr("data-acturowid")));
+            monArticleItem.setId(Integer.parseInt(unArticle.attr("data-acturowid")));
 
             // Date de publication de l'article
             String laDate = unArticle.attr("data-datepubli");
@@ -149,7 +149,7 @@ public class ParseurHTML {
                 if (!lesCommentaires.isEmpty()) {
                     Element commentaires = lesCommentaires.get(0);
                     try {
-                        nbCommentaires = Integer.valueOf(commentaires.text());
+                        nbCommentaires = Integer.parseInt(commentaires.text());
                     } catch (NumberFormatException e) {
                         // Nouveaux commentaires : "172 + 5"
                         String valeur = commentaires.text();
@@ -160,7 +160,7 @@ public class ParseurHTML {
                         String membreDroit = valeur.substring(positionOperateur + 1).trim();
 
                         // On additionne
-                        nbCommentaires = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
+                        nbCommentaires = Integer.parseInt(membreGauche) + Integer.parseInt(membreDroit);
                     }
                 } else {
                     if (Constantes.DEBUG) {
@@ -211,7 +211,7 @@ public class ParseurHTML {
         Pattern p = Pattern.compile("[^\\d]*([\\d]+)[^\\d]");
         Matcher m = p.matcher(urlPage);
         if (m.find()) {
-            unID = Integer.valueOf(m.group(1));
+            unID = Integer.parseInt(m.group(1));
         } else {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getArticle - Pb ID");
@@ -472,7 +472,7 @@ public class ParseurHTML {
         int nbComms = 0;
         try {
             // Si aucun, retour textuel...
-            nbComms = Integer.valueOf(valeur);
+            nbComms = Integer.parseInt(valeur);
         } catch (NumberFormatException e) {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getNbCommentaires() - Erreur nb comms", e);
@@ -499,7 +499,7 @@ public class ParseurHTML {
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
         // Calcul du numéro de page
-        int numeroPage = Integer.valueOf(
+        int numeroPage = Integer.parseInt(
                 urlPage.substring(urlPage.indexOf("&") + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE.length() + 2));
 
         // Lancement du parseur sur la page
@@ -507,7 +507,7 @@ public class ParseurHTML {
 
         // ID de l'article concerné
         Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
-        int idArticle = Integer.valueOf(refArticle.attr("data-relnews"));
+        int idArticle = Integer.parseInt(refArticle.attr("data-relnews"));
 
         // Les commentaires
         // Passage par une regexp => https://github.com/jhy/jsoup/issues/521
@@ -547,7 +547,7 @@ public class ParseurHTML {
             // UUID du commentaire
             int monUUID;
             try {
-                monUUID = Integer.valueOf(unCommentaire.attr("data-content-id"));
+                monUUID = Integer.parseInt(unCommentaire.attr("data-content-id"));
             } catch (NumberFormatException e) {
                 // Commentaire supprimé : UUID précédent + 1
                 monUUID = uuidCommPrecedent + 1;
@@ -581,9 +581,9 @@ public class ParseurHTML {
             if (!monID.isEmpty()) {
                 // Le premier caractère est un "#"
                 String lID = monID.get(0).text().substring(1);
-                monCommentaireItem.setId(Integer.valueOf(lID));
+                monCommentaireItem.setId(Integer.parseInt(lID));
                 // MàJ du numéro du dernier commentaire
-                idCommPrecedent = Integer.valueOf(lID);
+                idCommPrecedent = Integer.parseInt(lID);
             } else {
                 // Gestion des commentaires supprimés
                 monCommentaireItem.setId(idCommPrecedent + 1);

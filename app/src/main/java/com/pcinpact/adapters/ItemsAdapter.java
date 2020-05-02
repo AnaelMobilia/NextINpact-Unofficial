@@ -20,7 +20,6 @@ package com.pcinpact.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -50,6 +49,8 @@ import com.pcinpact.parseur.TagHandler;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Adapter pour le rendu des *Item.
@@ -523,7 +524,7 @@ public class ItemsAdapter extends BaseAdapter {
      */
     private void appliqueZoom(final TextView uneTextView, final int defaultSize) {
         // Taile par défaut
-        int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
+        int tailleDefaut = Integer.parseInt(monContext.getResources().getString(R.string.defautOptionZoomTexte));
         // L'option selectionnée
         int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
 

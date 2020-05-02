@@ -235,7 +235,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         int debut = urlPage.indexOf(Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "=");
                         debut += Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID.length() + 1;
                         int fin = urlPage.indexOf("&");
-                        int idArticle = Integer.valueOf(urlPage.substring(debut, fin));
+                        int idArticle = Integer.parseInt(urlPage.substring(debut, fin));
 
                         // MàJ de la date de rafraichissement
                         monDAO.enregistrerDateRefresh(idArticle, dateRefresh);

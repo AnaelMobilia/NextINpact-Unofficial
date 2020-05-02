@@ -22,7 +22,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
@@ -44,6 +43,8 @@ import com.pcinpact.utils.Tools;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Fournit des images. Peut lancer des téléchargements. Peut gérer du callback.
@@ -128,7 +129,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE) || isImageEnCache(urlSource, monContext, monTypeImages)) {
             if (urlSource.startsWith(Constantes.SCHEME_IFRAME_DRAWABLE)) {
                 // Image ressource (drawable)
-                int idDrawable = Integer.valueOf(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
+                int idDrawable = Integer.parseInt(urlSource.substring(Constantes.SCHEME_IFRAME_DRAWABLE.length()));
                 // On charge le drawable
                 monRetour = gestionTaille(ContextCompat.getDrawable(monContext, idDrawable));
                 // DEBUG
@@ -235,7 +236,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         }
 
         // Taile par défaut
-        int tailleDefaut = Integer.valueOf(monContext.getResources().getString(R.string.defautOptionZoomTexte));
+        int tailleDefaut = Integer.parseInt(monContext.getResources().getString(R.string.defautOptionZoomTexte));
         // L'option selectionnée
         int tailleUtilisateur = Constantes.getOptionInt(monContext, R.string.idOptionZoomTexte, R.string.defautOptionZoomTexte);
         float monCoeffZoom = (float) tailleUtilisateur / tailleDefaut;
