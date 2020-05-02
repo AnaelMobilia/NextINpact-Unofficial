@@ -24,7 +24,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/zoom_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

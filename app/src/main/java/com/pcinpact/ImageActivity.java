@@ -19,16 +19,17 @@
 package com.pcinpact;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.utils.Constantes;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- * Affiche ne image en grand
+ * Affiche une image en grand
  *
  * @author Anael
  */
@@ -41,7 +42,7 @@ public class ImageActivity extends AppCompatActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -50,7 +51,7 @@ public class ImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image);
 
         // Récupération de l'imageView
-        ImageView monImageView = findViewById(R.id.zoom_image);
+        PhotoView monImageView = findViewById(R.id.zoom_image);
 
         String urlImage;
         try {

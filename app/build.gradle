@@ -45,9 +45,10 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
-    api 'androidx.appcompat:appcompat:1.1.0'
-    api 'org.jsoup:jsoup:1.13.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     testImplementation 'junit:junit:4.12'
 }
 
