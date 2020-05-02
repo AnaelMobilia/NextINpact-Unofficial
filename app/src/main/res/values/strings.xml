@@ -90,6 +90,8 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Options liste des articles -->
     <string name="optionsListeArticle">Liste des articles</string>
     <string name="optionNbArticles">"Nombre d'articles"</string>
+    <string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>
+    <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI"</string>
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>
     <string name="optionAfficherNbNouveauCommDetail">Affichage sous la forme (+12)</string>
     <!-- Options : Articles -->
@@ -136,6 +138,7 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Pour mémoire (actif car migration de valeur)-->
     <string name="idOptionTelechargerImages">20</string>
     <string name="idOptionTelechargerImagesv2">21</string>
+    <string name="idOptionAfficherPublicite">22</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

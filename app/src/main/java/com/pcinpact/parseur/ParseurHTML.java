@@ -73,9 +73,29 @@ public class ParseurHTML {
             String laDate = unArticle.attr("data-datepubli");
             monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_ARTICLE));
 
+            // Publicité
+            Elements publicite = unArticle.select("p[class=pub-redac]");
+            // Ai-je trouvé des éléments ?
+            if (publicite.size() > 0) {
+                monArticleItem.setPublicite(true);
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("ParseurHTML", "getListeArticles() - [Publicité] => " + monArticleItem.getTitre());
+                }
+            } else {
+                monArticleItem.setPublicite(false);
+            }
+
             // URL de l'illustration
             String urlIllustration = "";
-            Elements lesImages = unArticle.select("img[class=ded-image]");
+            Elements lesImages;
+            if (monArticleItem.isPublicite()) {
+                // Publicité
+                lesImages = unArticle.select("img[class=ded-image pr]");
+            } else {
+                // Article
+                lesImages = unArticle.select("img[class=ded-image]");
+            }
             if (!lesImages.isEmpty()) {
                 Element image = lesImages.get(0);
                 urlIllustration = image.absUrl("data-frz-src");
@@ -106,40 +126,46 @@ public class ParseurHTML {
 
             // Sous titre
             String monSousTitre = "";
-            Elements lesSousTitres = unArticle.select("span[class=soustitre]");
-            if (!lesSousTitres.isEmpty()) {
-                Element unSousTitre = lesSousTitres.get(0);
-                // Je supprime le "- " en début du sous titre
-                monSousTitre = unSousTitre.text().substring(2);
-            } else {
-                if (Constantes.DEBUG) {
-                    Log.e("ParseurHTML", "getListeArticles - Pb sous titre");
+            // Pas de sous titre pour les publicités
+            if (!monArticleItem.isPublicite()) {
+                Elements lesSousTitres = unArticle.select("span[class=soustitre]");
+                if (!lesSousTitres.isEmpty()) {
+                    Element unSousTitre = lesSousTitres.get(0);
+                    // Je supprime le "- " en début du sous titre
+                    monSousTitre = unSousTitre.text().substring(2);
+                } else {
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles - Pb sous titre");
+                    }
                 }
             }
             monArticleItem.setSousTitre(monSousTitre);
 
             // Nombre de commentaires
             int nbCommentaires = 0;
-            Elements lesCommentaires = unArticle.select("span[class=nb_comments]");
-            if (!lesCommentaires.isEmpty()) {
-                Element commentaires = lesCommentaires.get(0);
-                try {
-                    nbCommentaires = Integer.valueOf(commentaires.text());
-                } catch (NumberFormatException e) {
-                    // Nouveaux commentaires : "172 + 5"
-                    String valeur = commentaires.text();
+            // Pas de commentaires pour les publicités
+            if (!monArticleItem.isPublicite()) {
+                Elements lesCommentaires = unArticle.select("span[class=nb_comments]");
+                if (!lesCommentaires.isEmpty()) {
+                    Element commentaires = lesCommentaires.get(0);
+                    try {
+                        nbCommentaires = Integer.valueOf(commentaires.text());
+                    } catch (NumberFormatException e) {
+                        // Nouveaux commentaires : "172 + 5"
+                        String valeur = commentaires.text();
 
-                    // Récupération des éléments
-                    int positionOperateur = valeur.indexOf("+");
-                    String membreGauche = valeur.substring(0, positionOperateur).trim();
-                    String membreDroit = valeur.substring(positionOperateur + 1).trim();
+                        // Récupération des éléments
+                        int positionOperateur = valeur.indexOf("+");
+                        String membreGauche = valeur.substring(0, positionOperateur).trim();
+                        String membreDroit = valeur.substring(positionOperateur + 1).trim();
 
-                    // On additionne
-                    nbCommentaires = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
-                }
-            } else {
-                if (Constantes.DEBUG) {
-                    Log.e("ParseurHTML", "getListeArticles - Pb nb Commentaires");
+                        // On additionne
+                        nbCommentaires = Integer.valueOf(membreGauche) + Integer.valueOf(membreDroit);
+                    }
+                } else {
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles - Pb nb Commentaires");
+                    }
                 }
             }
             monArticleItem.setNbCommentaires(nbCommentaires);
@@ -226,7 +252,7 @@ public class ParseurHTML {
         // Gestion des iframe
         Elements lesIframes = lArticle.select("iframe");
         // généralisation de l'URL en dehors du scheme
-        String[] schemes = {"https://", "http://", "//"};
+        String[] schemes = { "https://", "http://", "//" };
         // Pour chaque iframe
         for (Element uneIframe : lesIframes) {
             // URL du lecteur
@@ -257,75 +283,74 @@ public class ParseurHTML {
                 // Recalcul de l'ID de la vidéo (cas particulier)
                 idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
                 monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\""
-                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
+                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
                     "www.youtube-nocookie.com/embed/")) {
                 /*
                  * Youtube
                  */
                 monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\""
-                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
+                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
             } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
                 /*
                  * Dailymotion
                  */
                 monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\""
-                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
+                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
             } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
                 /*
                  * VIMEO
                  */
                 monRemplacement =
                         "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                + R.drawable.iframe_vimeo + "\" /></a>";
+                        + R.drawable.iframe_vimeo + "\" /></a>";
             } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
                 /*
                  * Videos.gouv.fr
                  */
                 monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\""
-                        + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
             } else if (urlLecteur.startsWith("vid.me")) {
                 /*
                  * Vidme
                  */
                 monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_vidme + "\" /></a>";
+                                  + R.drawable.iframe_vidme + "\" /></a>";
             } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
                 /*
                  * Soundcloud (l'URL commence bien par w.soundcloud !)
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_soundcloud + "\" /></a>";
+                                  + R.drawable.iframe_soundcloud + "\" /></a>";
             } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                 /*
                  * Scribd
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_scribd + "\" /></a>";
+                                  + R.drawable.iframe_scribd + "\" /></a>";
             } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
                 /*
                  * Canal+
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_canalplus + "\" /></a>";
+                                  + R.drawable.iframe_canalplus + "\" /></a>";
             } else if (urlLecteur.startsWith("www.arte.tv/")) {
                 /*
                  * Arte
                  */
                 monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                        + R.drawable.iframe_arte + "\" /></a>";
+                                  + R.drawable.iframe_arte + "\" /></a>";
             } else {
                 /*
                  * Déchet (catch all)
                  */
-                monRemplacement =
-                        "<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                + R.drawable.iframe_non_supportee + "\" /></a>";
+                monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\""
+                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_non_supportee + "\" /></a>";
 
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.e("ParseurHTML",
-                            "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                          "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
                 }
             }
 

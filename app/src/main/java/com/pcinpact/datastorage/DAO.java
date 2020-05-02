@@ -42,7 +42,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma).
      */
-    private static final int BDD_VERSION = 6;
+    private static final int BDD_VERSION = 7;
     /**
      * Nom de la BDD.
      */
@@ -100,6 +100,10 @@ public final class DAO extends SQLiteOpenHelper {
      * Champ articles => dernier commentaire lu
      */
     private static final String ARTICLE_DERNIER_COMMENTAIRE_LU = "dernierCommentaireLu";
+    /**
+     * Champ articles => publicite
+     */
+    private static final String ARTICLE_IS_PUBLICITE = "ispublicite";
 
     /**
      * Table commentaires.
@@ -212,11 +216,12 @@ public final class DAO extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
         String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY, " +
-                ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
-                + " INTEGER NOT NULL, " + ARTICLE_URL + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL
-                + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " +
-                ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
-                + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER);";
+                                   ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
+                                   + " INTEGER NOT NULL, " + ARTICLE_URL + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL
+                                   + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " +
+                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
+                                   + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE
+                                   + " BOOLEAN);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -291,6 +296,9 @@ public final class DAO extends SQLiteOpenHelper {
                 reqUpdateFrom5 = "ALTER TABLE " + BDD_TABLE_COMMENTAIRES_TMP + " RENAME TO " + BDD_TABLE_COMMENTAIRES + ";";
                 db.execSQL(reqUpdateFrom5);
 
+            case 6:
+                String reqUpdateFrom6 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_IS_PUBLICITE + " BOOLEAN;";
+                db.execSQL(reqUpdateFrom6);
 
                 // A mettre avant le default !
                 break;
@@ -323,6 +331,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
+        insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
 
         maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
     }
@@ -442,8 +451,7 @@ public final class DAO extends SQLiteOpenHelper {
     public ArticleItem chargerArticle(final int idArticle) {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
-                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU};
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
         String[] idString = {String.valueOf(idArticle)};
 
@@ -472,8 +480,7 @@ public final class DAO extends SQLiteOpenHelper {
     public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
-                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU};
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
         Cursor monCursor;
 
@@ -511,8 +518,7 @@ public final class DAO extends SQLiteOpenHelper {
     public ArrayList<ArticleItem> chargerArticlesATelecharger() {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
-                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU};
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
         // Articles vides et des articles abonnés non DL
         String[] contenu = new String[]{"", "1", "0"};
@@ -731,6 +737,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setLu((unCursor.getInt(9) > 0));
         monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
         monArticle.setDernierCommLu(unCursor.getInt(11));
+        monArticle.setPublicite(unCursor.getInt(12) > 0);
 
         return monArticle;
     }

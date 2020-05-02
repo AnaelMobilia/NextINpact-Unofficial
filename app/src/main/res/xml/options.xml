@@ -70,6 +70,13 @@
             android:title="@string/optionNbArticles" />
 
         <CheckBoxPreference
+            android:defaultValue="@bool/defautOptionAfficherPublicite"
+            android:key="@string/idOptionAfficherPublicite"
+            android:summary="@string/optionAfficherPubliciteDetail"
+            android:title="@string/optionAfficherPublicite"
+            android:widgetLayout="@layout/options_switchpreferencecompat" />
+
+        <CheckBoxPreference
             android:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
             android:key="@string/idOptionAfficherNbNouveauComm"
             android:summary="@string/optionAfficherNbNouveauCommDetail"
@@ -81,11 +88,11 @@
     <PreferenceCategory android:title="@string/optionsArticles">
         <ListPreference
             android:defaultValue="@string/defautOptionTelechargerImagesv2"
+            android:entries="@array/affichageImagesLitteral"
+            android:entryValues="@array/affichageImagesValeur"
             android:key="@string/idOptionTelechargerImagesv2"
             android:summary="@string/optionTelechargerImageDetail"
-            android:title="@string/optionTelechargerImage"
-            android:entries="@array/affichageImagesLitteral"
-            android:entryValues="@array/affichageImagesValeur" />
+            android:title="@string/optionTelechargerImage" />
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionLiensDansArticles"
             android:key="@string/idOptionLiensDansArticles"

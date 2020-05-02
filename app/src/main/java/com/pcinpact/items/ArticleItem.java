@@ -79,6 +79,10 @@ public class ArticleItem implements Item {
      * ID du dernier commentaire lu
      */
     private int dernierCommLu = 0;
+    /**
+     * L'article est-il une publicite
+     */
+    private boolean isPublicite;
 
     @Override
     public int getType() {
@@ -281,5 +285,19 @@ public class ArticleItem implements Item {
      */
     public void setDernierCommLu(int dernierCommLu) {
         this.dernierCommLu = dernierCommLu;
+    }
+
+    /**
+     * @return isPublicite
+     */
+    public boolean isPublicite() {
+        return isPublicite;
+    }
+
+    /**
+     * @param publicite isPublicite
+     */
+    public void setPublicite(boolean publicite) {
+        isPublicite = publicite;
     }
 }

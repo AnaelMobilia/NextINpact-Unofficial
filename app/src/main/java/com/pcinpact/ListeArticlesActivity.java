@@ -25,9 +25,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -55,6 +52,10 @@ import com.pcinpact.utils.Constantes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Liste des articles.
@@ -113,7 +114,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -161,7 +162,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("ListeArticlesActivity",
-                            "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
+                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
                 }
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
@@ -175,11 +176,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Migration de préférences
         int valeurDefaut = Integer.parseInt(getString(R.string.defautOptionTelechargerImagesv2Test));
         if (Constantes.getOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2,
-                R.string.defautOptionTelechargerImagesv2Test) == valeurDefaut) {
+                                    R.string.defautOptionTelechargerImagesv2Test) == valeurDefaut) {
             // Si pas de valeur cohérente pour l'option de téléchargement des images
             // Ancienne valeur
             boolean valeurOld = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionTelechargerImages,
-                    R.bool.defautOptionTelechargerImages);
+                                                            R.bool.defautOptionTelechargerImages);
             // Nouvelle valeur (actif tout le temps par défaut)
             String valeurNew = getString(R.string.defautOptionTelechargerImagesv2);
             if (!valeurOld) {
@@ -202,9 +203,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.w("ListeArticlesActivity",
-                            "onCreate() - changement taille des textes => " + Constantes.getOptionInt(getApplicationContext(),
-                                    R.string.idOptionZoomTexte,
-                                    R.string.defautOptionZoomTexte));
+                          "onCreate() - changement taille des textes => " + Constantes.getOptionInt(getApplicationContext(),
+                                                                                                    R.string.idOptionZoomTexte,
+                                                                                                    R.string.defautOptionZoomTexte));
                 }
             }
             // Menu debug
@@ -215,9 +216,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.w("ListeArticlesActivity",
-                            "onCreate() - changement option debug => " + Constantes.getOptionBoolean(getApplicationContext(),
-                                    R.string.idOptionDebug,
-                                    R.bool.defautOptionDebug));
+                          "onCreate() - changement option debug => " + Constantes.getOptionBoolean(getApplicationContext(),
+                                                                                                   R.string.idOptionDebug,
+                                                                                                   R.bool.defautOptionDebug));
                 }
             }
             // Debug - Effacement du cache
@@ -253,7 +254,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                R.bool.defautOptionDebug);
+                                                        R.bool.defautOptionDebug);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -270,8 +271,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Est-ce la premiere utilisation de l'application ? [après création du menu]
         Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(),
-                R.string.idOptionInstallationApplication,
-                R.bool.defautOptionInstallationApplication);
+                                                                  R.string.idOptionInstallationApplication,
+                                                                  R.bool.defautOptionInstallationApplication);
         // Si première utilisation : on affiche un disclaimer
         if (premiereUtilisation) {
             // Effacement du cache de l'application v < 1.8.0
@@ -413,7 +414,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 } catch (ActivityNotFoundException e) {
                     // Affichage du numéro de version
                     Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail),
-                            Toast.LENGTH_LONG);
+                                                    Toast.LENGTH_LONG);
                     monToast.show();
 
                     // DEBUG
@@ -484,14 +485,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
              * Téléchargement des pages de liste d'articles
              */
             int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
-                    R.string.defautOptionNbArticles);
+                                                     R.string.defautOptionNbArticles);
             int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
             // téléchargement de chaque page...
             for (int numPage = 1; numPage <= nbPages; numPage++) {
                 // Ma tâche de DL
                 AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
-                        Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
-                        getApplicationContext());
+                                                                     Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
+                                                                     getApplicationContext());
                 // Lancement du téléchargement
                 if (monAHD.run()) {
                     // MàJ animation
@@ -545,11 +546,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 }
                 // téléchargement de la ressource
                 monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO, getApplicationContext(),
-                        isConnecteRequis);
+                                                 isConnecteRequis);
             } else {
                 // téléchargement de la ressource
                 monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,
-                        getApplicationContext());
+                                                 getApplicationContext());
             }
 
             // Lancement du téléchargement
@@ -562,7 +563,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             if (dlIllustration) {
                 // Je lance le téléchargement de sa miniature
                 ImageProvider.telechargerImage(monItem.getUrlIllustration(), Constantes.IMAGE_MINIATURE_ARTICLE, monItem.getId(),
-                        getApplicationContext(), this);
+                                               getApplicationContext(), this);
                 nouveauChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
             }
         }
@@ -597,13 +598,22 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         ArrayList<Item> monRetour = new ArrayList<>();
         String jourActuel = "";
 
+        // Affichage des publicités rédactionnelles
+        Boolean afficherPublicite = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionAfficherPublicite,
+                                                                R.bool.defautOptionAfficherPublicite);
+
         // Nombre d'articles à afficher
         int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
-                R.string.defautOptionNbArticles);
+                                               R.string.defautOptionNbArticles);
         // Chargement des articles depuis la BDD (trié, limité)
         mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
 
         for (ArticleItem article : mesArticles) {
+            // Si c'est de la publicité & que je ne veux pas les afficher...
+            if (article.isPublicite() & !afficherPublicite) {
+                // Je zappe l'article !
+                continue;
+            }
             // Si ce n'est pas la même journée que l'article précédent
             if (!article.getDatePublication().equals(jourActuel)) {
                 // Je met à jour ma date
@@ -624,7 +634,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
             String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                    Constantes.LOCALE).format(dernierRefresh);
+                                                                                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
             headerTextView.setText(monTexte);
         }
@@ -638,14 +648,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
-                + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0) {
+            + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
             }
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                    ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
@@ -672,7 +682,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Si la liste d'articles et de miniatures est chargée (et qu'on ne vient pas de finir de télécharger un article...)
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0
-                && typeDL != Constantes.HTML_ARTICLE) {
+            && typeDL != Constantes.HTML_ARTICLE) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
@@ -685,7 +695,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Si toutes les données sont téléchargées...
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE]
-                + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
+            + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
