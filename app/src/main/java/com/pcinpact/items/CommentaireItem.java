@@ -18,13 +18,13 @@
  */
 package com.pcinpact.items;
 
-import androidx.annotation.NonNull;
-
 import com.pcinpact.utils.Constantes;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.annotation.NonNull;
 
 /**
  * Objet Commentaire.
@@ -159,8 +159,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return commentaire
      */
     public String getCommentaire() {
-        // Fix #246
-        return "<div></div>" + commentaire;
+        return commentaire;
     }
 
     /**

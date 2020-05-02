@@ -523,6 +523,7 @@ public class ParseurHTML {
         Elements lesCitations = lesCommentaires.select("div[class=link_reply_to], div[class=quote_bloc]");
         // On change le type de tag pour un type personnalisé
         lesCitations.tagName(Constantes.TAG_HTML_QUOTE);
+        lesCitations.wrap("<div></div>");
 
         // Italic
         Elements italic = lesCommentaires.select("span[style=font-style:italic]");
