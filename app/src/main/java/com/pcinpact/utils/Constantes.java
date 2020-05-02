@@ -85,7 +85,7 @@ public class Constantes {
     /**
      * Balise HTML pour les citations de commentaires
      */
-    public static final String TAG_HTML_QUOTE = "myQuote";
+    public static final String TAG_HTML_QUOTE = "myquote";
 
     /**
      * Nb de commentaires par page.
