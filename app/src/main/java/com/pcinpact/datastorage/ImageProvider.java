@@ -285,7 +285,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ImageProvider", "gestionTaille() - coeefZoom = " + monCoeff + " => largeur = " + Math.round(
+            Log.d("ImageProvider", "gestionTaille() - coefZoom = " + monCoeff + " => largeur = " + Math.round(
                     uneImage.getIntrinsicWidth() * monCoeff) + " hauteur = " + Math.round(
                     uneImage.getIntrinsicHeight() * monCoeff));
         }
