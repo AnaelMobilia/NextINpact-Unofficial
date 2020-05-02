@@ -20,8 +20,6 @@ package com.pcinpact;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +41,9 @@ import org.jsoup.parser.Parser;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 /**
  * Contenu d'article, utilisé pour le slider
  */
@@ -56,12 +57,17 @@ public class ArticleFragment extends Fragment {
      * @param unContext Contexte de l'application
      * @param articleID ID de l'article concerné
      */
-    public void initialisation(Context unContext, int articleID) {
+    public void initialisation(int articleID) {
         idArticle = articleID;
-        monContext = unContext.getApplicationContext();
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        monContext = context.getApplicationContext();
     }
 
     @Override

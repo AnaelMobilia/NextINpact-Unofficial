@@ -20,9 +20,6 @@ package com.pcinpact;
 
 
 import android.content.Context;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 import com.pcinpact.datastorage.DAO;
@@ -30,6 +27,10 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     /**
@@ -66,7 +67,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         // Création du fragment
         ArticleFragment monFragment = new ArticleFragment();
         // Injection de ses paramètres (non passable via constructeur #201)
-        monFragment.initialisation(monContext, articleID);
+        monFragment.initialisation(articleID);
         return monFragment;
     }
 
