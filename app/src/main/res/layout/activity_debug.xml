@@ -20,7 +20,8 @@
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    style="?attr/themeArticleFond">
 
     <LinearLayout
         style="?attr/themeArticleFond"
@@ -33,11 +34,11 @@
             style="?attr/themeArticleTexte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:paddingRight="?android:attr/scrollbarSize"
+            android:paddingLeft="5dp"
             android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingRight="?android:attr/scrollbarSize"
+            android:paddingBottom="5dp"
             android:text="@string/debugTitre" />
 
         <TextView
@@ -45,10 +46,10 @@
             style="?attr/themeArticleTexte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:paddingRight="?android:attr/scrollbarSize"
+            android:paddingLeft="5dp"
             android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingRight="?android:attr/scrollbarSize"
             android:text="@string/debugPubBeta" />
 
         <Button
@@ -91,10 +92,10 @@
             style="?attr/themeArticleTexte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:paddingStart="5dp"
-            android:paddingRight="?android:attr/scrollbarSize"
-            android:paddingEnd="?android:attr/scrollbarSize" />
+            android:paddingLeft="5dp"
+            android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingRight="?android:attr/scrollbarSize" />
 
     </LinearLayout>
 </ScrollView>
