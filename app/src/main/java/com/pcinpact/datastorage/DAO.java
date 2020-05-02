@@ -781,6 +781,10 @@ public final class DAO extends SQLiteOpenHelper {
     public void viderCommentaires() {
         // Les commentaires
         maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
+        // Dernier commentaire lu des articles
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, 0);
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, null, null);
     }
 
     /**
