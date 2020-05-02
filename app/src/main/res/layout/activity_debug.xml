@@ -65,6 +65,12 @@
             android:text="@string/debugEffacerCacheSmiley" />
 
         <Button
+            android:id="@+id/buttonDeleteCacheCommentaire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugEffacerCacheCommentaire" />
+
+        <Button
             android:id="@+id/buttonDeleteCache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

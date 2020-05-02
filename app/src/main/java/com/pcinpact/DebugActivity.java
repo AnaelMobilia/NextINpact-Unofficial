@@ -20,7 +20,6 @@ package com.pcinpact;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +37,8 @@ import com.pcinpact.utils.Constantes;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Debug de l'application.
@@ -58,7 +59,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -79,13 +80,13 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
             // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
             Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
-                    R.bool.defautOptionDebugEffacerCache);
+                                                                 R.bool.defautOptionDebugEffacerCache);
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
             // Retour utilisateur
             Toast monToast = Toast.makeText(getApplicationContext(),
-                    getApplicationContext().getString(R.string.debugEffacerCacheToast),
-                    Toast.LENGTH_LONG);
+                                            getApplicationContext().getString(R.string.debugEffacerCacheToast),
+                                            Toast.LENGTH_LONG);
             monToast.show();
         });
 
@@ -99,8 +100,23 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
             // Retour utilisateur
             Toast monToast = Toast.makeText(getApplicationContext(),
-                    getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
-                    Toast.LENGTH_LONG);
+                                            getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
+                                            Toast.LENGTH_LONG);
+            monToast.show();
+        });
+
+        /*
+         * Bouton : effacement des commentaires
+         */
+        Button buttonCommentaire = this.findViewById(R.id.buttonDeleteCacheCommentaire);
+        buttonCommentaire.setOnClickListener((View arg0) -> {
+            // Effacement du cache
+            CacheManager.effacerCacheCommentaire(getApplicationContext());
+
+            // Retour utilisateur
+            Toast monToast = Toast.makeText(getApplicationContext(),
+                                            getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast),
+                                            Toast.LENGTH_LONG);
             monToast.show();
         });
 
@@ -127,12 +143,12 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             for (ArticleItem unArticle : mesArticles) {
                 // Contenu de l'objet
                 monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
-                        + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
-                        + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
-                        + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
-                        + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre()
-                        + "\");\n" + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n"
-                        + "unArticle.setAbonne(" + unArticle.isAbonne() + ");";
+                             + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
+                             + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
+                             + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
+                             + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n"
+                             + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" + "unArticle.setAbonne("
+                             + unArticle.isAbonne() + ");";
 
                 // Insertion de l'objet dans l'arraylist
                 monRetour += "\nmesArticles.add(unArticle);";
@@ -193,8 +209,8 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
         buttonTesterConnexion.setOnClickListener((View arg0) -> {
             AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
-                    Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
-                    true);
+                                                                 Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
+                                                                 true);
 
             monAHD.run();
         });
@@ -207,7 +223,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             // Je cache tous les boutons génériques !
             buttonArrayList.setVisibility(View.GONE);
             buttonListeFichier.setVisibility(View.GONE);
-            buttonSmileys.setVisibility(View.GONE);
             buttonTesterConnexion.setVisibility(View.GONE);
 
             // ID de l'article concerné

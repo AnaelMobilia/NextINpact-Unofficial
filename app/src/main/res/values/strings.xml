@@ -156,6 +156,8 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="debugEffacerCacheToast">"Effacement du cache de l'application !"</string>
     <string name="debugEffacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
     <string name="debugEffacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
+    <string name="debugEffacerCacheCommentaire">"Effacer les commentaires du cache de l'application"</string>
+    <string name="debugEffacerCacheCommentaireToast">"Effacement des commentaires du cache de l'application !"</string>
     <string name="debugGenererArrayList">"Développement - Log.e(ArrayList[ArticleItem])"</string>
     <string name="debugListeFichiers">Lister les fichiers</string>
     <string name="debugTesterConnexion">Tester la connexion compte abonné</string>

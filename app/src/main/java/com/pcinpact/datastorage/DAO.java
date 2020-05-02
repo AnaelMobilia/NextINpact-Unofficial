@@ -776,6 +776,14 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
+     * Suppression des commentaires.
+     */
+    public void viderCommentaires() {
+        // Les commentaires
+        maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
+    }
+
+    /**
      * Cache - enregistrement d'une image.
      *
      * @param idArticle ID de l'article

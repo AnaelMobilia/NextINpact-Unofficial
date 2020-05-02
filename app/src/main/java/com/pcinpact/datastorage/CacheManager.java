@@ -144,7 +144,7 @@ public class CacheManager {
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("CacheManager", "nettoyerCache()", e);
+                Log.e("CacheManager", "effacerCache()", e);
             }
         }
     }
@@ -157,6 +157,36 @@ public class CacheManager {
     public static void effacerCacheSmiley(final Context unContext) {
         Context monContext = unContext.getApplicationContext();
         effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
+    }
+
+    /**
+     * Supprime les commentaires du cache.
+     *
+     * @param unContext contexte application
+     */
+    public static void effacerCacheCommentaire(final Context unContext) {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("CacheManager", "effacerCacheCommentaire()");
+        }
+
+        try {
+            // Protection du context
+            Context monContext = unContext.getApplicationContext();
+
+            // Connexion sur la BDD
+            DAO monDAO = DAO.getInstance(monContext);
+
+            /*
+             * Vidage BDD
+             */
+            monDAO.viderCommentaires();
+        } catch (Exception e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("CacheManager", "effacerCacheCommentaire()", e);
+            }
+        }
     }
 
     /**
