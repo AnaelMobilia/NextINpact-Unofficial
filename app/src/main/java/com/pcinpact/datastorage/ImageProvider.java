@@ -163,7 +163,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             boolean telechargerImages = true;
 
             int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
-                    R.string.defautOptionTelechargerImagesv2);
+                                                       R.string.defautOptionTelechargerImagesv2);
             if (valeurOption == 0) {
                 // Pas de téléchargement des images
                 telechargerImages = false;
@@ -247,8 +247,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.d("ImageProvider",
-                    "gestionTaille() - (" + monTypeImages + ") Ecran : largeur = " + metrics.widthPixels + " hauteur = "
-                            + metrics.heightPixels + " densité = " + metrics.densityDpi);
+                  "gestionTaille() - (" + monTypeImages + ") Ecran : largeur = " + metrics.widthPixels + " hauteur = "
+                  + metrics.heightPixels + " densité = " + metrics.densityDpi);
         }
 
         float monCoeff = 1;
@@ -279,16 +279,19 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             monCoeff = 1;
         }
 
-        // On définit la taille de l'image
-        uneImage.setBounds(0, 0, Math.round(uneImage.getIntrinsicWidth() * monCoeff),
-                Math.round(uneImage.getIntrinsicHeight() * monCoeff));
+        // Calcul des nouvelles dimensions
+        int newWidth = Math.round(uneImage.getIntrinsicWidth() * monCoeff);
+        int newHeight = Math.round(uneImage.getIntrinsicHeight() * monCoeff);
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ImageProvider", "gestionTaille() - coefZoom = " + monCoeff + " => largeur = " + Math.round(
-                    uneImage.getIntrinsicWidth() * monCoeff) + " hauteur = " + Math.round(
-                    uneImage.getIntrinsicHeight() * monCoeff));
+            Log.d("ImageProvider",
+                  "gestionTaille() - coefZoom = " + monCoeff + " => largeur : " + uneImage.getIntrinsicWidth() + " -> " + newWidth
+                  + " - hauteur : " + uneImage.getIntrinsicHeight() + " -> " + newHeight);
         }
+
+        // On définit la taille de l'image
+        uneImage.setBounds(0, 0, newWidth, newHeight);
 
         return uneImage;
     }
@@ -316,7 +319,7 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
             monDAO.cacheEnregistrerImage(articleID, URL, type);
             if (Constantes.DEBUG) {
                 Log.d("ImageProvider",
-                        "telechargerImage() - enregistrement cache pour " + URL + " - " + articleID + " - " + type);
+                      "telechargerImage() - enregistrement cache pour " + URL + " - " + articleID + " - " + type);
             }
         }
 
@@ -457,8 +460,8 @@ public class ImageProvider implements ImageGetter, RefreshDisplayInterface {
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("ImageProvider",
-                            "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
-                                    + idReference);
+                          "downloadImageFini() - ID de la textview DIFFERENT " + uneURL + " - " + maView.getId() + " != "
+                          + idReference);
                 }
             }
         }
