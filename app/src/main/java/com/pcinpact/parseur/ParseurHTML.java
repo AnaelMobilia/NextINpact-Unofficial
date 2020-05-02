@@ -524,6 +524,18 @@ public class ParseurHTML {
         // On change le type de tag pour un type personnalisé
         lesCitations.tagName(Constantes.TAG_HTML_QUOTE);
 
+        // Italic
+        Elements italic = lesCommentaires.select("span[style=font-style:italic]");
+        italic.tagName("i");
+
+        // Gras
+        Elements bold = lesCommentaires.select("span[style=font-weight:bold]");
+        bold.tagName("b");
+
+        // Souligné
+        Elements souligne = lesCommentaires.select("span[style=text-decoration:underline]");
+        souligne.tagName("u");
+
         // Gestion des URL relatives
         Elements lesLiens = lesCommentaires.select("a[href]");
         // Pour chaque lien
