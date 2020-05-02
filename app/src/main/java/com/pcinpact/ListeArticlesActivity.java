@@ -304,6 +304,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("ListeArticlesActivity", "onItemClick() -" + position);
+        }
+
         // récupère l'article en question
         ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
