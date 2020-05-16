@@ -20,6 +20,8 @@ package com.pcinpact.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -342,8 +344,15 @@ public class ItemsAdapter extends BaseAdapter {
 
                     articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
-                    Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
-                            R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                    if (checkTelechargementImage(monContext)) {
+                        // Téléchargement OK
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                    } else {
+                        // Uniquement avec le cache
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                    }
 
                     // On applique le zoom éventuel
                     appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
@@ -482,8 +491,16 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem caii = (ContenuArticleImageItem) i;
 
                     // Récupération de l'image
-                    Glide.with(monContext).load(caii.getContenu()).error(R.drawable.logo_nextinpact_barre).into(
-                            contenuImageVH.contenu);
+                    if (checkTelechargementImage(monContext)) {
+                        // Téléchargement OK
+                        Glide.with(monContext).load(caii.getContenu()).error(R.drawable.logo_nextinpact_barre).into(
+                                contenuImageVH.contenu);
+                    } else {
+                        // Uniquement avec le cache
+                        Glide.with(monContext).load(caii.getContenu()).error(
+                                R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(contenuImageVH.contenu);
+                    }
+
 
                     // Définition de l'ID du photoview
                     contenuImageVH.contenu.setId(caii.getArticleID());
@@ -538,5 +555,34 @@ public class ItemsAdapter extends BaseAdapter {
             Log.d("ItemsAdapter",
                   "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
         }
+    }
+
+    /**
+     * Vérifie si on peut télécharger une image ou s'il faut utiliser seulement le cache local
+     *
+     * @param monContext contexte
+     * @return boolean (1 télécharger / 0 cache only)
+     */
+    private boolean checkTelechargementImage(Context monContext) {
+        // Téléchargement des images ?
+        boolean telechargerImages = true;
+
+        int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
+                                                   R.string.defautOptionTelechargerImagesv2);
+        if (valeurOption == 0) {
+            // Pas de téléchargement des images
+            telechargerImages = false;
+        } else if (valeurOption == 1) {
+            // Téléchargement uniquement en WiFi
+            ConnectivityManager cm = (ConnectivityManager) monContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            // Est-on connecté en WiFi ?
+            if (activeNetwork == null || activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
+                telechargerImages = false;
+            }
+        }
+        return telechargerImages;
     }
 }
