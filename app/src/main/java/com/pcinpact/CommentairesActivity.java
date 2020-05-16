@@ -20,9 +20,6 @@ package com.pcinpact;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +41,10 @@ import com.pcinpact.utils.Constantes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Affichage des commentaires.
@@ -453,11 +454,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Arrêt des gris-gris en GUI
         finTelechargement();
-    }
-
-    @Override
-    public void downloadImageFini(final String uneURL) {
-        // Aucune action.
     }
 
     /**

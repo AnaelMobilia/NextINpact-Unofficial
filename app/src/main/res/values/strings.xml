@@ -73,6 +73,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
     <string name="erreurCompteAbonnement">"Votre abonnement NXI est expiré, les articles Abonné ne pourront pas être lus !"</string>
+    <string name="erreurZoomImage">"Oups…! Cette image ne peut pas être affichée."</string>
 
     <!-- Vue "Options" -->
     <!-- Options : Générales -->
@@ -139,6 +140,8 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionTelechargerImages">20</string>
     <string name="idOptionTelechargerImagesv2">21</string>
     <string name="idOptionAfficherPublicite">22</string>
+    <!-- Version 2.4.0 -->
+    <string name="idOptionVersion240">23</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
@@ -154,8 +157,6 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="debugPubBeta">"Activez les versions beta ! Cf description de l'app sur le Play Store !"</string>
     <string name="debugEffacerCache">"Effacer TOUT le cache de l'application"</string>
     <string name="debugEffacerCacheToast">"Effacement du cache de l'application !"</string>
-    <string name="debugEffacerCacheSmiley">"Effacer les smileys du cache de l'application"</string>
-    <string name="debugEffacerCacheSmileyToast">"Effacement des smileys du cache de l'application !"</string>
     <string name="debugEffacerCacheCommentaire">"Effacer les commentaires du cache de l'application"</string>
     <string name="debugEffacerCacheCommentaireToast">"Effacement des commentaires du cache de l'application !"</string>
     <string name="debugGenererArrayList">"Développement - Log.e(ArrayList[ArticleItem])"</string>

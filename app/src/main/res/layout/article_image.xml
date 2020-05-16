@@ -31,7 +31,7 @@
     android:paddingTop="5dp">
 
     <!-- Contenu image dans ArticleActivity -->
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imageArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

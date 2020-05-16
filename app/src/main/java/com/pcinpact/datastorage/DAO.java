@@ -28,10 +28,8 @@ import android.util.Log;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.utils.Constantes;
-import com.pcinpact.utils.Tools;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Abstraction de la BDD sqlite.
@@ -152,25 +150,9 @@ public final class DAO extends SQLiteOpenHelper {
     private static final String REFRESH_TIMESTAMP = "timestamp";
 
     /**
-     * Table cacheImage.
+     * Table cacheImage => plus utilisé (conservé pour la suppression de la table)
      */
     private static final String BDD_TABLE_CACHE_IMAGE = "cacheImage";
-    /**
-     * Champ cacheImage => md5 de l'URL de l'image
-     */
-    private static final String CACHE_IMAGE_MD5 = "md5";
-    /**
-     * Champ cacheImage => ID de l'article
-     */
-    private static final String CACHE_IMAGE_ID_ARTICLE = "idArticle";
-    /**
-     * Champ cacheImage => Type d'image
-     */
-    private static final String CACHE_IMAGE_TYPE_IMAGE = "typeImage";
-    /**
-     * Champ cacheImage => URL de l'image
-     */
-    private static final String CACHE_IMAGE_URL_IMAGE = "urlImage";
 
     /**
      * BDD SQLite.
@@ -196,7 +178,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Fournit l'instance de la BDD.
      *
-     * @param unContext contex de l'application
+     * @param unContext context de l'application
      * @return lien sur la BDD
      */
     public static DAO getInstance(final Context unContext) {
@@ -215,33 +197,27 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
-        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY, " +
-                                   ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
-                                   + " INTEGER NOT NULL, " + ARTICLE_URL + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL
-                                   + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " +
-                                   ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
-                                   + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE
-                                   + " BOOLEAN);";
+        String reqCreateArticles =
+                "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER PRIMARY KEY, " + ARTICLE_TITRE
+                + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_URL
+                + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS
+                + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
+                + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
-        String reqCreateCommentaires = "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " +
-                COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "("
-                + ARTICLE_ID + "), " + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR
-                + " TEXT, " + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU
-                + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_UUID + "));";
+        String reqCreateCommentaires =
+                "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " + COMMENTAIRE_ID_ARTICLE
+                + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_ID + "), " + COMMENTAIRE_UUID
+                + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP + " INTEGER, "
+                + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_UUID + "));";
         db.execSQL(reqCreateCommentaires);
 
         // Table des refresh
-        String reqCreateRefresh = "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_ID + " INTEGER PRIMARY KEY, " +
-                REFRESH_TIMESTAMP + " INTEGER);";
+        String reqCreateRefresh =
+                "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_ID + " INTEGER PRIMARY KEY, " + REFRESH_TIMESTAMP
+                + " INTEGER);";
         db.execSQL(reqCreateRefresh);
-
-        // Table du cache des images
-        String reqCreateCacheImage = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER, " +
-                CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, "
-                + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
-        db.execSQL(reqCreateCacheImage);
     }
 
     /**
@@ -255,37 +231,34 @@ public final class DAO extends SQLiteOpenHelper {
                 db.execSQL(reqUpdateFrom1);
 
             case 2:
-                String reqUpdateFrom2 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DL_CONTENU_ABONNE +
-                        " BOOLEAN;";
+                String reqUpdateFrom2 =
+                        "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN;";
                 db.execSQL(reqUpdateFrom2);
 
             case 3:
-                String reqUpdateFrom3 = "CREATE TABLE " + BDD_TABLE_CACHE_IMAGE + " (" + CACHE_IMAGE_ID_ARTICLE + " INTEGER, " +
-                        CACHE_IMAGE_MD5 + " INTEGER, " + CACHE_IMAGE_TYPE_IMAGE + " INTEGER, "
-                        + CACHE_IMAGE_URL_IMAGE + " INTEGER);";
-                db.execSQL(reqUpdateFrom3);
-
+                // Etait la création de la table de cache des images
             case 4:
-                String reqUpdateFrom4 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DERNIER_COMMENTAIRE_LU +
-                        " INTEGER;";
+                String reqUpdateFrom4 =
+                        "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER;";
                 db.execSQL(reqUpdateFrom4);
 
             case 5:
                 // Création de la nouvelle table
                 String reqUpdateFrom5 =
-                        "CREATE TABLE " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " +
-                                COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_ID + "), "
-                                + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP
-                                + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", "
-                                + COMMENTAIRE_UUID + "));";
+                        "CREATE TABLE " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, "
+                        + COMMENTAIRE_ID_ARTICLE + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_ID + "), "
+                        + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP
+                        + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE + ", "
+                        + COMMENTAIRE_UUID + "));";
                 db.execSQL(reqUpdateFrom5);
 
                 // Import des données
-                reqUpdateFrom5 = "INSERT INTO " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + ", " +
-                        COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_UUID + ", " + COMMENTAIRE_AUTEUR + ", "
-                        + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU + ") " + "SELECT " + COMMENTAIRE_ID + ", " +
-                        COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_ID + ", " + COMMENTAIRE_AUTEUR + ", "
-                        + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU + " FROM " + BDD_TABLE_COMMENTAIRES + ";";
+                reqUpdateFrom5 =
+                        "INSERT INTO " + BDD_TABLE_COMMENTAIRES_TMP + " (" + COMMENTAIRE_ID + ", " + COMMENTAIRE_ID_ARTICLE + ", "
+                        + COMMENTAIRE_UUID + ", " + COMMENTAIRE_AUTEUR + ", " + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU
+                        + ") " + "SELECT " + COMMENTAIRE_ID + ", " + COMMENTAIRE_ID_ARTICLE + ", " + COMMENTAIRE_ID + ", "
+                        + COMMENTAIRE_AUTEUR + ", " + COMMENTAIRE_TIMESTAMP + ", " + COMMENTAIRE_CONTENU + " FROM "
+                        + BDD_TABLE_COMMENTAIRES + ";";
                 db.execSQL(reqUpdateFrom5);
 
                 // Suppression ancienne table
@@ -297,7 +270,11 @@ public final class DAO extends SQLiteOpenHelper {
                 db.execSQL(reqUpdateFrom5);
 
             case 6:
+                // Gestion des publi-publication
                 String reqUpdateFrom6 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_IS_PUBLICITE + " BOOLEAN;";
+                db.execSQL(reqUpdateFrom6);
+                // Suppression de la table cache images
+                reqUpdateFrom6 = "DROP TABLE " + BDD_TABLE_CACHE_IMAGE;
                 db.execSQL(reqUpdateFrom6);
 
                 // A mettre avant le default !
@@ -371,7 +348,7 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(articleID)});
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(articleID) });
     }
 
     /**
@@ -382,9 +359,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public int getDernierCommentaireLu(final int articleID) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ARTICLE_DERNIER_COMMENTAIRE_LU};
+        String[] mesColonnes = new String[]{ ARTICLE_DERNIER_COMMENTAIRE_LU };
 
-        String[] idString = {String.valueOf(articleID)};
+        String[] idString = { String.valueOf(articleID) };
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
@@ -417,7 +394,7 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_NB_COMMS, nbCommentaires);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(articleID)});
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(articleID) });
     }
 
     /**
@@ -430,7 +407,7 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_IS_LU, true);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(articleID)});
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{ String.valueOf(articleID) });
     }
 
     /**
@@ -439,7 +416,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param unArticle ArticleItem
      */
     public void supprimerArticle(final ArticleItem unArticle) {
-        maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_ID + "=?", new String[]{String.valueOf(unArticle.getId())});
+        maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_ID + "=?", new String[]{ String.valueOf(unArticle.getId()) });
     }
 
     /**
@@ -450,10 +427,11 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArticleItem chargerArticle(final int idArticle) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
-        String[] idString = {String.valueOf(idArticle)};
+        String[] idString = { String.valueOf(idArticle) };
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", idString, null, null, null);
@@ -479,8 +457,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
         Cursor monCursor;
 
@@ -517,11 +496,12 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<ArticleItem> chargerArticlesATelecharger() {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
-                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
+        String[] mesColonnes = new String[]{ ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_URL,
+                ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
+                ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
 
         // Articles vides et des articles abonnés non DL
-        String[] contenu = new String[]{"", "1", "0"};
+        String[] contenu = new String[]{ "", "1", "0" };
         String where = ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE + "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)";
         Cursor monCursor = maBDD.query(true, BDD_TABLE_ARTICLES, mesColonnes, where, contenu, null, null, null, null);
 
@@ -585,7 +565,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param unCommentaire CommentaireItem
      */
     private void supprimerCommentaire(final CommentaireItem unCommentaire) {
-        String[] mesParams = {String.valueOf(unCommentaire.getArticleId()), String.valueOf(unCommentaire.getUuid())};
+        String[] mesParams = { String.valueOf(unCommentaire.getArticleId()), String.valueOf(unCommentaire.getUuid()) };
 
         maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_UUID + "=?", mesParams);
     }
@@ -596,7 +576,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param articleID ID de l'article
      */
     public void supprimerCommentaire(final int articleID) {
-        String[] mesParams = {String.valueOf(articleID)};
+        String[] mesParams = { String.valueOf(articleID) };
 
         maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=?", mesParams);
     }
@@ -610,10 +590,10 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private CommentaireItem chargerCommentaire(final int idArticle, final int uuidCommentaire) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
-                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU};
+        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
+                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
 
-        String[] idArticleEtCommentaire = {String.valueOf(idArticle), String.valueOf(uuidCommentaire)};
+        String[] idArticleEtCommentaire = { String.valueOf(idArticle), String.valueOf(uuidCommentaire) };
         String where = COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_UUID + "=?";
 
         // Requête sur la BDD
@@ -641,12 +621,12 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<CommentaireItem> chargerCommentairesTriParDate(final int articleID) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
-                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU};
+        String[] mesColonnes = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR,
+                COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ID_ARTICLE + "=?",
-                new String[]{String.valueOf(articleID)}, null, null, "2");
+                                       new String[]{ String.valueOf(articleID) }, null, null, "2");
 
         ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;
@@ -672,9 +652,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public long chargerDateRefresh(final int idArticle) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{REFRESH_TIMESTAMP};
+        String[] mesColonnes = new String[]{ REFRESH_TIMESTAMP };
 
-        String[] idString = {String.valueOf(idArticle)};
+        String[] idString = { String.valueOf(idArticle) };
 
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_REFRESH, mesColonnes, REFRESH_ARTICLE_ID + "=?", idString, null, null, null);
@@ -713,7 +693,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param idArticle ID de l'article
      */
     public void supprimerDateRefresh(final int idArticle) {
-        maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)});
+        maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_ID + "=?", new String[]{ String.valueOf(idArticle) });
     }
 
     /**
@@ -785,63 +765,5 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, 0);
         maBDD.update(BDD_TABLE_ARTICLES, updateValues, null, null);
-    }
-
-    /**
-     * Cache - enregistrement d'une image.
-     *
-     * @param idArticle ID de l'article
-     * @param UrlImage  URL de l'image
-     * @param typeImage Type d'image (cf Constantes)
-     */
-    public void cacheEnregistrerImage(final int idArticle, final String UrlImage, final int typeImage) {
-        ContentValues insertValues = new ContentValues();
-        insertValues.put(CACHE_IMAGE_ID_ARTICLE, idArticle);
-        insertValues.put(CACHE_IMAGE_MD5, Tools.md5(UrlImage));
-        insertValues.put(CACHE_IMAGE_TYPE_IMAGE, typeImage);
-        insertValues.put(CACHE_IMAGE_URL_IMAGE, UrlImage);
-
-        maBDD.insert(BDD_TABLE_CACHE_IMAGE, null, insertValues);
-    }
-
-    /**
-     * Cache - suppression des images d'un article.
-     *
-     * @param idArticle ID de l'article concerné
-     */
-    public void cacheSupprimer(final int idArticle) {
-        maBDD.delete(BDD_TABLE_CACHE_IMAGE, CACHE_IMAGE_ID_ARTICLE + "=?", new String[]{String.valueOf(idArticle)});
-    }
-
-    /**
-     * Cache - liste toutes les images d'un type.
-     *
-     * @param typeImage type d'image souhaité
-     * @return liste d'images <MD5, URL>
-     */
-    public HashMap<String, String> cacheListeImages(final int typeImage) {
-        // Retour
-        HashMap<String, String> monRetour = new HashMap<>();
-
-        // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{CACHE_IMAGE_MD5, CACHE_IMAGE_URL_IMAGE};
-
-        // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_CACHE_IMAGE, mesColonnes, CACHE_IMAGE_TYPE_IMAGE + "=?",
-                new String[]{String.valueOf(typeImage)}, null, null, null);
-
-        // Je passe tous les résultats
-        while (monCursor.moveToNext()) {
-            // Je charge les données de l'objet
-            String md5 = monCursor.getString(0);
-            String url = monCursor.getString(1);
-
-            // Et l'enregistre
-            monRetour.put(md5, url);
-        }
-        // Fermeture du curseur
-        monCursor.close();
-
-        return monRetour;
     }
 }

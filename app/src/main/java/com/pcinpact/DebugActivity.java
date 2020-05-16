@@ -91,21 +91,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         });
 
         /*
-         * Bouton : effacement des smileys
-         */
-        Button buttonSmileys = this.findViewById(R.id.buttonDeleteCacheSmiley);
-        buttonSmileys.setOnClickListener((View arg0) -> {
-            // Effacement du cache
-            CacheManager.effacerCacheSmiley(getApplicationContext());
-
-            // Retour utilisateur
-            Toast monToast = Toast.makeText(getApplicationContext(),
-                                            getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
-                                            Toast.LENGTH_LONG);
-            monToast.show();
-        });
-
-        /*
          * Bouton : effacement des commentaires
          */
         Button buttonCommentaire = this.findViewById(R.id.buttonDeleteCacheCommentaire);
@@ -299,11 +284,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
 
     @Override
     public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
-
-    }
-
-    @Override
-    public void downloadImageFini(String uneURL) {
 
     }
 }

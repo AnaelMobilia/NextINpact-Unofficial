@@ -19,9 +19,9 @@
  */
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/themeArticleFond"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    style="?attr/themeArticleFond">
+    android:layout_height="fill_parent">
 
     <LinearLayout
         style="?attr/themeArticleFond"
@@ -57,12 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/debugListeFichiers" />
-
-        <Button
-            android:id="@+id/buttonDeleteCacheSmiley"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/debugEffacerCacheSmiley" />
 
         <Button
             android:id="@+id/buttonDeleteCacheCommentaire"
