@@ -35,9 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
-            android:paddingLeft="5dp"
             android:paddingEnd="?android:attr/scrollbarSize"
-            android:paddingRight="?android:attr/scrollbarSize"
             android:paddingBottom="5dp"
             android:text="@string/debugTitre" />
 
@@ -47,16 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
-            android:paddingLeft="5dp"
             android:paddingEnd="?android:attr/scrollbarSize"
-            android:paddingRight="?android:attr/scrollbarSize"
             android:text="@string/debugPubBeta" />
-
-        <Button
-            android:id="@+id/buttonListerCache"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/debugListeFichiers" />
 
         <Button
             android:id="@+id/buttonDeleteCacheCommentaire"
@@ -93,9 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
-            android:paddingLeft="5dp"
-            android:paddingEnd="?android:attr/scrollbarSize"
-            android:paddingRight="?android:attr/scrollbarSize" />
+            android:paddingEnd="?android:attr/scrollbarSize" />
 
     </LinearLayout>
 </ScrollView>

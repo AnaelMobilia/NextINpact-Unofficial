@@ -162,7 +162,7 @@ public class CacheManager {
     /**
      * Efface le cache avant la v2.4.0
      *
-     * @param unContext
+     * @param unContext contexte
      */
     public static void effacerCacheV240(final Context unContext) {
         // Protection du context
@@ -211,9 +211,9 @@ public class CacheManager {
  * Effacement du cache des images (Glide)
  */
 class CleanImageAsyncTask extends AsyncTask {
-    private Context monContext;
+    final private Context monContext;
 
-    public CleanImageAsyncTask(Context context) {
+    CleanImageAsyncTask(Context context) {
         monContext = context;
     }
 
@@ -223,10 +223,5 @@ class CleanImageAsyncTask extends AsyncTask {
         Glide.get(monContext).clearDiskCache();
         Glide.get(monContext).clearMemory();
         return null;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 }

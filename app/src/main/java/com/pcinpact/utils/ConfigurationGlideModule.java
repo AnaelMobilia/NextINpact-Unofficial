@@ -25,6 +25,8 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
 
+import androidx.annotation.NonNull;
+
 
 /**
  * Configuration de Glide -> https://bumptech.github.io/glide/doc/configuration.html
@@ -34,11 +36,11 @@ public class ConfigurationGlideModule extends AppGlideModule {
     /**
      * 50 Mo de cache
      *
-     * @param context
-     * @param builder
+     * @param context contexte
+     * @param builder GlideBuilder
      */
     @Override
-    public void applyOptions(Context context, GlideBuilder builder) {
+    public void applyOptions(@NonNull Context context, GlideBuilder builder) {
         int diskCacheSizeBytes = 1024 * 1024 * 50; // 50 Mo de cache
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, diskCacheSizeBytes));
     }
@@ -46,7 +48,7 @@ public class ConfigurationGlideModule extends AppGlideModule {
     /**
      * Glide v4 - https://bumptech.github.io/glide/doc/configuration.html#manifest-parsing
      *
-     * @return
+     * @return boolean
      */
     @Override
     public boolean isManifestParsingEnabled() {

@@ -28,6 +28,7 @@ import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -38,15 +39,10 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      */
     private final ArrayList<ArticleItem> mesArticles;
 
-    /**
-     * Variables passées à ArticleFragment
-     */
-    private final Context monContext;
-
-    public ArticlePagerAdapter(FragmentManager fm, Context unContext) {
+    ArticlePagerAdapter(FragmentManager fm, Context unContext) {
         super(fm);
 
-        monContext = unContext.getApplicationContext();
+        Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
 
         // Nombre d'articles à afficher
@@ -54,6 +50,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         // Récupération de la position de l'article
@@ -82,7 +79,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      * @param position position dans la liste
      * @return ID de l'article
      */
-    public int getArticleID(int position) {
+    int getArticleID(int position) {
         return mesArticles.get(position).getId();
     }
 
@@ -92,7 +89,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
      * @param articleID ID de l'article
      * @return position affichée de l'article
      */
-    public int getPosition(int articleID) {
+    int getPosition(int articleID) {
         int index = 0;
 
         // Parcours de l'ensemble à la recherche de mon articleID

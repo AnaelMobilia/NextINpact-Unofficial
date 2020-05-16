@@ -54,7 +54,6 @@ public class ArticleFragment extends Fragment {
     /**
      * Passage de toutes les valeurs requises
      *
-     * @param unContext Contexte de l'application
      * @param articleID ID de l'article concerné
      */
     public void initialisation(int articleID) {

@@ -1,7 +1,24 @@
 /*
- * Copyright (c) 2020. Yaser Rajabi https://github.com/yrajabi
+ * Copyright 2013 - 2020 Anael Mobilia and contributors
+ *
+ * This file is part of NextINpact-Unofficial.
+ *
+ * NextINpact-Unofficial is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * NextINpact-Unofficial is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
+ */
+/* Originally source : https://gist.github.com/yrajabi/5776f4ade5695009f87ce7fcbc08078f
+ * Originally Copyright (c) 2020. Yaser Rajabi https://github.com/yrajabi
  * Based on code by https://github.com/ddekanski
- * Source : https://gist.github.com/yrajabi/5776f4ade5695009f87ce7fcbc08078f
  * Issue : https://github.com/bumptech/glide/issues/3328
  */
 
@@ -29,22 +46,11 @@ import androidx.annotation.Nullable;
 public class GlideImageGetter implements Html.ImageGetter {
     private WeakReference<TextView> container;
     private boolean matchParentWidth;
-    private HtmlImagesHandler imagesHandler;
     private float density = 1.0f;
 
-    public GlideImageGetter(TextView textView) {
-        this(textView, false, false, null);
-    }
-
-    public GlideImageGetter(TextView textView, boolean matchParentWidth, HtmlImagesHandler imagesHandler) {
-        this(textView, matchParentWidth, false, imagesHandler);
-    }
-
-    public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware,
-                            @Nullable HtmlImagesHandler imagesHandler) {
+    public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware) {
         this.container = new WeakReference<>(textView);
         this.matchParentWidth = matchParentWidth;
-        this.imagesHandler = imagesHandler;
         if (densityAware) {
             density = container.get().getResources().getDisplayMetrics().density;
         }
@@ -52,11 +58,6 @@ public class GlideImageGetter implements Html.ImageGetter {
 
     @Override
     public Drawable getDrawable(String source) {
-
-        if (imagesHandler != null) {
-            imagesHandler.addImage(source);
-        }
-
         BitmapDrawablePlaceholder drawable = new BitmapDrawablePlaceholder();
 
         container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
@@ -153,9 +154,5 @@ public class GlideImageGetter implements Html.ImageGetter {
         @Override
         public void onDestroy() {
         }
-    }
-
-    public interface HtmlImagesHandler {
-        void addImage(String uri);
     }
 }

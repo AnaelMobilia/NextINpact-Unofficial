@@ -47,7 +47,7 @@ import javax.net.ssl.HttpsURLConnection;
  *
  * @author Anael
  */
-public class Downloader {
+class Downloader {
     /**
      * Conteneur à cookies.
      */

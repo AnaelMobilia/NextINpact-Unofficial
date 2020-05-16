@@ -24,9 +24,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
     android:paddingStart="5dp"
-    android:paddingRight="?android:attr/scrollbarSize"
     android:paddingEnd="?android:attr/scrollbarSize"
     android:paddingTop="5dp">
 
