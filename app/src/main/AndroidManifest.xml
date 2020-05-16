@@ -54,50 +54,30 @@
             android:name=".ArticleActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".CommentairesActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".OptionsActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".ImageActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme"></activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".DebugActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
     </application>
 </manifest>

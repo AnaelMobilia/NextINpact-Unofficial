@@ -40,7 +40,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     private final ArrayList<ArticleItem> mesArticles;
 
     ArticlePagerAdapter(FragmentManager fm, Context unContext) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
