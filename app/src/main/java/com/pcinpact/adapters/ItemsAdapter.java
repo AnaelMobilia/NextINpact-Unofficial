@@ -396,7 +396,7 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire;
                     try {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                                           new GlideImageGetter(commentaireVH.commentaire, true, true),
+                                                           new GlideImageGetter(commentaireVH.commentaire, false, true),
                                                            new TagHandler());
                     } catch (Exception e) {
                         if (Constantes.DEBUG) {
