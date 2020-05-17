@@ -201,8 +201,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             idDernierCommentaire = mesCommentaires.size();
         }
 
-        // Le cast en int supprime la partie après la virgule
-        int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
+        // Quelle est la page à charger (actuelle si pas 10 commentaires, sinon la prochaine)
+        int maPage = Math.round((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
         // Création de l'URL
         String monURL =
