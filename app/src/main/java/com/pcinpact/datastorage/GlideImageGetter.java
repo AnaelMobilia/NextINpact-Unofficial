@@ -36,7 +36,6 @@ import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.pcinpact.R;
 
 import java.lang.ref.WeakReference;
 
@@ -47,13 +46,18 @@ public class GlideImageGetter implements Html.ImageGetter {
     private WeakReference<TextView> container;
     private boolean matchParentWidth;
     private float density = 1.0f;
+    private int placeholder;
+    private int error;
 
-    public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware) {
+    public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware, int placeholderImage,
+                            int errorImage) {
         this.container = new WeakReference<>(textView);
         this.matchParentWidth = matchParentWidth;
         if (densityAware) {
             density = container.get().getResources().getDisplayMetrics().density;
         }
+        this.placeholder = placeholderImage;
+        this.error = errorImage;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class GlideImageGetter implements Html.ImageGetter {
         BitmapDrawablePlaceholder drawable = new BitmapDrawablePlaceholder();
 
         container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                R.drawable.smiley_nextinpact).error(R.drawable.smiley_nextinpact_barre).into(drawable));
+                placeholder).error(error).into(drawable));
 
         return drawable;
     }
