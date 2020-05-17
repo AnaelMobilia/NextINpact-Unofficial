@@ -20,8 +20,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pcinpact"
-    android:versionCode="232"
-    android:versionName="2.3.2">
+    android:versionCode="240"
+    android:versionName="2.4.0">
 
     <!-- com.pcinpact est le nom historique. Il n'est pas possible de le modifier sans publier une nouvelle application -->
     <!-- versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur -->
@@ -54,50 +54,30 @@
             android:name=".ArticleActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".CommentairesActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".OptionsActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".ImageActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme"></activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".AboutActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
         <activity
             android:name=".DebugActivity"
             android:parentActivityName=".ListeArticlesActivity"
             android:screenOrientation="user"
-            android:theme="@style/NextInpactTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListeArticlesActivity" />
-        </activity>
+            android:theme="@style/NextInpactTheme" />
     </application>
 </manifest>

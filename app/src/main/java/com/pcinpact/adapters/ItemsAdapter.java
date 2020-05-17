@@ -20,6 +20,8 @@ package com.pcinpact.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -30,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.pcinpact.ImageActivity;
 import com.pcinpact.R;
 import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
@@ -37,7 +40,7 @@ import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
 import com.pcinpact.adapters.viewholder.ContenuArticleImageViewHolder;
 import com.pcinpact.adapters.viewholder.ContenuArticleTexteViewHolder;
 import com.pcinpact.adapters.viewholder.SectionItemViewHolder;
-import com.pcinpact.datastorage.ImageProvider;
+import com.pcinpact.datastorage.GlideImageGetter;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.ContenuArticleImageItem;
@@ -286,7 +289,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Gestion du thème (option utilisateur=
                     Boolean isThemeSombre = Constantes.getOptionBoolean(monContext, R.string.idOptionThemeSombre,
-                            R.bool.defautOptionThemeSombre);
+                                                                        R.bool.defautOptionThemeSombre);
 
                     // L'article est-il déjà lu ?
                     int couleurArticle;
@@ -325,7 +328,7 @@ public class ItemsAdapter extends BaseAdapter {
                     String texteCommentaires = String.valueOf(ai.getNbCommentaires());
 
                     boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm,
-                            R.bool.defautOptionAfficherNbNouveauComm);
+                                                                        R.bool.defautOptionAfficherNbNouveauComm);
                     // Ssi commentaires déjà lus
                     if (nbNouveauComm && ai.getDernierCommLu() > 0) {
 
@@ -341,8 +344,15 @@ public class ItemsAdapter extends BaseAdapter {
 
                     articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
-                    ImageProvider monImageProvider = new ImageProvider(monContext, articleVH.imageArticle, ai.getId());
-                    articleVH.imageArticle.setImageDrawable(monImageProvider.getDrawable(ai.getUrlIllustration()));
+                    if (checkTelechargementImage(monContext)) {
+                        // Téléchargement OK
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                    } else {
+                        // Uniquement avec le cache
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                    }
 
                     // On applique le zoom éventuel
                     appliqueZoom(articleVH.titreArticle, Constantes.TEXT_SIZE_SMALL);
@@ -386,11 +396,9 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire;
                     try {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                new ImageProvider(monContext, commentaireVH.commentaire,
-                                        ci.getCommentaire(), Constantes.IMAGE_SMILEY,
-                                        ci.getUuid()), new TagHandler());
-                    }
-                    catch (Exception e) {
+                                                           new GlideImageGetter(commentaireVH.commentaire, false, true),
+                                                           new TagHandler());
+                    } catch (Exception e) {
                         if (Constantes.DEBUG) {
                             Log.e("ItemsAdapter", "getView() - Html.fromHtml() ", e);
                         }
@@ -403,8 +411,8 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
-                            R.string.idOptionLiensDansCommentaires,
-                            R.bool.defautOptionLiensDansCommentaires);
+                                                                                   R.string.idOptionLiensDansCommentaires,
+                                                                                   R.bool.defautOptionLiensDansCommentaires);
                     if (lienCommentaireClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
@@ -441,11 +449,7 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem cati = (ContenuArticleTexteItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(),
-                            new ImageProvider(monContext, contenuTexteVH.contenu,
-                                    cati.getContenu(),
-                                    Constantes.IMAGE_CONTENU_ARTICLE,
-                                    cati.getArticleID()), new TagHandler());
+                    Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(), null, new TagHandler());
                     contenuTexteVH.contenu.setText(spannedContenuTexte);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
@@ -453,7 +457,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
-                            R.bool.defautOptionLiensDansArticles);
+                                                                               R.bool.defautOptionLiensDansArticles);
                     if (lienArticleClickable) {
                         // Active les liens a href
                         contenuTexteVH.contenu.setMovementMethod(new GestionLiens());
@@ -487,10 +491,18 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem caii = (ContenuArticleImageItem) i;
 
                     // Récupération de l'image
-                    ImageProvider monImageProviderArticle = new ImageProvider(monContext, contenuImageVH.contenu, 1);
-                    contenuImageVH.contenu.setImageDrawable(monImageProviderArticle.getDrawable(caii.getContenu()));
+                    if (checkTelechargementImage(monContext)) {
+                        // Téléchargement OK
+                        Glide.with(monContext).load(caii.getContenu()).error(R.drawable.logo_nextinpact_barre).into(
+                                contenuImageVH.contenu);
+                    } else {
+                        // Uniquement avec le cache
+                        Glide.with(monContext).load(caii.getContenu()).error(
+                                R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(contenuImageVH.contenu);
+                    }
 
-                    // Définition de l'ID du textview (pour gestion callback si dl image)
+
+                    // Définition de l'ID du photoview
                     contenuImageVH.contenu.setId(caii.getArticleID());
 
                     // Gestion du clic
@@ -541,7 +553,36 @@ public class ItemsAdapter extends BaseAdapter {
         // DEBUG
         if (Constantes.DEBUG) {
             Log.d("ItemsAdapter",
-                    "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
+                  "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
         }
+    }
+
+    /**
+     * Vérifie si on peut télécharger une image ou s'il faut utiliser seulement le cache local
+     *
+     * @param monContext contexte
+     * @return boolean (1 télécharger / 0 cache only)
+     */
+    private boolean checkTelechargementImage(Context monContext) {
+        // Téléchargement des images ?
+        boolean telechargerImages = true;
+
+        int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
+                                                   R.string.defautOptionTelechargerImagesv2);
+        if (valeurOption == 0) {
+            // Pas de téléchargement des images
+            telechargerImages = false;
+        } else if (valeurOption == 1) {
+            // Téléchargement uniquement en WiFi
+            ConnectivityManager cm = (ConnectivityManager) monContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            // Est-on connecté en WiFi ?
+            if (activeNetwork == null || activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
+                telechargerImages = false;
+            }
+        }
+        return telechargerImages;
     }
 }

@@ -21,9 +21,10 @@ package com.pcinpact;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.utils.Constantes;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,20 +58,24 @@ public class ImageActivity extends AppCompatActivity {
         try {
             // Récupération de l'URL de l'image
             urlImage = getIntent().getExtras().getString("URL_IMAGE");
+
+            // Chargement de l'image...
+            Glide.with(getApplicationContext()).load(urlImage).error(R.drawable.logo_nextinpact_barre).into(monImageView);
         } catch (NullPointerException e) {
-            // Problème sur l'intent... => Passage à une image par défaut
-            urlImage = Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.logo_nextinpact;
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("ImageActivity", "onCreate() - Récupération URL image de l'intent", e);
             }
+
+            // Affichage d'un toast d'erreur
+            Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.erreurZoomImage),
+                                            Toast.LENGTH_LONG);
+            monToast.show();
+            // fin
+            finish();
         }
 
-        // Chargement de l'image...
-        ImageProvider monImageProviderArticle = new ImageProvider(getApplicationContext(), monImageView, 1);
-        monImageView.setImageDrawable(monImageProviderArticle.getDrawable(urlImage));
-
-        // Gestion de la fermeture de l'activité
+        // Fermeture de l'activité au clic sur l'image
         monImageView.setOnClickListener((View arg0) -> finish());
     }
 }

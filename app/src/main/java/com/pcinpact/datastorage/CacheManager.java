@@ -19,15 +19,16 @@
 package com.pcinpact.datastorage;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Gestion du cache de l'application
@@ -82,20 +83,8 @@ public class CacheManager {
 
                     // Suppression de la date de Refresh des commentaires
                     monDAO.supprimerDateRefresh(article.getId());
-
-                    // Suppression en BDD des images en cache
-                    monDAO.cacheSupprimer(article.getId());
                 }
             }
-
-            /*
-             * Nettoyage du FS
-             */
-            // Miniatures articles
-            nettoyerCacheImages(monContext, Constantes.IMAGE_MINIATURE_ARTICLE, Constantes.PATH_IMAGES_MINIATURES);
-
-            // Illustrations des articles
-            nettoyerCacheImages(monContext, Constantes.IMAGE_CONTENU_ARTICLE, Constantes.PATH_IMAGES_ILLUSTRATIONS);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -128,35 +117,16 @@ public class CacheManager {
             monDAO.vider();
 
             /*
-             * Miniatures d'articles
+             * Les images
              */
-            effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES);
-
-            /*
-             * Illustrations d'articles
-             */
-            effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
-
-            /*
-             * Smileys
-             */
-            effacerCacheSmiley(monContext);
+            CleanImageAsyncTask maTache = new CleanImageAsyncTask(monContext);
+            maTache.execute();
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("CacheManager", "effacerCache()", e);
             }
         }
-    }
-
-    /**
-     * Efface les smileys du cache
-     *
-     * @param unContext contexte de l'application
-     */
-    public static void effacerCacheSmiley(final Context unContext) {
-        Context monContext = unContext.getApplicationContext();
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
     }
 
     /**
@@ -187,6 +157,20 @@ public class CacheManager {
                 Log.e("CacheManager", "effacerCacheCommentaire()", e);
             }
         }
+    }
+
+    /**
+     * Efface le cache avant la v2.4.0
+     *
+     * @param unContext contexte
+     */
+    public static void effacerCacheV240(final Context unContext) {
+        // Protection du context
+        Context monContext = unContext.getApplicationContext();
+
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES);
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
     }
 
     /**
@@ -221,76 +205,23 @@ public class CacheManager {
             monContext.deleteFile(file);
         }
     }
+}
 
-    /**
-     * Liste des miniatures à télécharger car manquantes.
-     *
-     * @param unContext context
-     * @return liste d'URL
-     */
-    public static ArrayList<String> getMiniaturesATelecharger(final Context unContext) {
-        Context monContext = unContext.getApplicationContext();
+/**
+ * Effacement du cache des images (Glide)
+ */
+class CleanImageAsyncTask extends AsyncTask {
+    final private Context monContext;
 
-        /*
-         * Miniatures dixit la BDD
-         */
-        // Connexion à la BDD
-        DAO monDAO = DAO.getInstance(monContext);
-        // Récupération de la liste
-        HashMap<String, String> imagesCache = monDAO.cacheListeImages(Constantes.IMAGE_MINIATURE_ARTICLE);
-
-        /*
-         * Miniatures sur le FS
-         */
-        String[] miniaturesFS = new File(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES).list();
-        // Ssi j'ai déjà des miniatures...
-        if (miniaturesFS != null) {
-            // Pour chaque miniature que j'ai...
-            for (String uneMiniature : miniaturesFS) {
-                // Je l'efface...
-                imagesCache.remove(uneMiniature);
-            }
-        }
-
-        return new ArrayList<>(imagesCache.values());
+    CleanImageAsyncTask(Context context) {
+        monContext = context;
     }
 
-    /**
-     * Nettoie le cache d'images
-     *
-     * @param unContext context
-     * @param unType    type d'image
-     * @param pathType  path pour ce type d'image (cf Constantes)
-     */
-    private static void nettoyerCacheImages(final Context unContext, final int unType, final String pathType) {
-        Context monContext = unContext.getApplicationContext();
-        /*
-         * Images dixit la BDD
-         */
-        // Connexion à la BDD
-        DAO monDAO = DAO.getInstance(monContext);
-        // Récupération de la liste
-        HashMap<String, String> imagesCache = monDAO.cacheListeImages(unType);
-
-        /*
-         * Images sur le FS
-         */
-        String[] imagesFS = new File(monContext.getFilesDir() + pathType).list();
-        // Ssi j'ai déjà des images...
-        if (imagesFS != null) {
-            // Pour chaque image que j'ai...
-            for (String uneImage : imagesFS) {
-                // Si elle n'est pas dans la liste des images à avoir
-                if (!imagesCache.containsKey(uneImage)) {
-                    // Je l'efface du FS
-                    File monFichier = new File(monContext.getFilesDir() + pathType + uneImage);
-                    if (!monFichier.delete() && Constantes.DEBUG) {
-                        Log.w("CacheManager",
-                                "nettoyerCacheImages() - erreur à la suppression de " + monContext.getFilesDir() + pathType
-                                        + uneImage);
-                    }
-                }
-            }
-        }
+    @Override
+    protected Object doInBackground(Object[] objects) {
+        // This method must be called on a background thread.
+        Glide.get(monContext).clearDiskCache();
+        Glide.get(monContext).clearMemory();
+        return null;
     }
 }

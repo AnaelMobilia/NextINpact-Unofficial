@@ -4,6 +4,7 @@
 /app/build/
 /app/app.iml
 /app/app-release.apk
+/app/release/
 /build/
 /captures/
 /gradle/

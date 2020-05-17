@@ -25,6 +25,6 @@ import com.pcinpact.items.Item;
  *
  * @author Anael
  */
-public interface ItemViewHolder extends Item {
+interface ItemViewHolder extends Item {
 
 }

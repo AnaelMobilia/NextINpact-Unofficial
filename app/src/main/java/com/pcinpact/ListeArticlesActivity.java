@@ -41,7 +41,6 @@ import android.widget.Toast;
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
-import com.pcinpact.datastorage.ImageProvider;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
@@ -129,7 +128,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[5];
-        dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] = 0;
         dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
         dlInProgress[Constantes.HTML_ARTICLE] = 0;
 
@@ -294,6 +292,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // Enregistrement de l'affichage
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
+        }
+
+        // Est-ce le premier lancement en v2.4.0 (changement de gestion du cache des images)
+        Boolean version240 = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionVersion240,
+                                                         R.bool.defautOptionVersion240);
+        if (!version240) {
+            // Effacement du cache de l'application v < 2.4.0
+            CacheManager.effacerCacheV240(getApplicationContext());
+            // Enregistrement de l'action
+            Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionVersion240, true);
         }
 
         return true;
@@ -504,19 +512,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                 }
             }
-
-            /*
-             * Téléchargement des miniatures manquantes
-             */
-            // Miniatures manquantes
-            ArrayList<String> miniaturesManquantes = CacheManager.getMiniaturesATelecharger(getApplicationContext());
-            // Pour chacune...
-            for (String imageURL : miniaturesManquantes) {
-                // Je lance son DL (sans log en BDD imageCache)
-                ImageProvider.telechargerImage(imageURL, Constantes.IMAGE_MINIATURE_ARTICLE, 0, getApplicationContext(), this);
-                // Je note la dde de DL
-                nouveauChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
-            }
         }
 
         // GUI : fin de l'activité en cours...
@@ -546,8 +541,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 if (!((ArticleItem) unItem).getContenu().equals("")) {
                     // Je requiert d'être connecté (sinon le DL ne sert à rien)
                     isConnecteRequis = true;
-                    // Je ne veux pas DL l'image de l'article
-                    dlIllustration = false;
                 }
                 // téléchargement de la ressource
                 monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO, getApplicationContext(),
@@ -562,14 +555,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             if (monAHD.run()) {
                 // MàJ animation
                 nouveauChargementGUI(Constantes.HTML_ARTICLE);
-            }
-
-            // DL des miniatures des articles dont je récupère le contenu (sauf articles abonnés / contenu)
-            if (dlIllustration) {
-                // Je lance le téléchargement de sa miniature
-                ImageProvider.telechargerImage(monItem.getUrlIllustration(), Constantes.IMAGE_MINIATURE_ARTICLE, monItem.getId(),
-                                               getApplicationContext(), this);
-                nouveauChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
             }
         }
     }
@@ -586,12 +571,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_ARTICLE);
         }
-    }
-
-    @Override
-    public void downloadImageFini(final String uneURL) {
-        // gestion du téléchargement GUI
-        finChargementGUI(Constantes.IMAGE_MINIATURE_ARTICLE);
     }
 
     /**
@@ -652,8 +631,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
-            + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
@@ -685,9 +663,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Je note la fin du téléchargement
         dlInProgress[typeDL]--;
 
-        // Si la liste d'articles et de miniatures est chargée (et qu'on ne vient pas de finir de télécharger un article...)
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE] == 0
-            && typeDL != Constantes.HTML_ARTICLE) {
+        // Si la liste d'articles est chargée (et qu'on ne vient pas de finir de télécharger un article...)
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0 && typeDL != Constantes.HTML_ARTICLE) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
@@ -699,8 +676,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // Si toutes les données sont téléchargées...
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.IMAGE_MINIATURE_ARTICLE]
-            + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");

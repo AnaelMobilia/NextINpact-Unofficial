@@ -56,7 +56,9 @@ public class TagHandler implements Html.TagHandler {
                     output.append("\n\t• ");
                 } else {
                     // Liste numérotée -> n.
-                    output.append("\n\t" + indexListe + ". ");
+                    output.append("\n\t");
+                    output.append(String.valueOf(indexListe));
+                    output.append(". ");
                     indexListe++;
                 }
                 debutListe = false;
@@ -68,7 +70,7 @@ public class TagHandler implements Html.TagHandler {
 
         // Citations en commentaire
         if (Constantes.TAG_HTML_QUOTE.equals(tag)) {
-            if(Constantes.DEBUG) {
+            if (Constantes.DEBUG) {
                 Log.i("TagHandler", "handleTag() - opening " + opening + " - posDebutQuote " + posDebutQuote);
                 Log.i("TagHandler", "handleTag() - output (" + output.length() + ") : " + output);
             }

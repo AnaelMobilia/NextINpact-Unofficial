@@ -25,10 +25,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:paddingStart="0dp"
-    android:paddingLeft="0dp"
     android:paddingTop="5dp"
     android:paddingEnd="?android:attr/scrollbarSize"
-    android:paddingRight="?android:attr/scrollbarSize"
     android:paddingBottom="5dp">
 
     <ImageView
@@ -36,10 +34,8 @@
         android:layout_width="70dp"
         android:layout_height="53dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
         android:contentDescription="@string/contentDescriptionImageArticle" />
 
     <TextView
@@ -47,9 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:layout_toEndOf="@id/imageArticle"
-        android:layout_toRightOf="@id/imageArticle"
         android:background="@drawable/liste_articles_item_article_background_badge_abonne"
         android:text="@string/accueilBadgeAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -62,9 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/commentairesArticle"
-        android:layout_toLeftOf="@+id/commentairesArticle"
         android:layout_toEndOf="@id/labelAbonne"
-        android:layout_toRightOf="@id/labelAbonne"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
@@ -75,9 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
         android:layout_toEndOf="@id/imageArticle"
-        android:layout_toRightOf="@id/imageArticle"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -87,9 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:layout_toEndOf="@id/heureArticle"
-        android:layout_toRightOf="@id/heureArticle"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -99,8 +87,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imageArticle"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:drawableStart="@drawable/small_comms"
-        android:drawableLeft="@drawable/small_comms"
         android:textAppearance="@style/textAppearanceMicro" />
 </RelativeLayout>

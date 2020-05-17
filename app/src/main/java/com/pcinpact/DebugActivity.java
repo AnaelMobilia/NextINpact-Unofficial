@@ -18,7 +18,6 @@
  */
 package com.pcinpact;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +34,6 @@ import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,21 +84,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             // Retour utilisateur
             Toast monToast = Toast.makeText(getApplicationContext(),
                                             getApplicationContext().getString(R.string.debugEffacerCacheToast),
-                                            Toast.LENGTH_LONG);
-            monToast.show();
-        });
-
-        /*
-         * Bouton : effacement des smileys
-         */
-        Button buttonSmileys = this.findViewById(R.id.buttonDeleteCacheSmiley);
-        buttonSmileys.setOnClickListener((View arg0) -> {
-            // Effacement du cache
-            CacheManager.effacerCacheSmiley(getApplicationContext());
-
-            // Retour utilisateur
-            Toast monToast = Toast.makeText(getApplicationContext(),
-                                            getApplicationContext().getString(R.string.debugEffacerCacheSmileyToast),
                                             Toast.LENGTH_LONG);
             monToast.show();
         });
@@ -175,34 +158,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             }
         });
 
-
-        /*
-         * Bouton : Liste des fichiers en cache
-         */
-        Button buttonListeFichier = this.findViewById(R.id.buttonListerCache);
-        buttonListeFichier.setOnClickListener((View arg0) -> {
-            // Je crée ma liste de fichiers
-            ArrayList<String> listeFichiers = getListeFichiers(getFilesDir().toString());
-
-            // Je crée mon dialogue
-            AlertDialog.Builder builder = new AlertDialog.Builder(DebugActivity.this);
-            // Titre
-            builder.setTitle(getString(R.string.debugListeFichiers));
-            // Contenu
-            StringBuilder monContenu = new StringBuilder();
-
-            for (String unFichier : listeFichiers) {
-                monContenu.append(unFichier);
-                monContenu.append("\n");
-            }
-            builder.setMessage(monContenu.toString());
-            // Bouton d'action
-            builder.setCancelable(false);
-            builder.setPositiveButton("Ok", null);
-            // On crée & affiche
-            builder.create().show();
-        });
-
         /*
          * Bouton : Tester connexion
          */
@@ -222,7 +177,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         if (getIntent().getExtras() != null) {
             // Je cache tous les boutons génériques !
             buttonArrayList.setVisibility(View.GONE);
-            buttonListeFichier.setVisibility(View.GONE);
             buttonTesterConnexion.setVisibility(View.GONE);
 
             // ID de l'article concerné
@@ -247,11 +201,14 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 StringBuilder monContenu = new StringBuilder();
 
                 for (CommentaireItem unComentaire : lesCommentaires) {
-                    monContenu.append("=====#" + unComentaire.getId() + " " + unComentaire.getAuteurDateCommentaire() + "=====");
+                    monContenu.append("=====#");
+                    monContenu.append(unComentaire.getId());
+                    monContenu.append(" ");
+                    monContenu.append(unComentaire.getAuteurDateCommentaire());
+                    monContenu.append("=====");
                     monContenu.append("\n");
                     monContenu.append(unComentaire.getCommentaire());
-                    monContenu.append("\n");
-                    monContenu.append("\n");
+                    monContenu.append("\n\n");
                 }
 
                 maTextView.setText(monContenu);
@@ -259,51 +216,8 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         }
     }
 
-    /*
-     * Fournit une liste RECURSIVE des fichiers d'un path
-     *
-     * @param unPath path concerné
-     * @return Liste des fichiers
-     */
-    private static ArrayList<String> getListeFichiers(String unPath) {
-        // mon Retour
-        ArrayList<String> mesFichiers = new ArrayList<>();
-
-        // Répertoire de début
-        File monRep = new File(unPath);
-
-        // Listing du répertoire parent
-        File[] lesFichiers = monRep.listFiles();
-
-        // J'enregistre le répertoire parent
-        mesFichiers.add(monRep.getAbsolutePath() + " (" + lesFichiers.length + ")");
-
-        // Pour chaque item...
-        for (File unFichier : lesFichiers) {
-            // Si c'est un répertoire
-            if (unFichier.isDirectory()) {
-                // Appel récursif...
-                mesFichiers.addAll(getListeFichiers(unFichier.toString()));
-            } else {
-                // Enregistrement du fichier
-                try {
-                    mesFichiers.add("  -> " + unFichier.getName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return mesFichiers;
-    }
-
     @Override
     public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
-
-    }
-
-    @Override
-    public void downloadImageFini(String uneURL) {
 
     }
 }

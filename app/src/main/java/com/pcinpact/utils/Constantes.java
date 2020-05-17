@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = true;
+    public static final Boolean DEBUG = false;
     /**
      * Contact du développeur
      */
@@ -113,18 +113,6 @@ public class Constantes {
      * Type : commentaires.
      */
     public static final int HTML_COMMENTAIRES = 3;
-    /**
-     * Type : image -> miniature.
-     */
-    public static final int IMAGE_MINIATURE_ARTICLE = 4;
-    /**
-     * Type : image -> du contenu d'un article.
-     */
-    public static final int IMAGE_CONTENU_ARTICLE = 5;
-    /**
-     * Type : image -> smiley dans commentaires.
-     */
-    public static final int IMAGE_SMILEY = 6;
 
 
     /*
@@ -145,7 +133,7 @@ public class Constantes {
 
 
     /*
-     * PATH DES FICHIERS LOCAUX.
+     * PATH DES FICHIERS LOCAUX -- Conservation pour l'effacement en v2.4.0
      */
     /**
      * Path des miniatures des articles.
@@ -203,14 +191,6 @@ public class Constantes {
      */
     public static final int TEXT_SIZE_MEDIUM = 18;
 
-
-    /*
-     * PARAMETRES D'AFFICHAGE
-     */
-    /**
-     * Marge à conserver à droite des images (bordure, ascenseur, ...)
-     */
-    public static final int MARGE_DROITE_IMAGE = 30;
 
     /*
      * PARAMETRES D'AUTHENTIFICATION.
