@@ -208,10 +208,6 @@ public class Constantes {
      */
     public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
     /**
-     * Balise pour les URL des images d'iframe présente dans drawable
-     */
-    public static final String SCHEME_IFRAME_DRAWABLE = "http://IFRAME_LOCALE/";
-    /**
      * USER AGENT.
      */
     private static final String USER_AGENT = "NextInpact (Unofficial) v";
