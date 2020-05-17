@@ -282,70 +282,76 @@ public class ParseurHTML {
                  */
                 // Recalcul de l'ID de la vidéo (cas particulier)
                 idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
-                monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_liste_youtube + "\" /></a>";
+                monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo
+                                  + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube
+                                  + "\" /></a>";
             } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
                     "www.youtube-nocookie.com/embed/")) {
                 /*
                  * Youtube
                  */
-                monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_youtube + "\" /></a>";
+                monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo
+                                  + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube
+                                  + "\" /></a>";
             } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
                 /*
                  * Dailymotion
                  */
-                monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_dailymotion + "\" /></a>";
+                monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo
+                                  + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion
+                                  + "\" /></a>";
             } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
                 /*
                  * VIMEO
                  */
                 monRemplacement =
-                        "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                        "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/"
                         + R.drawable.iframe_vimeo + "\" /></a>";
             } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
                 /*
                  * Videos.gouv.fr
                  */
-                monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
+                                  + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr
+                                  + "\" /></a>";
             } else if (urlLecteur.startsWith("vid.me")) {
                 /*
                  * Vidme
                  */
-                monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
-                                  + R.drawable.iframe_vidme + "\" /></a>";
+                monRemplacement =
+                        "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/"
+                        + R.drawable.iframe_vidme + "\" /></a>";
             } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
                 /*
                  * Soundcloud (l'URL commence bien par w.soundcloud !)
                  */
-                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
                                   + R.drawable.iframe_soundcloud + "\" /></a>";
             } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                 /*
                  * Scribd
                  */
-                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
                                   + R.drawable.iframe_scribd + "\" /></a>";
             } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
                 /*
                  * Canal+
                  */
-                monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
                                   + R.drawable.iframe_canalplus + "\" /></a>";
             } else if (urlLecteur.startsWith("www.arte.tv/")) {
                 /*
                  * Arte
                  */
-                monRemplacement = "<a href=\"" + urlLecteur + "\"><img " + "src=\"" + Constantes.SCHEME_IFRAME_DRAWABLE
+                monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
                                   + R.drawable.iframe_arte + "\" /></a>";
             } else {
                 /*
                  * Déchet (catch all)
                  */
-                monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img " + "src=\""
-                                  + Constantes.SCHEME_IFRAME_DRAWABLE + R.drawable.iframe_non_supportee + "\" /></a>";
+                monRemplacement = "<a href=\"" + uneIframe.absUrl("src")
+                                  + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee
+                                  + "\" /></a>";
 
                 // DEBUG
                 if (Constantes.DEBUG) {
@@ -376,8 +382,11 @@ public class ParseurHTML {
         Elements lesImages = lArticle.select("img[src]");
         // Pour chaque image
         for (Element uneImage : lesImages) {
-            // Assignation de son URL absolue
-            uneImage.attr("src", uneImage.absUrl("src"));
+            // Si ce n'est pas un drawable de l'application
+            if (!uneImage.attr("src").startsWith("android.resource://")) {
+                // Assignation de son URL absolue
+                uneImage.attr("src", uneImage.absUrl("src"));
+            }
         }
 
 
