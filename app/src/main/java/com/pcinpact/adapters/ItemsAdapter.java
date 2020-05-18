@@ -396,7 +396,9 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire;
                     try {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                                           new GlideImageGetter(commentaireVH.commentaire, false, true),
+                                                           new GlideImageGetter(commentaireVH.commentaire, false, true,
+                                                                                R.drawable.smiley_nextinpact,
+                                                                                R.drawable.smiley_nextinpact_barre),
                                                            new TagHandler());
                     } catch (Exception e) {
                         if (Constantes.DEBUG) {
@@ -449,7 +451,11 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem cati = (ContenuArticleTexteItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(), null, new TagHandler());
+                    Spanned spannedContenuTexte = Html.fromHtml(cati.getContenu(),
+                                                                new GlideImageGetter(contenuTexteVH.contenu, false, true,
+                                                                                     R.drawable.logo_nextinpact,
+                                                                                     R.drawable.logo_nextinpact_barre),
+                                                                new TagHandler());
                     contenuTexteVH.contenu.setText(spannedContenuTexte);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)

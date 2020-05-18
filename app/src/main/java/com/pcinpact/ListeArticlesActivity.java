@@ -109,6 +109,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            // Activation du debug Glide
+            System.setProperty("log.tag.Glide", "VERBOSE");
+            System.setProperty("log.tag.Engine", "VERBOSE");
+        }
+
         super.onCreate(savedInstanceState);
 
         // Gestion du thème sombre (option utilisateur)

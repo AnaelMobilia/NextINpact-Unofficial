@@ -201,8 +201,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             idDernierCommentaire = mesCommentaires.size();
         }
 
-        // Le cast en int supprime la partie après la virgule
-        int maPage = (int) Math.floor((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
+        // Quelle est la page à charger (actuelle si pas 10 commentaires, sinon la prochaine)
+        int maPage = Math.round((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
         // Création de l'URL
         String monURL =
@@ -397,6 +397,15 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Si plus de téléchargement en cours
         if (dlInProgress == 0) {
+            // Tri des commentaires par ID (en mémoire)
+            Collections.sort(mesCommentaires);
+
+            // Je met à jour les données
+            monItemsAdapter.updateListeItems(mesCommentaires);
+            // Je notifie le changement pour un rafraichissement du contenu
+            monItemsAdapter.notifyDataSetChanged();
+
+
             // Arrêt du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
 
@@ -407,6 +416,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             MenuItem monItem = monMenu.findItem(R.id.action_refresh);
             monItem.getIcon().setAlpha(255);
             monItem.setEnabled(true);
+
+            // Je MàJ la date du dernier refresh
+            majDateRefresh();
         }
     }
 
@@ -432,13 +444,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // Je l'enregistre en mémoire
                 mesCommentaires.add((CommentaireItem) unItem);
             }
-            // Tri des commentaires par ID
-            Collections.sort(mesCommentaires);
-
-            // Je met à jour les données
-            monItemsAdapter.updateListeItems(mesCommentaires);
-            // Je notifie le changement pour un rafraichissement du contenu
-            monItemsAdapter.notifyDataSetChanged();
 
             // Je note que je ne suis pas à la fin des commentaires
             isFinCommentaires = false;
@@ -449,9 +454,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 refreshListeCommentaires();
             }
         }
-        // Je MàJ la date du dernier refresh
-        majDateRefresh();
-
         // Arrêt des gris-gris en GUI
         finTelechargement();
     }

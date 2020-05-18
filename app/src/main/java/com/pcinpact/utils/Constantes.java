@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     /**
      * Contact du développeur
      */
@@ -207,10 +207,6 @@ public class Constantes {
      * Nom du cookie d'authentification.
      */
     public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
-    /**
-     * Balise pour les URL des images d'iframe présente dans drawable
-     */
-    public static final String SCHEME_IFRAME_DRAWABLE = "http://IFRAME_LOCALE/";
     /**
      * USER AGENT.
      */
