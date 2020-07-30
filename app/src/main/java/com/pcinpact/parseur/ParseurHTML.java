@@ -249,14 +249,24 @@ public class ParseurHTML {
         // # Brief - suppression des nombres de commentaires & réseaux sociaux & couleurs
         lArticle.select("div[class=brief-foot], div[class=brief-circle-container]").remove();
 
-        // Gestion des iframe
-        Elements lesIframes = lArticle.select("iframe");
-        // généralisation de l'URL en dehors du scheme
-        String[] schemes = { "https://", "http://", "//" };
-        // Pour chaque iframe
-        for (Element uneIframe : lesIframes) {
-            // URL du lecteur
-            String urlLecteur = uneIframe.attr("src").toLowerCase(Constantes.LOCALE);
+            // Suppression des span d'affiliation
+            Elements spanAffiliation = lArticle.select("span[data-affiliable]");
+            // Récupération de toutes les balises <a...> autour du titre
+            for (Element unSpan : spanAffiliation) {
+                // Insertion du contenu
+                unSpan.before(unSpan.html());
+                // Suppression du lien originel
+                unSpan.remove();
+            }
+
+            // Gestion des iframe
+            Elements lesIframes = lArticle.select("iframe");
+            // généralisation de l'URL en dehors du scheme
+            String[] schemes = { "https://", "http://", "//" };
+            // Pour chaque iframe
+            for (Element uneIframe : lesIframes) {
+                // URL du lecteur
+                String urlLecteur = uneIframe.attr("src").toLowerCase(Constantes.LOCALE);
 
             for (String unScheme : schemes) {
                 if (urlLecteur.startsWith(unScheme)) {
