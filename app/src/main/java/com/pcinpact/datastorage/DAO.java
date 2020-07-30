@@ -311,7 +311,6 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
         insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
         insertValues.put(ARTICLE_URL, unArticle.getUrl());
-        insertValues.put(ARTICLE_URL_API, unArticle.getUrl_api());
         insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getUrlIllustration());
         insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
         insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
@@ -320,6 +319,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
         insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
+        insertValues.put(ARTICLE_URL_API, unArticle.getUrl_api());
 
         maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
     }
