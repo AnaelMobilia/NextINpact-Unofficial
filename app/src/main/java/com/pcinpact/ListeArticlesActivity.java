@@ -550,11 +550,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     isConnecteRequis = true;
                 }
                 // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO, getApplicationContext(),
-                                                 isConnecteRequis);
+                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl_api(), monDAO,
+                                                 getApplicationContext(), isConnecteRequis);
             } else {
                 // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,
+                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl_api(), monDAO,
                                                  getApplicationContext());
             }
 
