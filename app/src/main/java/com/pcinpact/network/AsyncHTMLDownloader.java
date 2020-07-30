@@ -133,24 +133,21 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             long dateRefresh = new Date().getTime();
 
             // Retour du Downloader
-            byte[] datas;
-            if (isAbonne) {
-                // Je récupère mon contenu HTML en passant par la partie abonné
-                datas = Downloader.downloadArticleAbonne(urlPage, monContext, uniquementSiConnecte);
-            } else {
-                // Je récupère mon contenu HTML directement
-                datas = Downloader.download(urlPage, monContext);
-            }
+            String datas;
+            //if (isAbonne) {
+            //    // Je récupère mon contenu HTML en passant par la partie abonné
+            //    datas = Downloader.downloadArticleAbonne(urlPage, monContext, uniquementSiConnecte);
+            //} else {
+            // Je récupère mon contenu HTML directement
+            datas = Downloader.download(urlPage, monContext);
+            //}
 
             // Vérifie que j'ai bien un retour (vs erreur DL)
             if (datas != null) {
-                // Je convertis mon byte[] en String
-                String contenu = new String(datas, Constantes.NEXT_INPACT_ENCODAGE);
-
                 switch (typeHTML) {
                     case Constantes.HTML_LISTE_ARTICLES:
                         // Je passe par le parser
-                        ArrayList<ArticleItem> monRetour = ParseurHTML.getListeArticles(contenu, urlPage);
+                        ArrayList<ArticleItem> monRetour = ParseurHTML.getListeArticles(datas);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
@@ -183,7 +180,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                     case Constantes.HTML_ARTICLE:
                         // Je passe par le parser
-                        ArticleItem articleParser = ParseurHTML.getArticle(contenu, urlPage);
+                        ArticleItem articleParser = ParseurHTML.getArticle(datas, urlPage);
 
                         // Chargement de l'article depuis la BDD
                         ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
@@ -214,7 +211,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                          * MàJ des commentaires
                          */
                         // Je passe par le parser
-                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(contenu, urlPage);
+                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(datas, urlPage);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
@@ -243,7 +240,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         /*
                          * MàJ du nombre de commentaires
                          */
-                        int nbCommentaires = ParseurHTML.getNbCommentaires(contenu, urlPage);
+                        int nbCommentaires = ParseurHTML.getNbCommentaires(datas, urlPage);
                         monDAO.updateNbCommentairesArticle(idArticle, nbCommentaires);
 
                         // DEBUG

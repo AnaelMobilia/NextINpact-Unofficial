@@ -38,9 +38,13 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Téléchargement des ressources.
@@ -70,110 +74,63 @@ class Downloader {
      *
      * @param uneURL    URL de la ressource à télécharger
      * @param unContext context de l'application
-     * @return ressource demandée brute
+     * @return ressource demandée brute (JSON)
      */
-    public static byte[] download(final String uneURL, final Context unContext) {
+    public static String download(final String uneURL, final Context unContext) {
         // Retour
-        byte[] datas = null;
+        String datas = null;
 
         // L'utilisateur demande-t-il un debug ?
         Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
         try {
-            // Je récupère la position du dernier slash de l'URL (précède le nom de la page)
-            int positionSlash = uneURL.lastIndexOf('/');
-            // Idem pour le ?
-            int positionParam = uneURL.indexOf('?');
-            // Le début de l'URL
-            String debutURL = uneURL.substring(0, positionSlash + 1);
-            // Le nom de la page
-            String page;
-            // Paramètres
-            String param = "";
-            // Y a-t-il un paramètre dans l'URL ?
-            if (positionParam != -1) {
-                page = uneURL.substring(positionSlash + 1, positionParam);
-                param = uneURL.substring(positionParam);
-            } else {
-                page = uneURL.substring(positionSlash + 1);
+            if (Constantes.DEBUG) {
+                Log.d("Downloader", "download() - Lancement connexion");
             }
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
+            Request request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent(unContext)).build();
+            Response response = client.newCall(request).execute();
 
-            // Je créée une URL de mon String
-            URL monURL = new URL(debutURL + URLEncoder.encode(page, "UTF-8") + param);
-
-            try {
-                if (Constantes.DEBUG) {
-                    Log.d("Downloader", "download() - Lancement connexion");
-                }
-
-                // J'ouvre une connection (et caste en HTTPS car images & textes HTTPS #195)
-                HttpsURLConnection monURLConnection = (HttpsURLConnection) monURL.openConnection();
-
-                // #214 - Définition d'un timeout pour les opérations réseaux
-                monURLConnection.setConnectTimeout(Constantes.TIMEOUT);
-                monURLConnection.setReadTimeout(Constantes.TIMEOUT);
-                // User Agent
-                monURLConnection.setRequestProperty("User-Agent", Constantes.getUserAgent(unContext));
-
-                // Vérification que tout va bien...
-                final int statusCode = monURLConnection.getResponseCode();
-                // Gestion d'un code erreur
-                if (statusCode != HttpsURLConnection.HTTP_OK) {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("Downloader", "download() - Erreur " + statusCode + " au dl de " + uneURL);
-                    }
-                    // Retour utilisateur ?
-                    if (debug) {
-                        Handler handler = new Handler(unContext.getMainLooper());
-                        handler.post(() -> {
-                            Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + statusCode + " pour  " +
-                                    uneURL, Toast.LENGTH_SHORT);
-                            monToast.show();
-                        });
-                    }
-                } else {
-                    // Je récupère le flux de données
-                    InputStream monIS = new BufferedInputStream(monURLConnection.getInputStream());
-                    // Le convertit en bytes (compatiblité existant...)
-                    datas = MyIOUtils.toByteArray(monIS);
-                    // Ferme l'IS
-                    monIS.close();
-
-                    // Ferme ma connexion
-                    monURLConnection.disconnect();
-                }
-            } catch (IOException e) {
+            // Gestion d'un code erreur
+            if (!response.isSuccessful()) {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
+                    Log.e("Downloader", "download() - Erreur " + response.code() + " au dl de " + uneURL);
                 }
                 // Retour utilisateur ?
                 if (debug) {
                     Handler handler = new Handler(unContext.getMainLooper());
                     handler.post(() -> {
-                        Toast monToast = Toast.makeText(unContext,
-                                "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
-                                Toast.LENGTH_SHORT);
+                        Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + response.code() + " pour  " + uneURL,
+                                                        Toast.LENGTH_SHORT);
                         monToast.show();
                     });
                 }
+            } else {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.d("Downloader", "download() - Récupération du contenu...");
+                }
+                datas = response.body().string();
+                response.close();
             }
-        } catch (Exception e) {
+        } catch (IOException | NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Downloader", "download() - URL erronée pour " + uneURL, e);
+                Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
+                Log.e("Downloader", "download() - " + e.toString());
             }
             // Retour utilisateur ?
             if (debug) {
                 Handler handler = new Handler(unContext.getMainLooper());
                 handler.post(() -> {
-                    Toast monToast = Toast.makeText(unContext, "[Downloader] Impossible de joindre l'adresse " + uneURL,
-                            Toast.LENGTH_SHORT);
+                    Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
+                                                    Toast.LENGTH_SHORT);
                     monToast.show();
                 });
             }
         }
+        Log.d("xxxx", datas);
         return datas;
     }
 
@@ -184,16 +141,16 @@ class Downloader {
      * @param uneURL               URL de la ressource
      * @param unContext            context de l'application
      * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
-     * @return code HTML de l'article brut
+     * @return ressource demandée brute (JSON)
      */
-    public static byte[] downloadArticleAbonne(final String uneURL, final Context unContext, final boolean uniquementSiConnecte) {
+    public static String downloadArticleAbonne(final String uneURL, final Context unContext, final boolean uniquementSiConnecte) {
         // Faut-il initialiser le cookie manager ?
         if (monCookieManager == null) {
             Downloader.initializeCookieManager();
         }
 
         // Retour
-        byte[] datas = null;
+        String datas = null;
 
         // Suis-je déjà connecté ?
         if (estConnecte()) {
@@ -206,14 +163,13 @@ class Downloader {
             datas = Downloader.download(uneURL, unContext);
 
             // Je vérifie que le compte à bien un abonnement toujours en cours
-            String laPage = new String(datas);
-            if (laPage.contains("bloc_abonne_restriction")) {
+            if (datas.contains("bloc_abonne_restriction")) {
                 // Le compte n'a plus d'abonnement
                 // Affichage d'un toast
                 Handler handler = new Handler(unContext.getMainLooper());
                 handler.post(() -> {
                     Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurCompteAbonnement),
-                            Toast.LENGTH_LONG);
+                                                    Toast.LENGTH_LONG);
                     monToast.show();
                 });
             }
@@ -245,12 +201,12 @@ class Downloader {
             // Chargement des identifiants
             String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
             String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-                    R.string.defautOptionPassword);
+                                                               R.string.defautOptionPassword);
             Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
 
             // La connexion peut-elle être demandée ?
-            if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) ||
-                    (usernameOption.equals(usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+            if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) || (usernameOption.equals(
+                    usernameLastTry) && passwordOption.equals(passwordLastTry))) {
 
                 // NON : je libère le jeton d'utilisation
                 isRunning = false;
@@ -267,7 +223,7 @@ class Downloader {
 
                 // Information sur l'existance du compte abonné dans les options
                 boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
-                        R.bool.defautOptionInfoCompteAbonne);
+                                                                 R.bool.defautOptionInfoCompteAbonne);
 
                 // Dois-je notifier l'utilisateur ?
                 if (infoAbonne) {
@@ -275,7 +231,7 @@ class Downloader {
                     Handler handler = new Handler(unContext.getMainLooper());
                     handler.post(() -> {
                         Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
-                                Toast.LENGTH_LONG);
+                                                        Toast.LENGTH_LONG);
                         monToast.show();
                     });
 
@@ -333,8 +289,8 @@ class Downloader {
         try {
             // Création de la chaîne d'authentification
             String query = Constantes.AUTHENTIFICATION_USERNAME + "=" + Uri.encode(username, Constantes.NEXT_INPACT_ENCODAGE)
-                    + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
-                    Constantes.NEXT_INPACT_ENCODAGE);
+                           + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
+                                                                                           Constantes.NEXT_INPACT_ENCODAGE);
 
             URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
             HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
@@ -391,7 +347,7 @@ class Downloader {
                     Handler handler = new Handler(unContext.getMainLooper());
                     handler.post(() -> {
                         Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
-                                Toast.LENGTH_LONG);
+                                                        Toast.LENGTH_LONG);
                         monToast.show();
                     });
                 }
