@@ -56,6 +56,10 @@ public class ArticleItem implements Item {
      */
     private String url;
     /**
+     * URL de l'article via l'API
+     */
+    private String url_api;
+    /**
      * URL de la miniature de l'article.
      */
     private String urlIllustration = "";
@@ -201,6 +205,20 @@ public class ArticleItem implements Item {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @return url_api
+     */
+    public String getUrl_api() {
+        return url_api;
+    }
+
+    /**
+     * @param url_api url
+     */
+    public void setUrl_api(String url_api) {
+        this.url_api = url_api;
     }
 
     /**

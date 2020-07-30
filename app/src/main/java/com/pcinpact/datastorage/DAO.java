@@ -40,7 +40,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma).
      */
-    private static final int BDD_VERSION = 7;
+    private static final int BDD_VERSION = 8;
     /**
      * Nom de la BDD.
      */
@@ -70,6 +70,10 @@ public final class DAO extends SQLiteOpenHelper {
      * Champ articles => URL .
      */
     private static final String ARTICLE_URL = "url";
+    /**
+     * Champ articles => URL via API .
+     */
+    private static final String ARTICLE_URL_API = "url_api";
     /**
      * Champ articles => URL miniature .
      */
@@ -202,7 +206,8 @@ public final class DAO extends SQLiteOpenHelper {
                 + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_URL
                 + " TEXT NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS
                 + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
-                + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN);";
+                + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN, "
+                + ARTICLE_URL_API + " TEXT);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -277,6 +282,11 @@ public final class DAO extends SQLiteOpenHelper {
                 reqUpdateFrom6 = "DROP TABLE " + BDD_TABLE_CACHE_IMAGE;
                 db.execSQL(reqUpdateFrom6);
 
+            case 7:
+                // NXI v7
+                String reqUpdateFrom7 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_URL_API + " TEXT;";
+                db.execSQL(reqUpdateFrom7);
+
                 // A mettre avant le default !
                 break;
             default:
@@ -301,6 +311,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
         insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
         insertValues.put(ARTICLE_URL, unArticle.getUrl());
+        insertValues.put(ARTICLE_URL_API, unArticle.getUrl_api());
         insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getUrlIllustration());
         insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
         insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
@@ -718,6 +729,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
         monArticle.setDernierCommLu(unCursor.getInt(11));
         monArticle.setPublicite(unCursor.getInt(12) > 0);
+        monArticle.setUrl_api(unCursor.getString(13));
 
         return monArticle;
     }
