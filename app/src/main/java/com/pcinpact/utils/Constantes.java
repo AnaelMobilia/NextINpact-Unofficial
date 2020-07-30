@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     /**
      * Contact du développeur
      */
@@ -55,17 +55,21 @@ public class Constantes {
      */
     public static final String NEXT_INPACT_ENCODAGE = "UTF-8";
     /**
-     * URL de téléchargement.
+     * URL de téléchargement NXI.
      */
-    public static final String NEXT_INPACT_URL = "https://m.nextinpact.com";
+    //public static final String NEXT_INPACT_URL = "https://api-v1-beta.nextinpact.com/api/v1/";
+    /**
+     * URL de téléchargement INPACT-HARDWARE.
+     */
+    public static final String NEXT_INPACT_URL = "https://api-v1.inpact-hardware.com/api/v1/";
     /**
      * Paramètre numéro de page (liste articles).
      */
-    public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
+    public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "SimpleContent/list?page=";
     /**
      * URL de téléchargement des commentaires.
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
+    public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "Commentaire/list";
     /**
      * URL d'authentification.
      */
@@ -73,7 +77,7 @@ public class Constantes {
     /**
      * Paramètre ID d'article (commentaires).
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
+    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "ArticleId";
     /**
      * Paramètre numéro de page (commentaires).
      */
@@ -121,7 +125,9 @@ public class Constantes {
     /**
      * Format des dates des articles sur le site.
      */
-    public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
+    //public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
+    public static final String FORMAT_DATE_ARTICLE = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
+
     /**
      * Format des dates des commentaires sur le site.
      */
@@ -206,7 +212,7 @@ public class Constantes {
     /**
      * Nom du cookie d'authentification.
      */
-    public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
+    public static final String AUTHENTIFICATION_COOKIE = "__RequestVerificationToken";
     /**
      * USER AGENT.
      */
