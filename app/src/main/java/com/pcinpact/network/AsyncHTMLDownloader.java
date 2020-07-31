@@ -240,7 +240,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         /*
                          * MàJ du nombre de commentaires
                          */
-                        int nbCommentaires = ParseurHTML.getNbCommentaires(datas, urlPage);
+                        int nbCommentaires = ParseurHTML.getNbCommentaires(datas);
                         monDAO.updateNbCommentairesArticle(idArticle, nbCommentaires);
 
                         // DEBUG

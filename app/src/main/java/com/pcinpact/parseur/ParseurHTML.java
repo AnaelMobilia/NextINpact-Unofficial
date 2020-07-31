@@ -405,31 +405,21 @@ public class ParseurHTML {
     /**
      * Nombre de commentaires d'un article à partir d'une page de commentaires.
      *
-     * @param unContenu contenu HTML brut
-     * @param urlPage   URL de la page
+     * @param unContenu contenu JSON brut
      * @return nb de commentaires de l'article
      */
-    public static int getNbCommentaires(final String unContenu, final String urlPage) {
-        // Lancement du parseur sur la page
-        Document pageNXI = Jsoup.parse(unContenu, urlPage);
-        // Nombre de commentaires
-        Element elementNbComms = pageNXI.select("span[class=actu_separator_comms]").get(0);
-
-        // Représentation textuelle "nn commentaires"
-        String stringNbComms = elementNbComms.text();
-
-        // Isolation du chiffre uniquement (avant l'espace)
-        int positionEspace = stringNbComms.indexOf(" ");
-        String valeur = stringNbComms.substring(0, positionEspace).trim();
-
-        // Parsage de la valeur
+    public static int getNbCommentaires(final String unContenu) {
         int nbComms = 0;
         try {
-            // Si aucun, retour textuel...
-            nbComms = Integer.parseInt(valeur);
-        } catch (NumberFormatException e) {
+            // Récupération du JSON
+            JSONObject contenu_json = new JSONObject(unContenu);
+
+            // L'ID de l'article
+            nbComms = contenu_json.getInt("totalItems");
+        } catch (JSONException e) {
+            // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "getNbCommentaires() - Erreur nb comms", e);
+                Log.e("ParseurHTML", "getArticle() - Crash JSON", e);
             }
         }
 
