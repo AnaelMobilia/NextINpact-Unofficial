@@ -123,20 +123,13 @@ public class Constantes {
      * FORMATS DU SITE POUR LE PARSEUR.
      */
     /**
-     * Format des dates des articles sur le site.
+     * Format des dates sur le site.
      */
-    //public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-    public static final String FORMAT_DATE_ARTICLE = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
-
-    /**
-     * Format des dates des commentaires sur le site.
-     */
-    public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+    public static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
     /**
      * Date et heure de publication d'un commentaire.
      */
-    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
-
+    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 
     /*
      * PATH DES FICHIERS LOCAUX -- Conservation pour l'effacement en v2.4.0

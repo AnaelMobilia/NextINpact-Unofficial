@@ -211,7 +211,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                          * MàJ des commentaires
                          */
                         // Je passe par le parser
-                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(datas, urlPage);
+                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(datas);
 
                         // DEBUG
                         if (Constantes.DEBUG) {

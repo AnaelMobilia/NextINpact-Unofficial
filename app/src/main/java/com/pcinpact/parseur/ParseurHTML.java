@@ -29,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
@@ -73,7 +72,7 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("datePublished");
-                monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_ARTICLE));
+                monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE));
 
                 // Publicité
                 monArticleItem.setPublicite(unArticle.getBoolean("isSponsored"));
@@ -434,138 +433,85 @@ public class ParseurHTML {
     /**
      * Parse les commentaires.
      *
-     * @param unContenu contenu HTML brut
-     * @param urlPage   URL de la page
+     * @param unContenu contenu JSON brut
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final String urlPage) {
+    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
-        // Calcul du numéro de page
-        int numeroPage = Integer.parseInt(
-                urlPage.substring(urlPage.indexOf("&") + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE.length() + 2));
+        try {
+            // Récupération du JSON
+            JSONObject contenu_json = new JSONObject(unContenu);
 
-        // Lancement du parseur sur la page
-        Document pageNXI = Jsoup.parse(unContenu, urlPage);
+            // Les commentaire
+            JSONArray lesCommentaires = contenu_json.getJSONArray("results");
 
-        // ID de l'article concerné
-        Element refArticle = pageNXI.select("aside[data-relnews]").get(0);
-        int idArticle = Integer.parseInt(refArticle.attr("data-relnews"));
+            CommentaireItem monCommentaireItem;
+            // Pour chaque commentaire
+            for (int i = 0; i < lesCommentaires.length(); i++) {
+                JSONObject unCommentaire = lesCommentaires.getJSONObject(i).getJSONObject("comment");
+                monCommentaireItem = new CommentaireItem();
 
-        // Les commentaires
-        // Passage par une regexp => https://github.com/jhy/jsoup/issues/521
-        Elements lesCommentaires = pageNXI.select("div[class~=actu_comm ],div[class~=actu_comm_author]");
+                // ID de l'article
+                monCommentaireItem.setArticleId(unCommentaire.getInt("articleId"));
+                monCommentaireItem.setUuid(unCommentaire.getInt("commentId"));
+                monCommentaireItem.setId(i + 1);
 
-        // Contenu
-        // Supprimer les liens internes (<a> => <div>)
-        // "En réponse à ...", "... à écrit"
-        Elements lesLiensInternes = lesCommentaires.select("a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
-        lesLiensInternes.tagName("div");
+                // Auteur
+                monCommentaireItem.setAuteur(unCommentaire.getString("userName"));
 
-        // Blockquote
-        Elements lesCitations = lesCommentaires.select("div[class=link_reply_to], div[class=quote_bloc]");
-        // On change le type de tag pour un type personnalisé
-        lesCitations.tagName(Constantes.TAG_HTML_QUOTE);
-        lesCitations.wrap("<div></div>");
+                // Date
+                monCommentaireItem.setTimeStampPublication(
+                        convertToTimeStamp(unCommentaire.getString("dateCreated"), Constantes.FORMAT_DATE));
 
-        // Italic
-        Elements italic = lesCommentaires.select("span[style=font-style:italic]");
-        italic.tagName("i");
+                // Contenu
+                String contenu = "<div class=\"comm\">";
+                contenu += unCommentaire.getString("content");
+                contenu += "</div>";
+                Elements leCommentaire = Jsoup.parse(contenu).select("div[class=comm]");
+                // Supprimer les liens internes (<a> => <div>)
+                // "En réponse à ...", "... à écrit"
+                Elements lesLiensInternes = leCommentaire.select(
+                        "a[class=link_reply_to], div[class=quote_bloc]>div[class=qname]>a");
+                lesLiensInternes.tagName("div");
 
-        // Gras
-        Elements bold = lesCommentaires.select("span[style=font-weight:bold]");
-        bold.tagName("b");
+                // Blockquote
+                Elements lesCitations = leCommentaire.select("div[class=link_reply_to], div[class=quote_bloc]");
+                // On change le type de tag pour un type personnalisé
+                lesCitations.tagName(Constantes.TAG_HTML_QUOTE);
+                lesCitations.wrap("<div></div>");
 
-        // Souligné
-        Elements souligne = lesCommentaires.select("span[style=text-decoration:underline]");
-        souligne.tagName("u");
+                // Italic
+                Elements italic = leCommentaire.select("span[style=font-style:italic]");
+                italic.tagName("i");
 
-        // Gestion des URL relatives
-        Elements lesLiens = lesCommentaires.select("a[href]");
-        // Pour chaque lien
-        for (Element unLien : lesLiens) {
-            // Assignation de son URL absolue
-            unLien.attr("href", unLien.absUrl("href"));
-        }
+                // Gras
+                Elements bold = leCommentaire.select("span[style=font-weight:bold]");
+                bold.tagName("b");
 
-        // Calcul de l'indice du premier commentaire (gestion des commentaires supprimés)
-        int idCommPrecedent = (numeroPage - 1) * Constantes.NB_COMMENTAIRES_PAR_PAGE;
-        int uuidCommPrecedent = 0;
+                // Souligné
+                Elements souligne = leCommentaire.select("span[style=text-decoration:underline]");
+                souligne.tagName("u");
 
-        CommentaireItem monCommentaireItem;
-        // Pour chaque commentaire
-        for (Element unCommentaire : lesCommentaires) {
-            monCommentaireItem = new CommentaireItem();
-
-            // ID de l'article
-            monCommentaireItem.setArticleId(idArticle);
-
-            // UUID du commentaire
-            int monUUID;
-            try {
-                monUUID = Integer.parseInt(unCommentaire.attr("data-content-id"));
-            } catch (NumberFormatException e) {
-                // Commentaire supprimé : UUID précédent + 1
-                monUUID = uuidCommPrecedent + 1;
-            }
-            // Mise à jour de l'indice stocké
-            uuidCommPrecedent = monUUID;
-            // Enregistrement de l'UUID
-            monCommentaireItem.setUuid(monUUID);
-
-            // Auteur
-            Elements monAuteur = unCommentaire.select("span[class=author_name]");
-            if (!monAuteur.isEmpty()) {
-                monCommentaireItem.setAuteur(monAuteur.get(0).text());
-            } else {
-                // Gestion des commentaires supprimés
-                monCommentaireItem.setAuteur("-");
-            }
-
-            // Date
-            Elements maDate = unCommentaire.select("span[class=date_comm]");
-            if (!maDate.isEmpty()) {
-                String laDate = maDate.get(0).text();
-                monCommentaireItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE_COMMENTAIRE));
-            } else {
-                // Gestion des commentaires supprimés
-                monCommentaireItem.setTimeStampPublication(0);
-            }
-
-            // Id du commentaire
-            Elements monID = unCommentaire.select("span[class=actu_comm_num]");
-            if (!monID.isEmpty()) {
-                // Le premier caractère est un "#"
-                String lID = monID.get(0).text().substring(1);
-                monCommentaireItem.setId(Integer.parseInt(lID));
-                // MàJ du numéro du dernier commentaire
-                idCommPrecedent = Integer.parseInt(lID);
-            } else {
-                // Gestion des commentaires supprimés
-                monCommentaireItem.setId(idCommPrecedent + 1);
-                // MàJ du numéro du dernier commentaire
-                idCommPrecedent++;
-            }
-
-            // Contenu
-            Elements monContenu = unCommentaire.select("div[class=actu_comm_content]");
-            if (!monContenu.isEmpty()) {
-                monCommentaireItem.setCommentaire(monContenu.get(0).html());
-            } else {
-                // Gestion des commentaires supprimés - Récupération de la chaîne du détail de modération
-                monContenu = unCommentaire.select("div[class~=actu_comm_author]");
-                if (!monContenu.isEmpty()) {
-                    monCommentaireItem.setCommentaire(monContenu.get(0).toString());
-                } else {
-                    // Gestion de l'erreur de récupération de la modération (en cas de modif du code html évite une
-                    // exception... !)
-                    monCommentaireItem.setCommentaire("--- Erreur ---");
+                // Gestion des URL relatives
+                Elements lesLiens = leCommentaire.select("a[href]");
+                // Pour chaque lien
+                for (Element unLien : lesLiens) {
+                    // Assignation de son URL absolue
+                    unLien.attr("href", unLien.absUrl("href"));
                 }
-            }
 
-            // Et je le stocke
-            mesCommentairesItem.add(monCommentaireItem);
+                monCommentaireItem.setCommentaire(leCommentaire.html());
+
+                // Et je le stocke
+                mesCommentairesItem.add(monCommentaireItem);
+            }
+        } catch (JSONException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ParseurHTML", "getCommentaires() - Crash JSON", e);
+            }
         }
 
         return mesCommentairesItem;
