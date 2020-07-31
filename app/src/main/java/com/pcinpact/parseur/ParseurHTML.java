@@ -142,6 +142,12 @@ public class ParseurHTML {
 
             // Contenu de l'article
             String contenu = "<article>";
+            contenu += "<h1>";
+            contenu += contenu_json.getString("title");
+            contenu += "</h1>";
+            contenu += "<span>";
+            contenu += contenu_json.getString("subtitle");
+            contenu += "</span>";
             contenu += contenu_json.getString("headlines");
             contenu += contenu_json.getString("publicText");
             if (contenu_json.getBoolean("isPaywalled")) {
