@@ -99,7 +99,7 @@ public class Constantes {
     /**
      * Nb d'articles par page.
      */
-    public static final int NB_ARTICLES_PAR_PAGE = 30;
+    public static final int NB_ARTICLES_PAR_PAGE = 25;
 
 
     /*
