@@ -118,6 +118,17 @@ public class Constantes {
      */
     public static final int HTML_COMMENTAIRES = 3;
 
+    /*
+     * TYPE DU SITE
+     */
+    /**
+     * Site : NXI
+     */
+    public static final int IS_NXI = 1;
+    /**
+     * Site : IH
+     */
+    public static final int IS_IH = 2;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.
