@@ -56,6 +56,10 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * Timsetamp du commentaire.
      */
     private long timeStampPublication;
+    /**
+     * Site concerné (IH, NXI, ...)
+     */
+    private int site;
 
     @Override
     public int getType() {
@@ -91,15 +95,6 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * IdArticle-UuidCommentaire.
-     *
-     * @return IdArticle-UuiddCommentaire
-     */
-    public String getIDArticleUuidCommentaire() {
-        return this.getArticleId() + "-" + this.getUuid();
-    }
-
-    /**
      * @return id
      */
     public int getId() {
@@ -111,6 +106,20 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return site
+     */
+    public int getSite() {
+        return site;
+    }
+
+    /**
+     * @param site site
+     */
+    public void setSite(int site) {
+        this.site = site;
     }
 
     /**

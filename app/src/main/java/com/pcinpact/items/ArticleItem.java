@@ -56,9 +56,9 @@ public class ArticleItem implements Item {
      */
     private String url;
     /**
-     * URL de l'article via l'API
+     * Site concerné (IH, NXI, ...)
      */
-    private String url_api;
+    private int site;
     /**
      * URL de la miniature de l'article.
      */
@@ -194,6 +194,20 @@ public class ArticleItem implements Item {
     }
 
     /**
+     * @return site
+     */
+    public int getSite() {
+        return site;
+    }
+
+    /**
+     * @param site site
+     */
+    public void setSite(int site) {
+        this.site = site;
+    }
+
+    /**
      * @return url
      */
     public String getUrl() {
@@ -205,20 +219,6 @@ public class ArticleItem implements Item {
      */
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    /**
-     * @return url_api
-     */
-    public String getUrl_api() {
-        return url_api;
-    }
-
-    /**
-     * @param url_api url
-     */
-    public void setUrl_api(String url_api) {
-        this.url_api = url_api;
     }
 
     /**
