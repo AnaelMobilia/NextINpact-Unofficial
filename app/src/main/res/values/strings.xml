@@ -37,8 +37,8 @@
 
     <!-- Disclaimer -->
     <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next INpact.
-			\nLes contenus affichés dans l'application sont issus du site www.nextinpact.com (INpact Mediagroup) et sont la pleine propriété de leurs auteurs.
-			\nSi vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
+			\nLes contenus affichés dans l'application sont issus des sites de INpact Mediagroup (www.nextinpact.com et www.inpact-hardware.com) et sont la pleine propriété de leurs auteurs.
+			\nSi vous appréciez Next INpact et INpact Hardware, abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"</string>
 
     <!-- A propos -->
@@ -49,7 +49,7 @@ https://github.com/AnaelMobilia/NextINpact-Unofficial/issues
 contrib@anael.eu
 
 L'application est développée dans le cadre d'une licence libre GNU GPLv3 : toute personne peut accéder au code source !
-
+https://github.com/AnaelMobilia/NextINpact-Unofficial
 
 Crédits :
  - Anael Mobilia (mainteneur depuis la v1.7.2 - depuis septembre 2014)
@@ -63,18 +63,18 @@ Crédits :
 
 
 Propriété des contenus :
-L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus du site www.nextinpact.com
+L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.nextinpact.com et www.inpact-hardware.com
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
-Si vous appréciez Next INpact, abonnez-vous pour soutenir leur indépendance !
+Si vous appréciez Next INpact et INpact Hardware, abonnez-vous pour soutenir leur indépendance !
 https://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
     <string name="articleVideErreurHTML">"Oups…! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
-    <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI dans les options !"</string>
+    <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI/IH dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
-    <string name="erreurCompteAbonnement">"Votre abonnement NXI est expiré, les articles Abonné ne pourront pas être lus !"</string>
+    <string name="erreurCompteAbonnement">"Votre abonnement NXI/IH est expiré, les articles Abonné ne pourront pas être lus !"</string>
     <string name="erreurZoomImage">"Oups…! Cette image ne peut pas être affichée."</string>
 
     <!-- Vue "Options" -->
@@ -87,14 +87,14 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionsAbonne">Configurer mon compte abonné</string>
     <string name="optionAbonneDisclaimer">"J'accepte que les identifiants de mon compte soient stockés sur cet appareil afin de me permettre de lire les contenus abonnés du site."</string>
     <string name="optionLogin">Identifiant</string>
-    <string name="optionLoginDetail">Votre pseudonyme Next INpact</string>
+    <string name="optionLoginDetail">Votre pseudo ou email Next INpact / INpact Hardware</string>
     <string name="optionPassword">Mot de passe</string>
     <string name="optionPasswordDetail">Le mot de passe associé à votre compte</string>
     <!-- Options liste des articles -->
     <string name="optionsListeArticle">Liste des articles</string>
-    <string name="optionNbArticles">"Nombre d'articles"</string>
+    <string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>
     <string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>
-    <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI"</string>
+    <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI/IH"</string>
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>
     <string name="optionAfficherNbNouveauCommDetail">Affichage sous la forme (+12)</string>
     <!-- Options : Articles -->
