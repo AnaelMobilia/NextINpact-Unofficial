@@ -10,6 +10,9 @@ android {
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 29
+        // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
+        versionCode 241
+        versionName "2.4.1"
     }
 
     buildTypes {

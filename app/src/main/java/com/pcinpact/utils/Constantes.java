@@ -21,9 +21,9 @@ package com.pcinpact.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
+import com.pcinpact.BuildConfig;
 
 import java.util.Locale;
 
@@ -212,25 +212,16 @@ public class Constantes {
     private static final String USER_AGENT = "NextInpact (Unofficial) v";
 
     /**
-     * User agent pour les Requêtes réseau.
+     * User agent pour les requêtes réseau.
      *
-     * @param unContext context de l'application
      * @return User-Agent
      */
-    public static String getUserAgent(final Context unContext) {
+    public static String getUserAgent() {
         // Numéro de version de l'application
-        String numVersion = "";
-        try {
-            PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
-            numVersion = pInfo.versionName;
-            if (Constantes.DEBUG) {
-                numVersion += " DEV";
-            }
-        } catch (Exception e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("Constantes", "getUserAgent() - Erreur à la résolution du n° de version", e);
-            }
+        String numVersion = BuildConfig.VERSION_NAME;
+
+        if (Constantes.DEBUG) {
+            numVersion += " DEV";
         }
 
         return USER_AGENT + numVersion;
