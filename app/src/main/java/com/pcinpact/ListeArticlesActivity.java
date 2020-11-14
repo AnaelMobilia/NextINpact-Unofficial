@@ -422,7 +422,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Mode texte
                 intent.setType("text/plain");
                 // Sujet du mail
-                intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent(getApplicationContext()));
+                intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent());
                 // Corps du mail
                 intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
                 // A qui...

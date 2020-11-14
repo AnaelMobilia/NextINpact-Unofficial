@@ -298,7 +298,7 @@ class Downloader {
             // Gestion du timeout & useragent
             urlConnection.setConnectTimeout(Constantes.TIMEOUT);
             urlConnection.setReadTimeout(Constantes.TIMEOUT);
-            urlConnection.setRequestProperty("User-Agent", Constantes.getUserAgent(unContext));
+            urlConnection.setRequestProperty("User-Agent", Constantes.getUserAgent());
 
             // On envoit des données
             urlConnection.setRequestMethod("POST");
