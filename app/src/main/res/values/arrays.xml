@@ -36,9 +36,9 @@
     </string-array>
     <!-- Menu options -> nombre d'articles à conserver -->
     <string-array name="nbArticles">
-        <item>30</item>
-        <item>60</item>
-        <item>90</item>
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
     </string-array>
     <!-- Menu options -> affichage des images -->
     <string-array name="affichageImagesLitteral">

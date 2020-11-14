@@ -48,10 +48,11 @@ public class ParseurHTML {
     /**
      * Parse la liste des articles.
      *
+     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return liste d'articleItem
      */
-    public static ArrayList<ArticleItem> getListeArticles(final String unContenu) {
+    public static ArrayList<ArticleItem> getListeArticles(final int site, final String unContenu) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -125,11 +126,11 @@ public class ParseurHTML {
     /**
      * Parse le contenu d'un article.
      *
+     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
-     * @param urlPage   URL de la page
      * @return ArticleItem
      */
-    public static ArticleItem getArticle(final String unContenu, final String urlPage) {
+    public static ArticleItem getArticle(final int site, final String unContenu) {
         ArticleItem monArticleItem = new ArticleItem();
 
         try {
@@ -404,10 +405,11 @@ public class ParseurHTML {
     /**
      * Nombre de commentaires d'un article à partir d'une page de commentaires.
      *
+     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return nb de commentaires de l'article
      */
-    public static int getNbCommentaires(final String unContenu) {
+    public static int getNbCommentaires(final int site, final String unContenu) {
         int nbComms = 0;
         try {
             // Récupération du JSON
@@ -433,10 +435,11 @@ public class ParseurHTML {
     /**
      * Parse les commentaires.
      *
+     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
+    public static ArrayList<CommentaireItem> getCommentaires(final int site, final String unContenu) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 

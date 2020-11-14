@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.pcinpact.BuildConfig;
 
@@ -214,9 +215,13 @@ public class Constantes {
      */
     public static final String AUTHENTIFICATION_PASSWORD = "password";
     /**
-     * Nom du cookie d'authentification.
+     * Nom du cookie d'authentification sur l'API.
      */
-    public static final String AUTHENTIFICATION_COOKIE = "__crossAuth";
+    public static final String AUTHENTIFICATION_COOKIE_API = "token";
+    /**
+     * Nom du cookie retourné à l'authentification.
+     */
+    public static final String AUTHENTIFICATION_COOKIE_AUTH = "__crossAuth";
     /**
      * USER AGENT.
      */
@@ -236,6 +241,28 @@ public class Constantes {
         }
 
         return USER_AGENT + numVersion;
+    }
+
+    /**
+     * Retourne une URL complète (FQDN)
+     *
+     * @param site ID du site concerné
+     * @param path path à rajouter dans l'URL
+     * @return URL FQDN
+     */
+    public static String getSiteURL(final int site, final String path) {
+        switch (site) {
+            case IS_NXI:
+                return NXI_URL + path;
+            case IS_IH:
+                return IH_URL + path;
+        }
+
+        // DEBUG
+        if (DEBUG) {
+            Log.e("Constantes", "getSiteURL() - Valeur site impossible : " + site);
+        }
+        return "";
     }
 
     /**

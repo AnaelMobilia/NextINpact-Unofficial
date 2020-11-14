@@ -76,13 +76,13 @@ public class CacheManager {
                     }
 
                     // Suppression en DB
-                    monDAO.supprimerArticle(article);
+                    monDAO.supprimerArticle(article.getId(), article.getSite());
 
                     // Suppression des commentaires de l'article
-                    monDAO.supprimerCommentaire(article.getId());
+                    monDAO.supprimerCommentaire(article.getId(), article.getSite());
 
                     // Suppression de la date de Refresh des commentaires
-                    monDAO.supprimerDateRefresh(article.getId());
+                    monDAO.supprimerDateRefresh(article.getId(), article.getSite());
                 }
             }
         } catch (Exception e) {

@@ -37,6 +37,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -88,7 +89,7 @@ class Downloader {
                 Log.d("Downloader", "download() - Lancement connexion");
             }
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
-            Request request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent(unContext)).build();
+            Request request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
             Response response = client.newCall(request).execute();
 
             // Gestion d'un code erreur
@@ -288,11 +289,14 @@ class Downloader {
         // Authentification sur NXI
         try {
             // Création de la chaîne d'authentification
-            String query = Constantes.AUTHENTIFICATION_USERNAME + "=" + Uri.encode(username, Constantes.NEXT_INPACT_ENCODAGE)
-                           + "&" + Constantes.AUTHENTIFICATION_PASSWORD + "=" + Uri.encode(password,
-                                                                                           Constantes.NEXT_INPACT_ENCODAGE);
+            String query = "{\"" + Constantes.AUTHENTIFICATION_USERNAME + "\":\"" + Uri.encode(username,
+                                                                                               Constantes.X_INPACT_ENCODAGE)
+                           + "\",\"" + Constantes.AUTHENTIFICATION_PASSWORD + "\":\"" + Uri.encode(password,
+                                                                                                   Constantes.X_INPACT_ENCODAGE)
+                           + "\",\"noCrossAuth\":false,\"ei\":1,\"pi\":23,\"tk\":\"n(\"}";
 
-            URL monURL = new URL(Constantes.AUTHENTIFICATION_URL);
+            // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
+            URL monURL = new URL(Constantes.NXI_URL + Constantes.X_INPACT_URL_AUTH);
             HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
 
             // Gestion du timeout & useragent
@@ -305,7 +309,7 @@ class Downloader {
             urlConnection.setDoOutput(true);
             // Désactivation du cache...
             urlConnection.setUseCaches(false);
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
 
             // Buffer des données et émission...
             OutputStream output = new BufferedOutputStream(urlConnection.getOutputStream());
@@ -322,7 +326,7 @@ class Downloader {
                 Log.d("Downloader", "connexionAbonne() - headers : " + urlConnection.getHeaderFields().toString());
                 // Je récupère le flux de données
                 InputStream monIS = new BufferedInputStream(urlConnection.getInputStream());
-                String datas = MyIOUtils.toString(monIS, Constantes.NEXT_INPACT_ENCODAGE);
+                String datas = MyIOUtils.toString(monIS, Constantes.X_INPACT_ENCODAGE);
                 // Ferme l'IS
                 monIS.close();
                 Log.d("Downloader", "connexionAbonne() - données : " + datas);
@@ -376,11 +380,26 @@ class Downloader {
             }
 
             for (HttpCookie unCookie : monCookieManager.getCookieStore().getCookies()) {
+                // Est-ce le cookie de l'authentification (à renommer)
+                if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
+                    // Je vide le cookieManager
+                    monCookieManager.getCookieStore().removeAll();
+                    // Je l'ajoute pour les deux sites
+                    monCookieManager.getCookieStore().add(URI.create(Constantes.NXI_URL), unCookie);
+                    monCookieManager.getCookieStore().add(URI.create(Constantes.IH_URL), unCookie);
+                    // On est bon
+                    monRetour = true;
+                    break;
+                }
                 // Est-le bon cookie ?
-                if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE)) {
+                else if (unCookie.getName().equals(Constantes.AUTHENTIFICATION_COOKIE_API)) {
                     monRetour = true;
                     // Pas besoin d'aller plus loin !
                     break;
+                }
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("Downloader", "estConnecte() - Cookie : " + unCookie.toString());
                 }
             }
         }

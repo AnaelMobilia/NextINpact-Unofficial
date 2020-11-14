@@ -27,7 +27,7 @@
     <bool name="defautOptionInstallationApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>
-    <string name="defautOptionNbArticles">30</string>
+    <string name="defautOptionNbArticles">25</string>
     <bool name="defautOptionAbonne">false</bool>
     <string name="defautOptionLogin">""</string>
     <string name="defautOptionPassword">""</string>
