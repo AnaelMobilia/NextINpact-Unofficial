@@ -53,15 +53,15 @@ public class Constantes {
     /**
      * Encodage des pages.
      */
-    public static final String NEXT_INPACT_ENCODAGE = "UTF-8";
+    public static final String X_INPACT_ENCODAGE = "UTF-8";
     /**
      * URL de téléchargement NXI.
      */
-    public static final String NEXT_INPACT_URL = "https://api-v1.nextinpact.com/api/v1/";
+    public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
     /**
      * URL de téléchargement INPACT-HARDWARE.
      */
-    public static final String INPACT_HARDWARE_URL = "https://api-v1.inpact-hardware.com/api/v1/";
+    public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
     /**
      * Page des articles (listing)
      */
@@ -197,15 +197,15 @@ public class Constantes {
     /**
      * Paramètre utilisateur.
      */
-    public static final String AUTHENTIFICATION_USERNAME = "UserName";
+    public static final String AUTHENTIFICATION_USERNAME = "emailOrLogin";
     /**
      * Paramètre mot de passe.
      */
-    public static final String AUTHENTIFICATION_PASSWORD = "Password";
+    public static final String AUTHENTIFICATION_PASSWORD = "password";
     /**
      * Nom du cookie d'authentification.
      */
-    public static final String AUTHENTIFICATION_COOKIE = "__RequestVerificationToken";
+    public static final String AUTHENTIFICATION_COOKIE = "__crossAuth";
     /**
      * USER AGENT.
      */
