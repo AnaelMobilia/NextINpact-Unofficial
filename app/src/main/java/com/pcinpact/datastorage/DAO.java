@@ -562,8 +562,8 @@ public final class DAO extends SQLiteOpenHelper {
         // J'essaye de charger le commentaire depuis la BDD
         CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleId(), unCommentaire.getUuid());
 
-        // Vérif que le commentaire n'existe pas déjà
-        if (!testItem.getIDArticleUuidCommentaire().equals(unCommentaire.getIDArticleUuidCommentaire())) {
+        // Si je ne l'ai pas récupéré c'est que je peux l'enregistrer en BDD !
+        if (testItem.getId() == 0) {
             this.enregistrerCommentaire(unCommentaire);
             return true;
         }
