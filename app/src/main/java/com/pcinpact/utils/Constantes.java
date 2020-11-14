@@ -57,31 +57,31 @@ public class Constantes {
     /**
      * URL de téléchargement NXI.
      */
-    //public static final String NEXT_INPACT_URL = "https://api-v1-beta.nextinpact.com/api/v1/";
+    public static final String NEXT_INPACT_URL = "https://api-v1.nextinpact.com/api/v1/";
     /**
      * URL de téléchargement INPACT-HARDWARE.
      */
-    public static final String NEXT_INPACT_URL = "https://api-v1.inpact-hardware.com/api/v1/";
+    public static final String INPACT_HARDWARE_URL = "https://api-v1.inpact-hardware.com/api/v1/";
     /**
-     * Paramètre numéro de page (liste articles).
+     * Page des articles (listing)
      */
-    public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "SimpleContent/list?page=";
+    public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?page=";
+    /**
+     * Détail d'un article
+     */
+    public static final String X_INPACT_URL_ARTICLE = "SimpleContent/";
     /**
      * URL de téléchargement des commentaires.
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "Commentaire/list";
+    public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
+    /**
+     * URL de téléchargement des commentaires.
+     */
+    public static final String X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
     /**
      * URL d'authentification.
      */
-    public static final String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
-    /**
-     * Paramètre ID d'article (commentaires).
-     */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "ArticleId";
-    /**
-     * Paramètre numéro de page (commentaires).
-     */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+    public static final String X_INPACT_URL_AUTH = "/Account/login";
     /**
      * Timeout pour les téléchargements (en ms) - default = ~250000.
      */
