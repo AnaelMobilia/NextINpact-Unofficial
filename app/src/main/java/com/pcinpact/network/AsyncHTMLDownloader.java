@@ -184,7 +184,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         // pages)
                         if (fullURL.equals(Constantes.X_INPACT_URL_LISTE_ARTICLE + "1")) {
                             // MàJ de la date de rafraichissement
-                            monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, site, dateRefresh);
+                            monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
                         }
 
                         // DEBUG
@@ -199,7 +199,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // Chargement de l'article depuis la BDD
                         // La création des squelettes des articles en BDD est fait par le DL de la liste des articles
-                        ArticleItem articleDB = monDAO.chargerArticle(articleParseur.getId(), site);
+                        ArticleItem articleDB = monDAO.chargerArticle(articleParseur.getIdInpact(), articleParseur.getSite());
 
                         // Ajout du contenu à l'objet chargé
                         articleDB.setContenu(articleParseur.getContenu());
@@ -222,7 +222,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         /*
                          * MàJ des commentaires
                          */
-                        // Je passe par le parser
+                        // Je passe par le parseur
                         ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(site, datas);
 
                         // DEBUG
@@ -245,14 +245,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         debut += Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE.length();
                         int idArticle = Integer.parseInt(fullURL.substring(debut));
 
+                        // Récupération de l'article en question
+                        ArticleItem unArticle = monDAO.chargerArticle(idArticle, site);
+
                         // MàJ de la date de rafraichissement
-                        monDAO.enregistrerDateRefresh(idArticle, site, dateRefresh);
+                        monDAO.enregistrerDateRefresh(unArticle.getPk(), dateRefresh);
 
                         /*
                          * MàJ du nombre de commentaires
                          */
                         int nbCommentaires = ParseurHTML.getNbCommentaires(site, datas);
-                        monDAO.updateNbCommentairesArticle(idArticle, site, nbCommentaires);
+                        monDAO.updateNbCommentairesArticle(unArticle.getPk(), nbCommentaires);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
