@@ -66,5 +66,24 @@
             android:layout_height="wrap_content"
             android:text="@string/debugTesterConnexion" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/refreshOrange" />
+
+        <Button
+            android:id="@+id/debugGenererArrayListArticleItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debugGenererArrayList" />
+
+        <TextView
+            android:id="@+id/debugTextViewHTML"
+            style="?attr/themeArticleTexte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="?android:attr/scrollbarSize" />
+
     </LinearLayout>
 </ScrollView>
