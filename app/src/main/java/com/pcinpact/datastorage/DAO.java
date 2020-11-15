@@ -270,8 +270,9 @@ public final class DAO extends SQLiteOpenHelper {
      * Enregistre (ou MàJ) un article en BDD
      *
      * @param unArticle ArticleItem
+     * @return int PK de l'article
      */
-    public void enregistrerArticle(final ArticleItem unArticle) {
+    public int enregistrerArticle(final ArticleItem unArticle) {
         ContentValues insertValues = new ContentValues();
 
         // Est-ce un article déjà connu ?
@@ -296,16 +297,22 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
         insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
 
-        maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
+        long monResult = maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
+        if (Constantes.DEBUG) {
+            Log.d("DAO", "enregistrerArticle() - PK Article " + monResult);
+        }
+        return (int) monResult;
     }
 
     /**
-     * Enregistre un article en BDD uniquement s'il n'existe pas déjà
+     * Enregistre un article en BDD uniquement s'il n'existait pas ou qu'il a été mis à jour
      *
      * @param unArticle ArticleItem
-     * @return true si l'article n'était pas connu
+     * @return int PK de l'article en BDD (-1 si déjà existant)
      */
-    public boolean enregistrerArticleSiNouveau(final ArticleItem unArticle) {
+    public int enregistrerArticleSiNouveau(final ArticleItem unArticle) {
+        // PK de l'article si non déjà enregistré
+        int pkArticle = -1;
         // J'essaye de charger l'article depuis la DB
         ArticleItem testItem = this.chargerArticle(unArticle.getPk());
 
@@ -314,13 +321,13 @@ public final class DAO extends SQLiteOpenHelper {
         // - l'article est déjà en BDD, mais il s'agit d'une MàJ de l'article
         // - l'article est déjà en BDD, mais ne contient rien (pb de dl)
         if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication() || testItem.getContenu().equals("")) {
-            this.enregistrerArticle(unArticle);
-            return true;
+            // Enregistrement & récupération de sa PK
+            pkArticle = this.enregistrerArticle(unArticle);
         } else {
             // Je met à jour le nb de comms de l'article en question...
             updateNbCommentairesArticle(unArticle.getPk(), unArticle.getNbCommentaires());
-            return false;
         }
+        return pkArticle;
     }
 
     /**

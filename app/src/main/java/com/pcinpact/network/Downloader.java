@@ -131,7 +131,7 @@ class Downloader {
                 });
             }
         }
-        Log.d("xxxx", datas);
+        Log.d("Downloader", "download() - Contenu : " + datas);
         return datas;
     }
 

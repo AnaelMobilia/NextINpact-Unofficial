@@ -181,9 +181,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // Je ne conserve que les nouveaux articles
                         for (ArticleItem unArticle : monRetour) {
-                            // Stockage en BDD
-                            if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
-                                // Ne retourne que les nouveaux articles
+                            // Stockage en BDD ssi nouveau
+                            int pkArticle = monDAO.enregistrerArticleSiNouveau(unArticle);
+                            // Nouveau en BDD ?
+                            if (pkArticle > 0) {
+                                // J'ajoute la pk à l'item & met l'article dans les actualités à afficher
+                                unArticle.setPk(pkArticle);
                                 mesItems.add(unArticle);
                             }
                         }
