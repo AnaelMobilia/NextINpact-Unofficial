@@ -11,9 +11,9 @@ android:
     - platform-tools
 
     # Build tools requis par le projet
-    - build-tools-29.0.2
+    - build-tools-30.0.2
     # Version du SDK pour compiler le projet
-    - android-29
+    - android-30
 
     # Dépôt supplémentaire requis pour avoir support-v4 & appcompat-v7 24.2.1
     - extra-android-m2repository
@@ -23,9 +23,9 @@ android:
 
 # https://gradle.org/install/#manually
 before_install:
-  - wget https://downloads.gradle.org/distributions/gradle-6.3-bin.zip
-  - unzip gradle-6.3-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-6.3
+  - wget https://downloads.gradle.org/distributions/gradle-6.7-bin.zip
+  - unzip gradle-6.7-bin.zip
+  - export GRADLE_HOME=$PWD/gradle-6.7
   - export PATH=$GRADLE_HOME/bin:$PATH
 
 script:
