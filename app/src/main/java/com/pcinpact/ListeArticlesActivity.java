@@ -398,6 +398,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         } else if (id == R.id.action_about) {
             // A propos
             Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
+            startActivity(intentAbout);
         } else if (id == R.id.action_debug) {
             // Debug
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
