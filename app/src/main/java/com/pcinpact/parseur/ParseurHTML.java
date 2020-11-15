@@ -24,6 +24,7 @@ import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,11 +34,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 /**
  * Parseur du code HTML.
@@ -76,7 +73,7 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("datePublished");
-                monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE));
+                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
 
                 // Publicité
                 monArticleItem.setPublicite(unArticle.getBoolean("isSponsored"));
@@ -86,12 +83,6 @@ public class ParseurHTML {
 
                 // Titre de l'article
                 monArticleItem.setTitre(unArticle.getString("title"));
-
-                // URL pour téléchargement via API
-                String url_api = "https://api-v1.inpact-hardware.com/api/v1/SimpleContent/";
-                url_api += monArticleItem.getId();
-                monArticleItem.setUrl_api(url_api);
-
 
                 // Sous titre
                 monArticleItem.setSousTitre(unArticle.getString("subtitle"));
@@ -462,7 +453,7 @@ public class ParseurHTML {
 
                 // Date
                 monCommentaireItem.setTimeStampPublication(
-                        convertToTimeStamp(unCommentaire.getString("dateCreated"), Constantes.FORMAT_DATE));
+                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
 
                 // Contenu
                 String contenu = "<div class=\"comm\">";
@@ -514,28 +505,5 @@ public class ParseurHTML {
         }
 
         return mesCommentairesItem;
-    }
-
-    /**
-     * Convertit une date texte en timestamp.
-     *
-     * @param uneDate      date au format textuel
-     * @param unFormatDate format de la date
-     * @return timestamp
-     */
-    private static long convertToTimeStamp(final String uneDate, final String unFormatDate) {
-        DateFormat dfm = new SimpleDateFormat(unFormatDate, Constantes.LOCALE);
-        dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
-        long laDateTS = 0;
-        try {
-            // Récupération du timestamp
-            laDateTS = dfm.parse(uneDate).getTime();
-        } catch (ParseException e) {
-            if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
-            }
-        }
-
-        return laDateTS;
     }
 }
