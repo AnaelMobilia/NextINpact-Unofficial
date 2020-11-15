@@ -19,7 +19,6 @@
 package com.pcinpact;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyURLUtils;
 
 import java.util.ArrayList;
 
@@ -103,68 +103,16 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             monToast.show();
         });
 
-        /*
-         * Boutton : génération ArrayList<ArticleItem>
-         */
-        Button buttonArrayList = this.findViewById(R.id.debugGenererArrayListArticleItem);
-        buttonArrayList.setOnClickListener((View arg0) -> {
-            /*
-             * Récupération des articles
-             */
-            // Chargement depuis BDD
-            ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(Constantes.NB_ARTICLES_PAR_PAGE);
-
-            /*
-             * Génération du texte...
-             */
-            // La sortie...
-            String monRetour;
-            // Génération de l'arraylist
-            monRetour = "ArrayList<ArticleItem> mesArticles = new ArrayList<>();";
-            // Génération des objets
-            monRetour += "\nArticleItem unArticle;";
-            for (ArticleItem unArticle : mesArticles) {
-                // Contenu de l'objet
-                monRetour += "\nunArticle = new ArticleItem();\n" + "unArticle.setId(" + unArticle.getId() + ");\n"
-                             + "unArticle.setTimeStampPublication(" + unArticle.getTimeStampPublication() + "L);\n"
-                             + "unArticle.setUrlIllustration(\"" + unArticle.getUrlIllustration() + "\");\n"
-                             + "unArticle.setUrl(\"" + unArticle.getUrl() + "\");\n" + "unArticle.setTitre(\""
-                             + unArticle.getTitre() + "\");\n" + "unArticle.setSousTitre(\"" + unArticle.getSousTitre() + "\");\n"
-                             + "unArticle.setNbCommentaires(" + unArticle.getNbCommentaires() + ");\n" + "unArticle.setAbonne("
-                             + unArticle.isAbonne() + ");";
-
-                // Insertion de l'objet dans l'arraylist
-                monRetour += "\nmesArticles.add(unArticle);";
-            }
-
-            /*
-             * Affichage
-             */
-            if (Constantes.DEBUG) {
-                // Buffer limité à 4k chr...
-                if (monRetour.length() > 4000) {
-                    int chunkCount = monRetour.length() / 4000;
-                    for (int i = 0; i <= chunkCount; i++) {
-                        int max = 4000 * (i + 1);
-                        if (max >= monRetour.length()) {
-                            Log.e("DebugActivity", monRetour.substring(4000 * i));
-                        } else {
-                            Log.e("DebugActivity", monRetour.substring(4000 * i, max));
-                        }
-                    }
-                } else {
-                    Log.e("DebugActivity", monRetour);
-                }
-            }
-        });
 
         /*
          * Bouton : Tester connexion
          */
         Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
         buttonTesterConnexion.setOnClickListener((View arg0) -> {
-            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES,
-                                                                 Constantes.NEXT_INPACT_URL, monDAO, getApplicationContext(),
+            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_NXI,
+                                                                 MyURLUtils.getSiteURL(Constantes.IS_NXI,
+                                                                                       Constantes.X_INPACT_URL_LISTE_ARTICLE,
+                                                                                       false), monDAO, getApplicationContext(),
                                                                  true);
 
             monAHD.run();
@@ -176,15 +124,15 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
         // Si j'ai reçu un Intent
         if (getIntent().getExtras() != null) {
             // Je cache tous les boutons génériques !
-            buttonArrayList.setVisibility(View.GONE);
             buttonTesterConnexion.setVisibility(View.GONE);
 
             // ID de l'article concerné
             int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            int site = getIntent().getExtras().getInt("SITE");
             // Si j'ai un article
             if (articleID != 0) {
                 // Chargement de l'article
-                ArticleItem monArticle = monDAO.chargerArticle(articleID);
+                ArticleItem monArticle = monDAO.chargerArticle(articleID, site);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 maTextView.setText(monArticle.getContenu());
@@ -195,7 +143,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             // Si j'ai un article
             if (articleID != 0) {
                 // Chargement des commentaires
-                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articleID);
+                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articleID, site);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 StringBuilder monContenu = new StringBuilder();
@@ -217,7 +165,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
     }
 
     @Override
-    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> mesItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> mesItems) {
 
     }
 }

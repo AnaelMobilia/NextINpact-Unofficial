@@ -328,7 +328,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
         // Marquer l'article comme lu en BDD
-        monDAO.marquerArticleLu(monArticle.getId());
+        monDAO.marquerArticleLu(monArticle.getId(), monArticle.getSite());
 
         // Lance l'ouverture de l'article
         Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
