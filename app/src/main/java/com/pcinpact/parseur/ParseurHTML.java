@@ -372,7 +372,6 @@ public class ParseurHTML {
 
             // Elimination des htmlentities (beaucoup de &nbsp;)
             monContenu = Parser.unescapeEntities(lArticle.toString(), true);
-
         } catch (JSONException e) {
             // DEBUG
             if (Constantes.DEBUG) {
