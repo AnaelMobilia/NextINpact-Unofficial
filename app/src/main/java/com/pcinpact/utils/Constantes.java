@@ -87,7 +87,8 @@ public class Constantes {
     /**
      * URL des images
      */
-    public static final String X_INPACT_URL_IMG = "data-prod/images/bd/";
+    public static final String NXI_URL_IMG = "data-next/images/bd/square-linked-media/";
+    public static final String IH_URL_IMG = "data-prod/images/bd/square-linked-media/";
     public static final String X_INPACT_URL_IMG_EXT = ".jpg";
     /**
      * URL des articles (pour partager)

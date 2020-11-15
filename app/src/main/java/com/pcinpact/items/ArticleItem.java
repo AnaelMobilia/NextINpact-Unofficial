@@ -133,7 +133,7 @@ public class ArticleItem implements Item {
         // Le "/article" sert juste à passer le routing chez NXI/IH, l'URL sera réécrite
         String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.getIdInpact() + "/article";
 
-        return MyURLUtils.getSiteURL(this.site, path, false);
+        return MyURLUtils.getSiteURL(this.getSite(), path, false);
     }
 
     /**
@@ -151,9 +151,15 @@ public class ArticleItem implements Item {
      * @return urlIllustration
      */
     public String getUrlIllustration() {
-        String path = Constantes.X_INPACT_URL_IMG + this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
+        String path;
+        if (this.getSite() == Constantes.IS_NXI) {
+            path = Constantes.NXI_URL_IMG;
+        } else {
+            path = Constantes.IH_URL_IMG;
+        }
+        path += this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
 
-        return MyURLUtils.getSiteURL(this.site, path, true);
+        return MyURLUtils.getSiteURL(this.getSite(), path, true);
     }
 
     /**
