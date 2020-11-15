@@ -36,18 +36,17 @@ public class MyDateUtils {
      * Convertit une date texte en timestamp au format NXI
      *
      * @param uneDate date au format textuel
-     * @param site    ID du site (IH, NXI, ...)
      * @return timestamp
      */
-    public static long convertToTimeStamp(final String uneDate, final int site) {
-        String formatDate;
-        if (site == Constantes.IS_NXI) {
-            formatDate = Constantes.FORMAT_DATE_NXI;
-        } else {
-            formatDate = Constantes.FORMAT_DATE_IH;
+    public static long convertToTimeStamp(String uneDate) {
+        // Ex de dates : 2020-11-13T15:52:42.0216538 / 2020-11-05T14:00:18.239 / 2020-11-04T07:30:08.4
+        // => Suppression à partir du ".XXX" (millisecondes)
+        int posPoint = uneDate.indexOf(".");
+        if (posPoint != -1) {
+            uneDate = uneDate.substring(0, posPoint);
         }
 
-        DateFormat dfm = new SimpleDateFormat(formatDate, Constantes.LOCALE);
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE, Constantes.LOCALE);
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {

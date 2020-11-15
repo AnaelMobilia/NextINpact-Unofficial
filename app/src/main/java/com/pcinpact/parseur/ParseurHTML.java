@@ -73,7 +73,7 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("datePublished");
-                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate, site));
+                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
 
                 // Le Brief
                 boolean estBrief = unArticle.getBoolean("isBrief");
@@ -422,11 +422,10 @@ public class ParseurHTML {
     /**
      * Parse les commentaires
      *
-     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final int site, final String unContenu) {
+    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
@@ -451,7 +450,7 @@ public class ParseurHTML {
 
                 // Date
                 monCommentaireItem.setTimeStampPublication(
-                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated"), site));
+                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
 
                 // Contenu
                 String contenu = "<div class=\"comm\">";

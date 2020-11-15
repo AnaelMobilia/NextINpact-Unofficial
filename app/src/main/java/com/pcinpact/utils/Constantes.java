@@ -149,8 +149,7 @@ public class Constantes {
     /**
      * Format des dates sur le site.
      */
-    public static final String FORMAT_DATE_NXI = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
-    public static final String FORMAT_DATE_IH = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
     /**
      * Date et heure de publication d'un commentaire.
      */
