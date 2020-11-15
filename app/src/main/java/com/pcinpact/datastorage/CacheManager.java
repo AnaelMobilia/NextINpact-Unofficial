@@ -121,7 +121,14 @@ public class CacheManager {
              */
             // Sur le disque
             CleanImageAsyncTask maTache = new CleanImageAsyncTask(monContext);
-            maTache.execute();
+            try {
+                maTache.execute();
+            } catch (Exception e) {
+                //DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("CacheManager", "effacerCache() - Suppression cache image sur disque", e);
+                }
+            }
             // En mémoire
             Glide.get(monContext).clearMemory();
         } catch (Exception e) {
@@ -213,7 +220,7 @@ public class CacheManager {
 /**
  * Effacement du cache des images (Glide)
  */
-class CleanImageAsyncTask extends AsyncTask {
+class CleanImageAsyncTask extends AsyncTask<Void, Void, Void> {
     final private Context monContext;
 
     CleanImageAsyncTask(Context context) {
@@ -221,7 +228,7 @@ class CleanImageAsyncTask extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected Void doInBackground(Void... voids) {
         // This method must be called on a background thread.
         Glide.get(monContext).clearDiskCache();
         return null;
