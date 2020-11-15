@@ -404,15 +404,40 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Charger un article depuis la BDD
+     * Charger un article depuis la BDD - PK article
      *
-     * @param pkArticle ID de l'article
+     * @param pkArticle PK de l'article
      * @return ArticleItem de l'article
      */
     public ArticleItem chargerArticle(final int pkArticle) {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_PK + "=?",
                                        new String[]{ String.valueOf(pkArticle) }, null, null, null);
+
+        ArticleItem monArticle = new ArticleItem();
+
+        // Je vais au premier (et unique) résultat
+        if (monCursor.moveToNext()) {
+            // Je charge les données de l'objet
+            monArticle = cursorToArticleItem(monCursor);
+        }
+        // Fermeture du curseur
+        monCursor.close();
+
+        return monArticle;
+    }
+
+    /**
+     * Charger un article depuis la BDD - ID INpact & Site
+     *
+     * @param idArticle ID de l'article
+     * @param site      Site concerné (NXI, IH, ...)
+     * @return ArticleItem de l'article
+     */
+    public ArticleItem chargerArticle(final int idArticle, final int site) {
+        // Requête sur la BDD
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?",
+                                       new String[]{ String.valueOf(idArticle), String.valueOf(site) }, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
