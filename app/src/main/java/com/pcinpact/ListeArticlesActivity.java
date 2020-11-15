@@ -474,7 +474,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             /*
              * Téléchargement des articles dont le contenu n'avait pas été téléchargé
              */
-            telechargeArticles(monDAO.chargerArticlesATelecharger());
+            telechargeArticles(monDAO.chargerArticlesATelecharger(), false);
 
             /*
              * Téléchargement des pages de liste d'articles
@@ -514,9 +514,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Lance le téléchargement des articles.
      *
-     * @param desItems liste d'articles à télécharger
+     * @param desItems       liste d'articles à télécharger
+     * @param dlListeArticle Est-ce un appel dans le cadre du dl d'une nouvelle liste d'articles
      */
-    private void telechargeArticles(final ArrayList<? extends Item> desItems) {
+    private void telechargeArticles(final ArrayList<? extends Item> desItems, final boolean dlListeArticle) {
         for (Item unItem : desItems) {
             ArticleItem unArticle = (ArticleItem) unItem;
 
@@ -525,7 +526,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             boolean isConnecteRequis = false;
 
             // Est-ce un article abonné dont j'ai déjà la version publique ?
-            if (unArticle.isAbonne() && unArticle.getContenu().equals("")) {
+            if (!dlListeArticle && unArticle.isAbonne() && unArticle.getContenu().equals("")) {
                 // Je requiert d'être connecté (sinon le DL ne sert à rien)
                 isConnecteRequis = true;
             }
@@ -550,7 +551,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Si c'est un refresh général
         if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
             // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
-            telechargeArticles(desItems);
+            telechargeArticles(desItems, true);
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         } else {
