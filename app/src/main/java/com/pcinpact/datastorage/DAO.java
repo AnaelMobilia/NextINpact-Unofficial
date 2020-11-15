@@ -449,7 +449,8 @@ public final class DAO extends SQLiteOpenHelper {
             limite = null;
         }
         // Requête sur la BDD
-        monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, "5 DESC", limite);
+        monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, ARTICLE_TIMESTAMP + " DESC",
+                                limite);
 
         ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
