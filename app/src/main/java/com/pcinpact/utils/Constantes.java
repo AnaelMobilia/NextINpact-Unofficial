@@ -94,7 +94,10 @@ public class Constantes {
      * URL des articles (pour partager)
      */
     public static final String X_INPACT_URL_ARTICLE_PARTAGE = "article/";
-
+    /**
+     * URL des smileys
+     */
+    public static final String X_CDN_SMILEY_URL = "https://cdn2.nextinpact.com/smileys/";
 
     /**
      * Timeout pour les téléchargements (en ms) - default = ~250000.
