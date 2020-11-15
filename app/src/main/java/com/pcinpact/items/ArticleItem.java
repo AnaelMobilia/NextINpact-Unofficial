@@ -33,15 +33,19 @@ import java.util.Date;
 public class ArticleItem implements Item {
 
     /**
-     * ID de l'article.
+     * Clef unique de l'article dans l'app
      */
-    private int id;
+    private int pk;
     /**
-     * Titre de l'article.
+     * ID de l'article chez NXI/IH (non unique)
+     */
+    private int id_inpact;
+    /**
+     * Titre de l'article
      */
     private String titre;
     /**
-     * Sous-titre de l'article.
+     * Sous-titre de l'article
      */
     private String sousTitre = "";
     /**
@@ -49,7 +53,7 @@ public class ArticleItem implements Item {
      */
     private boolean isAbonne;
     /**
-     * Nombre de commentaires de l'article.
+     * Nombre de commentaires de l'article
      */
     private int nbCommentaires;
     /**
@@ -57,15 +61,15 @@ public class ArticleItem implements Item {
      */
     private int site;
     /**
-     * ID de la miniature de l'article.
+     * ID de la miniature de l'article
      */
     private int idIllustration;
     /**
-     * Contenu de l'article.
+     * Contenu de l'article
      */
     private String contenu = "";
     /**
-     * Timestamp de publication de l'article.
+     * Timestamp de publication de l'article
      */
     private long timeStampPublication;
     /**
@@ -91,7 +95,7 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Heure et minute de la publication sous forme textuelle.
+     * Heure et minute de la publication sous forme textuelle
      *
      * @return Heure & minute de la publication
      */
@@ -104,7 +108,7 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Date de la publication sous forme textuelle.
+     * Date de la publication sous forme textuelle
      *
      * @return Date de la publication
      */
@@ -127,7 +131,7 @@ public class ArticleItem implements Item {
      */
     public String getUrlPartage() {
         // Le "/article" sert juste à passer le routing chez NXI/IH, l'URL sera réécrite
-        String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.id + "/article";
+        String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.getIdInpact() + "/article";
 
         return MyURLUtils.getSiteURL(this.site, path, false);
     }
@@ -138,7 +142,7 @@ public class ArticleItem implements Item {
      * @return url
      */
     public String getUrlPourDl() {
-        String path = Constantes.X_INPACT_URL_ARTICLE + this.id;
+        String path = Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
 
         return MyURLUtils.getSiteURL(this.site, path, false);
     }
@@ -149,7 +153,7 @@ public class ArticleItem implements Item {
      * @return urlIllustration
      */
     public String getUrlIllustration() {
-        String path = Constantes.X_INPACT_URL_IMG + this.idIllustration + Constantes.X_INPACT_URL_IMG_EXT;
+        String path = Constantes.X_INPACT_URL_IMG + this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
 
         return MyURLUtils.getSiteURL(this.site, path, true);
     }
@@ -157,15 +161,29 @@ public class ArticleItem implements Item {
     /**
      * @return id
      */
-    public int getId() {
-        return id;
+    public int getIdInpact() {
+        return id_inpact;
     }
 
     /**
-     * @param id id
+     * @param id_inpact id_inpact
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setIdInpact(int id_inpact) {
+        this.id_inpact = id_inpact;
+    }
+
+    /**
+     * @return pk
+     */
+    public int getPk() {
+        return pk;
+    }
+
+    /**
+     * @param pk pk
+     */
+    public void setPk(int pk) {
+        this.pk = pk;
     }
 
     /**

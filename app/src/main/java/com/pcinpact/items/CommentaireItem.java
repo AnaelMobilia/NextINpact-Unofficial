@@ -24,42 +24,32 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-
 /**
- * Objet Commentaire.
+ * Objet Commentaire
  *
  * @author Anael
  */
-public class CommentaireItem implements Item, Comparable<CommentaireItem> {
+public class CommentaireItem implements Item {
     /**
-     * ID affiché du commentaire.
+     * ID du commentaire
      */
     private int id;
     /**
-     * UUID du commentaire.
+     * PK de l'article parent
      */
-    private int uuid;
+    private int pkArticle;
     /**
-     * ID de l'article parent.
-     */
-    private int articleId;
-    /**
-     * Auteur du commentaire.
+     * Auteur du commentaire
      */
     private String auteur = "";
     /**
-     * Contenu du commentaire.
+     * Contenu du commentaire
      */
     private String commentaire = "";
     /**
-     * Timsetamp du commentaire.
+     * Timsetamp du commentaire
      */
     private long timeStampPublication;
-    /**
-     * Site concerné (IH, NXI, ...)
-     */
-    private int site;
 
     @Override
     public int getType() {
@@ -81,20 +71,6 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
 
 
     /**
-     * Comparaison entre objets.
-     *
-     * @param unCommentaireItem item de comparaison
-     * @return Comparaison des UUID
-     */
-    @Override
-    public int compareTo(@NonNull CommentaireItem unCommentaireItem) {
-        Integer unUUID = unCommentaireItem.getUuid();
-        Integer monUUID = this.getUuid();
-
-        return monUUID.compareTo(unUUID);
-    }
-
-    /**
      * @return id
      */
     public int getId() {
@@ -109,45 +85,17 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * @return site
+     * @return pkArticle
      */
-    public int getSite() {
-        return site;
+    public int getPkArticle() {
+        return pkArticle;
     }
 
     /**
-     * @param site site
+     * @param pkArticle pkArticle
      */
-    public void setSite(int site) {
-        this.site = site;
-    }
-
-    /**
-     * @return uuid
-     */
-    public int getUuid() {
-        return uuid;
-    }
-
-    /**
-     * @param uuid uuid
-     */
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
-    }
-
-    /**
-     * @return articleId
-     */
-    public int getArticleId() {
-        return articleId;
-    }
-
-    /**
-     * @param articleId articleId
-     */
-    public void setArticleId(int articleId) {
-        this.articleId = articleId;
+    public void setPkArticle(int pkArticle) {
+        this.pkArticle = pkArticle;
     }
 
     /**

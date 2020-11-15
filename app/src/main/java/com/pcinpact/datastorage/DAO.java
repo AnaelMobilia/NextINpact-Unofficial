@@ -51,9 +51,13 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String BDD_TABLE_ARTICLES = "articles";
     /**
-     * Champ articles => ID
+     * Champ articles => PRIMARY KEY (unique dans l'appli !)
      */
-    private static final String ARTICLE_ID = "id";
+    private static final String ARTICLE_PK = "idpk";
+    /**
+     * Champ articles => ID chez NXI / IH
+     */
+    private static final String ARTICLE_ID_INPACT = "idinpact";
     /**
      * Champ articles => Titre
      */
@@ -105,9 +109,9 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un article
      */
-    private static final String[] ARTICLE__COLONNES = new String[]{ ARTICLE_ID, ARTICLE_SITE, ARTICLE_TITRE, ARTICLE_SOUS_TITRE
-            , ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU,
-            ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
+    private static final String[] ARTICLE__COLONNES = new String[]{ ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_SITE, ARTICLE_TITRE,
+            ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS,
+            ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
     /**
      * Table commentaires
      */
@@ -117,17 +121,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String COMMENTAIRE_ID = "id";
     /**
-     * Champ commentaires => ID article
+     * Champ commentaires => PK de l'article (unique dans l'app)
      */
-    private static final String COMMENTAIRE_ID_ARTICLE = "idarticle";
-    /**
-     * Champ commentaires => Site (NXI, IH, ...)
-     */
-    private static final String COMMENTAIRE_SITE = "site";
-    /**
-     * Champ commentaires => UUID du commentaire
-     */
-    private static final String COMMENTAIRE_UUID = "uuid";
+    private static final String COMMENTAIRE_ARTICLE_PK = "pkarticle";
     /**
      * Champ commentaires => Auteur
      */
@@ -143,8 +139,8 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un commentaire
      */
-    private static final String[] COMMENTAIRE__COLONNES = new String[]{ COMMENTAIRE_ID_ARTICLE, COMMENTAIRE_SITE,
-            COMMENTAIRE_UUID, COMMENTAIRE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
+    private static final String[] COMMENTAIRE__COLONNES = new String[]{ COMMENTAIRE_ID, COMMENTAIRE_ARTICLE_PK,
+            COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
     /**
      * Table refresh (date de msie à jour)
      */
@@ -152,15 +148,15 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Champ refresh => ID article
      */
-    private static final String REFRESH_ARTICLE_ID = "id";
-    /**
-     * Champ refresh => Site (NXI, IH, ...)
-     */
-    private static final String REFRESH_SITE = "site";
+    private static final String REFRESH_ARTICLE_PK = "pkarticle";
     /**
      * Champ refresh => Timestamp Refresh
      */
     private static final String REFRESH_TIMESTAMP = "timestamp";
+    /**
+     * Toutes les colonnes à charger pour un refresh
+     */
+    private static final String[] REFRESH__COLONNES = new String[]{ REFRESH_TIMESTAMP };
 
     /**
      * Table cacheImage => plus utilisée (conservé pour la suppression de la table)
@@ -211,28 +207,26 @@ public final class DAO extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
         String reqCreateArticles =
-                "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER NOT NULL, " + ARTICLE_SITE + " INTEGER NOT"
-                + " NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP
-                + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS
-                + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE
-                + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN, PRIMARY KEY("
-                + ARTICLE_ID + ", " + ARTICLE_SITE + "));";
+                "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_SITE
+                + " INTEGER NOT NULL, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, "
+                + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, "
+                + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU
+                + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, "
+                + ARTICLE_IS_PUBLICITE + " BOOLEAN);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
         String reqCreateCommentaires =
-                "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " + COMMENTAIRE_ID_ARTICLE
-                + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_ID + "), " + COMMENTAIRE_SITE
-                + " INTEGER NOT NULL, " + COMMENTAIRE_UUID + " INTEGER NOT NULL, " + COMMENTAIRE_AUTEUR + " TEXT, "
-                + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID_ARTICLE
-                + ", " + COMMENTAIRE_SITE + ", " + COMMENTAIRE_UUID + "));";
+                "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " + COMMENTAIRE_ARTICLE_PK
+                + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_PK + "), " + COMMENTAIRE_AUTEUR + " TEXT, "
+                + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID + ", "
+                + COMMENTAIRE_ARTICLE_PK + "));";
         db.execSQL(reqCreateCommentaires);
 
         // Table des refresh
         String reqCreateRefresh =
-                "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_ID + " INTEGER NOT NULL, " + REFRESH_SITE
-                + " INTEGER NOT NULL, " + REFRESH_TIMESTAMP + " INTEGER, PRIMARY KEY (" + REFRESH_ARTICLE_ID + ", " + REFRESH_SITE
-                + "));";
+                "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_PK + " INTEGER PRIMARY KEY, " + REFRESH_TIMESTAMP
+                + " INTEGER);";
         db.execSQL(reqCreateRefresh);
     }
 
@@ -260,7 +254,7 @@ public final class DAO extends SQLiteOpenHelper {
                 reqUpdateFrom7 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
                 db.execSQL(reqUpdateFrom7);
                 // Recréation des tables vierges
-                onCreate(db);
+                this.onCreate(db);
 
                 // A mettre avant le default !
                 break;
@@ -278,10 +272,16 @@ public final class DAO extends SQLiteOpenHelper {
      * @param unArticle ArticleItem
      */
     public void enregistrerArticle(final ArticleItem unArticle) {
-        supprimerArticle(unArticle.getId(), unArticle.getSite());
-
         ContentValues insertValues = new ContentValues();
-        insertValues.put(ARTICLE_ID, unArticle.getId());
+
+        // Est-ce un article déjà connu ?
+        int oldPk = unArticle.getPk();
+        if (oldPk != 0) {
+            // Supprimer l'ancienne version mais conserver la PK
+            supprimerArticle(oldPk);
+            insertValues.put(ARTICLE_PK, oldPk);
+        }
+
         insertValues.put(ARTICLE_SITE, unArticle.getSite());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
@@ -306,7 +306,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public boolean enregistrerArticleSiNouveau(final ArticleItem unArticle) {
         // J'essaye de charger l'article depuis la DB
-        ArticleItem testItem = this.chargerArticle(unArticle.getId(), unArticle.getSite());
+        ArticleItem testItem = this.chargerArticle(unArticle.getPk());
 
         // Vérif du timestamp couvrant les cas :
         // - l'article n'est pas encore en BDD
@@ -317,7 +317,7 @@ public final class DAO extends SQLiteOpenHelper {
             return true;
         } else {
             // Je met à jour le nb de comms de l'article en question...
-            updateNbCommentairesArticle(unArticle.getId(), unArticle.getSite(), unArticle.getNbCommentaires());
+            updateNbCommentairesArticle(unArticle.getPk(), unArticle.getNbCommentaires());
             return false;
         }
     }
@@ -325,33 +325,30 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * MàJ de l'ID du dernier commentaire lu
      *
-     * @param articleID     ID de l'article
-     * @param site          Site (NXI, IH, ...)
+     * @param pkArticle     PK de l'article
      * @param idCommentaire ID du dernier commentaire lu
      */
-    public void setDernierCommentaireLu(final int articleID, final int site, final int idCommentaire) {
+    public void setDernierCommentaireLu(final int pkArticle, final int idCommentaire) {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                     new String[]{ String.valueOf(articleID), String.valueOf(site) });
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
      * Récupération de l'ID du dernier commentaire lu
      *
-     * @param articleID ID de l'article
-     * @param site      Site (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      * @return int ID du dernier commentaire lu
      */
-    public int getDernierCommentaireLu(final int articleID, final int site) {
+    public int getDernierCommentaireLu(final int pkArticle) {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{ ARTICLE_DERNIER_COMMENTAIRE_LU };
 
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                                       new String[]{ String.valueOf(articleID), String.valueOf(site) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_PK + "=?",
+                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
 
         int retour = 0;
 
@@ -373,56 +370,49 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * MàJ du nb de commentaires d'un article déjà synchronisé
      *
-     * @param articleID      ID de l'article
-     * @param site           Site (NXI, IH, ...)
+     * @param pkArticle      PK de l'article
      * @param nbCommentaires Nb de commentaires
      */
-    public void updateNbCommentairesArticle(final int articleID, final int site, final int nbCommentaires) {
+    public void updateNbCommentairesArticle(final int pkArticle, final int nbCommentaires) {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_NB_COMMS, nbCommentaires);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                     new String[]{ String.valueOf(articleID), String.valueOf(site) });
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
      * Marque un article comme étant lu
      *
-     * @param articleID ID de l'article
-     * @param site      Site (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      */
-    public void marquerArticleLu(final int articleID, final int site) {
+    public void marquerArticleLu(final int pkArticle) {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_IS_LU, true);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                     new String[]{ String.valueOf(articleID), String.valueOf(site) });
+        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
      * Supprime un article de la BDD
      *
-     * @param articleID ID de l'article
-     * @param site      Site (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      */
-    public void supprimerArticle(final int articleID, final int site) {
-        maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                     new String[]{ String.valueOf(articleID), String.valueOf(site) });
+    public void supprimerArticle(final int pkArticle) {
+        maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
      * Charger un article depuis la BDD
      *
-     * @param articleID ID de l'article
-     * @param site      Site (NXI, IH, ...)
+     * @param pkArticle ID de l'article
      * @return ArticleItem de l'article
      */
-    public ArticleItem chargerArticle(final int articleID, final int site) {
+    public ArticleItem chargerArticle(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID + "=? AND " + ARTICLE_SITE + "=?",
-                                       new String[]{ String.valueOf(articleID), String.valueOf(site) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_PK + "=?",
+                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
@@ -451,7 +441,7 @@ public final class DAO extends SQLiteOpenHelper {
             limite = null;
         }
         // Requête sur la BDD
-        monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, "4 DESC", limite);
+        monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, "5 DESC", limite);
 
         ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
@@ -499,17 +489,13 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Enregistre (ou MàJ) un commentaire en BDD.
+     * Enregistrer un commentaire en BDD.
      *
      * @param unCommentaire CommentaireItem
      */
     private void enregistrerCommentaire(final CommentaireItem unCommentaire) {
-        supprimerCommentaire(unCommentaire.getArticleId(), unCommentaire.getSite(), unCommentaire.getUuid());
-
         ContentValues insertValues = new ContentValues();
-        insertValues.put(COMMENTAIRE_ID_ARTICLE, unCommentaire.getArticleId());
-        insertValues.put(COMMENTAIRE_SITE, unCommentaire.getSite());
-        insertValues.put(COMMENTAIRE_UUID, unCommentaire.getUuid());
+        insertValues.put(COMMENTAIRE_ARTICLE_PK, unCommentaire.getPkArticle());
         insertValues.put(COMMENTAIRE_ID, unCommentaire.getId());
         insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
         insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimeStampPublication());
@@ -526,8 +512,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public boolean enregistrerCommentaireSiNouveau(final CommentaireItem unCommentaire) {
         // J'essaye de charger le commentaire depuis la BDD
-        CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getArticleId(), unCommentaire.getSite(),
-                                                           unCommentaire.getUuid());
+        CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getPkArticle(), unCommentaire.getId());
 
         // Si je ne l'ai pas récupéré c'est que je peux l'enregistrer en BDD !
         if (testItem.getId() == 0) {
@@ -540,41 +525,35 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Supprime un commentaire de la BDD
      *
-     * @param id   ID du commentaire
-     * @param site Site concerné (NXI, IH, ...)
-     * @param uuid UUID du commentaire
+     * @param id        ID du commentaire
+     * @param pkArticle PK de l'article
      */
-    private void supprimerCommentaire(final int id, final int site, final int uuid) {
-        maBDD.delete(BDD_TABLE_COMMENTAIRES,
-                     COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_UUID + "=? AND " + COMMENTAIRE_SITE + "=?",
-                     new String[]{ String.valueOf(id), String.valueOf(site), String.valueOf(uuid) });
+    private void supprimerCommentaire(final int id, final int pkArticle) {
+        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=? AND " + COMMENTAIRE_ID + "=?",
+                     new String[]{ String.valueOf(pkArticle), String.valueOf(id) });
     }
 
     /**
-     * Supprime des commentaires de la BDD (par ID de l'article).
+     * Supprime tous les commentaires liés à un article
      *
-     * @param articleID ID de l'article
-     * @param site      Site concerné (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      */
-    public void supprimerCommentaire(final int articleID, final int site) {
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_SITE + "=?",
-                     new String[]{ String.valueOf(articleID), String.valueOf(site) });
+    public void supprimerCommentaire(final int pkArticle) {
+        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
-     * Charge un commentaire depuis la BDD.
+     * Charge un commentaire depuis la BDD
      *
-     * @param idArticle       ID de l'article
-     * @param site            Site concerné (NXI, IH, ...)
-     * @param uuidCommentaire UUID du commentaire
+     * @param pkArticle     PK de l'article
+     * @param idCommentaire ID du commentaire
      * @return le commentaire
      */
-    private CommentaireItem chargerCommentaire(final int idArticle, final int site, final int uuidCommentaire) {
-        String[] idArticleEtCommentaire = { String.valueOf(idArticle), String.valueOf(site), String.valueOf(uuidCommentaire) };
-        String where = COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_SITE + "=? AND " + COMMENTAIRE_UUID + "=?";
-
+    private CommentaireItem chargerCommentaire(final int pkArticle, final int idCommentaire) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, where, idArticleEtCommentaire, null, null,
+        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES,
+                                       COMMENTAIRE_ARTICLE_PK + "=? AND " + COMMENTAIRE_ID + "=?",
+                                       new String[]{ String.valueOf(pkArticle), String.valueOf(idCommentaire) }, null, null,
                                        null);
 
         CommentaireItem monCommentaire = new CommentaireItem();
@@ -592,17 +571,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Charge tous les commentaires d'un article.
+     * Charge tous les commentaires d'un article
      *
-     * @param articleID ID de l'article concerné
-     * @param site      Site concerné (NXI, IH, ...)
+     * @param pkArticle ID de l'article concerné
      * @return liste des commentaires
      */
-    public ArrayList<CommentaireItem> chargerCommentairesTriParDate(final int articleID, final int site) {
+    public ArrayList<CommentaireItem> chargerCommentairesTriParDate(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES,
-                                       COMMENTAIRE_ID_ARTICLE + "=? AND " + COMMENTAIRE_SITE + "=?",
-                                       new String[]{ String.valueOf(articleID), String.valueOf(site) }, null, null, "3");
+        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_PK + "=?",
+                                       new String[]{ String.valueOf(pkArticle) }, null, null, "3");
 
         ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;
@@ -621,19 +598,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Fournit la date de dernière MàJ.
+     * Fournit la date de dernière MàJ
      *
-     * @param idArticle ID de l'article
-     * @param site      Site concerné (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      * @return timestamp
      */
-    public long chargerDateRefresh(final int idArticle, final int site) {
-        // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ REFRESH_TIMESTAMP };
-
+    public long chargerDateRefresh(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_REFRESH, mesColonnes, REFRESH_ARTICLE_ID + "=? AND " + REFRESH_SITE + "=?",
-                                       new String[]{ String.valueOf(idArticle), String.valueOf(site) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_REFRESH, REFRESH__COLONNES, REFRESH_ARTICLE_PK + "=?",
+                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
 
         long retour = 0;
 
@@ -648,62 +621,59 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Définit la date de dernière MàJ.
+     * Définit la date de dernière MàJ
      *
-     * @param idArticle   ID de l'article
-     * @param site        Site concerné (NXI, IH, ...)
+     * @param pkArticle   PK de l'article
      * @param dateRefresh date de MàJ
      */
-    public void enregistrerDateRefresh(final int idArticle, final int site, final long dateRefresh) {
-        supprimerDateRefresh(idArticle, site);
+    public void enregistrerDateRefresh(final int pkArticle, final long dateRefresh) {
+        supprimerDateRefresh(pkArticle);
 
         ContentValues insertValues = new ContentValues();
-        insertValues.put(REFRESH_ARTICLE_ID, idArticle);
-        insertValues.put(REFRESH_SITE, site);
+        insertValues.put(REFRESH_ARTICLE_PK, pkArticle);
         insertValues.put(REFRESH_TIMESTAMP, dateRefresh);
 
         maBDD.insert(BDD_TABLE_REFRESH, null, insertValues);
     }
 
     /**
-     * Supprime la date de derniàre MàJ.
+     * Supprime la date de derniàre MàJ
      *
-     * @param idArticle ID de l'article
-     * @param site      Site concerné (NXI, IH, ...)
+     * @param pkArticle PK de l'article
      */
-    public void supprimerDateRefresh(final int idArticle, final int site) {
-        maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_ID + "=? AND " + REFRESH_SITE + "=?",
-                     new String[]{ String.valueOf(idArticle), String.valueOf(site) });
+    public void supprimerDateRefresh(final int pkArticle) {
+        maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
-     * Charge un ArticleItem depuis un cursor.
+     * Charge un ArticleItem depuis un cursor
      *
-     * @param unCursor tel retourné par une rquête
+     * @param unCursor tel retourné par une requête
      * @return un ArticleItem
      */
     private ArticleItem cursorToArticleItem(final Cursor unCursor) {
         ArticleItem monArticle = new ArticleItem();
 
-        monArticle.setId(unCursor.getInt(0));
+        monArticle.setPk(unCursor.getInt(0));
         monArticle.setSite(unCursor.getInt(1));
-        monArticle.setTitre(unCursor.getString(2));
-        monArticle.setSousTitre(unCursor.getString(3));
-        monArticle.setTimeStampPublication(unCursor.getLong(4));
-        monArticle.setIdIllustration(unCursor.getInt(5));
-        monArticle.setContenu(unCursor.getString(6));
-        monArticle.setNbCommentaires(unCursor.getInt(7));
-        monArticle.setAbonne((unCursor.getInt(8) > 0));
-        monArticle.setLu((unCursor.getInt(9) > 0));
-        monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
-        monArticle.setDernierCommLu(unCursor.getInt(11));
-        monArticle.setPublicite(unCursor.getInt(12) > 0);
+        monArticle.setIdInpact(unCursor.getInt(2));
+        monArticle.setTitre(unCursor.getString(3));
+        monArticle.setSousTitre(unCursor.getString(4));
+        monArticle.setTimeStampPublication(unCursor.getLong(5));
+        monArticle.setIdIllustration(unCursor.getInt(6));
+        monArticle.setContenu(unCursor.getString(7));
+        monArticle.setNbCommentaires(unCursor.getInt(8));
+        monArticle.setAbonne((unCursor.getInt(9) > 0));
+        monArticle.setLu((unCursor.getInt(10) > 0));
+        monArticle.setDlContenuAbonne((unCursor.getInt(11) > 0));
+        monArticle.setDernierCommLu(unCursor.getInt(12));
+        monArticle.setPublicite(unCursor.getInt(13) > 0);
 
         return monArticle;
     }
 
     /**
-     * Charge un CommentaireItem depuis un cursor.
+     * Charge un CommentaireItem depuis un cursor
      *
      * @param unCursor tel retourné par une requête
      * @return un CommentaireItem
@@ -711,19 +681,17 @@ public final class DAO extends SQLiteOpenHelper {
     private CommentaireItem cursorToCommentaireItem(final Cursor unCursor) {
         CommentaireItem monCommentaire = new CommentaireItem();
 
-        monCommentaire.setArticleId(unCursor.getInt(0));
-        monCommentaire.setSite(unCursor.getInt(1));
-        monCommentaire.setUuid(unCursor.getInt(2));
-        monCommentaire.setId(unCursor.getInt(3));
-        monCommentaire.setAuteur(unCursor.getString(4));
-        monCommentaire.setTimeStampPublication(unCursor.getLong(5));
-        monCommentaire.setCommentaire(unCursor.getString(6));
+        monCommentaire.setId(unCursor.getInt(0));
+        monCommentaire.setPkArticle(unCursor.getInt(1));
+        monCommentaire.setAuteur(unCursor.getString(2));
+        monCommentaire.setTimeStampPublication(unCursor.getLong(3));
+        monCommentaire.setCommentaire(unCursor.getString(4));
 
         return monCommentaire;
     }
 
     /**
-     * Suppression de tout le contenu de la BDD.
+     * Suppression de tout le contenu de la BDD
      */
     public void vider() {
         // Les articles
@@ -737,7 +705,7 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Suppression des commentaires.
+     * Suppression des commentaires
      */
     public void viderCommentaires() {
         // Les commentaires
