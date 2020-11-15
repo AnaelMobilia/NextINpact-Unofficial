@@ -36,10 +36,18 @@ public class MyDateUtils {
      * Convertit une date texte en timestamp au format NXI
      *
      * @param uneDate date au format textuel
+     * @param site    ID du site (IH, NXI, ...)
      * @return timestamp
      */
-    public static long convertToTimeStamp(final String uneDate) {
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE, Constantes.LOCALE);
+    public static long convertToTimeStamp(final String uneDate, final int site) {
+        String formatDate;
+        if (site == Constantes.IS_NXI) {
+            formatDate = Constantes.FORMAT_DATE_NXI;
+        } else {
+            formatDate = Constantes.FORMAT_DATE_IH;
+        }
+
+        DateFormat dfm = new SimpleDateFormat(formatDate, Constantes.LOCALE);
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {

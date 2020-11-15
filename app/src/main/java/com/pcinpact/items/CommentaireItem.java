@@ -24,12 +24,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
+
 /**
  * Objet Commentaire
  *
  * @author Anael
  */
-public class CommentaireItem implements Item {
+public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     /**
      * ID du commentaire
      */
@@ -69,6 +71,19 @@ public class CommentaireItem implements Item {
         return this.getAuteur() + " " + dfm.format(maDate);
     }
 
+    /**
+     * Comparaison entre objets (Requis pour tri des nouveaux commentaires à chaud dans CommentairesActivity)
+     *
+     * @param unCommentaireItem item de comparaison
+     * @return Comparaison des UUID
+     */
+    @Override
+    public int compareTo(@NonNull CommentaireItem unCommentaireItem) {
+        Integer unId = unCommentaireItem.getId();
+        Integer monId = this.getId();
+
+        return monId.compareTo(unId);
+    }
 
     /**
      * @return id

@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
@@ -47,29 +48,33 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
- * Affichage des commentaires.
+ * Affichage des commentaires
  *
  * @author Anael
  */
 public class CommentairesActivity extends AppCompatActivity implements RefreshDisplayInterface {
     /**
-     * Les commentaires.
+     * Les commentaires
      */
     private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
-     * ID de l'article.
+     * PK de l'article
      */
-    private int articleID;
+    private int articlePk;
+    /**
+     * ID du site (NXI, IH)
+     */
+    private int site;
     /**
      * ID du dernier commentaire lu
      */
     private int idDernierCommentaireLu;
     /**
-     * ItemAdapter.
+     * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
     /**
-     * accès à la BDD.
+     * accès à la BDD
      */
     private DAO monDAO;
     /**
@@ -89,19 +94,19 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private Boolean reouverture;
     /**
-     * Bouton pour télécharger 10 commentaires en plus.
+     * Bouton pour télécharger 10 commentaires en plus
      */
     private Button buttonDl10Commentaires;
     /**
-     * TextView "Dernière synchro...".
+     * TextView "Dernière synchro..."
      */
     private TextView headerTextView;
     /**
-     * ListView.
+     * ListView
      */
     private ListView monListView;
     /**
-     * SwipeRefreshLayout.
+     * SwipeRefreshLayout
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
     /**
@@ -149,23 +154,27 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
         monListView.setAdapter(monItemsAdapter);
 
-        // ID de l'article concerné
+        // PK de l'article concerné
         try {
-            articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("CommentairesActivity", "onCreate() - Récupération ID article de l'intent", e);
+                Log.e("CommentairesActivity", "onCreate() - Récupération PK article de l'intent", e);
             }
-
             // Arrêt de l'activité
             this.finish();
         }
 
         // J'active la BDD
         monDAO = DAO.getInstance(getApplicationContext());
-        // Je charge mes articles
-        mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
+        // Je charge mes commentaires
+        mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articlePk));
+
+        // Je récupère le site concerné
+        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+        site = monArticle.getSite();
+
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
         // Je fait remarquer que le contenu à changé
@@ -178,7 +187,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                                                   R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID) - 1;
+            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articlePk) - 1;
             monListView.setSelection(idDernierCommentaireLu);
         }
 
@@ -187,7 +196,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * Charge les commentaires suivants.
+     * Charge les commentaires suivants
      */
     private void refreshListeCommentaires() {
         // DEBUG
@@ -205,12 +214,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         int maPage = Math.round((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
         // Création de l'URL
-        String monURL =
-                Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
-                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+        String monPath =
+                Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + articlePk;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, 0, monDAO,
                                                              getApplicationContext());
 
         // DEBUG
@@ -301,13 +309,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
-                    monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
+                    monDAO.setDernierCommentaireLu(articlePk, lastVisibleItem);
                     // Mise à jour de la copie locale
                     idDernierCommentaireLu = lastVisibleItem;
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.d("CommentairesActivity",
-                              "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
+                              "onScroll() - setDernierCommentaireLu(" + articlePk + ", " + lastVisibleItem + ")");
                     }
                 }
 
@@ -344,14 +352,14 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articleID);
+            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articlePk);
             startActivity(intentDebug);
         }
         return super.onOptionsItemSelected(pItem);
     }
 
     /**
-     * Lance les animations indiquant un téléchargement.
+     * Lance les animations indiquant un téléchargement
      */
     private void debutTelechargement() {
         // DEBUG
@@ -381,7 +389,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * Arrête les animations indiquant un téléchargement.
+     * Arrête les animations indiquant un téléchargement
      */
     private void finTelechargement() {
         // DEBUG
@@ -455,10 +463,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * MàJ de la date de dernière MàJ.
+     * MàJ de la date de dernière MàJ
      */
     private void majDateRefresh() {
-        long dernierRefresh = monDAO.chargerDateRefresh(articleID);
+        long dernierRefresh = monDAO.chargerDateRefresh(articlePk);
 
         if (dernierRefresh == 0) {
             // Jamais synchro...

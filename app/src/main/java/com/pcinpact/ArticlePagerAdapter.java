@@ -55,18 +55,17 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         // Récupérationd e l'article concerné
         ArticleItem monArticle = getArticle(position);
-        int articleID = monArticle.getId();
-        int site = monArticle.getSite();
+        int pkArticle = monArticle.getPk();
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + articleID);
+            Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + pkArticle);
         }
 
         // Création du fragment
         ArticleFragment monFragment = new ArticleFragment();
         // Injection de ses paramètres (non passable via constructeur #201)
-        monFragment.initialisation(articleID, site);
+        monFragment.initialisation(pkArticle);
         return monFragment;
     }
 
@@ -86,17 +85,17 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * Fourni la position d'un article à partir de son ID
+     * Fourni la position d'un article à partir de sa PK
      *
-     * @param articleID ID de l'article
+     * @param pkArticle PK de l'article
      * @return position affichée de l'article
      */
-    int getPosition(int articleID) {
+    int getPosition(int pkArticle) {
         int index = 0;
 
-        // Parcours de l'ensemble à la recherche de mon articleID
+        // Parcours de l'ensemble à la recherche de ma PK article
         while (index < mesArticles.size()) {
-            if (mesArticles.get(index).getId() == articleID) {
+            if (mesArticles.get(index).getPk() == pkArticle) {
                 return index;
             }
             index++;

@@ -282,11 +282,12 @@ public final class DAO extends SQLiteOpenHelper {
             insertValues.put(ARTICLE_PK, oldPk);
         }
 
+        insertValues.put(ARTICLE_ID_INPACT, unArticle.getIdInpact());
         insertValues.put(ARTICLE_SITE, unArticle.getSite());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
         insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
-        insertValues.put(ARTICLE_ILLUSTRATION_ID, unArticle.getUrlIllustration());
+        insertValues.put(ARTICLE_ILLUSTRATION_ID, unArticle.getIdIllustration());
         insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
         insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
         insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
@@ -700,8 +701,6 @@ public final class DAO extends SQLiteOpenHelper {
         maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
         // Date de refresh
         maBDD.delete(BDD_TABLE_REFRESH, null, null);
-        // Cache
-        maBDD.delete(BDD_TABLE_CACHE_IMAGE, null, null);
     }
 
     /**

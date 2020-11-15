@@ -48,18 +48,16 @@ import androidx.fragment.app.Fragment;
  * Contenu d'article, utilisé pour le slider
  */
 public class ArticleFragment extends Fragment {
-    private int idArticle;
-    private int site;
+    private int pkArticle;
     private Context monContext;
 
     /**
      * Passage de toutes les valeurs requises
      *
-     * @param articleID ID de l'article concerné
+     * @param unePkArticle PK de l'article concerné
      */
-    public void initialisation(int articleID, int unSite) {
-        idArticle = articleID;
-        site = unSite;
+    public void initialisation(int unePkArticle) {
+        pkArticle = unePkArticle;
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);
@@ -79,7 +77,7 @@ public class ArticleFragment extends Fragment {
 
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(monContext);
-        ArticleItem monArticle = monDAO.chargerArticle(idArticle, site);
+        ArticleItem monArticle = monDAO.chargerArticle(pkArticle);
         String monContenu = monArticle.getContenu();
 
         // Stockage en ArrayList pour l'itemAdapter
@@ -92,7 +90,7 @@ public class ArticleFragment extends Fragment {
                 Log.w("ArticleFragment", "onCreateView() - Article vide");
             }
             ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
-            monTexte.setArticleID(idArticle);
+            monTexte.setPkArticle(pkArticle);
             monTexte.setContenu(getString(R.string.articleVideErreurHTML));
             monAR.add(monTexte);
         } else {
@@ -100,7 +98,7 @@ public class ArticleFragment extends Fragment {
                 Log.w("ArticleFragment", "onCreateView() - lancement récursion");
             }
             // Séparation récursive de l'article : texte & images
-            monAR = parseArticle(monContenu, idArticle);
+            monAR = parseArticle(monContenu, pkArticle);
         }
 
         // MàJ de l'affichage
@@ -131,7 +129,7 @@ public class ArticleFragment extends Fragment {
         if (lArticle.select("img:not([src^=http://IFRAME_LOCALE/])").isEmpty()) {
             // Que du texte... on créée un objet texte
             ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
-            monTexte.setArticleID(idArticle);
+            monTexte.setPkArticle(pkArticle);
             monTexte.setContenu(contenuHTML);
             // Ajout à l'ArrayList
             monAr.add(monTexte);
@@ -148,7 +146,7 @@ public class ArticleFragment extends Fragment {
                 for (Element uneImage : lArticle.select("img:not([src^=http://IFRAME_LOCALE/])")) {
                     // Une seule image => objet image
                     ContenuArticleImageItem monImage = new ContenuArticleImageItem();
-                    monImage.setArticleID(idArticle);
+                    monImage.setPkArticle(pkArticle);
                     monImage.setContenu(uneImage.attr("src"));
                     monAr.add(monImage);
 

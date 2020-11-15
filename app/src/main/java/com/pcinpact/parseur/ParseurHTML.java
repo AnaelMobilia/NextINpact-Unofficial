@@ -73,10 +73,18 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("datePublished");
-                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
+                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate, site));
+
+                // Le Brief
+                boolean estBrief = unArticle.getBoolean("isBrief");
 
                 // Publicité
-                monArticleItem.setPublicite(unArticle.getBoolean("isSponsored"));
+                boolean estPub = false;
+                if (!estBrief) {
+                    // isSponsored est null si isBrief est true...
+                    estPub = unArticle.getBoolean("isSponsored");
+                }
+                monArticleItem.setPublicite(estPub);
 
                 // ID de l'image d'illustration
                 monArticleItem.setIdIllustration(unArticle.getInt("imageId"));
@@ -418,7 +426,7 @@ public class ParseurHTML {
      * @param unContenu contenu JSON brut
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
+    public static ArrayList<CommentaireItem> getCommentaires(final int site, final String unContenu) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
@@ -443,7 +451,7 @@ public class ParseurHTML {
 
                 // Date
                 monCommentaireItem.setTimeStampPublication(
-                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
+                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated"), site));
 
                 // Contenu
                 String contenu = "<div class=\"comm\">";
