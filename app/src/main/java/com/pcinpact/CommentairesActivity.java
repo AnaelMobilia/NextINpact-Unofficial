@@ -56,7 +56,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     /**
      * Les commentaires
      */
-    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
+    private final ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
      * PK de l'article
      */
