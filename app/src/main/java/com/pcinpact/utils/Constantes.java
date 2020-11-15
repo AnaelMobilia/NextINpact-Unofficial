@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.pcinpact.BuildConfig;
 
@@ -59,10 +58,12 @@ public class Constantes {
      * URL de téléchargement NXI.
      */
     public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
+    public static final String NXI_CDN_URL = "https://cdnx.nextinpact.com/";
     /**
      * URL de téléchargement INPACT-HARDWARE.
      */
     public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
+    public static final String IH_CDN_URL = "https://cdnx.inpact-hardware.com/";
     /**
      * Page des articles (listing)
      */
@@ -83,6 +84,17 @@ public class Constantes {
      * URL d'authentification.
      */
     public static final String X_INPACT_URL_AUTH = "/Account/login";
+    /**
+     * URL des images
+     */
+    public static final String X_INPACT_URL_IMG = "data-prod/images/bd/";
+    public static final String X_INPACT_URL_IMG_EXT = ".jpg";
+    /**
+     * URL des articles (pour partager)
+     */
+    public static final String X_INPACT_URL_ARTICLE_PARTAGE = "article/";
+
+
     /**
      * Timeout pour les téléchargements (en ms) - default = ~250000.
      */
@@ -241,28 +253,6 @@ public class Constantes {
         }
 
         return USER_AGENT + numVersion;
-    }
-
-    /**
-     * Retourne une URL complète (FQDN)
-     *
-     * @param site ID du site concerné
-     * @param path path à rajouter dans l'URL
-     * @return URL FQDN
-     */
-    public static String getSiteURL(final int site, final String path) {
-        switch (site) {
-            case IS_NXI:
-                return NXI_URL + path;
-            case IS_IH:
-                return IH_URL + path;
-        }
-
-        // DEBUG
-        if (DEBUG) {
-            Log.e("Constantes", "getSiteURL() - Valeur site impossible : " + site);
-        }
-        return "";
     }
 
     /**

@@ -19,6 +19,7 @@
 package com.pcinpact.items;
 
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyURLUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,17 +53,13 @@ public class ArticleItem implements Item {
      */
     private int nbCommentaires;
     /**
-     * URL de l'article.
-     */
-    private String url;
-    /**
      * Site concerné (IH, NXI, ...)
      */
     private int site;
     /**
-     * URL de la miniature de l'article.
+     * ID de la miniature de l'article.
      */
-    private String urlIllustration = "";
+    private int idIllustration;
     /**
      * Contenu de l'article.
      */
@@ -121,6 +118,40 @@ public class ArticleItem implements Item {
         laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
 
         return laDate;
+    }
+
+    /**
+     * URL de l'article pour partager (calculé dynamiquement)
+     *
+     * @return url
+     */
+    public String getUrlPartage() {
+        // Le "/article" sert juste à passer le routing chez NXI/IH, l'URL sera réécrite
+        String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.id + "/article";
+
+        return MyURLUtils.getSiteURL(this.site, path, false);
+    }
+
+    /**
+     * URL de l'article pour télécharger (calculé dynamiquement)
+     *
+     * @return url
+     */
+    public String getUrlPourDl() {
+        String path = Constantes.X_INPACT_URL_ARTICLE + this.id;
+
+        return MyURLUtils.getSiteURL(this.site, path, false);
+    }
+
+    /**
+     * URL de l'illustration (calculée dynamiquement)
+     *
+     * @return urlIllustration
+     */
+    public String getUrlIllustration() {
+        String path = Constantes.X_INPACT_URL_IMG + this.idIllustration + Constantes.X_INPACT_URL_IMG_EXT;
+
+        return MyURLUtils.getSiteURL(this.site, path, true);
     }
 
     /**
@@ -208,31 +239,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return url
+     * @return idIllustration
      */
-    public String getUrl() {
-        return url;
+    public int getIdIllustration() {
+        return idIllustration;
     }
 
     /**
-     * @param url url
+     * @param idIllustration urlIllustration
      */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * @return urlIllustration
-     */
-    public String getUrlIllustration() {
-        return urlIllustration;
-    }
-
-    /**
-     * @param urlIllustration urlIllustration
-     */
-    public void setUrlIllustration(String urlIllustration) {
-        this.urlIllustration = urlIllustration;
+    public void setIdIllustration(int idIllustration) {
+        this.idIllustration = idIllustration;
     }
 
     /**
