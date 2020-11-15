@@ -53,8 +53,10 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        // Récupération de la position de l'article
-        int articleID = getArticle(position).getId();
+        // Récupérationd e l'article concerné
+        ArticleItem monArticle = getArticle(position);
+        int articleID = monArticle.getId();
+        int site = monArticle.getSite();
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -64,7 +66,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         // Création du fragment
         ArticleFragment monFragment = new ArticleFragment();
         // Injection de ses paramètres (non passable via constructeur #201)
-        monFragment.initialisation(articleID);
+        monFragment.initialisation(articleID, site);
         return monFragment;
     }
 
