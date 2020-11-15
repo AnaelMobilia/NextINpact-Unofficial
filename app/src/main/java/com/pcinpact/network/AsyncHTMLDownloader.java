@@ -31,6 +31,7 @@ import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyURLUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +97,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         monParent = parent;
         site = unSite;
         pathURL = unPathURL;
-        fullURL = Constantes.getSiteURL(unSite, unPathURL);
+        fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
         monDAO = unDAO;
         monContext = unContext.getApplicationContext();
@@ -126,7 +127,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         monParent = parent;
         site = unSite;
         pathURL = unPathURL;
-        fullURL = Constantes.getSiteURL(unSite, unPathURL);
+        fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
         monDAO = unDAO;
         monContext = unContext.getApplicationContext();
