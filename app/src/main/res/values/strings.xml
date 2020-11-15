@@ -76,6 +76,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
     <string name="erreurCompteAbonnement">"Votre abonnement NXI/IH est expiré, les articles Abonné ne pourront pas être lus !"</string>
     <string name="erreurZoomImage">"Oups…! Cette image ne peut pas être affichée."</string>
+    <string name="erreurAHDdl">"Téléchargement impossible : trop de téléchargements simultanés !"</string>
 
     <!-- Vue "Options" -->
     <!-- Options : Générales -->

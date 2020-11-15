@@ -29,6 +29,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
@@ -218,8 +219,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + articlePk;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk, monDAO,
-                                                             getApplicationContext());
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk,
+                                                             monDAO);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -230,6 +231,16 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (monAHD.run()) {
             // Lancement de l'animation de téléchargement
             debutTelechargement();
+        } else {
+            // L'utilisateur demande-t-il un debug ?
+            Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                        R.bool.defautOptionDebug);
+
+            // Retour utilisateur ?
+            if (debug) {
+                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                monToast.show();
+            }
         }
     }
 

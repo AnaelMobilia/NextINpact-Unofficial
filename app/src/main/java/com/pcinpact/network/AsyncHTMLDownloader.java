@@ -18,13 +18,9 @@
  */
 package com.pcinpact.network;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.pcinpact.R;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
@@ -73,10 +69,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final DAO monDAO;
     /**
-     * Context de l'application.
-     */
-    private final Context monContext;
-    /**
      * Est-ce du contenu abonné ?
      */
     private Boolean isAbonne = false;
@@ -84,6 +76,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * Téléchargement uniquement si connecté ?
      */
     private Boolean uniquementSiConnecte = false;
+    /**
+     * Login du compte NXI/IH
+     */
+    private String username;
+    /**
+     * Password du compte NXI/IH
+     */
+    private String password;
 
     /**
      * DL avec gestion du compte abonné et de l'état de la connexion.
@@ -94,11 +94,13 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unPathURL      Chemin à ajouter à l'URL
      * @param unePkArticle   PK de l'article (cas DL article & commentaires)
      * @param unDAO          accès sur la DB
-     * @param unContext      context de l'application
      * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
+     * @param unUser         identifiant du compte
+     * @param unPassword     mot de passe du compte
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
-                               final int unePkArticle, final DAO unDAO, final Context unContext, final Boolean onlyifConnecte) {
+                               final int unePkArticle, final DAO unDAO, final Boolean onlyifConnecte, final String unUser,
+                               final String unPassword) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
@@ -108,9 +110,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         typeHTML = unType;
         pkArticle = unePkArticle;
         monDAO = unDAO;
-        monContext = unContext.getApplicationContext();
         isAbonne = true;
         uniquementSiConnecte = onlyifConnecte;
+        username = unUser;
+        password = unPassword;
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -128,10 +131,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unPathURL    Chemin à ajouter à l'URL
      * @param unePkArticle PK de l'article (cas DL article & commentaires)
      * @param unDAO        accès sur la DB
-     * @param unContext    context de l'application
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
-                               final int unePkArticle, final DAO unDAO, final Context unContext) {
+                               final int unePkArticle, final DAO unDAO) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
@@ -141,7 +143,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         typeHTML = unType;
         pkArticle = unePkArticle;
         monDAO = unDAO;
-        monContext = unContext.getApplicationContext();
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -162,10 +163,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             String datas;
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
-                datas = Downloader.downloadArticleAbonne(fullURL, monContext, uniquementSiConnecte);
+                datas = Downloader.downloadArticleAbonne(fullURL, uniquementSiConnecte, username, password);
             } else {
                 // Je récupère mon contenu HTML directement
-                datas = Downloader.download(fullURL, monContext);
+                datas = Downloader.download(fullURL);
             }
 
             // Vérifie que j'ai bien un retour (vs erreur DL)
@@ -310,7 +311,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @return résultat de la commande
      */
     public boolean run() {
-
         boolean monRetour = true;
 
         try {
@@ -324,18 +324,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
             // Je note l'erreur
             monRetour = false;
-
-            // L'utilisateur demande-t-il un debug ?
-            Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
-
-            // Retour utilisateur ?
-            if (debug) {
-                Handler handler = new Handler(monContext.getMainLooper());
-                handler.post(() -> {
-                    Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_SHORT);
-                    monToast.show();
-                });
-            }
         }
 
         return monRetour;

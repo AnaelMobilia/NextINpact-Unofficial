@@ -18,13 +18,9 @@
  */
 package com.pcinpact.network;
 
-import android.content.Context;
 import android.net.Uri;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.pcinpact.R;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyIOUtils;
 
@@ -52,7 +48,7 @@ import okhttp3.Response;
  *
  * @author Anael
  */
-class Downloader {
+public class Downloader {
     /**
      * Conteneur à cookies.
      */
@@ -73,16 +69,12 @@ class Downloader {
     /**
      * Téléchargement d'une ressource
      *
-     * @param uneURL    URL de la ressource à télécharger
-     * @param unContext context de l'application
+     * @param uneURL URL de la ressource à télécharger
      * @return ressource demandée brute (JSON)
      */
-    public static String download(final String uneURL, final Context unContext) {
+    public static String download(final String uneURL) {
         // Retour
         String datas = null;
-
-        // L'utilisateur demande-t-il un debug ?
-        Boolean debug = Constantes.getOptionBoolean(unContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
 
         try {
             if (Constantes.DEBUG) {
@@ -98,15 +90,6 @@ class Downloader {
                 if (Constantes.DEBUG) {
                     Log.e("Downloader", "download() - Erreur " + response.code() + " au dl de " + uneURL);
                 }
-                // Retour utilisateur ?
-                if (debug) {
-                    Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(() -> {
-                        Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur " + response.code() + " pour  " + uneURL,
-                                                        Toast.LENGTH_SHORT);
-                        monToast.show();
-                    });
-                }
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
@@ -121,15 +104,6 @@ class Downloader {
                 Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
                 Log.e("Downloader", "download() - " + e.toString());
             }
-            // Retour utilisateur ?
-            if (debug) {
-                Handler handler = new Handler(unContext.getMainLooper());
-                handler.post(() -> {
-                    Toast monToast = Toast.makeText(unContext, "[Downloader] Erreur de téléchargement pour l'adresse " + uneURL,
-                                                    Toast.LENGTH_SHORT);
-                    monToast.show();
-                });
-            }
         }
         Log.d("Downloader", "download() - Contenu : " + datas);
         return datas;
@@ -140,14 +114,14 @@ class Downloader {
      * Télécharge un article "abonné".
      *
      * @param uneURL               URL de la ressource
-     * @param unContext            context de l'application
      * @param uniquementSiConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
      * @return ressource demandée brute (JSON)
      */
-    public static String downloadArticleAbonne(final String uneURL, final Context unContext, final boolean uniquementSiConnecte) {
+    public static String downloadArticleAbonne(final String uneURL, final boolean uniquementSiConnecte, final String username,
+                                               final String password) {
         // Faut-il initialiser le cookie manager ?
         if (monCookieManager == null) {
-            Downloader.initializeCookieManager();
+            initializeCookieManager();
         }
 
         // Retour
@@ -161,19 +135,7 @@ class Downloader {
             }
 
             // Je lance le téléchargement
-            datas = Downloader.download(uneURL, unContext);
-
-            // Je vérifie que le compte à bien un abonnement toujours en cours
-            if (datas.contains("bloc_abonne_restriction")) {
-                // Le compte n'a plus d'abonnement
-                // Affichage d'un toast
-                Handler handler = new Handler(unContext.getMainLooper());
-                handler.post(() -> {
-                    Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurCompteAbonnement),
-                                                    Toast.LENGTH_LONG);
-                    monToast.show();
-                });
-            }
+            datas = Downloader.download(uneURL);
         } else {
             // J'attends si j'ai déjà une connexion en cours...
             while (isRunning) {
@@ -198,16 +160,9 @@ class Downloader {
             // Je prends la place !
             isRunning = true;
 
-            // Non connecté... suis-je connectable ?
-            // Chargement des identifiants
-            String usernameOption = Constantes.getOptionString(unContext, R.string.idOptionLogin, R.string.defautOptionLogin);
-            String passwordOption = Constantes.getOptionString(unContext, R.string.idOptionPassword,
-                                                               R.string.defautOptionPassword);
-            Boolean isCompteAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionAbonne, R.bool.defautOptionAbonne);
-
-            // La connexion peut-elle être demandée ?
-            if (isCompteAbonne.equals(false) || "".equals(usernameOption) || "".equals(passwordOption) || (usernameOption.equals(
-                    usernameLastTry) && passwordOption.equals(passwordLastTry))) {
+            // Non connecté... La connexion peut-elle être demandée ?
+            if ("".equals(username) || "".equals(password) || (username.equals(usernameLastTry) && password.equals(
+                    passwordLastTry))) {
 
                 // NON : je libère le jeton d'utilisation
                 isRunning = false;
@@ -219,25 +174,7 @@ class Downloader {
                         Log.w("Downloader", "downloadArticleAbonne() - non connectable => DL non authentifié pour " + uneURL);
                     }
 
-                    datas = Downloader.download(uneURL, unContext);
-                }
-
-                // Information sur l'existance du compte abonné dans les options
-                boolean infoAbonne = Constantes.getOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne,
-                                                                 R.bool.defautOptionInfoCompteAbonne);
-
-                // Dois-je notifier l'utilisateur ?
-                if (infoAbonne) {
-                    // Affichage d'un toast
-                    Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(() -> {
-                        Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.infoOptionAbonne),
-                                                        Toast.LENGTH_LONG);
-                        monToast.show();
-                    });
-
-                    // Enregistrement de l'affichage
-                    Constantes.setOptionBoolean(unContext, R.string.idOptionInfoCompteAbonne, false);
+                    datas = Downloader.download(uneURL);
                 }
             } else {
                 // Peut-être connectable
@@ -247,13 +184,13 @@ class Downloader {
                 }
 
                 // Je lance une authentification...
-                connexionAbonne(unContext, usernameOption, passwordOption);
+                connexionAbonne(username, password);
 
                 // Je libère le jeton d'utilisation
                 isRunning = false;
 
                 // Je relance la méthode pour avoir un résultat...
-                datas = downloadArticleAbonne(uneURL, unContext, uniquementSiConnecte);
+                datas = downloadArticleAbonne(uneURL, uniquementSiConnecte, username, password);
             }
         }
 
@@ -277,11 +214,10 @@ class Downloader {
     /**
      * Connexion au compte abonné.
      *
-     * @param unContext context de l'application
-     * @param username  nom d'utilisateur NXI
-     * @param password  mot de passe NXI
+     * @param username nom d'utilisateur NXI
+     * @param password mot de passe NXI
      */
-    private static void connexionAbonne(final Context unContext, final String username, final String password) {
+    private static void connexionAbonne(final String username, final String password) {
         // Enregistrement des identifiants "LastTry"
         usernameLastTry = username;
         passwordLastTry = password;
@@ -346,14 +282,6 @@ class Downloader {
                     if (Constantes.DEBUG) {
                         Log.w("Downloader", "connexionAbonne() - authentification réussie (cookie présent)");
                     }
-                } else {
-                    // Si non connecté
-                    Handler handler = new Handler(unContext.getMainLooper());
-                    handler.post(() -> {
-                        Toast monToast = Toast.makeText(unContext, unContext.getString(R.string.erreurAuthentification),
-                                                        Toast.LENGTH_LONG);
-                        monToast.show();
-                    });
                 }
             }
         } catch (Exception e) {
@@ -404,5 +332,21 @@ class Downloader {
             }
         }
         return monRetour;
+    }
+
+    /**
+     * Vérification des identifiants NXI/IH
+     *
+     * @param unUser     nom d'utilisateur
+     * @param unPassword mot de passe
+     * @return boolén
+     */
+    public static boolean verifierIdentifiants(String unUser, String unPassword) {
+        // Faut-il initialiser le cookie manager ?
+        if (monCookieManager == null) {
+            initializeCookieManager();
+        }
+        connexionAbonne(unUser, unPassword);
+        return estConnecte();
     }
 }

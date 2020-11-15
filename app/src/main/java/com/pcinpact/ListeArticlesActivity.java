@@ -45,6 +45,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.Downloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
@@ -106,6 +107,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      * Dernière position affichée
      */
     private int dernierePosition;
+    /**
+     * Identifiants de l'utilisateur
+     */
+    String usernameOption;
+    String passwordOption;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -461,6 +467,25 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             Log.i("ListeArticlesActivity", "telechargeListeArticles()");
         }
 
+        // Récupération des identifiants de l'utilisateur
+        usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
+        passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
+                                                    R.string.defautOptionPassword);
+        // Les identifiants sont-ils définis ?
+        if ("".equals(usernameOption) && "".equals(passwordOption)) {
+            Toast monToast = Toast.makeText(getApplicationContext(), R.string.infoOptionAbonne, Toast.LENGTH_LONG);
+            monToast.show();
+        } else {
+            // Vérification du bon fonctionnement des identifiants
+            boolean compteOk = Downloader.verifierIdentifiants(usernameOption, passwordOption);
+
+            // Si le compte n'est pas bon, affichage d'un Toast à l'utilisateur
+            if (!compteOk) {
+                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAuthentification, Toast.LENGTH_LONG);
+                monToast.show();
+            }
+        }
+
         // Uniquement si on est pas déjà en train de faire un refresh...
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
             // GUI : activité en cours...
@@ -487,21 +512,41 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Mes tâches de DL
                 AsyncHTMLDownloader monAHD_NXI = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_NXI,
                                                                          Constantes.X_INPACT_URL_LISTE_ARTICLE + numPage, 0,
-                                                                         monDAO, getApplicationContext());
+                                                                         monDAO);
 
                 // Lancement du téléchargement
                 if (monAHD_NXI.run()) {
                     // MàJ animation
                     nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                } else {
+                    // L'utilisateur demande-t-il un debug ?
+                    Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                                R.bool.defautOptionDebug);
+
+                    // Retour utilisateur ?
+                    if (debug) {
+                        Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                        monToast.show();
+                    }
                 }
                 AsyncHTMLDownloader monAHD_IH = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_IH,
                                                                         Constantes.X_INPACT_URL_LISTE_ARTICLE + numPage, 0,
-                                                                        monDAO, getApplicationContext());
+                                                                        monDAO);
 
                 // Lancement du téléchargement
                 if (monAHD_IH.run()) {
                     // MàJ animation
                     nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                } else {
+                    // L'utilisateur demande-t-il un debug ?
+                    Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                                R.bool.defautOptionDebug);
+
+                    // Retour utilisateur ?
+                    if (debug) {
+                        Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                        monToast.show();
+                    }
                 }
             }
         }
@@ -532,7 +577,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
             // Téléchargement de la ressource
             monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(), unArticle.getPathPourDl(),
-                                             unArticle.getPk(), monDAO, getApplicationContext(), isConnecteRequis);
+                                             unArticle.getPk(), monDAO, isConnecteRequis, usernameOption, passwordOption);
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + unArticle.getUrlPartage());
@@ -542,6 +587,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             if (monAHD.run()) {
                 // MàJ animation
                 nouveauChargementGUI(Constantes.HTML_ARTICLE);
+            } else {
+                // L'utilisateur demande-t-il un debug ?
+                Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                            R.bool.defautOptionDebug);
+
+                // Retour utilisateur ?
+                if (debug) {
+                    Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                    monToast.show();
+                }
             }
         }
     }

@@ -29,10 +29,9 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.Downloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
-import com.pcinpact.utils.MyURLUtils;
 
 import java.util.ArrayList;
 
@@ -108,14 +107,14 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
          * Bouton : Tester connexion
          */
         Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
-        buttonTesterConnexion.setOnClickListener((View arg0) -> {
-            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_NXI,
-                                                                 MyURLUtils.getSiteURL(Constantes.IS_NXI,
-                                                                                       Constantes.X_INPACT_URL_LISTE_ARTICLE,
-                                                                                       false), 0, monDAO, getApplicationContext(),
-                                                                 true);
 
-            monAHD.run();
+        String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin,
+                                                           R.string.defautOptionLogin);
+        String passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
+                                                           R.string.defautOptionPassword);
+
+        buttonTesterConnexion.setOnClickListener((View arg0) -> {
+            Downloader.verifierIdentifiants(usernameOption, passwordOption);
         });
 
         /*
