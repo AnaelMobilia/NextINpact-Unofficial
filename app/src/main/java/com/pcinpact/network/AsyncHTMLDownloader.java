@@ -120,13 +120,13 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     /**
      * DL sans gestion du statut abonné.
      *
-     * @param parent    parent à callback à la fin
-     * @param unType    type de la ressource (Cf Constantes.TYPE_)
-     * @param unSite    ID du site (NXI, IH, ...)
-     * @param unPathURL Chemin à ajouter à l'URL
+     * @param parent       parent à callback à la fin
+     * @param unType       type de la ressource (Cf Constantes.TYPE_)
+     * @param unSite       ID du site (NXI, IH, ...)
+     * @param unPathURL    Chemin à ajouter à l'URL
      * @param unePkArticle PK de l'article (cas DL article & commentaires)
-     * @param unDAO     accès sur la DB
-     * @param unContext context de l'application
+     * @param unDAO        accès sur la DB
+     * @param unContext    context de l'application
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
                                final int unePkArticle, final DAO unDAO, final Context unContext) {
