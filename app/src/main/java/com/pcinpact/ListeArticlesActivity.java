@@ -518,20 +518,24 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void telechargeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
-            ArticleItem monItem = (ArticleItem) unItem;
+            ArticleItem unArticle = (ArticleItem) unItem;
 
             // Tâche de DL HTML
             AsyncHTMLDownloader monAHD;
             boolean isConnecteRequis = false;
 
             // Est-ce un article abonné dont j'ai déjà la version publique ?
-            if (monItem.isAbonne() && monItem.getContenu().equals("")) {
+            if (unArticle.isAbonne() && unArticle.getContenu().equals("")) {
                 // Je requiert d'être connecté (sinon le DL ne sert à rien)
                 isConnecteRequis = true;
             }
             // Téléchargement de la ressource
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getSite(), monItem.getPathPourDl(),
-                                             monItem.getPk(), monDAO, getApplicationContext(), isConnecteRequis);
+            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(), unArticle.getPathPourDl(),
+                                             unArticle.getPk(), monDAO, getApplicationContext(), isConnecteRequis);
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + unArticle.getUrlPartage());
+            }
 
             // Lancement du téléchargement
             if (monAHD.run()) {
