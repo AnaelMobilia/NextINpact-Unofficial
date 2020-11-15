@@ -57,45 +57,45 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
- * Liste des articles.
+ * Liste des articles
  *
  * @author Anael
  */
 public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener {
     /**
-     * Les articles.
+     * Les articles
      */
     private ArrayList<ArticleItem> mesArticles = new ArrayList<>();
     /**
-     * ItemAdapter.
+     * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
     /**
-     * BDD.
+     * BDD
      */
     private DAO monDAO;
     /**
-     * Nombre de DL en cours.
+     * Nombre de DL en cours
      */
     private int[] dlInProgress;
     /**
-     * Menu.
+     * Menu
      */
     private Menu monMenu;
     /**
-     * ListView.
+     * ListView
      */
     private ListView monListView;
     /**
-     * SwipeRefreshLayout.
+     * SwipeRefreshLayout
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
     /**
-     * TextView "Dernière synchro...".
+     * TextView "Dernière synchro..."
      */
     private TextView headerTextView;
     /**
-     * Listener pour le changement de taille des textes.
+     * Listener pour le changement de taille des textes
      */
     private SharedPreferences.OnSharedPreferenceChangeListener listenerOptions;
     /**
@@ -315,7 +315,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Gestion du clic sur un article => l'ouvrir + marquer comme lu.
+     * Gestion du clic sur un article => l'ouvrir
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -329,7 +329,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Lance l'ouverture de l'article
         Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-        monIntent.putExtra("ARTICLE_ID", monArticle.getId());
+        monIntent.putExtra("ARTICLE_PK", monArticle.getPk());
         startActivity(monIntent);
     }
 
@@ -484,12 +484,22 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
             // téléchargement de chaque page...
             for (int numPage = 1; numPage <= nbPages; numPage++) {
-                // Ma tâche de DL
-                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
-                                                                     Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
-                                                                     getApplicationContext());
+                // Mes tâches de DL
+                AsyncHTMLDownloader monAHD_NXI = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_NXI,
+                                                                         Constantes.X_INPACT_URL_LISTE_ARTICLE + numPage, 0,
+                                                                         monDAO, getApplicationContext());
+
                 // Lancement du téléchargement
-                if (monAHD.run()) {
+                if (monAHD_NXI.run()) {
+                    // MàJ animation
+                    nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                }
+                AsyncHTMLDownloader monAHD_IH = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_IH,
+                                                                        Constantes.X_INPACT_URL_LISTE_ARTICLE + numPage, 0,
+                                                                        monDAO, getApplicationContext());
+
+                // Lancement du téléchargement
+                if (monAHD_IH.run()) {
                     // MàJ animation
                     nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
                 }
@@ -512,26 +522,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // Tâche de DL HTML
             AsyncHTMLDownloader monAHD;
-            // DL de l'image d'illustration ?
-            boolean dlIllustration = true;
+            boolean isConnecteRequis = false;
 
-            // Est-ce un article abonné ?
-            if (((ArticleItem) unItem).isAbonne()) {
-                boolean isConnecteRequis = false;
-
-                // Ai-je déjà la version publique de l'article ?
-                if (!((ArticleItem) unItem).getContenu().equals("")) {
-                    // Je requiert d'être connecté (sinon le DL ne sert à rien)
-                    isConnecteRequis = true;
-                }
-                // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl_api(), monDAO,
-                                                 getApplicationContext(), isConnecteRequis);
-            } else {
-                // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl_api(), monDAO,
-                                                 getApplicationContext());
+            // Est-ce un article abonné dont j'ai déjà la version publique ?
+            if (monItem.isAbonne() && monItem.getContenu().equals("")) {
+                // Je requiert d'être connecté (sinon le DL ne sert à rien)
+                isConnecteRequis = true;
             }
+            // Téléchargement de la ressource
+            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getSite(), monItem.getPathPourDl(),
+                                             monItem.getPk(), monDAO, getApplicationContext(), isConnecteRequis);
 
             // Lancement du téléchargement
             if (monAHD.run()) {
@@ -542,9 +542,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Si c'est un refresh général
-        if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
+        if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
             // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
             telechargeArticles(desItems);
             // gestion du téléchargement GUI

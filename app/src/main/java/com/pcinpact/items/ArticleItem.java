@@ -137,14 +137,12 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * URL de l'article pour télécharger (calculé dynamiquement)
+     * Path de l'article pour télécharger (calculé dynamiquement)
      *
-     * @return url
+     * @return path
      */
-    public String getUrlPourDl() {
-        String path = Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
-
-        return MyURLUtils.getSiteURL(this.site, path, false);
+    public String getPathPourDl() {
+        return Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
     }
 
     /**

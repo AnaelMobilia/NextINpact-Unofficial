@@ -112,7 +112,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(monThis, Constantes.HTML_LISTE_ARTICLES, Constantes.IS_NXI,
                                                                  MyURLUtils.getSiteURL(Constantes.IS_NXI,
                                                                                        Constantes.X_INPACT_URL_LISTE_ARTICLE,
-                                                                                       false), monDAO, getApplicationContext(),
+                                                                                       false), 0, monDAO, getApplicationContext(),
                                                                  true);
 
             monAHD.run();
@@ -126,24 +126,23 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
             // Je cache tous les boutons génériques !
             buttonTesterConnexion.setVisibility(View.GONE);
 
-            // ID de l'article concerné
-            int articleID = getIntent().getExtras().getInt("ARTICLE_ID");
-            int site = getIntent().getExtras().getInt("SITE");
+            // PK de l'article concerné
+            int articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
             // Si j'ai un article
-            if (articleID != 0) {
+            if (articlePk != 0) {
                 // Chargement de l'article
-                ArticleItem monArticle = monDAO.chargerArticle(articleID, site);
+                ArticleItem monArticle = monDAO.chargerArticle(articlePk);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 maTextView.setText(monArticle.getContenu());
             }
 
-            // ID de l'article concerné - Affichage des commentaires
-            articleID = getIntent().getExtras().getInt("ARTICLE_ID_COMMENTAIRE");
+            // PK de l'article concerné - Affichage des commentaires
+            articlePk = getIntent().getExtras().getInt("ARTICLE_PK_COMMENTAIRE");
             // Si j'ai un article
-            if (articleID != 0) {
+            if (articlePk != 0) {
                 // Chargement des commentaires
-                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articleID, site);
+                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articlePk);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 StringBuilder monContenu = new StringBuilder();
