@@ -37,13 +37,13 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 /**
- * Parseur du code HTML.
+ * Parseur du code HTML
  *
  * @author Anael
  */
 public class ParseurHTML {
     /**
-     * Parse la liste des articles.
+     * Parse la liste des articles
      *
      * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
@@ -66,7 +66,7 @@ public class ParseurHTML {
                 monArticleItem = new ArticleItem();
 
                 // ID de l'article
-                monArticleItem.setId(unArticle.getInt("contentId"));
+                monArticleItem.setIdInpact(unArticle.getInt("contentId"));
 
                 // Site concerné
                 monArticleItem.setSite(site);
@@ -108,21 +108,20 @@ public class ParseurHTML {
     }
 
     /**
-     * Parse le contenu d'un article.
+     * Parse le contenu d'un article
      *
-     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
-     * @return ArticleItem
+     * @return Contenu parsé
      */
-    public static ArticleItem getArticle(final int site, final String unContenu) {
-        ArticleItem monArticleItem = new ArticleItem();
+    public static String getContenuArticle(final String unContenu) {
+        String monContenu = "";
 
         try {
             // Récupération du JSON
             JSONObject contenu_json = new JSONObject(unContenu);
 
-            // L'ID de l'article
-            monArticleItem.setId(contenu_json.getInt("contentId"));
+            // L'ID de l'article pour le debug
+            int idArticle = contenu_json.getInt("contentId");
 
             // Contenu de l'article
             String contenu = "<article>";
@@ -276,7 +275,7 @@ public class ParseurHTML {
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.e("ParseurHTML",
-                              "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                              "getArticle() - Iframe non gérée dans " + idArticle + " : " + uneIframe.absUrl("src"));
                     }
                 }
 
@@ -372,10 +371,8 @@ public class ParseurHTML {
 
 
             // Elimination des htmlentities (beaucoup de &nbsp;)
-            String monArticle = Parser.unescapeEntities(lArticle.toString(), true);
+            monContenu = Parser.unescapeEntities(lArticle.toString(), true);
 
-            // J'enregistre le contenu
-            monArticleItem.setContenu(monArticle);
         } catch (JSONException e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -383,17 +380,16 @@ public class ParseurHTML {
             }
         }
 
-        return monArticleItem;
+        return monContenu;
     }
 
     /**
-     * Nombre de commentaires d'un article à partir d'une page de commentaires.
+     * Nombre de commentaires d'un article à partir d'une page de commentaires
      *
-     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return nb de commentaires de l'article
      */
-    public static int getNbCommentaires(final int site, final String unContenu) {
+    public static int getNbCommentaires(final String unContenu) {
         int nbComms = 0;
         try {
             // Récupération du JSON
@@ -417,13 +413,13 @@ public class ParseurHTML {
     }
 
     /**
-     * Parse les commentaires.
+     * Parse les commentaires
      *
      * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final int site, final String unContenu) {
+    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
@@ -440,13 +436,8 @@ public class ParseurHTML {
                 JSONObject unCommentaire = lesCommentaires.getJSONObject(i).getJSONObject("comment");
                 monCommentaireItem = new CommentaireItem();
 
-                // ID de l'article
-                monCommentaireItem.setArticleId(unCommentaire.getInt("articleId"));
-                monCommentaireItem.setUuid(unCommentaire.getInt("commentId"));
-                monCommentaireItem.setId(i + 1);
-
-                // Site concerné
-                monCommentaireItem.setSite(site);
+                // ID du commentaire
+                monCommentaireItem.setId(unCommentaire.getInt("commentId"));
 
                 // Auteur
                 monCommentaireItem.setAuteur(unCommentaire.getString("userName"));

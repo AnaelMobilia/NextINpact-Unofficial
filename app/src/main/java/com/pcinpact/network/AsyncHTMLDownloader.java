@@ -64,7 +64,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final int typeHTML;
     /**
-     * accès à la BDD.
+     * PK de l'article lié (DL article ou commentaires)
+     */
+    private final int pkArticle;
+    /**
+     * Accès à la BDD.
      */
     private final DAO monDAO;
     /**
@@ -76,7 +80,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private Boolean isAbonne = false;
     /**
-     * téléchargement uniquement si connecté ?
+     * Téléchargement uniquement si connecté ?
      */
     private Boolean uniquementSiConnecte = false;
 
@@ -87,18 +91,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unType         type de la ressource (Cf Constantes.TYPE_)
      * @param unSite         ID du site (NXI, IH, ...)
      * @param unPathURL      Chemin à ajouter à l'URL
+     * @param unePkArticle   PK de l'article (cas DL article & commentaires)
      * @param unDAO          accès sur la DB
      * @param unContext      context de l'application
      * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
-                               final DAO unDAO, final Context unContext, final Boolean onlyifConnecte) {
+                               final int unePkArticle, final DAO unDAO, final Context unContext, final Boolean onlyifConnecte) {
         // Mappage des attributs de cette requête
         monParent = parent;
         site = unSite;
         pathURL = unPathURL;
         fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
+        pkArticle = unePkArticle;
         monDAO = unDAO;
         monContext = unContext.getApplicationContext();
         isAbonne = true;
@@ -118,17 +124,19 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unType    type de la ressource (Cf Constantes.TYPE_)
      * @param unSite    ID du site (NXI, IH, ...)
      * @param unPathURL Chemin à ajouter à l'URL
+     * @param unePkArticle PK de l'article (cas DL article & commentaires)
      * @param unDAO     accès sur la DB
      * @param unContext context de l'application
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
-                               final DAO unDAO, final Context unContext) {
+                               final int unePkArticle, final DAO unDAO, final Context unContext) {
         // Mappage des attributs de cette requête
         monParent = parent;
         site = unSite;
         pathURL = unPathURL;
         fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
+        pkArticle = unePkArticle;
         monDAO = unDAO;
         monContext = unContext.getApplicationContext();
 
@@ -194,15 +202,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         break;
 
                     case Constantes.HTML_ARTICLE:
-                        // Je passe par le parseur
-                        ArticleItem articleParseur = ParseurHTML.getArticle(site, datas);
-
                         // Chargement de l'article depuis la BDD
                         // La création des squelettes des articles en BDD est fait par le DL de la liste des articles
-                        ArticleItem articleDB = monDAO.chargerArticle(articleParseur.getIdInpact(), articleParseur.getSite());
+                        ArticleItem articleDB = monDAO.chargerArticle(pkArticle);
 
-                        // Ajout du contenu à l'objet chargé
-                        articleDB.setContenu(articleParseur.getContenu());
+                        // Ajout du contenu de l'article
+                        articleDB.setContenu(ParseurHTML.getContenuArticle(datas));
 
                         // Article abonné ?
                         if (articleDB.isAbonne()) {
@@ -223,7 +228,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                          * MàJ des commentaires
                          */
                         // Je passe par le parseur
-                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(site, datas);
+                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(datas);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
@@ -234,28 +239,21 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // Je ne conserve que les nouveaux commentaires
                         for (CommentaireItem unCommentaire : lesCommentaires) {
+                            unCommentaire.setPkArticle(pkArticle);
                             // Stockage en BDD
                             if (monDAO.enregistrerCommentaireSiNouveau(unCommentaire)) {
                                 // Ne retourne que les nouveaux articles
                                 mesItems.add(unCommentaire);
                             }
                         }
-                        // Récupération de l'ID de l'article dans l'URL
-                        int debut = fullURL.indexOf(Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE);
-                        debut += Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE.length();
-                        int idArticle = Integer.parseInt(fullURL.substring(debut));
-
-                        // Récupération de l'article en question
-                        ArticleItem unArticle = monDAO.chargerArticle(idArticle, site);
-
-                        // MàJ de la date de rafraichissement
-                        monDAO.enregistrerDateRefresh(unArticle.getPk(), dateRefresh);
+                        // MàJ de la date de rafraichissement de l'article
+                        monDAO.enregistrerDateRefresh(pkArticle, dateRefresh);
 
                         /*
                          * MàJ du nombre de commentaires
                          */
-                        int nbCommentaires = ParseurHTML.getNbCommentaires(site, datas);
-                        monDAO.updateNbCommentairesArticle(unArticle.getPk(), nbCommentaires);
+                        int nbCommentaires = ParseurHTML.getNbCommentaires(datas);
+                        monDAO.updateNbCommentairesArticle(pkArticle, nbCommentaires);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
