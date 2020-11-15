@@ -333,23 +333,19 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
-
+        int id = pItem.getItemId();
+        if (id == R.id.action_refresh) {
             // Rafraichir la liste des commentaires
-            case R.id.action_refresh:
-                // téléchargement de TOUS les commentaires
-                isChargementTotal = true;
+            // téléchargement de TOUS les commentaires
+            isChargementTotal = true;
 
-                // Lancement du premier chargement
-                refreshListeCommentaires();
-                break;
-
+            // Lancement du premier chargement
+            refreshListeCommentaires();
+        } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articleID);
-                startActivity(intentDebug);
-                break;
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articleID);
+            startActivity(intentDebug);
         }
         return super.onOptionsItemSelected(pItem);
     }

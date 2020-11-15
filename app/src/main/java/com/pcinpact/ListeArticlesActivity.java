@@ -390,67 +390,44 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
+        int id = pItem.getItemId();
+        if (id == R.id.action_refresh) {
             // Rafraichir la liste des articles
-            case R.id.action_refresh:
-                telechargeListeArticles();
-                break;
-
+            telechargeListeArticles();
+        } else if (id == R.id.action_settings) {
             // Menu Options
-            case R.id.action_settings:
-                // Je lance l'activité options
-                Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
-                startActivity(intentOptions);
-                break;
-
+            Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
+            startActivity(intentOptions);
+        } else if (id == R.id.action_about) {
             // A propos
-            case R.id.action_about:
-                Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
-                startActivity(intentAbout);
-                break;
-
+            Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
+        } else if (id == R.id.action_debug) {
             // Debug
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                startActivity(intentDebug);
-                break;
-
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            startActivity(intentDebug);
+        } else if (id == R.id.action_support) {
             // Support
-            case R.id.action_support:
-                // Envoi...
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                // Mode texte
-                intent.setType("text/plain");
-                // Sujet du mail
-                intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent());
-                // Corps du mail
-                intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
-                // A qui...
-                intent.setData(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR));
-                // Si touche retour : revient a l'application et pas aux mails
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    // Affichage du numéro de version
-                    Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail),
-                                                    Toast.LENGTH_LONG);
-                    monToast.show();
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            // Sujet du mail
+            intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent());
+            // Corps du mail
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
+            // A qui...
+            intent.setDataAndType(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR), "text/plain");
+            // Si touche retour : revient a l'application et pas aux mails
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                // Affichage du numéro de version
+                Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
+                monToast.show();
 
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
-                    }
-                }
-                break;
-
-            default:
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
-                    // Peut-être clic sur menu hamburger
+                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
                 }
-                break;
+            }
         }
         return true;
     }

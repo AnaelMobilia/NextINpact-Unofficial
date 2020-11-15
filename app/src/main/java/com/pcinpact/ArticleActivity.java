@@ -182,22 +182,19 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
+        int id = pItem.getItemId();
+        if (id == R.id.action_comments) {
             // Afficher les commentaires
-            case R.id.action_comments:
-                Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-                intentComms.putExtra("ARTICLE_ID", articleID);
-                intentComms.putExtra("SITE", site);
-                startActivity(intentComms);
-                break;
-
+            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+            intentComms.putExtra("ARTICLE_ID", articleID);
+            intentComms.putExtra("SITE", site);
+            startActivity(intentComms);
+        } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                intentDebug.putExtra("ARTICLE_ID", articleID);
-                intentDebug.putExtra("SITE", site);
-                startActivity(intentDebug);
-                break;
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            intentDebug.putExtra("ARTICLE_ID", articleID);
+            intentDebug.putExtra("SITE", site);
+            startActivity(intentDebug);
         }
 
         return super.onOptionsItemSelected(pItem);
