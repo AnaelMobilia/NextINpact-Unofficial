@@ -542,7 +542,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(String pathURL, ArrayList<? extends Item> desItems) {
         // Si c'est un refresh général
         if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
             // Le asyncDL ne me retourne que des articles non présents en BDD => à DL

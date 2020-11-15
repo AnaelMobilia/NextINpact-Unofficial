@@ -164,7 +164,7 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
     }
 
     @Override
-    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> mesItems) {
+    public void downloadHTMLFini(String pathURL, ArrayList<? extends Item> mesItems) {
 
     }
 }

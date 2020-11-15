@@ -291,7 +291,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     @Override
     protected void onPostExecute(ArrayList<? extends Item> result) {
         try {
-            monParent.downloadHTMLFini(site, pathURL, result);
+            monParent.downloadHTMLFini(pathURL, result);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {

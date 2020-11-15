@@ -32,9 +32,8 @@ public interface RefreshDisplayInterface {
     /**
      * Une ressource HTML à été téléchargée.
      *
-     * @param site     ID du site (NXI, IH, ...)
      * @param pathURL  Path demdandé
      * @param mesItems liste d'*Itemstéléchargés
      */
-    void downloadHTMLFini(final int site, final String pathURL, final ArrayList<? extends Item> mesItems);
+    void downloadHTMLFini(final String pathURL, final ArrayList<? extends Item> mesItems);
 }
