@@ -456,8 +456,10 @@ public class ParseurHTML {
                 String contenuHtml = unCommentaire.getString("content");
 
                 // Texte cité ex  > texte cité
+                // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
                 contenuHtml = contenuHtml.replaceAll(">(.*)",
-                                                     "<" + Constantes.TAG_HTML_QUOTE + ">$1</" + Constantes.TAG_HTML_QUOTE + ">");
+                                                     "<div><" + Constantes.TAG_HTML_QUOTE + ">$1</" + Constantes.TAG_HTML_QUOTE
+                                                     + "></div>");
 
                 // Retours à la ligne
                 contenuHtml = contenuHtml.replace("\n\n", "<br />");
