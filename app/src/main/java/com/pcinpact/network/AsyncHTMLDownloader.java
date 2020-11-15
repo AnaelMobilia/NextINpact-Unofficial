@@ -33,6 +33,7 @@ import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyURLUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.RejectedExecutionException;
@@ -46,7 +47,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     /**
      * Parent qui sera rappelé à la fin.
      */
-    private final RefreshDisplayInterface monParent;
+    private final WeakReference<RefreshDisplayInterface> monParent;
     /**
      * Site concerné (IH, NXI, ...).
      */
@@ -99,7 +100,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
                                final int unePkArticle, final DAO unDAO, final Context unContext, final Boolean onlyifConnecte) {
         // Mappage des attributs de cette requête
-        monParent = parent;
+        // On peut se permettre de perdre le parent
+        monParent = new WeakReference<>(parent);
         site = unSite;
         pathURL = unPathURL;
         fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
@@ -131,7 +133,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
                                final int unePkArticle, final DAO unDAO, final Context unContext) {
         // Mappage des attributs de cette requête
-        monParent = parent;
+        // On peut se permettre de perdre le parent
+        monParent = new WeakReference<>(parent);
         site = unSite;
         pathURL = unPathURL;
         fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
@@ -291,7 +294,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     @Override
     protected void onPostExecute(ArrayList<? extends Item> result) {
         try {
-            monParent.downloadHTMLFini(pathURL, result);
+            // Le aprent peut avoir été garbage collecté
+            monParent.get().downloadHTMLFini(pathURL, result);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
