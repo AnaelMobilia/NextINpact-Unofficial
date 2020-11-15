@@ -68,7 +68,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -116,7 +116,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                R.bool.defautOptionDebug);
+                                                        R.bool.defautOptionDebug);
 
         // Si mode debug
         if (modeDebug) {
@@ -137,7 +137,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Option : cacher le bouton de partage
         Boolean cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
-                R.bool.defautOptionCacherBoutonPartage);
+                                                                  R.bool.defautOptionCacherBoutonPartage);
         if (cacherBoutonPartage) {
             // Le cacher
             shareItem.setVisible(false);

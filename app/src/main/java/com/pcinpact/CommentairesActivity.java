@@ -115,7 +115,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -175,7 +175,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
          * Réouverture au dernier commentaire lu
          */
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
-                R.bool.defautOptionPositionCommentaire);
+                                                  R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
             idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID) - 1;
@@ -207,11 +207,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Création de l'URL
         String monURL =
                 Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
-                        + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+                + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
 
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
-                getApplicationContext());
+                                                             getApplicationContext());
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -238,7 +238,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                R.bool.defautOptionDebug);
+                                                        R.bool.defautOptionDebug);
 
         // Si mode debug
         if (modeDebug) {
@@ -278,8 +278,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
                     // téléchargement automatique en continu des commentaires ?
                     Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
-                            R.string.idOptionCommentairesTelechargementContinu,
-                            R.bool.defautOptionCommentairesTelechargementContinu);
+                                                                      R.string.idOptionCommentairesTelechargementContinu,
+                                                                      R.bool.defautOptionCommentairesTelechargementContinu);
                     // Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
                     if (telecharger && dlInProgress == 0 && !isFinCommentaires) {
                         // téléchargement de 10 commentaires en plus
@@ -288,7 +288,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("CommentairesActivity",
-                                    "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
+                                  "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
                         }
                     }
                 }
@@ -307,7 +307,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.d("CommentairesActivity",
-                                "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
+                              "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
                     }
                 }
 
@@ -324,7 +324,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("CommentairesActivity",
-                            "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
+                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
                 }
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
@@ -363,7 +363,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (dlInProgress == 0) {
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                    ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
@@ -419,7 +419,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     @Override
-    public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Retour vide ? Fin ou pas de connexion
         if (desItems.isEmpty()) {
             // Je note qu'il n'y a plus de commentaires
@@ -465,7 +465,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
             String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                    Constantes.LOCALE).format(dernierRefresh);
+                                                                                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
             headerTextView.setText(monTexte);
         }
