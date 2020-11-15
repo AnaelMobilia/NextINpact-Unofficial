@@ -71,6 +71,9 @@ public class ParseurHTML {
                 // ID de l'article
                 monArticleItem.setId(unArticle.getInt("contentId"));
 
+                // Site concerné
+                monArticleItem.setSite(site);
+
                 // Date de publication de l'article
                 String laDate = unArticle.getString("datePublished");
                 monArticleItem.setTimeStampPublication(convertToTimeStamp(laDate, Constantes.FORMAT_DATE));
@@ -78,18 +81,8 @@ public class ParseurHTML {
                 // Publicité
                 monArticleItem.setPublicite(unArticle.getBoolean("isSponsored"));
 
-                // URL de l'illustration
-                String urlIllustration = "https://cdnx.inpact-hardware.com/data-prod/images/bd/square-linked-media/";
-                urlIllustration += unArticle.getString("imageId");
-                urlIllustration += ".jpg";
-                monArticleItem.setUrlIllustration(urlIllustration);
-
-                // URL de l'article
-                String urlArticle = "https://www.inpact-hardware.com/article/";
-                urlArticle += unArticle.getString("contentId");
-                urlArticle += "/";
-                urlArticle += unArticle.getString("seoUrl");
-                monArticleItem.setUrl(urlArticle);
+                // ID de l'image d'illustration
+                monArticleItem.setIdIllustration(unArticle.getInt("imageId"));
 
                 // Titre de l'article
                 monArticleItem.setTitre(unArticle.getString("title"));
@@ -460,6 +453,9 @@ public class ParseurHTML {
                 monCommentaireItem.setArticleId(unCommentaire.getInt("articleId"));
                 monCommentaireItem.setUuid(unCommentaire.getInt("commentId"));
                 monCommentaireItem.setId(i + 1);
+
+                // Site concerné
+                monCommentaireItem.setSite(site);
 
                 // Auteur
                 monCommentaireItem.setAuteur(unCommentaire.getString("userName"));
