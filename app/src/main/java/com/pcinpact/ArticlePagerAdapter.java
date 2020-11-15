@@ -54,7 +54,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // Récupération de la position de l'article
-        int articleID = getArticleID(position);
+        int articleID = getArticle(position).getId();
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -74,13 +74,13 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * ID de l'article à partir de sa position
+     * Article à partir de sa position
      *
      * @param position position dans la liste
-     * @return ID de l'article
+     * @return ArticleItem
      */
-    int getArticleID(int position) {
-        return mesArticles.get(position).getId();
+    ArticleItem getArticle(int position) {
+        return mesArticles.get(position);
     }
 
     /**

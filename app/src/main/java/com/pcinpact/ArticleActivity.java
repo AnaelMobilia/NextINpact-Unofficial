@@ -20,10 +20,6 @@ package com.pcinpact;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.view.MenuItemCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +28,11 @@ import android.view.MenuItem;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Affichage d'un article.
@@ -43,6 +44,10 @@ public class ArticleActivity extends AppCompatActivity {
      * ID de l'article actuel.
      */
     private int articleID = 0;
+    /**
+     * Site de l'article actuel
+     */
+    private int site;
     /**
      * Accès BDD
      */
@@ -75,10 +80,11 @@ public class ArticleActivity extends AppCompatActivity {
         // ID de l'article concerné
         try {
             articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            site = getIntent().getExtras().getInt("SITE");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ArticleActivity", "onCreate() - Récupération ID article de l'intent", e);
+                Log.e("ArticleActivity", "onCreate() - Récupération ID article & site de l'intent", e);
             }
 
             // Arrêt de l'activité
@@ -146,11 +152,14 @@ public class ArticleActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                // Récupération de l'article
+                ArticleItem unArticle = pagerAdapter.getArticle(position);
                 // Mise à jour de l'article concerné
-                articleID = pagerAdapter.getArticleID(position);
+                articleID = unArticle.getId();
+                site = unArticle.getSite();
 
                 // Marquer l'article comme lu en BDD
-                monDAO.marquerArticleLu(articleID);
+                monDAO.marquerArticleLu(articleID, site);
 
                 // MISE A JOUR DE L'INTENT
                 // Récupération du bouton de partage
@@ -178,6 +187,7 @@ public class ArticleActivity extends AppCompatActivity {
             case R.id.action_comments:
                 Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
                 intentComms.putExtra("ARTICLE_ID", articleID);
+                intentComms.putExtra("SITE", site);
                 startActivity(intentComms);
                 break;
 
@@ -185,6 +195,7 @@ public class ArticleActivity extends AppCompatActivity {
             case R.id.action_debug:
                 Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
                 intentDebug.putExtra("ARTICLE_ID", articleID);
+                intentDebug.putExtra("SITE", site);
                 startActivity(intentDebug);
                 break;
         }
@@ -199,12 +210,12 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private Intent genererShareIntent() {
         // Chargement de l'article concerné
-        ArticleItem monArticle = monDAO.chargerArticle(articleID);
+        ArticleItem monArticle = monDAO.chargerArticle(articleID, site);
 
         // Création de l'intent
         Intent monIntent = new Intent(Intent.ACTION_SEND);
         monIntent.setType("text/plain");
-        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
+        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrlPartage());
 
         return monIntent;
     }
