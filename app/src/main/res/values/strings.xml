@@ -93,7 +93,8 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionPasswordDetail">Le mot de passe associé à votre compte</string>
     <!-- Options liste des articles -->
     <string name="optionsListeArticle">Liste des articles</string>
-    <string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>
+    <!--<string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>-->
+    <string name="optionNbJoursArticles">"Nombre de jours d'articles à conserver (pour chaque site)"</string>
     <string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>
     <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI/IH"</string>
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>

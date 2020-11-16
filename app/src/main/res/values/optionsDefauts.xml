@@ -27,7 +27,7 @@
     <bool name="defautOptionInstallationApplication">true</bool>
     <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>
-    <string name="defautOptionNbArticles">25</string>
+    <!--<string name="defautOptionNbArticles">30</string>-->
     <bool name="defautOptionAbonne">false</bool>
     <string name="defautOptionLogin">""</string>
     <string name="defautOptionPassword">""</string>
@@ -42,4 +42,5 @@
     <string name="defautOptionTelechargerImagesv2">2</string>
     <bool name="defautOptionAfficherPublicite">true</bool>
     <bool name="defautOptionVersion240">false</bool>
+    <string name="defautOptionNbJoursArticles">1</string>
 </resources>
