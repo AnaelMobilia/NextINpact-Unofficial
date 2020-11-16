@@ -29,7 +29,8 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
-import com.pcinpact.network.Downloader;
+import com.pcinpact.network.AccountCheckInterface;
+import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
@@ -42,8 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
  *
  * @author Anael
  */
-public class DebugActivity extends AppCompatActivity implements RefreshDisplayInterface {
-
+public class DebugActivity extends AppCompatActivity implements RefreshDisplayInterface, AccountCheckInterface {
     // DAO
     private DAO monDAO;
 
@@ -114,7 +114,9 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                                                            R.string.defautOptionPassword);
 
         buttonTesterConnexion.setOnClickListener((View arg0) -> {
-            Downloader.verifierIdentifiants(usernameOption, passwordOption);
+            // Lancement de la vérif des identifiants (flux réseau donc asynchrone=
+            AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
+            maVerif.run();
         });
 
         /*
@@ -165,5 +167,18 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
     @Override
     public void downloadHTMLFini(String pathURL, ArrayList<? extends Item> mesItems) {
 
+    }
+
+    @Override
+    public void retourVerifCompte(boolean resultat) {
+        String message;
+        if (!resultat) {
+            message = getString(R.string.erreurAuthentification);
+        } else {
+            message = getString(R.string.optionAbonne);
+        }
+        // Retour utilisateur
+        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        monToast.show();
     }
 }
