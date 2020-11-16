@@ -44,8 +44,9 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
+import com.pcinpact.network.AccountCheckInterface;
+import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.network.AsyncHTMLDownloader;
-import com.pcinpact.network.Downloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
@@ -62,7 +63,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener {
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener,
+        AccountCheckInterface {
     /**
      * Les articles
      */
@@ -471,19 +473,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
         passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
                                                     R.string.defautOptionPassword);
-        // Les identifiants sont-ils définis ?
+        // Identifiants non définis...
         if ("".equals(usernameOption) && "".equals(passwordOption)) {
             Toast monToast = Toast.makeText(getApplicationContext(), R.string.infoOptionAbonne, Toast.LENGTH_LONG);
             monToast.show();
         } else {
-            // Vérification du bon fonctionnement des identifiants
-            boolean compteOk = Downloader.verifierIdentifiants(usernameOption, passwordOption);
-
-            // Si le compte n'est pas bon, affichage d'un Toast à l'utilisateur
-            if (!compteOk) {
-                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAuthentification, Toast.LENGTH_LONG);
-                monToast.show();
-            }
+            // Lancement de la vérif des identifiants (flux réseau donc asynchrone)
+            AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
+            maVerif.run();
         }
 
         // Uniquement si on est pas déjà en train de faire un refresh...
@@ -737,5 +734,18 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         if (Constantes.DEBUG) {
             Log.i("ListeArticlesActivity", "finChargementGUI() - " + Arrays.toString(dlInProgress));
         }
+    }
+
+    @Override
+    public void retourVerifCompte(boolean resultat) {
+        String message;
+        if (!resultat) {
+            message = getString(R.string.erreurAuthentification);
+        } else {
+            message = getString(R.string.optionAbonne);
+        }
+        // Retour utilisateur
+        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        monToast.show();
     }
 }

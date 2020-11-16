@@ -83,7 +83,7 @@ public class Constantes {
     /**
      * URL d'authentification.
      */
-    public static final String X_INPACT_URL_AUTH = "/Account/login";
+    public static final String X_INPACT_URL_AUTH = "Auth/login";
     /**
      * URL des images
      */
