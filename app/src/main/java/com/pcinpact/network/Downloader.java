@@ -18,11 +18,12 @@
  */
 package com.pcinpact.network;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyIOUtils;
+
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -224,13 +225,19 @@ public class Downloader {
 
         // Authentification sur NXI
         try {
-            // Création de la chaîne d'authentification
-            String query = "{\"" + Constantes.AUTHENTIFICATION_USERNAME + "\":\"" + Uri.encode(username,
-                                                                                               Constantes.X_INPACT_ENCODAGE)
-                           + "\",\"" + Constantes.AUTHENTIFICATION_PASSWORD + "\":\"" + Uri.encode(password,
-                                                                                                   Constantes.X_INPACT_ENCODAGE)
-                           + "\",\"noCrossAuth\":false,\"ei\":1,\"pi\":23,\"tk\":\"n(\"}";
+            // Création de mon JSON d'auth...
+            JSONObject maQuery = new JSONObject();
+            maQuery.put(Constantes.AUTHENTIFICATION_USERNAME, username);
+            maQuery.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
+            maQuery.put("noCrossAuth", false);
+            maQuery.put("ei", 1);
+            maQuery.put("pi", 23);
+            maQuery.put("tk", "n(");
 
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.d("Downloader", "connexionAbonne() - JSON : " + maQuery.toString());
+            }
             // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
             URL monURL = new URL(Constantes.NXI_URL + Constantes.X_INPACT_URL_AUTH);
             HttpsURLConnection urlConnection = (HttpsURLConnection) monURL.openConnection();
@@ -245,11 +252,12 @@ public class Downloader {
             urlConnection.setDoOutput(true);
             // Désactivation du cache...
             urlConnection.setUseCaches(false);
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            urlConnection.setRequestProperty("Accept", "*/*");
 
             // Buffer des données et émission...
             OutputStream output = new BufferedOutputStream(urlConnection.getOutputStream());
-            output.write(query.getBytes());
+            output.write(maQuery.toString().getBytes(Constantes.X_INPACT_ENCODAGE));
             output.flush();
             output.close();
 
