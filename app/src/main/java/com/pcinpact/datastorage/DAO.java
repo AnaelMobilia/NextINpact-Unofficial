@@ -313,14 +313,32 @@ public final class DAO extends SQLiteOpenHelper {
     public int enregistrerArticleSiNouveau(final ArticleItem unArticle) {
         // PK de l'article si non déjà enregistré
         int pkArticle = -1;
-        // J'essaye de charger l'article depuis la DB
-        ArticleItem testItem = this.chargerArticle(unArticle.getPk());
+        // Est-il déjà présent en BDD ?
+        // Identification par ID INpact car la PK est générée à l'enregistrement de l'article
+        // Je n'ai donc pas encore cette PK dans unArticle !
+        ArticleItem testItem = this.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
 
-        // Vérif du timestamp couvrant les cas :
-        // - l'article n'est pas encore en BDD
-        // - l'article est déjà en BDD, mais il s'agit d'une MàJ de l'article
-        // - l'article est déjà en BDD, mais ne contient rien (pb de dl)
-        if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication() || testItem.getContenu().equals("")) {
+        boolean enregistrer = false;
+        // Cas validant un enregistrement
+        if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication()) {
+            // Article pas encore en BDD, MàJ de l'article
+            enregistrer = true;
+            // Si l'article existait déjà je garde la PK
+            if (testItem.getPk() != 0) {
+                unArticle.setPk(testItem.getPk());
+            }
+        } else if (testItem.getContenu().equals("") && !unArticle.getContenu().equals("")) {
+            // Article existant mais sans contenu en BDD et contenu dans l'article proposé
+            enregistrer = true;
+            unArticle.setPk(testItem.getPk());
+        } else if (testItem.isAbonne() && !testItem.isDlContenuAbonne() && unArticle.isDlContenuAbonne()) {
+            // Article abonné existant dont je n'avais pas le contenu Abonné et maintenant je l'ai
+            enregistrer = true;
+            unArticle.setPk(testItem.getPk());
+        }
+
+        // Dois-je l'enregistrer
+        if (enregistrer) {
             // Enregistrement & récupération de sa PK
             pkArticle = this.enregistrerArticle(unArticle);
         } else {
@@ -421,6 +439,31 @@ public final class DAO extends SQLiteOpenHelper {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_PK + "=?",
                                        new String[]{ String.valueOf(pkArticle) }, null, null, null);
+
+        ArticleItem monArticle = new ArticleItem();
+
+        // Je vais au premier (et unique) résultat
+        if (monCursor.moveToNext()) {
+            // Je charge les données de l'objet
+            monArticle = cursorToArticleItem(monCursor);
+        }
+        // Fermeture du curseur
+        monCursor.close();
+
+        return monArticle;
+    }
+
+    /**
+     * Charger un article depuis la BDD - ID inpact / ID site Utile pour vérifier si un article est à enregistrer
+     *
+     * @param idInpact ID de l'article
+     * @param idSite   ID du site
+     * @return ArticleItem de l'article
+     */
+    private ArticleItem chargerArticle(final int idInpact, final int idSite) {
+        // Requête sur la BDD
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?",
+                                       new String[]{ String.valueOf(idInpact), String.valueOf(idSite) }, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
