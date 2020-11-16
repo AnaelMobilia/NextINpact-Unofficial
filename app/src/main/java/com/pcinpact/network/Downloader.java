@@ -335,7 +335,7 @@ public class Downloader {
                 }
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("Downloader", "estConnecte() - Cookie : " + unCookie.toString());
+                    Log.d("Downloader", "estConnecte() - Cookie : " + unCookie.toString());
                 }
             }
         }
