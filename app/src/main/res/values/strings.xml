@@ -30,7 +30,7 @@
     <string name="action_share">Partager</string>
 
     <!-- Ecran d'accueil -->
-    <string name="app_name">NextINpact (Unofficial)</string>
+    <string name="app_name">INpact Actualités informatiques</string>
     <string name="lastUpdate">"Dernière synchronisation : "</string>
     <string name="lastUpdateNever">Jamais synchronisé</string>
     <string name="contentDescriptionImageArticle">"Illustration de l'article"</string>
