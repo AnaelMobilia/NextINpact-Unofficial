@@ -19,10 +19,11 @@
 package com.pcinpact;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A propos...
@@ -48,8 +49,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         // Affichage du numéro de version
-        Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(getApplicationContext()),
-                Toast.LENGTH_LONG);
+        Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(), Toast.LENGTH_LONG);
         monToast.show();
     }
 }

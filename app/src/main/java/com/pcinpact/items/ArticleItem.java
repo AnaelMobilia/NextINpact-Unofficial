@@ -19,6 +19,7 @@
 package com.pcinpact.items;
 
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyURLUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,15 +33,19 @@ import java.util.Date;
 public class ArticleItem implements Item {
 
     /**
-     * ID de l'article.
+     * Clef unique de l'article dans l'app
      */
-    private int id;
+    private int pk;
     /**
-     * Titre de l'article.
+     * ID de l'article chez NXI/IH (non unique)
+     */
+    private int id_inpact;
+    /**
+     * Titre de l'article
      */
     private String titre;
     /**
-     * Sous-titre de l'article.
+     * Sous-titre de l'article
      */
     private String sousTitre = "";
     /**
@@ -48,23 +53,23 @@ public class ArticleItem implements Item {
      */
     private boolean isAbonne;
     /**
-     * Nombre de commentaires de l'article.
+     * Nombre de commentaires de l'article
      */
     private int nbCommentaires;
     /**
-     * URL de l'article.
+     * Site concerné (IH, NXI, ...)
      */
-    private String url;
+    private int site;
     /**
-     * URL de la miniature de l'article.
+     * ID de la miniature de l'article
      */
-    private String urlIllustration = "";
+    private int idIllustration;
     /**
-     * Contenu de l'article.
+     * Contenu de l'article
      */
     private String contenu = "";
     /**
-     * Timestamp de publication de l'article.
+     * Timestamp de publication de l'article
      */
     private long timeStampPublication;
     /**
@@ -90,7 +95,7 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Heure et minute de la publication sous forme textuelle.
+     * Heure et minute de la publication sous forme textuelle
      *
      * @return Heure & minute de la publication
      */
@@ -103,12 +108,13 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Date de la publication sous forme textuelle.
+     * Date de la publication sous forme textuelle
      *
      * @return Date de la publication
      */
     public String getDatePublication() {
-        Date maDate = new Date(this.getTimeStampPublication());
+        // *1000 car passage de secondes en millisecondes
+        Date maDate = new Date(this.getTimeStampPublication() * 1000);
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Constantes.LOCALE);
         String laDate = dfm.format(maDate);
@@ -120,17 +126,69 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return id
+     * URL de l'article pour partager (calculé dynamiquement)
+     *
+     * @return url
      */
-    public int getId() {
-        return id;
+    public String getUrlPartage() {
+        // Le "/article" sert juste à passer le routing chez NXI/IH, l'URL sera réécrite
+        String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.getIdInpact() + "/article";
+
+        return MyURLUtils.getSiteURL(this.getSite(), path, false);
     }
 
     /**
-     * @param id id
+     * Path de l'article pour télécharger (calculé dynamiquement)
+     *
+     * @return path
      */
-    public void setId(int id) {
-        this.id = id;
+    public String getPathPourDl() {
+        return Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
+    }
+
+    /**
+     * URL de l'illustration (calculée dynamiquement)
+     *
+     * @return urlIllustration
+     */
+    public String getUrlIllustration() {
+        String path;
+        if (this.getSite() == Constantes.IS_NXI) {
+            path = Constantes.NXI_URL_IMG;
+        } else {
+            path = Constantes.IH_URL_IMG;
+        }
+        path += this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
+
+        return MyURLUtils.getSiteURL(this.getSite(), path, true);
+    }
+
+    /**
+     * @return id
+     */
+    public int getIdInpact() {
+        return id_inpact;
+    }
+
+    /**
+     * @param id_inpact id_inpact
+     */
+    public void setIdInpact(int id_inpact) {
+        this.id_inpact = id_inpact;
+    }
+
+    /**
+     * @return pk
+     */
+    public int getPk() {
+        return pk;
+    }
+
+    /**
+     * @param pk pk
+     */
+    public void setPk(int pk) {
+        this.pk = pk;
     }
 
     /**
@@ -190,31 +248,31 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return url
+     * @return site
      */
-    public String getUrl() {
-        return url;
+    public int getSite() {
+        return site;
     }
 
     /**
-     * @param url url
+     * @param site site
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setSite(int site) {
+        this.site = site;
     }
 
     /**
-     * @return urlIllustration
+     * @return idIllustration
      */
-    public String getUrlIllustration() {
-        return urlIllustration;
+    public int getIdIllustration() {
+        return idIllustration;
     }
 
     /**
-     * @param urlIllustration urlIllustration
+     * @param idIllustration urlIllustration
      */
-    public void setUrlIllustration(String urlIllustration) {
-        this.urlIllustration = urlIllustration;
+    public void setIdIllustration(int idIllustration) {
+        this.idIllustration = idIllustration;
     }
 
     /**

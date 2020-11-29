@@ -44,9 +44,12 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
+import com.pcinpact.network.AccountCheckInterface;
+import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,45 +60,46 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
- * Liste des articles.
+ * Liste des articles
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener {
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener,
+        AccountCheckInterface {
     /**
-     * Les articles.
+     * Les articles
      */
     private ArrayList<ArticleItem> mesArticles = new ArrayList<>();
     /**
-     * ItemAdapter.
+     * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
     /**
-     * BDD.
+     * BDD
      */
     private DAO monDAO;
     /**
-     * Nombre de DL en cours.
+     * Nombre de DL en cours
      */
     private int[] dlInProgress;
     /**
-     * Menu.
+     * Menu
      */
     private Menu monMenu;
     /**
-     * ListView.
+     * ListView
      */
     private ListView monListView;
     /**
-     * SwipeRefreshLayout.
+     * SwipeRefreshLayout
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
     /**
-     * TextView "Dernière synchro...".
+     * TextView "Dernière synchro..."
      */
     private TextView headerTextView;
     /**
-     * Listener pour le changement de taille des textes.
+     * Listener pour le changement de taille des textes
      */
     private SharedPreferences.OnSharedPreferenceChangeListener listenerOptions;
     /**
@@ -106,6 +110,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      * Dernière position affichée
      */
     private int dernierePosition;
+    /**
+     * Identifiants de l'utilisateur
+     */
+    private String usernameOption;
+    private String passwordOption;
+    /**
+     * Timestamp de la date jusqu'à laquelle télécharger les articles
+     */
+    private long timeStampMinArticle;
+    /**
+     * Numéro de la page de la liste d'articles en cours de téléchargement pour chaque site
+     */
+    private int[] numPageListeArticle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,6 +154,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress = new int[5];
         dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
         dlInProgress[Constantes.HTML_ARTICLE] = 0;
+        // Initialisation des numéros de page des listes d'articles
+        numPageListeArticle = new int[Constantes.NOMBRE_SITES + 1];
+        numPageListeArticle[Constantes.IS_NXI] = 1;
+        numPageListeArticle[Constantes.IS_IH] = 1;
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -239,6 +260,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Note du changement de thème
                 updateTheme = true;
             }
+            // Nb de jours d'articles à télécharger
+            else if (key.equals(getResources().getString(R.string.idOptionNbJoursArticles))) {
+                calculerTimeStampMinArticle();
+            }
         };
         // Attachement du superviseur aux préférences
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
@@ -315,7 +340,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Gestion du clic sur un article => l'ouvrir + marquer comme lu.
+     * Gestion du clic sur un article => l'ouvrir
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -327,12 +352,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // récupère l'article en question
         ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
 
-        // Marquer l'article comme lu en BDD
-        monDAO.marquerArticleLu(monArticle.getId());
-
         // Lance l'ouverture de l'article
         Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-        monIntent.putExtra("ARTICLE_ID", monArticle.getId());
+        monIntent.putExtra("ARTICLE_PK", monArticle.getPk());
         startActivity(monIntent);
     }
 
@@ -390,67 +412,45 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
+        int id = pItem.getItemId();
+        if (id == R.id.action_refresh) {
             // Rafraichir la liste des articles
-            case R.id.action_refresh:
-                telechargeListeArticles();
-                break;
-
+            telechargeListeArticles();
+        } else if (id == R.id.action_settings) {
             // Menu Options
-            case R.id.action_settings:
-                // Je lance l'activité options
-                Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
-                startActivity(intentOptions);
-                break;
-
+            Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
+            startActivity(intentOptions);
+        } else if (id == R.id.action_about) {
             // A propos
-            case R.id.action_about:
-                Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
-                startActivity(intentAbout);
-                break;
-
+            Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
+            startActivity(intentAbout);
+        } else if (id == R.id.action_debug) {
             // Debug
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                startActivity(intentDebug);
-                break;
-
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            startActivity(intentDebug);
+        } else if (id == R.id.action_support) {
             // Support
-            case R.id.action_support:
-                // Envoi...
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                // Mode texte
-                intent.setType("text/plain");
-                // Sujet du mail
-                intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent(getApplicationContext()));
-                // Corps du mail
-                intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
-                // A qui...
-                intent.setData(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR));
-                // Si touche retour : revient a l'application et pas aux mails
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    // Affichage du numéro de version
-                    Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail),
-                                                    Toast.LENGTH_LONG);
-                    monToast.show();
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            // Sujet du mail
+            intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent());
+            // Corps du mail
+            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
+            // A qui...
+            intent.setDataAndType(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR), "text/plain");
+            // Si touche retour : revient a l'application et pas aux mails
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                // Affichage du numéro de version
+                Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
+                monToast.show();
 
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
-                    }
-                }
-                break;
-
-            default:
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - cas default ! : " + pItem.getItemId());
-                    // Peut-être clic sur menu hamburger
+                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
                 }
-                break;
+            }
         }
         return true;
     }
@@ -478,100 +478,170 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
+     * Calculer la date minimum pour les articles
+     */
+    private void calculerTimeStampMinArticle() {
+        // Nombre de jours demandés par l'utilisateur
+        int nbJours = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbJoursArticles,
+                                              R.string.defautOptionNbJoursArticles);
+
+        timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
+    }
+
+    /**
      * Lance le téléchargement de la liste des articles.
      */
     private void telechargeListeArticles() {
+        // GUI : activité en cours...
+        nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+
         // DEBUG
         if (Constantes.DEBUG) {
             Log.i("ListeArticlesActivity", "telechargeListeArticles()");
         }
 
-        // Uniquement si on est pas déjà en train de faire un refresh...
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
-            // GUI : activité en cours...
-            nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        // TimeStamp de la date depuis laquelle télécharger les articles
+        calculerTimeStampMinArticle();
 
-            /*
-             * Nettoyage du cache
-             */
-            CacheManager.nettoyerCache(getApplicationContext());
-
-            /*
-             * Téléchargement des articles dont le contenu n'avait pas été téléchargé
-             */
-            telechargeArticles(monDAO.chargerArticlesATelecharger());
-
-            /*
-             * Téléchargement des pages de liste d'articles
-             */
-            int nbArticles = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
-                                                     R.string.defautOptionNbArticles);
-            int nbPages = nbArticles / Constantes.NB_ARTICLES_PAR_PAGE;
-            // téléchargement de chaque page...
-            for (int numPage = 1; numPage <= nbPages; numPage++) {
-                // Ma tâche de DL
-                AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES,
-                                                                     Constantes.NEXT_INPACT_URL_NUM_PAGE + numPage, monDAO,
-                                                                     getApplicationContext());
-                // Lancement du téléchargement
-                if (monAHD.run()) {
-                    // MàJ animation
-                    nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-                }
-            }
+        // Récupération des identifiants de l'utilisateur
+        usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
+        passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
+                                                    R.string.defautOptionPassword);
+        // Identifiants non définis...
+        if ("".equals(usernameOption) && "".equals(passwordOption)) {
+            Toast monToast = Toast.makeText(getApplicationContext(), R.string.infoOptionAbonne, Toast.LENGTH_LONG);
+            monToast.show();
+        } else {
+            // Lancement de la vérif des identifiants (flux réseau donc asynchrone)
+            AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
+            maVerif.run();
         }
+
+        /*
+         * Nettoyage de la BDD
+         */
+        CacheManager.nettoyerCache(getApplicationContext());
+
+        /*
+         * Téléchargement des articles dont le contenu n'avait pas été téléchargé
+         */
+        telechargeArticles(monDAO.chargerArticlesATelecharger(), false);
+
+        /*
+         * Téléchargement des pages de liste d'articles
+         */
+        telechargeListeArticles(Constantes.IS_NXI);
+        telechargeListeArticles(Constantes.IS_IH);
 
         // GUI : fin de l'activité en cours...
         finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
     }
 
+    /**
+     * Télécharge la liste d'articles d'un site
+     *
+     * @param idSite ID du site (Cf Constantes.IS_xxx)
+     */
+    private void telechargeListeArticles(int idSite) {
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, idSite,
+                                                             Constantes.X_INPACT_URL_LISTE_ARTICLE + numPageListeArticle[idSite],
+                                                             0, monDAO);
+        // Lancement du téléchargement
+        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
+    }
 
     /**
      * Lance le téléchargement des articles.
      *
-     * @param desItems liste d'articles à télécharger
+     * @param desItems       liste d'articles à télécharger
+     * @param dlListeArticle Est-ce un appel dans le cadre du dl d'une nouvelle liste d'articles
      */
-    private void telechargeArticles(final ArrayList<? extends Item> desItems) {
+    private void telechargeArticles(final ArrayList<? extends Item> desItems, final boolean dlListeArticle) {
         for (Item unItem : desItems) {
-            ArticleItem monItem = (ArticleItem) unItem;
+            ArticleItem unArticle = (ArticleItem) unItem;
 
             // Tâche de DL HTML
             AsyncHTMLDownloader monAHD;
-            // DL de l'image d'illustration ?
-            boolean dlIllustration = true;
+            boolean isConnecteRequis = false;
 
-            // Est-ce un article abonné ?
-            if (((ArticleItem) unItem).isAbonne()) {
-                boolean isConnecteRequis = false;
+            // Est-ce un article abonné dont j'ai déjà la version publique ?
+            if (!dlListeArticle && unArticle.isAbonne() && unArticle.getContenu().equals("")) {
+                // Je requiert d'être connecté (sinon le DL ne sert à rien)
+                isConnecteRequis = true;
+            }
+            // Téléchargement de la ressource
+            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(), unArticle.getPathPourDl(),
+                                             unArticle.getPk(), monDAO, isConnecteRequis, usernameOption, passwordOption);
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + unArticle.getUrlPartage());
+            }
+            launchAHD(monAHD, Constantes.HTML_ARTICLE);
+        }
+    }
 
-                // Ai-je déjà la version publique de l'article ?
-                if (!((ArticleItem) unItem).getContenu().equals("")) {
-                    // Je requiert d'être connecté (sinon le DL ne sert à rien)
-                    isConnecteRequis = true;
-                }
-                // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO, getApplicationContext(),
-                                                 isConnecteRequis);
-            } else {
-                // téléchargement de la ressource
-                monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, monItem.getUrl(), monDAO,
-                                                 getApplicationContext());
+    /**
+     * Lance une tâche asynchrone de téléchargement et notifie l'user en cas d'erreur
+     *
+     * @param unAHD  object AsyncHTMLDownloader
+     * @param typeDl int Type de téléchargement
+     */
+    private void launchAHD(AsyncHTMLDownloader unAHD, int typeDl) {
+        // Lancement du téléchargement
+        if (unAHD.run()) {
+            // MàJ animation
+            nouveauChargementGUI(typeDl);
+        } else {
+            // L'utilisateur demande-t-il un debug ?
+            Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                        R.bool.defautOptionDebug);
+
+            // Retour utilisateur ?
+            if (debug) {
+                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                monToast.show();
             }
 
-            // Lancement du téléchargement
-            if (monAHD.run()) {
-                // MàJ animation
-                nouveauChargementGUI(Constantes.HTML_ARTICLE);
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ListeArticlesActivity", "launchAHD() - erreur lancement AHD" + unAHD.toString());
             }
         }
     }
 
     @Override
-    public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Si c'est un refresh général
-        if (uneURL.startsWith(Constantes.NEXT_INPACT_URL_NUM_PAGE)) {
-            // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
-            telechargeArticles(desItems);
+        if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
+            if (desItems.size() > 0) {
+                // Doit-on télécharger la prochaine page de la liste d'articles ?
+                ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
+                if (lastArticle.getTimeStampPublication() > timeStampMinArticle) {
+                    // Le dernier article n'est pas assez vieux => télécharger la page suivante
+                    numPageListeArticle[site]++;
+                    telechargeListeArticles(site);
+
+                    // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
+                    telechargeArticles(desItems, true);
+                } else {
+                    // On réinitialise à la première page de la liste d'article pour le prochain refresh
+                    numPageListeArticle[site] = 1;
+
+                    // Je regarde pour chaque article si je dois le récupérer
+                    ArrayList<ArticleItem> articleADL = new ArrayList<>();
+                    for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                        // Si il est plus récent que la date min, je le prends
+                        if (unArticle.getTimeStampPublication() > timeStampMinArticle) {
+                            articleADL.add(unArticle);
+                        }
+                    }
+                    // Téléchargement des articles dont la date est OK
+                    telechargeArticles(articleADL, true);
+
+                    // TODO : en attendant #266 / DAO
+                    CacheManager.nettoyerCache(getApplicationContext());
+                }
+            }
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         } else {
@@ -593,11 +663,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         Boolean afficherPublicite = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionAfficherPublicite,
                                                                 R.bool.defautOptionAfficherPublicite);
 
-        // Nombre d'articles à afficher
-        int maLimite = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbArticles,
-                                               R.string.defautOptionNbArticles);
-        // Chargement des articles depuis la BDD (trié, limité)
-        mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
+        // Chargement des articles depuis la BDD (triés par date de publication)
+        mesArticles = monDAO.chargerArticlesTriParDate();
 
         for (ArticleItem article : mesArticles) {
             // Si c'est de la publicité & que je ne veux pas les afficher...
@@ -617,8 +684,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             monRetour.add(article);
         }
 
-        // MàJ de la date de dernier refresh
-        long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
+        // MàJ de la date de dernier refresh (*1000 pour passage en millisecondes pour SDF)
+        long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES) * 1000;
 
         if (dernierRefresh == 0) {
             // Jamais synchro...
@@ -702,5 +769,18 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         if (Constantes.DEBUG) {
             Log.i("ListeArticlesActivity", "finChargementGUI() - " + Arrays.toString(dlInProgress));
         }
+    }
+
+    @Override
+    public void retourVerifCompte(boolean resultat) {
+        String message;
+        if (!resultat) {
+            message = getString(R.string.erreurAuthentification);
+        } else {
+            message = getString(R.string.optionAbonne);
+        }
+        // Retour utilisateur
+        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        monToast.show();
     }
 }

@@ -29,9 +29,11 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
@@ -47,29 +49,33 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
- * Affichage des commentaires.
+ * Affichage des commentaires
  *
  * @author Anael
  */
 public class CommentairesActivity extends AppCompatActivity implements RefreshDisplayInterface {
     /**
-     * Les commentaires.
+     * Les commentaires
      */
-    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
+    private final ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
-     * ID de l'article.
+     * PK de l'article
      */
-    private int articleID;
+    private int articlePk;
+    /**
+     * ID du site (NXI, IH)
+     */
+    private int site;
     /**
      * ID du dernier commentaire lu
      */
     private int idDernierCommentaireLu;
     /**
-     * ItemAdapter.
+     * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
     /**
-     * accès à la BDD.
+     * accès à la BDD
      */
     private DAO monDAO;
     /**
@@ -89,19 +95,19 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private Boolean reouverture;
     /**
-     * Bouton pour télécharger 10 commentaires en plus.
+     * Bouton pour télécharger 10 commentaires en plus
      */
     private Button buttonDl10Commentaires;
     /**
-     * TextView "Dernière synchro...".
+     * TextView "Dernière synchro..."
      */
     private TextView headerTextView;
     /**
-     * ListView.
+     * ListView
      */
     private ListView monListView;
     /**
-     * SwipeRefreshLayout.
+     * SwipeRefreshLayout
      */
     private SwipeRefreshLayout monSwipeRefreshLayout;
     /**
@@ -115,7 +121,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -149,23 +155,27 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
         monListView.setAdapter(monItemsAdapter);
 
-        // ID de l'article concerné
+        // PK de l'article concerné
         try {
-            articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("CommentairesActivity", "onCreate() - Récupération ID article de l'intent", e);
+                Log.e("CommentairesActivity", "onCreate() - Récupération PK article de l'intent", e);
             }
-
             // Arrêt de l'activité
             this.finish();
         }
 
         // J'active la BDD
         monDAO = DAO.getInstance(getApplicationContext());
-        // Je charge mes articles
-        mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articleID));
+        // Je charge mes commentaires
+        mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articlePk));
+
+        // Je récupère le site concerné
+        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+        site = monArticle.getSite();
+
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
         // Je fait remarquer que le contenu à changé
@@ -175,10 +185,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
          * Réouverture au dernier commentaire lu
          */
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire,
-                R.bool.defautOptionPositionCommentaire);
+                                                  R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articleID) - 1;
+            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articlePk) - 1;
             monListView.setSelection(idDernierCommentaireLu);
         }
 
@@ -187,7 +197,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * Charge les commentaires suivants.
+     * Charge les commentaires suivants
      */
     private void refreshListeCommentaires() {
         // DEBUG
@@ -205,13 +215,12 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         int maPage = Math.round((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
 
         // Création de l'URL
-        String monURL =
-                Constantes.NEXT_INPACT_URL_COMMENTAIRES + "?" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "="
-                        + articleID + "&" + Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE + "=" + maPage;
+        String monPath =
+                Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + articlePk;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monURL, monDAO,
-                getApplicationContext());
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk,
+                                                             monDAO);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -222,6 +231,16 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (monAHD.run()) {
             // Lancement de l'animation de téléchargement
             debutTelechargement();
+        } else {
+            // L'utilisateur demande-t-il un debug ?
+            Boolean debug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
+                                                        R.bool.defautOptionDebug);
+
+            // Retour utilisateur ?
+            if (debug) {
+                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                monToast.show();
+            }
         }
     }
 
@@ -238,7 +257,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                R.bool.defautOptionDebug);
+                                                        R.bool.defautOptionDebug);
 
         // Si mode debug
         if (modeDebug) {
@@ -278,8 +297,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
                     // téléchargement automatique en continu des commentaires ?
                     Boolean telecharger = Constantes.getOptionBoolean(getApplicationContext(),
-                            R.string.idOptionCommentairesTelechargementContinu,
-                            R.bool.defautOptionCommentairesTelechargementContinu);
+                                                                      R.string.idOptionCommentairesTelechargementContinu,
+                                                                      R.bool.defautOptionCommentairesTelechargementContinu);
                     // Si l'utilisateur le veut && je ne télécharge pas déjà && la fin des commentaires n'est pas atteinte
                     if (telecharger && dlInProgress == 0 && !isFinCommentaires) {
                         // téléchargement de 10 commentaires en plus
@@ -288,7 +307,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("CommentairesActivity",
-                                    "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
+                                  "onScroll() - Chargement continu -> lancement chargement commentaires - " + visibleItemCount);
                         }
                     }
                 }
@@ -301,13 +320,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
-                    monDAO.setDernierCommentaireLu(articleID, lastVisibleItem);
+                    monDAO.setDernierCommentaireLu(articlePk, lastVisibleItem);
                     // Mise à jour de la copie locale
                     idDernierCommentaireLu = lastVisibleItem;
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.d("CommentairesActivity",
-                                "onScroll() - setDernierCommentaireLu(" + articleID + ", " + lastVisibleItem + ")");
+                              "onScroll() - setDernierCommentaireLu(" + articlePk + ", " + lastVisibleItem + ")");
                     }
                 }
 
@@ -324,7 +343,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.d("CommentairesActivity",
-                            "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
+                          "onScroll() - SwipeRefreshLayout - topRowVerticalPosition : " + topRowVerticalPosition);
                 }
                 monSwipeRefreshLayout.setEnabled(topRowVerticalPosition <= 0);
             }
@@ -333,29 +352,25 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
-
+        int id = pItem.getItemId();
+        if (id == R.id.action_refresh) {
             // Rafraichir la liste des commentaires
-            case R.id.action_refresh:
-                // téléchargement de TOUS les commentaires
-                isChargementTotal = true;
+            // téléchargement de TOUS les commentaires
+            isChargementTotal = true;
 
-                // Lancement du premier chargement
-                refreshListeCommentaires();
-                break;
-
+            // Lancement du premier chargement
+            refreshListeCommentaires();
+        } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articleID);
-                startActivity(intentDebug);
-                break;
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articlePk);
+            startActivity(intentDebug);
         }
         return super.onOptionsItemSelected(pItem);
     }
 
     /**
-     * Lance les animations indiquant un téléchargement.
+     * Lance les animations indiquant un téléchargement
      */
     private void debutTelechargement() {
         // DEBUG
@@ -367,7 +382,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (dlInProgress == 0) {
             // Couleurs du RefreshLayout
             monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                    ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 
@@ -385,7 +400,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * Arrête les animations indiquant un téléchargement.
+     * Arrête les animations indiquant un téléchargement
      */
     private void finTelechargement() {
         // DEBUG
@@ -423,7 +438,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     @Override
-    public void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Retour vide ? Fin ou pas de connexion
         if (desItems.isEmpty()) {
             // Je note qu'il n'y a plus de commentaires
@@ -459,17 +474,17 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     /**
-     * MàJ de la date de dernière MàJ.
+     * MàJ de la date de dernière MàJ
      */
     private void majDateRefresh() {
-        long dernierRefresh = monDAO.chargerDateRefresh(articleID);
+        long dernierRefresh = monDAO.chargerDateRefresh(articlePk);
 
         if (dernierRefresh == 0) {
             // Jamais synchro...
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
             String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH,
-                    Constantes.LOCALE).format(dernierRefresh);
+                                                                                    Constantes.LOCALE).format(dernierRefresh);
             // Une MàJ à déjà été faite
             headerTextView.setText(monTexte);
         }

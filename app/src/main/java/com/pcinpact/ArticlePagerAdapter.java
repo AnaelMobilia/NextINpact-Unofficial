@@ -45,26 +45,25 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
 
-        // Nombre d'articles à afficher
-        int maLimite = Constantes.getOptionInt(monContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
-        mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
+        mesArticles = monDAO.chargerArticlesTriParDate();
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        // Récupération de la position de l'article
-        int articleID = getArticleID(position);
+        // Récupérationd e l'article concerné
+        ArticleItem monArticle = getArticle(position);
+        int pkArticle = monArticle.getPk();
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + articleID);
+            Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + pkArticle);
         }
 
         // Création du fragment
         ArticleFragment monFragment = new ArticleFragment();
         // Injection de ses paramètres (non passable via constructeur #201)
-        monFragment.initialisation(articleID);
+        monFragment.initialisation(pkArticle);
         return monFragment;
     }
 
@@ -74,27 +73,27 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * ID de l'article à partir de sa position
+     * Article à partir de sa position
      *
      * @param position position dans la liste
-     * @return ID de l'article
+     * @return ArticleItem
      */
-    int getArticleID(int position) {
-        return mesArticles.get(position).getId();
+    ArticleItem getArticle(int position) {
+        return mesArticles.get(position);
     }
 
     /**
-     * Fourni la position d'un article à partir de son ID
+     * Fourni la position d'un article à partir de sa PK
      *
-     * @param articleID ID de l'article
+     * @param pkArticle PK de l'article
      * @return position affichée de l'article
      */
-    int getPosition(int articleID) {
+    int getPosition(int pkArticle) {
         int index = 0;
 
-        // Parcours de l'ensemble à la recherche de mon articleID
+        // Parcours de l'ensemble à la recherche de ma PK article
         while (index < mesArticles.size()) {
-            if (mesArticles.get(index).getId() == articleID) {
+            if (mesArticles.get(index).getPk() == pkArticle) {
                 return index;
             }
             index++;

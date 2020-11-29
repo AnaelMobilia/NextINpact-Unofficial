@@ -409,7 +409,7 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.commentaire.setText(spannedCommentaire);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
-                    commentaireVH.commentaire.setId(ci.getUuid());
+                    commentaireVH.commentaire.setId(ci.getId());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
@@ -459,7 +459,7 @@ public class ItemsAdapter extends BaseAdapter {
                     contenuTexteVH.contenu.setText(spannedContenuTexte);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
-                    contenuTexteVH.contenu.setId(cati.getArticleID());
+                    contenuTexteVH.contenu.setId(cati.getPkArticle());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
@@ -509,7 +509,7 @@ public class ItemsAdapter extends BaseAdapter {
 
 
                     // Définition de l'ID du photoview
-                    contenuImageVH.contenu.setId(caii.getArticleID());
+                    contenuImageVH.contenu.setId(caii.getPkArticle());
 
                     // Gestion du clic
                     final String monUrlImage = caii.getContenu();
