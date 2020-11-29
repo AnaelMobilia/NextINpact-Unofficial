@@ -42,5 +42,5 @@
     <string name="defautOptionTelechargerImagesv2">2</string>
     <bool name="defautOptionAfficherPublicite">true</bool>
     <bool name="defautOptionVersion240">false</bool>
-    <string name="defautOptionNbJoursArticles">1</string>
+    <string name="defautOptionNbJoursArticles">7</string>
 </resources>
