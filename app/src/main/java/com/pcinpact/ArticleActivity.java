@@ -20,10 +20,6 @@ package com.pcinpact;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.view.MenuItemCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +29,11 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
+
 /**
  * Affichage d'un article.
  *
@@ -40,9 +41,9 @@ import com.pcinpact.utils.Constantes;
  */
 public class ArticleActivity extends AppCompatActivity {
     /**
-     * ID de l'article actuel.
+     * PK de l'article actuel.
      */
-    private int articleID = 0;
+    private int articlePk = 0;
     /**
      * Accès BDD
      */
@@ -63,7 +64,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -72,13 +73,13 @@ public class ArticleActivity extends AppCompatActivity {
         // Partie graphique
         setContentView(R.layout.activity_article);
 
-        // ID de l'article concerné
+        // PK de l'article concerné
         try {
-            articleID = getIntent().getExtras().getInt("ARTICLE_ID");
+            articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ArticleActivity", "onCreate() - Récupération ID article de l'intent", e);
+                Log.e("ArticleActivity", "onCreate() - Récupération PK article de l'intent", e);
             }
 
             // Arrêt de l'activité
@@ -94,7 +95,7 @@ public class ArticleActivity extends AppCompatActivity {
         monViewPager.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
-        monViewPager.setCurrentItem(pagerAdapter.getPosition(articleID));
+        monViewPager.setCurrentItem(pagerAdapter.getPosition(articlePk));
     }
 
     @Override
@@ -110,7 +111,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                R.bool.defautOptionDebug);
+                                                        R.bool.defautOptionDebug);
 
         // Si mode debug
         if (modeDebug) {
@@ -131,7 +132,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Option : cacher le bouton de partage
         Boolean cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
-                R.bool.defautOptionCacherBoutonPartage);
+                                                                  R.bool.defautOptionCacherBoutonPartage);
         if (cacherBoutonPartage) {
             // Le cacher
             shareItem.setVisible(false);
@@ -146,11 +147,13 @@ public class ArticleActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                // Récupération de l'article
+                ArticleItem unArticle = pagerAdapter.getArticle(position);
                 // Mise à jour de l'article concerné
-                articleID = pagerAdapter.getArticleID(position);
+                articlePk = unArticle.getPk();
 
                 // Marquer l'article comme lu en BDD
-                monDAO.marquerArticleLu(articleID);
+                monDAO.marquerArticleLu(articlePk);
 
                 // MISE A JOUR DE L'INTENT
                 // Récupération du bouton de partage
@@ -173,20 +176,17 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
-        switch (pItem.getItemId()) {
+        int id = pItem.getItemId();
+        if (id == R.id.action_comments) {
             // Afficher les commentaires
-            case R.id.action_comments:
-                Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-                intentComms.putExtra("ARTICLE_ID", articleID);
-                startActivity(intentComms);
-                break;
-
+            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+            intentComms.putExtra("ARTICLE_PK", articlePk);
+            startActivity(intentComms);
+        } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
-            case R.id.action_debug:
-                Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-                intentDebug.putExtra("ARTICLE_ID", articleID);
-                startActivity(intentDebug);
-                break;
+            Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
+            intentDebug.putExtra("ARTICLE_PK", articlePk);
+            startActivity(intentDebug);
         }
 
         return super.onOptionsItemSelected(pItem);
@@ -199,12 +199,12 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private Intent genererShareIntent() {
         // Chargement de l'article concerné
-        ArticleItem monArticle = monDAO.chargerArticle(articleID);
+        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
 
         // Création de l'intent
         Intent monIntent = new Intent(Intent.ACTION_SEND);
         monIntent.setType("text/plain");
-        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrl());
+        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrlPartage());
 
         return monIntent;
     }

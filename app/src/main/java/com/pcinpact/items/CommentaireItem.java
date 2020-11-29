@@ -27,33 +27,29 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 
 /**
- * Objet Commentaire.
+ * Objet Commentaire
  *
  * @author Anael
  */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     /**
-     * ID affiché du commentaire.
+     * ID du commentaire
      */
     private int id;
     /**
-     * UUID du commentaire.
+     * PK de l'article parent
      */
-    private int uuid;
+    private int pkArticle;
     /**
-     * ID de l'article parent.
-     */
-    private int articleId;
-    /**
-     * Auteur du commentaire.
+     * Auteur du commentaire
      */
     private String auteur = "";
     /**
-     * Contenu du commentaire.
+     * Contenu du commentaire
      */
     private String commentaire = "";
     /**
-     * Timsetamp du commentaire.
+     * Timsetamp du commentaire
      */
     private long timeStampPublication;
 
@@ -75,28 +71,18 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
         return this.getAuteur() + " " + dfm.format(maDate);
     }
 
-
     /**
-     * Comparaison entre objets.
+     * Comparaison entre objets (Requis pour tri des nouveaux commentaires à chaud dans CommentairesActivity)
      *
      * @param unCommentaireItem item de comparaison
      * @return Comparaison des UUID
      */
     @Override
     public int compareTo(@NonNull CommentaireItem unCommentaireItem) {
-        Integer unUUID = unCommentaireItem.getUuid();
-        Integer monUUID = this.getUuid();
+        Integer unId = unCommentaireItem.getId();
+        Integer monId = this.getId();
 
-        return monUUID.compareTo(unUUID);
-    }
-
-    /**
-     * IdArticle-UuidCommentaire.
-     *
-     * @return IdArticle-UuiddCommentaire
-     */
-    public String getIDArticleUuidCommentaire() {
-        return this.getArticleId() + "-" + this.getUuid();
+        return monId.compareTo(unId);
     }
 
     /**
@@ -114,31 +100,17 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * @return uuid
+     * @return pkArticle
      */
-    public int getUuid() {
-        return uuid;
+    public int getPkArticle() {
+        return pkArticle;
     }
 
     /**
-     * @param uuid uuid
+     * @param pkArticle pkArticle
      */
-    public void setUuid(int uuid) {
-        this.uuid = uuid;
-    }
-
-    /**
-     * @return articleId
-     */
-    public int getArticleId() {
-        return articleId;
-    }
-
-    /**
-     * @param articleId articleId
-     */
-    public void setArticleId(int articleId) {
-        this.articleId = articleId;
+    public void setPkArticle(int pkArticle) {
+        this.pkArticle = pkArticle;
     }
 
     /**

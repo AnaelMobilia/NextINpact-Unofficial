@@ -32,7 +32,7 @@ public abstract class ContenuArticleItem implements Item {
     /**
      * ID de l'article associé.
      */
-    private int articleID;
+    private int pkArticle;
 
     /*
      * (non-Javadoc)
@@ -58,16 +58,16 @@ public abstract class ContenuArticleItem implements Item {
     }
 
     /**
-     * @return ID de l'article
+     * @return PK de l'article
      */
-    public int getArticleID() {
-        return articleID;
+    public int getPkArticle() {
+        return pkArticle;
     }
 
     /**
-     * @param articleID ID de l'article
+     * @param pkArticle PK de l'article
      */
-    public void setArticleID(int articleID) {
-        this.articleID = articleID;
+    public void setPkArticle(int pkArticle) {
+        this.pkArticle = pkArticle;
     }
 }

@@ -19,6 +19,7 @@
  */
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayoutArticle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -77,8 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titreArticle"
         android:layout_alignParentEnd="true"
-        android:drawableStart="@drawable/small_comms"
-        android:textAppearance="@style/textAppearanceMicro" />
+        android:textAppearance="@style/textAppearanceMicro"
+        app:drawableStartCompat="@drawable/small_comms" />
 
     <TextView
         android:id="@+id/sousTitreArticle"

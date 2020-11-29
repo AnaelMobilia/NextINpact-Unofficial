@@ -43,11 +43,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class GlideImageGetter implements Html.ImageGetter {
-    private WeakReference<TextView> container;
-    private boolean matchParentWidth;
+    private final WeakReference<TextView> container;
+    private final boolean matchParentWidth;
     private float density = 1.0f;
-    private int placeholder;
-    private int error;
+    private final int placeholder;
+    private final int error;
 
     public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware, int placeholderImage,
                             int errorImage) {

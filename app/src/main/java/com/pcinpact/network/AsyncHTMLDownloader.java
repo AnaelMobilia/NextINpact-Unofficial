@@ -18,20 +18,18 @@
  */
 package com.pcinpact.network;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.pcinpact.R;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyURLUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.RejectedExecutionException;
@@ -45,81 +43,110 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     /**
      * Parent qui sera rappelé à la fin.
      */
-    private final RefreshDisplayInterface monParent;
+    private final WeakReference<RefreshDisplayInterface> monParent;
     /**
-     * URL de la page.
+     * Site concerné (IH, NXI, ...).
      */
-    private final String urlPage;
+    private final int site;
+    /**
+     * Paramètres de l'URL de base du site.
+     */
+    private final String pathURL;
+    /**
+     * URL FQDN.
+     */
+    private final String fullURL;
     /**
      * Type de la ressource.
      */
     private final int typeHTML;
     /**
-     * accès à la BDD.
+     * PK de l'article lié (DL article ou commentaires)
+     */
+    private final int pkArticle;
+    /**
+     * Accès à la BDD.
      */
     private final DAO monDAO;
-    /**
-     * Context de l'application.
-     */
-    private final Context monContext;
     /**
      * Est-ce du contenu abonné ?
      */
     private Boolean isAbonne = false;
     /**
-     * téléchargement uniquement si connecté ?
+     * Téléchargement uniquement si connecté ?
      */
     private Boolean uniquementSiConnecte = false;
+    /**
+     * Login du compte NXI/IH
+     */
+    private String username;
+    /**
+     * Password du compte NXI/IH
+     */
+    private String password;
 
     /**
      * DL avec gestion du compte abonné et de l'état de la connexion.
      *
      * @param parent         parent à callback à la fin
      * @param unType         type de la ressource (Cf Constantes.TYPE_)
-     * @param uneURL         URL de la ressource
+     * @param unSite         ID du site (NXI, IH, ...)
+     * @param unPathURL      Chemin à ajouter à l'URL
+     * @param unePkArticle   PK de l'article (cas DL article & commentaires)
      * @param unDAO          accès sur la DB
-     * @param unContext      context de l'application
      * @param onlyifConnecte dois-je télécharger uniquement si le compte abonné est connecté ?
+     * @param unUser         identifiant du compte
+     * @param unPassword     mot de passe du compte
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO,
-                               final Context unContext, final Boolean onlyifConnecte) {
-        // Mappage des attributs de cette Requête
-        monParent = parent;
-        urlPage = uneURL;
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
+                               final int unePkArticle, final DAO unDAO, final Boolean onlyifConnecte, final String unUser,
+                               final String unPassword) {
+        // Mappage des attributs de cette requête
+        // On peut se permettre de perdre le parent
+        monParent = new WeakReference<>(parent);
+        site = unSite;
+        pathURL = unPathURL;
+        fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
+        pkArticle = unePkArticle;
         monDAO = unDAO;
-        monContext = unContext.getApplicationContext();
         isAbonne = true;
         uniquementSiConnecte = onlyifConnecte;
+        username = unUser;
+        password = unPassword;
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.w("AsyncHTMLDownloader", "AsyncHTMLDownloader() - abonné " + urlPage + " - Uniquement si connecté : " +
-                    onlyifConnecte.toString());
+            Log.w("AsyncHTMLDownloader",
+                  "AsyncHTMLDownloader() - abonné " + fullURL + " - Uniquement si connecté : " + onlyifConnecte.toString());
         }
     }
 
     /**
      * DL sans gestion du statut abonné.
      *
-     * @param parent    parent à callback à la fin
-     * @param unType    type de la ressource (Cf Constantes.TYPE_)
-     * @param uneURL    URL de la ressource
-     * @param unDAO     accès sur la DB
-     * @param unContext context de l'application
+     * @param parent       parent à callback à la fin
+     * @param unType       type de la ressource (Cf Constantes.TYPE_)
+     * @param unSite       ID du site (NXI, IH, ...)
+     * @param unPathURL    Chemin à ajouter à l'URL
+     * @param unePkArticle PK de l'article (cas DL article & commentaires)
+     * @param unDAO        accès sur la DB
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final DAO unDAO,
-                               final Context unContext) {
-        // Mappage des attributs de cette Requête
-        monParent = parent;
-        urlPage = uneURL;
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
+                               final int unePkArticle, final DAO unDAO) {
+        // Mappage des attributs de cette requête
+        // On peut se permettre de perdre le parent
+        monParent = new WeakReference<>(parent);
+        site = unSite;
+        pathURL = unPathURL;
+        fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
         typeHTML = unType;
+        pkArticle = unePkArticle;
         monDAO = unDAO;
-        monContext = unContext;
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("AsyncHTMLDownloader", "AsyncHTMLDownloader() - NON abonné : " + urlPage);
+            Log.i("AsyncHTMLDownloader", "AsyncHTMLDownloader() - NON abonné : " + fullURL);
         }
     }
 
@@ -129,48 +156,48 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         ArrayList<Item> mesItems = new ArrayList<>();
 
         try {
-            // Date du refresh
-            long dateRefresh = new Date().getTime();
+            // Date du refresh (/1000 pour passer en secondes)
+            long dateRefresh = new Date().getTime() / 1000;
 
             // Retour du Downloader
-            byte[] datas;
+            String datas;
             if (isAbonne) {
                 // Je récupère mon contenu HTML en passant par la partie abonné
-                datas = Downloader.downloadArticleAbonne(urlPage, monContext, uniquementSiConnecte);
+                datas = Downloader.downloadArticleAbonne(fullURL, uniquementSiConnecte, username, password);
             } else {
                 // Je récupère mon contenu HTML directement
-                datas = Downloader.download(urlPage, monContext);
+                datas = Downloader.download(fullURL);
             }
 
             // Vérifie que j'ai bien un retour (vs erreur DL)
             if (datas != null) {
-                // Je convertis mon byte[] en String
-                String contenu = new String(datas, Constantes.NEXT_INPACT_ENCODAGE);
-
                 switch (typeHTML) {
                     case Constantes.HTML_LISTE_ARTICLES:
                         // Je passe par le parser
-                        ArrayList<ArticleItem> monRetour = ParseurHTML.getListeArticles(contenu, urlPage);
+                        ArrayList<ArticleItem> monRetour = ParseurHTML.getListeArticles(site, datas);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                    "doInBackground() - HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
-                                            + " résultats");
+                                  "doInBackground() - HTML_LISTE_ARTICLES : le parseur à retourné " + monRetour.size()
+                                  + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux articles
                         for (ArticleItem unArticle : monRetour) {
-                            // Stockage en BDD
-                            if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
-                                // Ne retourne que les nouveaux articles
+                            // Stockage en BDD ssi nouveau
+                            int pkArticle = monDAO.enregistrerArticleSiNouveau(unArticle);
+                            // Nouveau en BDD ?
+                            if (pkArticle > 0) {
+                                // J'ajoute la pk à l'item & met l'article dans les actualités à afficher
+                                unArticle.setPk(pkArticle);
                                 mesItems.add(unArticle);
                             }
                         }
 
                         // MàJ de la date de MàJ uniquement si DL de la première page (évite plusieurs MàJ si dl de plusieurs
                         // pages)
-                        if (urlPage.equals(Constantes.NEXT_INPACT_URL_NUM_PAGE + "1")) {
+                        if (pathURL.equals(Constantes.X_INPACT_URL_LISTE_ARTICLE + "1")) {
                             // MàJ de la date de rafraichissement
                             monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
                         }
@@ -182,21 +209,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                         break;
 
                     case Constantes.HTML_ARTICLE:
-                        // Je passe par le parser
-                        ArticleItem articleParser = ParseurHTML.getArticle(contenu, urlPage);
-
                         // Chargement de l'article depuis la BDD
-                        ArticleItem articleDB = monDAO.chargerArticle(articleParser.getId());
+                        // La création des squelettes des articles en BDD est fait par le DL de la liste des articles
+                        ArticleItem articleDB = monDAO.chargerArticle(pkArticle);
 
-                        // Ajout du contenu à l'objet chargé
-                        articleDB.setContenu(articleParser.getContenu());
+                        // Ajout du contenu de l'article
+                        articleDB.setContenu(ParseurHTML.getContenuArticle(datas));
 
                         // Article abonné ?
                         if (articleDB.isAbonne()) {
                             // Suis-je connecté ?
                             boolean etatAbonne = Downloader.estConnecte();
-
-                            // Suis-je connecté ?
                             articleDB.setDlContenuAbonne(etatAbonne);
                         }
 
@@ -205,66 +228,59 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // Enregistrement de l'objet complet
                         monDAO.enregistrerArticle(articleDB);
-
-                        // pas de retour à l'utilisateur, il s'agit d'un simple DL
                         break;
 
                     case Constantes.HTML_COMMENTAIRES:
                         /*
                          * MàJ des commentaires
                          */
-                        // Je passe par le parser
-                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(contenu, urlPage);
+                        // Je passe par le parseur
+                        ArrayList<CommentaireItem> lesCommentaires = ParseurHTML.getCommentaires(datas);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
                             Log.i("AsyncHTMLDownloader",
-                                    "doInBackground() - HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
-                                            + " résultats");
+                                  "doInBackground() - HTML_COMMENTAIRES : le parseur à retourné " + lesCommentaires.size()
+                                  + " résultats");
                         }
 
                         // Je ne conserve que les nouveaux commentaires
                         for (CommentaireItem unCommentaire : lesCommentaires) {
+                            unCommentaire.setPkArticle(pkArticle);
                             // Stockage en BDD
                             if (monDAO.enregistrerCommentaireSiNouveau(unCommentaire)) {
                                 // Ne retourne que les nouveaux articles
                                 mesItems.add(unCommentaire);
                             }
                         }
-                        // Calcul de l'ID de l'article concerné (entre "newsId=" et "&page=")
-                        int debut = urlPage.indexOf(Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID + "=");
-                        debut += Constantes.NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID.length() + 1;
-                        int fin = urlPage.indexOf("&");
-                        int idArticle = Integer.parseInt(urlPage.substring(debut, fin));
-
-                        // MàJ de la date de rafraichissement
-                        monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
+                        // MàJ de la date de rafraichissement de l'article
+                        monDAO.enregistrerDateRefresh(pkArticle, dateRefresh);
 
                         /*
                          * MàJ du nombre de commentaires
                          */
-                        int nbCommentaires = ParseurHTML.getNbCommentaires(contenu, urlPage);
-                        monDAO.updateNbCommentairesArticle(idArticle, nbCommentaires);
+                        int nbCommentaires = ParseurHTML.getNbCommentaires(datas);
+                        monDAO.updateNbCommentairesArticle(pkArticle, nbCommentaires);
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.i("AsyncHTMLDownloader", "doInBackground() - HTML_COMMENTAIRES : Au final, " + mesItems.size() +
-                                    " résultats");
+                            Log.i("AsyncHTMLDownloader",
+                                  "doInBackground() - HTML_COMMENTAIRES : Au final, " + mesItems.size() + " résultats");
                         }
                         break;
 
                     default:
                         if (Constantes.DEBUG) {
-                            Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " +
-                                    urlPage);
+                            Log.e("AsyncHTMLDownloader",
+                                  "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + fullURL);
                         }
                         break;
                 }
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.w("AsyncHTMLDownloader", "doInBackground() - contenu NULL pour " + urlPage + " - abonneUniquement = "
-                            + uniquementSiConnecte.toString());
+                    Log.w("AsyncHTMLDownloader", "doInBackground() - contenu NULL pour " + fullURL + " - abonneUniquement = "
+                                                 + uniquementSiConnecte.toString());
                 }
             }
         } catch (Exception e) {
@@ -279,7 +295,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     @Override
     protected void onPostExecute(ArrayList<? extends Item> result) {
         try {
-            monParent.downloadHTMLFini(urlPage, result);
+            // Le parent peut avoir été garbage collecté
+            monParent.get().downloadHTMLFini(site, pathURL, result);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -294,7 +311,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @return résultat de la commande
      */
     public boolean run() {
-
         boolean monRetour = true;
 
         try {
@@ -308,18 +324,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
             // Je note l'erreur
             monRetour = false;
-
-            // L'utilisateur demande-t-il un debug ?
-            Boolean debug = Constantes.getOptionBoolean(monContext, R.string.idOptionDebug, R.bool.defautOptionDebug);
-
-            // Retour utilisateur ?
-            if (debug) {
-                Handler handler = new Handler(monContext.getMainLooper());
-                handler.post(() -> {
-                    Toast monToast = Toast.makeText(monContext, "Trop de téléchargements simultanés", Toast.LENGTH_SHORT);
-                    monToast.show();
-                });
-            }
         }
 
         return monRetour;

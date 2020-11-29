@@ -1568,7 +1568,7 @@ public class ParseurHTMLTest {
          * Traitement du fichier...
          */
         ArrayList<ArticleItem> articlesCalcules;
-        articlesCalcules = ParseurHTML.getListeArticles(contenuIS, Constantes.NEXT_INPACT_URL);
+        articlesCalcules = ParseurHTML.getListeArticles(contenuIS);
 
         /*
          * Vérification...

@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,47 +49,29 @@ public class CacheManager {
             Log.d("CacheManager", "nettoyerCache()");
         }
 
-        try {
-            // Protection du context
-            Context monContext = unContext.getApplicationContext();
+        // Protection du context
+        Context monContext = unContext.getApplicationContext();
 
-            // Connexion à la BDD
-            DAO monDAO = DAO.getInstance(monContext);
+        // Connexion à la BDD
+        DAO monDAO = DAO.getInstance(monContext);
 
-            // Nombre d'articles à conserver
-            int maLimite = Constantes.getOptionInt(monContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
+        // Nombre de jours d'articles demandés par l'utilisateur
+        int nbJours = Constantes.getOptionInt(monContext, R.string.idOptionNbJoursArticles, R.string.defautOptionNbJoursArticles);
+        long timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
-            // Chargement de tous les articles de la BDD
-            ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(0);
-            int nbArticles = mesArticles.size();
+        // Chargement de tous les articles de la BDD
+        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
 
-            // Ai-je plus d'articles que ma limite ?
-            if (nbArticles > maLimite) {
-                /*
-                 * Nettoyage de la BDD
-                 */
-                for (int i = maLimite; i < nbArticles; i++) {
-                    ArticleItem article = mesArticles.get(i);
-
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.w("CacheManager", "nettoyerCache() - suppression de " + article.getTitre());
-                    }
-
-                    // Suppression en DB
-                    monDAO.supprimerArticle(article);
-
-                    // Suppression des commentaires de l'article
-                    monDAO.supprimerCommentaire(article.getId());
-
-                    // Suppression de la date de Refresh des commentaires
-                    monDAO.supprimerDateRefresh(article.getId());
+        // Boucle sur les articles
+        for (ArticleItem unArticle : mesArticles) {
+            // Si il est trop vieux...
+            if (unArticle.getTimeStampPublication() < timeStampMinArticle) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("CacheManager", "nettoyerCache() - suppression de " + unArticle.getTitre());
                 }
-            }
-        } catch (Exception e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("CacheManager", "nettoyerCache()", e);
+                // Je le supprime
+                monDAO.supprimerArticle(unArticle.getPk());
             }
         }
     }
@@ -119,8 +102,18 @@ public class CacheManager {
             /*
              * Les images
              */
+            // Sur le disque
             CleanImageAsyncTask maTache = new CleanImageAsyncTask(monContext);
-            maTache.execute();
+            try {
+                maTache.execute();
+            } catch (Exception e) {
+                //DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("CacheManager", "effacerCache() - Suppression cache image sur disque", e);
+                }
+            }
+            // En mémoire
+            Glide.get(monContext).clearMemory();
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -210,7 +203,7 @@ public class CacheManager {
 /**
  * Effacement du cache des images (Glide)
  */
-class CleanImageAsyncTask extends AsyncTask {
+class CleanImageAsyncTask extends AsyncTask<Void, Void, Void> {
     final private Context monContext;
 
     CleanImageAsyncTask(Context context) {
@@ -218,10 +211,9 @@ class CleanImageAsyncTask extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground(Object[] objects) {
+    protected Void doInBackground(Void... voids) {
         // This method must be called on a background thread.
         Glide.get(monContext).clearDiskCache();
-        Glide.get(monContext).clearMemory();
         return null;
     }
 }

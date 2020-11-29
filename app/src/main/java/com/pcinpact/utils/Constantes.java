@@ -21,9 +21,9 @@ package com.pcinpact.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
+import com.pcinpact.BuildConfig;
 
 import java.util.Locale;
 
@@ -36,7 +36,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     /**
      * Contact du développeur
      */
@@ -53,31 +53,61 @@ public class Constantes {
     /**
      * Encodage des pages.
      */
-    public static final String NEXT_INPACT_ENCODAGE = "UTF-8";
+    public static final String X_INPACT_ENCODAGE = "UTF-8";
     /**
-     * URL de téléchargement.
+     * URL de téléchargement NXI.
      */
-    public static final String NEXT_INPACT_URL = "https://m.nextinpact.com";
+    public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
+    public static final String NXI_CDN_URL = "https://cdnx.nextinpact.com/";
     /**
-     * Paramètre numéro de page (liste articles).
+     * URL de téléchargement INPACT-HARDWARE.
      */
-    public static final String NEXT_INPACT_URL_NUM_PAGE = NEXT_INPACT_URL + "/?page=";
+    public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
+    public static final String IH_CDN_URL = "https://cdnx.inpact-hardware.com/";
+    /**
+     * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources ClusterFilter à 2 pour
+     * avoir les articles abonnés dedans
+     */
+    public static final int NB_ARTICLES_PAR_PAGE = 10;
+    public static final String X_INPACT_URL_LISTE_ARTICLE =
+            "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&ClusterFilter=2&Page=";
+    /**
+     * Page du Brief
+     */
+    public static final int NB_BRIEF_PAR_PAGE = 3;
+    public static final String NXI_IURL_BRIEF = "SimpleContent/list?Nb=" + NB_BRIEF_PAR_PAGE + "&Page=";
+    /**
+     * Détail d'un article
+     */
+    public static final String X_INPACT_URL_ARTICLE = "SimpleContent/";
     /**
      * URL de téléchargement des commentaires.
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES = NEXT_INPACT_URL + "/comment/";
+    public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
+    public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
+    /**
+     * URL de téléchargement des commentaires.
+     */
+    public static final String X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
     /**
      * URL d'authentification.
      */
-    public static final String AUTHENTIFICATION_URL = NEXT_INPACT_URL + "/Account/LogOn";
+    public static final String X_INPACT_URL_AUTH = "Auth/login";
     /**
-     * Paramètre ID d'article (commentaires).
+     * URL des images
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE_ID = "newsId";
+    public static final String NXI_URL_IMG = "data-next/images/bd/square-linked-media/";
+    public static final String IH_URL_IMG = "data-prod/images/bd/square-linked-media/";
+    public static final String X_INPACT_URL_IMG_EXT = ".jpg";
     /**
-     * Paramètre numéro de page (commentaires).
+     * URL des articles (pour partager)
      */
-    public static final String NEXT_INPACT_URL_COMMENTAIRES_PARAM_NUM_PAGE = "page";
+    public static final String X_INPACT_URL_ARTICLE_PARTAGE = "article/";
+    /**
+     * URL des smileys
+     */
+    public static final String X_CDN_SMILEY_URL = "https://cdn2.nextinpact.com/smileys/";
+
     /**
      * Timeout pour les téléchargements (en ms) - default = ~250000.
      */
@@ -86,16 +116,6 @@ public class Constantes {
      * Balise HTML pour les citations de commentaires
      */
     public static final String TAG_HTML_QUOTE = "myquote";
-
-    /**
-     * Nb de commentaires par page.
-     */
-    public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-
-    /**
-     * Nb d'articles par page.
-     */
-    public static final int NB_ARTICLES_PAR_PAGE = 30;
 
 
     /*
@@ -114,23 +134,33 @@ public class Constantes {
      */
     public static final int HTML_COMMENTAIRES = 3;
 
+    /*
+     * TYPE DU SITE
+     */
+    /**
+     * Site : NXI
+     */
+    public static final int IS_NXI = 1;
+    /**
+     * Site : IH
+     */
+    public static final int IS_IH = 2;
+    /**
+     * Nombre de sites possibles (IH, NXI)
+     */
+    public static final int NOMBRE_SITES = 2;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.
      */
     /**
-     * Format des dates des articles sur le site.
+     * Format des dates sur le site.
      */
-    public static final String FORMAT_DATE_ARTICLE = "dd/MM/yyyy HH:mm:ss";
-    /**
-     * Format des dates des commentaires sur le site.
-     */
-    public static final String FORMAT_DATE_COMMENTAIRE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+    public static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
     /**
      * Date et heure de publication d'un commentaire.
      */
-    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = FORMAT_DATE_COMMENTAIRE;
-
+    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 
     /*
      * PATH DES FICHIERS LOCAUX -- Conservation pour l'effacement en v2.4.0
@@ -198,40 +228,35 @@ public class Constantes {
     /**
      * Paramètre utilisateur.
      */
-    public static final String AUTHENTIFICATION_USERNAME = "UserName";
+    public static final String AUTHENTIFICATION_USERNAME = "emailOrLogin";
     /**
      * Paramètre mot de passe.
      */
-    public static final String AUTHENTIFICATION_PASSWORD = "Password";
+    public static final String AUTHENTIFICATION_PASSWORD = "password";
     /**
-     * Nom du cookie d'authentification.
+     * Nom du cookie d'authentification sur l'API.
      */
-    public static final String AUTHENTIFICATION_COOKIE = "inpactstore";
+    public static final String AUTHENTIFICATION_COOKIE_API = "token";
+    /**
+     * Nom du cookie retourné à l'authentification.
+     */
+    public static final String AUTHENTIFICATION_COOKIE_AUTH = "__crossAuth";
     /**
      * USER AGENT.
      */
     private static final String USER_AGENT = "NextInpact (Unofficial) v";
 
     /**
-     * User agent pour les Requêtes réseau.
+     * User agent pour les requêtes réseau.
      *
-     * @param unContext context de l'application
      * @return User-Agent
      */
-    public static String getUserAgent(final Context unContext) {
+    public static String getUserAgent() {
         // Numéro de version de l'application
-        String numVersion = "";
-        try {
-            PackageInfo pInfo = unContext.getPackageManager().getPackageInfo(unContext.getPackageName(), 0);
-            numVersion = pInfo.versionName;
-            if (Constantes.DEBUG) {
-                numVersion += " DEV";
-            }
-        } catch (Exception e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("Constantes", "getUserAgent() - Erreur à la résolution du n° de version", e);
-            }
+        String numVersion = BuildConfig.VERSION_NAME;
+
+        if (Constantes.DEBUG) {
+            numVersion += " DEV";
         }
 
         return USER_AGENT + numVersion;

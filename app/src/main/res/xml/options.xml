@@ -62,12 +62,18 @@
 
     <!-- Options spécifiques aux articles -->
     <PreferenceCategory android:title="@string/optionsListeArticle">
-        <ListPreference
+        <!--<ListPreference
             android:defaultValue="@string/defautOptionNbArticles"
             android:entries="@array/nbArticles"
             android:entryValues="@array/nbArticles"
             android:key="@string/idOptionNbArticles"
-            android:title="@string/optionNbArticles" />
+            android:title="@string/optionNbArticles" />-->
+        <ListPreference
+            android:defaultValue="@string/defautOptionNbJoursArticles"
+            android:entries="@array/nbJoursArticles"
+            android:entryValues="@array/nbJoursArticles"
+            android:key="@string/idOptionNbJoursArticles"
+            android:title="@string/optionNbJoursArticles" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/defautOptionAfficherPublicite"

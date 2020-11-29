@@ -48,16 +48,16 @@ import androidx.fragment.app.Fragment;
  * Contenu d'article, utilisé pour le slider
  */
 public class ArticleFragment extends Fragment {
-    private int idArticle;
+    private int pkArticle;
     private Context monContext;
 
     /**
      * Passage de toutes les valeurs requises
      *
-     * @param articleID ID de l'article concerné
+     * @param unePkArticle PK de l'article concerné
      */
-    public void initialisation(int articleID) {
-        idArticle = articleID;
+    public void initialisation(int unePkArticle) {
+        pkArticle = unePkArticle;
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);
@@ -77,7 +77,7 @@ public class ArticleFragment extends Fragment {
 
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(monContext);
-        ArticleItem monArticle = monDAO.chargerArticle(idArticle);
+        ArticleItem monArticle = monDAO.chargerArticle(pkArticle);
         String monContenu = monArticle.getContenu();
 
         // Stockage en ArrayList pour l'itemAdapter
@@ -90,7 +90,7 @@ public class ArticleFragment extends Fragment {
                 Log.w("ArticleFragment", "onCreateView() - Article vide");
             }
             ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
-            monTexte.setArticleID(idArticle);
+            monTexte.setPkArticle(pkArticle);
             monTexte.setContenu(getString(R.string.articleVideErreurHTML));
             monAR.add(monTexte);
         } else {
@@ -98,7 +98,7 @@ public class ArticleFragment extends Fragment {
                 Log.w("ArticleFragment", "onCreateView() - lancement récursion");
             }
             // Séparation récursive de l'article : texte & images
-            monAR = parseArticle(monContenu, monArticle.getUrl(), idArticle);
+            monAR = parseArticle(monContenu, pkArticle);
         }
 
         // MàJ de l'affichage
@@ -112,11 +112,10 @@ public class ArticleFragment extends Fragment {
      * Parse récursivement un contenu HTML pour en sortir des ArticleTexteItem & ArticleImageItem
      *
      * @param contenuHTML String contenu HTML à parser
-     * @param urlArticle  String URL de l'article
      * @param idArticle   int ID de l'article
      * @return ArrayList<ContenuArticleItem>
      */
-    private ArrayList<ContenuArticleItem> parseArticle(String contenuHTML, String urlArticle, int idArticle) {
+    private ArrayList<ContenuArticleItem> parseArticle(String contenuHTML, int idArticle) {
         ArrayList<ContenuArticleItem> monAr = new ArrayList<>();
         //DEBUG
         if (Constantes.DEBUG) {
@@ -124,13 +123,13 @@ public class ArticleFragment extends Fragment {
         }
 
         // Parsage du contenu
-        Document lArticle = Jsoup.parse(contenuHTML, urlArticle, Parser.xmlParser());
+        Document lArticle = Jsoup.parse(contenuHTML, "", Parser.xmlParser());
 
         // Absence d'images (ou IFRAME gérée)
         if (lArticle.select("img:not([src^=http://IFRAME_LOCALE/])").isEmpty()) {
             // Que du texte... on créée un objet texte
             ContenuArticleTexteItem monTexte = new ContenuArticleTexteItem();
-            monTexte.setArticleID(idArticle);
+            monTexte.setPkArticle(pkArticle);
             monTexte.setContenu(contenuHTML);
             // Ajout à l'ArrayList
             monAr.add(monTexte);
@@ -147,7 +146,7 @@ public class ArticleFragment extends Fragment {
                 for (Element uneImage : lArticle.select("img:not([src^=http://IFRAME_LOCALE/])")) {
                     // Une seule image => objet image
                     ContenuArticleImageItem monImage = new ContenuArticleImageItem();
-                    monImage.setArticleID(idArticle);
+                    monImage.setPkArticle(pkArticle);
                     monImage.setContenu(uneImage.attr("src"));
                     monAr.add(monImage);
 
@@ -164,7 +163,7 @@ public class ArticleFragment extends Fragment {
                         Log.i("ArticleFragment", "parseArticle() - APPEL RECURSIF");
                     }
                     // Appel récursif
-                    monAr.addAll(parseArticle(unItem.html(), urlArticle, idArticle));
+                    monAr.addAll(parseArticle(unItem.html(), idArticle));
                 }
             }
         }

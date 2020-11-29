@@ -18,23 +18,17 @@
  */
 package com.pcinpact.network;
 
-import com.pcinpact.items.Item;
-
-import java.util.ArrayList;
-
 /**
- * Interface générique de callback à la fin des téléchargements HTML / Image.
+ * Interface générique de callback à la fin de vérification d'identifiants
  *
  * @author Anael
  */
-public interface RefreshDisplayInterface {
+public interface AccountCheckInterface {
 
     /**
-     * Une ressource HTML à été téléchargée.
+     * Retour d'une vérification d'identifiants abonnés
      *
-     * @param site     ID du site (NXI, IH)
-     * @param pathURL  Path demdandé
-     * @param mesItems liste d'*Itemstéléchargés
+     * @param resultat est-ce ok ?
      */
-    void downloadHTMLFini(final int site, final String pathURL, final ArrayList<? extends Item> mesItems);
+    void retourVerifCompte(final boolean resultat);
 }
