@@ -613,19 +613,18 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Si c'est un refresh général
         if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
-            if (desItems.size() > 0) {
-                // Doit-on télécharger la prochaine page de la liste d'articles ?
-                ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
-                if (lastArticle.getTimeStampPublication() > timeStampMinArticle) {
-                    // Le dernier article n'est pas assez vieux => télécharger la page suivante
-                    numPageListeArticle[site]++;
-                    telechargeListeArticles(site);
+            // Télécharger la prochaine page de la liste des articles
+            boolean dlNextPage = true;
 
-                    // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
-                    telechargeArticles(desItems, true);
-                } else {
+            // Prévient le cas "articles déjà tous en cache"
+            if (desItems.size() > 0) {
+                ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
+                // Le dernier article récupéré est plus vieux que ma limite
+                if (lastArticle.getTimeStampPublication() < timeStampMinArticle) {
                     // On réinitialise à la première page de la liste d'article pour le prochain refresh
                     numPageListeArticle[site] = 1;
+                    // Plus de téléchargement de la liste des articles
+                    dlNextPage = false;
 
                     // Je regarde pour chaque article si je dois le récupérer
                     ArrayList<ArticleItem> articleADL = new ArrayList<>();
@@ -638,10 +637,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     // Téléchargement des articles dont la date est OK
                     telechargeArticles(articleADL, true);
 
-                    // TODO : en attendant #266 / DAO
+                    // TODO : en attendant #266 / DAO (les squelettes des articles sont déjà insérés en BDD)
                     CacheManager.nettoyerCache(getApplicationContext());
                 }
             }
+            if (dlNextPage) {
+                // Le dernier article n'est pas assez vieux => télécharger la page suivante
+                numPageListeArticle[site]++;
+                telechargeListeArticles(site);
+
+                // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
+                telechargeArticles(desItems, true);
+            }
+
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         } else {
