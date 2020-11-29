@@ -72,7 +72,7 @@
             android:defaultValue="@string/defautOptionNbJoursArticles"
             android:entries="@array/nbJoursArticles"
             android:entryValues="@array/nbJoursArticles"
-            android:key="@string/idOptionNbArticles"
+            android:key="@string/idOptionNbJoursArticles"
             android:title="@string/optionNbJoursArticles" />
 
         <CheckBoxPreference

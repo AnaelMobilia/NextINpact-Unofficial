@@ -426,7 +426,12 @@ public final class DAO extends SQLiteOpenHelper {
      * @param pkArticle PK de l'article
      */
     public void supprimerArticle(final int pkArticle) {
+        // Article
         maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        // Commentaires
+        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        // Date de refresh
+        this.supprimerDateRefresh(pkArticle);
     }
 
     /**
@@ -479,21 +484,14 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Charge les n derniers articles de la BDD.
+     * Charge les articles de la BDD triés par date de publication
      *
-     * @param nbVoulu nombre d'articles voulus (0 = pas de limite)
      * @return ArrayList<ArticleItem> les articles demandés
      */
-    public ArrayList<ArticleItem> chargerArticlesTriParDate(final int nbVoulu) {
-        Cursor monCursor;
-        String limite = String.valueOf(nbVoulu);
-        // Pas de limite ?
-        if (nbVoulu == 0) {
-            limite = null;
-        }
+    public ArrayList<ArticleItem> chargerArticlesTriParDate() {
         // Requête sur la BDD
-        monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, ARTICLE_TIMESTAMP + " DESC",
-                                limite);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null,
+                                       ARTICLE_TIMESTAMP + " DESC");
 
         ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
@@ -572,26 +570,6 @@ public final class DAO extends SQLiteOpenHelper {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Supprime un commentaire de la BDD
-     *
-     * @param id        ID du commentaire
-     * @param pkArticle PK de l'article
-     */
-    private void supprimerCommentaire(final int id, final int pkArticle) {
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=? AND " + COMMENTAIRE_ID + "=?",
-                     new String[]{ String.valueOf(pkArticle), String.valueOf(id) });
-    }
-
-    /**
-     * Supprime tous les commentaires liés à un article
-     *
-     * @param pkArticle PK de l'article
-     */
-    public void supprimerCommentaire(final int pkArticle) {
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 
     /**
@@ -693,7 +671,7 @@ public final class DAO extends SQLiteOpenHelper {
      *
      * @param pkArticle PK de l'article
      */
-    public void supprimerDateRefresh(final int pkArticle) {
+    private void supprimerDateRefresh(final int pkArticle) {
         maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
     }
 

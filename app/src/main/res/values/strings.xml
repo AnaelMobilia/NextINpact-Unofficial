@@ -94,7 +94,7 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Options liste des articles -->
     <string name="optionsListeArticle">Liste des articles</string>
     <!--<string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>-->
-    <string name="optionNbJoursArticles">"Nombre de jours d'articles à conserver (pour chaque site)"</string>
+    <string name="optionNbJoursArticles">"Télécharger x jours d'actualités"</string>
     <string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>
     <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI/IH"</string>
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>
@@ -126,7 +126,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionTelechargerCommentaires">4</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
-    <string name="idOptionNbArticles">8</string>
+    <!--string name="idOptionNbArticles">8</string-->
     <string name="idOptionInstallationApplication">9</string>
     <string name="idOptionAbonne">10</string>
     <string name="idOptionLogin">11</string>
@@ -146,6 +146,8 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionAfficherPublicite">22</string>
     <!-- Version 2.4.0 -->
     <string name="idOptionVersion240">23</string>
+    <!-- Nb de jours d'articles à télécharge-->
+    <string name="idOptionNbJoursArticles">24</string>
 
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>

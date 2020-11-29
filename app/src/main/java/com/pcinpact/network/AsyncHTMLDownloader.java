@@ -156,8 +156,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         ArrayList<Item> mesItems = new ArrayList<>();
 
         try {
-            // Date du refresh
-            long dateRefresh = new Date().getTime();
+            // Date du refresh (/1000 pour passer en secondes)
+            long dateRefresh = new Date().getTime() / 1000;
 
             // Retour du Downloader
             String datas;
@@ -197,7 +197,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                         // MàJ de la date de MàJ uniquement si DL de la première page (évite plusieurs MàJ si dl de plusieurs
                         // pages)
-                        if (fullURL.equals(Constantes.X_INPACT_URL_LISTE_ARTICLE + "1")) {
+                        if (pathURL.equals(Constantes.X_INPACT_URL_LISTE_ARTICLE + "1")) {
                             // MàJ de la date de rafraichissement
                             monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
                         }
@@ -296,7 +296,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     protected void onPostExecute(ArrayList<? extends Item> result) {
         try {
             // Le parent peut avoir été garbage collecté
-            monParent.get().downloadHTMLFini(pathURL, result);
+            monParent.get().downloadHTMLFini(site, pathURL, result);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {

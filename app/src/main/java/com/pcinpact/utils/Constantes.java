@@ -65,9 +65,17 @@ public class Constantes {
     public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
     public static final String IH_CDN_URL = "https://cdnx.inpact-hardware.com/";
     /**
-     * Page des articles (listing)
+     * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources ClusterFilter à 2 pour
+     * avoir les articles abonnés dedans
      */
-    public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?page=";
+    public static final int NB_ARTICLES_PAR_PAGE = 10;
+    public static final String X_INPACT_URL_LISTE_ARTICLE =
+            "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&ClusterFilter=2&Page=";
+    /**
+     * Page du Brief
+     */
+    public static final int NB_BRIEF_PAR_PAGE = 3;
+    public static final String NXI_IURL_BRIEF = "SimpleContent/list?Nb=" + NB_BRIEF_PAR_PAGE + "&Page=";
     /**
      * Détail d'un article
      */
@@ -75,6 +83,7 @@ public class Constantes {
     /**
      * URL de téléchargement des commentaires.
      */
+    public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
     public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
     /**
      * URL de téléchargement des commentaires.
@@ -108,16 +117,6 @@ public class Constantes {
      */
     public static final String TAG_HTML_QUOTE = "myquote";
 
-    /**
-     * Nb de commentaires par page.
-     */
-    public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-
-    /**
-     * Nb d'articles par page.
-     */
-    public static final int NB_ARTICLES_PAR_PAGE = 25;
-
 
     /*
      * TYPES DE TELECHARGEMENTS.
@@ -146,6 +145,10 @@ public class Constantes {
      * Site : IH
      */
     public static final int IS_IH = 2;
+    /**
+     * Nombre de sites possibles (IH, NXI)
+     */
+    public static final int NOMBRE_SITES = 2;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.

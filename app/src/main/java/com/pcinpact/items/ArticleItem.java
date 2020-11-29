@@ -113,7 +113,8 @@ public class ArticleItem implements Item {
      * @return Date de la publication
      */
     public String getDatePublication() {
-        Date maDate = new Date(this.getTimeStampPublication());
+        // *1000 car passage de secondes en millisecondes
+        Date maDate = new Date(this.getTimeStampPublication() * 1000);
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Constantes.LOCALE);
         String laDate = dfm.format(maDate);

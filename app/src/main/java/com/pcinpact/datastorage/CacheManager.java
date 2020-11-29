@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,47 +49,29 @@ public class CacheManager {
             Log.d("CacheManager", "nettoyerCache()");
         }
 
-        try {
-            // Protection du context
-            Context monContext = unContext.getApplicationContext();
+        // Protection du context
+        Context monContext = unContext.getApplicationContext();
 
-            // Connexion à la BDD
-            DAO monDAO = DAO.getInstance(monContext);
+        // Connexion à la BDD
+        DAO monDAO = DAO.getInstance(monContext);
 
-            // Nombre d'articles à conserver
-            int maLimite = Constantes.getOptionInt(monContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
+        // Nombre de jours d'articles demandés par l'utilisateur
+        int nbJours = Constantes.getOptionInt(monContext, R.string.idOptionNbJoursArticles, R.string.defautOptionNbJoursArticles);
+        long timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
-            // Chargement de tous les articles de la BDD
-            ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(0);
-            int nbArticles = mesArticles.size();
+        // Chargement de tous les articles de la BDD
+        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
 
-            // Ai-je plus d'articles que ma limite ?
-            if (nbArticles > maLimite) {
-                /*
-                 * Nettoyage de la BDD
-                 */
-                for (int i = maLimite; i < nbArticles; i++) {
-                    ArticleItem article = mesArticles.get(i);
-
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.w("CacheManager", "nettoyerCache() - suppression de " + article.getTitre());
-                    }
-
-                    // Suppression en DB
-                    monDAO.supprimerArticle(article.getPk());
-
-                    // Suppression des commentaires de l'article
-                    monDAO.supprimerCommentaire(article.getPk());
-
-                    // Suppression de la date de Refresh des commentaires
-                    monDAO.supprimerDateRefresh(article.getPk());
+        // Boucle sur les articles
+        for (ArticleItem unArticle : mesArticles) {
+            // Si il est trop vieux...
+            if (unArticle.getTimeStampPublication() < timeStampMinArticle) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.w("CacheManager", "nettoyerCache() - suppression de " + unArticle.getTitre());
                 }
-            }
-        } catch (Exception e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("CacheManager", "nettoyerCache()", e);
+                // Je le supprime
+                monDAO.supprimerArticle(unArticle.getPk());
             }
         }
     }

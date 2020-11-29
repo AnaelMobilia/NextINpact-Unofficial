@@ -28,10 +28,8 @@ import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
-import com.pcinpact.items.Item;
 import com.pcinpact.network.AccountCheckInterface;
 import com.pcinpact.network.AsyncAccountCheck;
-import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
  *
  * @author Anael
  */
-public class DebugActivity extends AppCompatActivity implements RefreshDisplayInterface, AccountCheckInterface {
+public class DebugActivity extends AppCompatActivity implements AccountCheckInterface {
     // DAO
     private DAO monDAO;
 
@@ -51,8 +49,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
         super.onCreate(savedInstanceState);
-
-        final RefreshDisplayInterface monThis = this;
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
@@ -162,11 +158,6 @@ public class DebugActivity extends AppCompatActivity implements RefreshDisplayIn
                 maTextView.setText(monContenu);
             }
         }
-    }
-
-    @Override
-    public void downloadHTMLFini(String pathURL, ArrayList<? extends Item> mesItems) {
-
     }
 
     @Override

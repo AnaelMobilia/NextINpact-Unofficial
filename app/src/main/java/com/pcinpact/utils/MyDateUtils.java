@@ -23,6 +23,7 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
@@ -50,8 +51,8 @@ public class MyDateUtils {
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {
-            // Récupération du timestamp
-            laDateTS = dfm.parse(uneDate).getTime();
+            // Récupération du timestamp (/1000 pour passer en secondes !)
+            laDateTS = dfm.parse(uneDate).getTime() / 1000;
         } catch (ParseException e) {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
@@ -59,5 +60,31 @@ public class MyDateUtils {
         }
 
         return laDateTS;
+    }
+
+    /**
+     * Timestamp de date actuelle moins x jours
+     *
+     * @param nbJours nombre de jours à enlever
+     * @return timestamp
+     */
+    public static long timeStampDateActuelleMinus(int nbJours) {
+        long monRetour;
+
+        // Date du jour
+        Calendar monCalendar = Calendar.getInstance();
+        // Ce jour 00h00:00 (pour prendre tous les articles de la dernière journée également)
+        monCalendar.set(monCalendar.get(Calendar.YEAR), monCalendar.get(Calendar.MONTH), monCalendar.get(Calendar.DAY_OF_MONTH),
+                        0, 0, 0);
+
+        monCalendar.add(Calendar.DATE, -1 * nbJours);
+        // /1000 car timestamp en secondes !
+        monRetour = monCalendar.getTimeInMillis() / 1000;
+
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.w("MyDateUtils", "timeStampDateActuelleMinus() - nbJours : " + nbJours + " => " + monRetour);
+        }
+        return monRetour;
     }
 }

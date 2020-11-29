@@ -438,7 +438,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     @Override
-    public void downloadHTMLFini(String pathURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Retour vide ? Fin ou pas de connexion
         if (desItems.isEmpty()) {
             // Je note qu'il n'y a plus de commentaires

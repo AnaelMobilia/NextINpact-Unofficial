@@ -45,9 +45,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
 
-        // Nombre d'articles à afficher
-        int maLimite = Constantes.getOptionInt(monContext, R.string.idOptionNbArticles, R.string.defautOptionNbArticles);
-        mesArticles = monDAO.chargerArticlesTriParDate(maLimite);
+        mesArticles = monDAO.chargerArticlesTriParDate();
     }
 
     @NonNull
