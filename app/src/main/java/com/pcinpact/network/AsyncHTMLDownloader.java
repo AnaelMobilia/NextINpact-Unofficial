@@ -119,6 +119,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                 case Constantes.HTML_NOMBRE_COMMENTAIRES:
                     monRetour = ParseurHTML.getNbCommentaires(datas);
+                    break;
 
                 default:
                     if (Constantes.DEBUG) {
