@@ -145,6 +145,11 @@ public class ParseurHTML {
                 // Contenu privé sur paywall
                 contenu += contenu_json.getString("privateText");
             }
+            // Auteur de l'article
+            JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
+            contenu += "<footer>";
+            contenu += "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
+            contenu += "</footer>";
             contenu += "</article>";
 
             // L'article
