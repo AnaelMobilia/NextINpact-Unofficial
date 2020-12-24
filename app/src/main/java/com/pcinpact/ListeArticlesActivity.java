@@ -511,14 +511,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                                                     R.string.defautOptionPassword);
         // Identifiants non définis...
         if ("".equals(usernameOption) && "".equals(passwordOption)) {
-            Toast monToast = Toast.makeText(getApplicationContext(), R.string.infoOptionAbonne, Toast.LENGTH_LONG);
-            monToast.show();
+            // Lancement du téléchargement des articles
+            retourVerifCompte(null);
         } else {
             // Lancement de la vérif des identifiants (flux réseau donc asynchrone)
             AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
             maVerif.run();
+            // Le téléchargement de la liste d'articles se fera une fois l'état du compte déterminé
         }
-        // Le téléchargement de la liste d'articles se fera une fois l'état du compte déterminé
 
         /*
          * Nettoyage de la BDD
@@ -814,17 +814,29 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public void retourVerifCompte(String unToken) {
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("ListeArticlesActivity", "retourVerifCompte() - Token : " + unToken);
+        }
+
+        // Enregistrement du token
         token = unToken;
 
         String message;
-        if ("".equals(unToken)) {
+        if (token == null) {
+            // Pas d'identifiants
+            message = getString(R.string.infoOptionAbonne);
+        } else if ("".equals(token)) {
+            // Erreur d'auth
             message = getString(R.string.erreurAuthentification);
         } else {
+            // Compte abonné connecté avec succès
             message = getString(R.string.optionAbonne);
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
         monToast.show();
+
 
         /*
          * Téléchargement des articles dont le contenu n'avait pas été téléchargé
