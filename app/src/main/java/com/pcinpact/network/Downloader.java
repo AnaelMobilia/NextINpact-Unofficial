@@ -72,10 +72,6 @@ public class Downloader {
                     Log.e("Downloader", "download() - Erreur " + response.code() + " au dl de " + uneURL);
                 }
             } else {
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.d("Downloader", "download() - Récupération du contenu...");
-                }
                 datas = response.body().string();
                 response.close();
             }
