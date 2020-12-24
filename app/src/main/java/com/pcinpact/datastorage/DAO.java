@@ -21,6 +21,7 @@ package com.pcinpact.datastorage;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -270,9 +271,8 @@ public final class DAO extends SQLiteOpenHelper {
      * Enregistre (ou MàJ) un article en BDD
      *
      * @param unArticle ArticleItem
-     * @return int PK de l'article
      */
-    public int enregistrerArticle(final ArticleItem unArticle) {
+    public void enregistrerArticle(final ArticleItem unArticle) {
         ContentValues insertValues = new ContentValues();
 
         // Est-ce un article déjà connu ?
@@ -297,11 +297,14 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
         insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
 
-        long monResult = maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
-        if (Constantes.DEBUG) {
-            Log.d("DAO", "enregistrerArticle() - PK Article " + monResult);
+        try {
+            maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
+        } catch (SQLiteConstraintException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "enregistrerArticle() erreur de contrainte", e);
+            }
         }
-        return (int) monResult;
     }
 
     /**
