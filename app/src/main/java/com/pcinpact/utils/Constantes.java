@@ -85,10 +85,12 @@ public class Constantes {
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
     public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
-    /**
-     * URL de téléchargement des commentaires.
-     */
     public static final String X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
+    /**
+     * URL du nombre de commentaires
+     */
+    public static final String X_INPACT_URL_NB_COMMENTAIRES = "Commentaire/count?";
+    public static final String X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE = "&ids=";
     /**
      * URL d'authentification.
      */
@@ -133,6 +135,10 @@ public class Constantes {
      * Type : commentaires.
      */
     public static final int HTML_COMMENTAIRES = 3;
+    /**
+     * Type : Nombre de commentaires
+     */
+    public static final int HTML_NOMBRE_COMMENTAIRES = 4;
 
     /*
      * TYPE DU SITE
@@ -233,10 +239,6 @@ public class Constantes {
      * Paramètre mot de passe.
      */
     public static final String AUTHENTIFICATION_PASSWORD = "password";
-    /**
-     * Nom du cookie d'authentification sur l'API.
-     */
-    public static final String AUTHENTIFICATION_COOKIE_API = "token";
     /**
      * Nom du cookie retourné à l'authentification.
      */

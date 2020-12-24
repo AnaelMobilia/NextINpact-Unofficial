@@ -42,7 +42,7 @@ import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -170,7 +170,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // J'active la BDD
         monDAO = DAO.getInstance(getApplicationContext());
         // Je charge mes commentaires
-        mesCommentaires.addAll(monDAO.chargerCommentairesTriParDate(articlePk));
+        mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(articlePk));
 
         // Je récupère le site concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
@@ -212,15 +212,14 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         }
 
         // Quelle est la page à charger (actuelle si pas 10 commentaires, sinon la prochaine)
-        int maPage = Math.round((idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1);
+        int maPage = (idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
 
         // Création de l'URL
         String monPath =
                 Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + articlePk;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk,
-                                                             monDAO);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk, null);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -412,14 +411,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Si plus de téléchargement en cours
         if (dlInProgress == 0) {
-            // Tri des commentaires par ID (en mémoire)
-            Collections.sort(mesCommentaires);
+            // Chargement des commentaires triés
+            mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(articlePk));
 
             // Je met à jour les données
             monItemsAdapter.updateListeItems(mesCommentaires);
             // Je notifie le changement pour un rafraichissement du contenu
             monItemsAdapter.notifyDataSetChanged();
-
 
             // Arrêt du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
@@ -441,6 +439,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Retour vide ? Fin ou pas de connexion
         if (desItems.isEmpty()) {
+            // MàJ de la date de rafraichissement de l'article
+            // Date du refresh (/1000 pour passer en secondes)
+            long dateRefresh = new Date().getTime() / 1000;
+            monDAO.enregistrerDateRefresh(articlePk, dateRefresh);
+
             // Je note qu'il n'y a plus de commentaires
             isFinCommentaires = true;
 
@@ -454,12 +457,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 Log.i("CommentairesActivity", "downloadHTMLFini() - fin des commentaires");
             }
         } else {
-            // J'enregistre en mémoire les nouveaux commentaires
-            for (Item unItem : desItems) {
-                // Je l'enregistre en mémoire
-                mesCommentaires.add((CommentaireItem) unItem);
+            // Stockage en BDD des nouveaux commentaires
+            for (Item unCommentaire : desItems) {
+                monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unCommentaire);
             }
-
             // Je note que je ne suis pas à la fin des commentaires
             isFinCommentaires = false;
 

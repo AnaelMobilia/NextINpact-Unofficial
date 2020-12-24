@@ -54,6 +54,7 @@ import com.pcinpact.utils.MyDateUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -115,6 +116,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private String usernameOption;
     private String passwordOption;
+    private String token;
     /**
      * Timestamp de la date jusqu'à laquelle télécharger les articles
      */
@@ -516,25 +518,12 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
             maVerif.run();
         }
+        // Le téléchargement de la liste d'articles se fera une fois l'état du compte déterminé
 
         /*
          * Nettoyage de la BDD
          */
         CacheManager.nettoyerCache(getApplicationContext());
-
-        /*
-         * Téléchargement des articles dont le contenu n'avait pas été téléchargé
-         */
-        telechargeArticles(monDAO.chargerArticlesATelecharger(), false);
-
-        /*
-         * Téléchargement des pages de liste d'articles
-         */
-        telechargeListeArticles(Constantes.IS_NXI);
-        telechargeListeArticles(Constantes.IS_IH);
-
-        // GUI : fin de l'activité en cours...
-        finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
     }
 
     /**
@@ -545,7 +534,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void telechargeListeArticles(int idSite) {
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, idSite,
                                                              Constantes.X_INPACT_URL_LISTE_ARTICLE + numPageListeArticle[idSite],
-                                                             0, monDAO);
+                                                             0, token);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
     }
@@ -553,31 +542,42 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Lance le téléchargement des articles.
      *
-     * @param desItems       liste d'articles à télécharger
-     * @param dlListeArticle Est-ce un appel dans le cadre du dl d'une nouvelle liste d'articles
+     * @param desItems liste d'articles à télécharger
      */
-    private void telechargeArticles(final ArrayList<? extends Item> desItems, final boolean dlListeArticle) {
+    private void telechargeArticles(final ArrayList<? extends Item> desItems) {
         for (Item unItem : desItems) {
             ArticleItem unArticle = (ArticleItem) unItem;
 
-            // Tâche de DL HTML
-            AsyncHTMLDownloader monAHD;
-            boolean isConnecteRequis = false;
-
-            // Est-ce un article abonné dont j'ai déjà la version publique ?
-            if (!dlListeArticle && unArticle.isAbonne() && unArticle.getContenu().equals("")) {
-                // Je requiert d'être connecté (sinon le DL ne sert à rien)
-                isConnecteRequis = true;
-            }
             // Téléchargement de la ressource
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(), unArticle.getPathPourDl(),
-                                             unArticle.getPk(), monDAO, isConnecteRequis, usernameOption, passwordOption);
+            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(),
+                                                                 unArticle.getPathPourDl(), unArticle.getPk(), token);
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + unArticle.getUrlPartage());
             }
             launchAHD(monAHD, Constantes.HTML_ARTICLE);
         }
+    }
+
+    /**
+     * Télécharge le nombre de commentaires de chaque article
+     *
+     * @param idSite ID du site (Cf Constantes.IS_xxx)
+     */
+    private void telechargeNbCommentaires(int idSite) {
+        StringBuilder param = new StringBuilder();
+        // Récupération des ID d'articles
+        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
+            // Si c'est le bon site, je prends l'article
+            if (unArticle.getSite() == idSite) {
+                param.append(Constantes.X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdInpact());
+            }
+        }
+
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, idSite,
+                                                             Constantes.X_INPACT_URL_NB_COMMENTAIRES + param, 0, token);
+        // Lancement du téléchargement
+        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
     }
 
     /**
@@ -611,48 +611,81 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
-        // Si c'est un refresh général
+        // Si c'est un téléchargement de la liste d'articles
         if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
             // Télécharger la prochaine page de la liste des articles
             boolean dlNextPage = true;
 
-            // Prévient le cas "articles déjà tous en cache"
-            if (desItems.size() > 0) {
-                ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
-                // Le dernier article récupéré est plus vieux que ma limite
-                if (lastArticle.getTimeStampPublication() < timeStampMinArticle) {
-                    // On réinitialise à la première page de la liste d'article pour le prochain refresh
-                    numPageListeArticle[site] = 1;
-                    // Plus de téléchargement de la liste des articles
-                    dlNextPage = false;
-
-                    // Je regarde pour chaque article si je dois le récupérer
-                    ArrayList<ArticleItem> articleADL = new ArrayList<>();
-                    for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                        // Si il est plus récent que la date min, je le prends
-                        if (unArticle.getTimeStampPublication() > timeStampMinArticle) {
-                            articleADL.add(unArticle);
-                        }
-                    }
-                    // Téléchargement des articles dont la date est OK
-                    telechargeArticles(articleADL, true);
-
-                    // TODO : en attendant #266 / DAO (les squelettes des articles sont déjà insérés en BDD)
-                    CacheManager.nettoyerCache(getApplicationContext());
-                }
+            ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
+            // Le dernier article récupéré est plus vieux que ma limite
+            if (lastArticle.getTimeStampPublication() < timeStampMinArticle) {
+                // On réinitialise à la première page de la liste d'article pour le prochain refresh
+                numPageListeArticle[site] = 1;
+                // Plus de téléchargement de la liste des articles
+                dlNextPage = false;
             }
             if (dlNextPage) {
                 // Le dernier article n'est pas assez vieux => télécharger la page suivante
                 numPageListeArticle[site]++;
                 telechargeListeArticles(site);
+            } else {
+                // MàJ de la date de rafraichissement de la liste des articles
+                // Date du refresh (/1000 pour passer en secondes)
+                long dateRefresh = new Date().getTime() / 1000;
+                monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
 
-                // Le asyncDL ne me retourne que des articles non présents en BDD => à DL
-                telechargeArticles(desItems, true);
+                // Mise à jour du nombre de commentaires
+                telechargeNbCommentaires(Constantes.IS_NXI);
+                telechargeNbCommentaires(Constantes.IS_IH);
             }
+
+            // Je regarde pour chaque article si je dois le récupérer
+            ArrayList<ArticleItem> articleADL = new ArrayList<>();
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Vérification de la date de l'article
+                if (unArticle.getTimeStampPublication() > timeStampMinArticle) {
+                    // Stockage en BDD ssi nouveau
+                    if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
+                        // Il faut maintenant télécharger le contenu de l'article !
+                        articleADL.add(unArticle);
+                    }
+                }
+            }
+            // Téléchargement des articles dont la date est OK
+            telechargeArticles(articleADL);
 
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-        } else {
+        }
+        // Téléchargement du contenu d'un article
+        else if (pathURL.startsWith(Constantes.X_INPACT_URL_ARTICLE)) {
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Récupération de l'article depuis la BDD
+                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getPk());
+                monArticle.setContenu(unArticle.getContenu());
+                monArticle.setLu(false);
+                // Ais-je téléchargé la partie abonné ?
+                if (monArticle.isAbonne() && !monArticle.isDlContenuAbonne()) {
+                    // Suis-je connecté ?
+                    if (!"".equals(token)) {
+                        monArticle.setDlContenuAbonne(true);
+                    }
+                }
+                monDAO.enregistrerArticle(monArticle);
+            }
+
+            // gestion du téléchargement GUI
+            finChargementGUI(Constantes.HTML_ARTICLE);
+        }
+        // Téléchargement du nombre de commentaires
+        else {
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Récupération de l'article depuis la BDD
+                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getPk());
+                monArticle.setNbCommentaires(unArticle.getNbCommentaires());
+                monDAO.enregistrerArticle(monArticle);
+            }
+
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_ARTICLE);
         }
@@ -780,9 +813,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void retourVerifCompte(boolean resultat) {
+    public void retourVerifCompte(String unToken) {
+        token = unToken;
+
         String message;
-        if (!resultat) {
+        if ("".equals(unToken)) {
             message = getString(R.string.erreurAuthentification);
         } else {
             message = getString(R.string.optionAbonne);
@@ -790,5 +825,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Retour utilisateur
         Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
         monToast.show();
+
+        /*
+         * Téléchargement des articles dont le contenu n'avait pas été téléchargé
+         */
+        telechargeArticles(monDAO.chargerArticlesATelecharger("".equals(token)));
+
+        /*
+         * Téléchargement des pages de liste d'articles
+         */
+        telechargeListeArticles(Constantes.IS_NXI);
+        telechargeListeArticles(Constantes.IS_IH);
+
+        // GUI : fin de l'activité en cours...
+        finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
     }
 }

@@ -308,11 +308,9 @@ public final class DAO extends SQLiteOpenHelper {
      * Enregistre un article en BDD uniquement s'il n'existait pas ou qu'il a été mis à jour
      *
      * @param unArticle ArticleItem
-     * @return int PK de l'article en BDD (-1 si déjà existant)
+     * @return true si nouveau commentaire
      */
-    public int enregistrerArticleSiNouveau(final ArticleItem unArticle) {
-        // PK de l'article si non déjà enregistré
-        int pkArticle = -1;
+    public boolean enregistrerArticleSiNouveau(final ArticleItem unArticle) {
         // Est-il déjà présent en BDD ?
         // Identification par ID INpact car la PK est générée à l'enregistrement de l'article
         // Je n'ai donc pas encore cette PK dans unArticle !
@@ -339,13 +337,13 @@ public final class DAO extends SQLiteOpenHelper {
 
         // Dois-je l'enregistrer
         if (enregistrer) {
-            // Enregistrement & récupération de sa PK
-            pkArticle = this.enregistrerArticle(unArticle);
+            // Enregistrement
+            this.enregistrerArticle(unArticle);
         } else {
             // Je met à jour le nb de comms de l'article en question...
             updateNbCommentairesArticle(unArticle.getPk(), unArticle.getNbCommentaires());
         }
-        return pkArticle;
+        return enregistrer;
     }
 
     /**
@@ -513,12 +511,21 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Liste des articles sans contenu.
      *
+     * @param estConnecte Faut-il retourner les articles abonnés dont le contenu abonné n'a pas été téléchargé ?
      * @return ArrayList<ArticleItem> liste d'articleItem
      */
-    public ArrayList<ArticleItem> chargerArticlesATelecharger() {
-        // Articles vides et des articles abonnés non DL
-        String[] contenu = new String[]{ "", "1", "0" };
-        String where = ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE + "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)";
+    public ArrayList<ArticleItem> chargerArticlesATelecharger(final boolean estConnecte) {
+        String[] contenu;
+        String where;
+        if (estConnecte) {
+            // Articles vides et des articles abonnés non DL
+            contenu = new String[]{ "", "1", "0" };
+            where = ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE + "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)";
+        } else {
+            // Articles vides uniquement
+            contenu = new String[]{ "" };
+            where = ARTICLE_CONTENU + "=?";
+        }
         Cursor monCursor = maBDD.query(true, BDD_TABLE_ARTICLES, ARTICLE__COLONNES, where, contenu, null, null, null, null);
 
         ArrayList<ArticleItem> mesArticles = new ArrayList<>();
@@ -606,10 +613,10 @@ public final class DAO extends SQLiteOpenHelper {
      * @param pkArticle ID de l'article concerné
      * @return liste des commentaires
      */
-    public ArrayList<CommentaireItem> chargerCommentairesTriParDate(final int pkArticle) {
+    public ArrayList<CommentaireItem> chargerCommentairesTriParID(final int pkArticle) {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_PK + "=?",
-                                       new String[]{ String.valueOf(pkArticle) }, null, null, "3");
+                                       new String[]{ String.valueOf(pkArticle) }, null, null, "1");
 
         ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;

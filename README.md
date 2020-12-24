@@ -14,10 +14,6 @@
   - [OkHttp v4.8.0 - Apache 2.0](https://square.github.io/okhttp/) : Chargement des données et définition du user-agent utilisé
   par Glide
 
-## Bibliothèques forkées par le projet
-  - [Commons IO 2.2 - Apache license, version 2.0](https://commons.apache.org/proper/commons-io/) : InputStream .toString() &
-  .toByteArray()
-
 ## Outils pratiques :
   - [Voir les icônes Android existantes](http://androiddrawables.com)
   - [Dépôt git des sources Android (permet de récupérer les images)](https://github.com/android/platform_frameworks_base/tree/master/core/res/res)

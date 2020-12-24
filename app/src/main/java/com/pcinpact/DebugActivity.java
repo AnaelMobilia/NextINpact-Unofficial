@@ -139,7 +139,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             // Si j'ai un article
             if (articlePk != 0) {
                 // Chargement des commentaires
-                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParDate(articlePk);
+                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParID(articlePk);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 StringBuilder monContenu = new StringBuilder();
@@ -161,9 +161,9 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
     }
 
     @Override
-    public void retourVerifCompte(boolean resultat) {
+    public void retourVerifCompte(String token) {
         String message;
-        if (!resultat) {
+        if ("".equals(token)) {
             message = getString(R.string.erreurAuthentification);
         } else {
             message = getString(R.string.optionAbonne);

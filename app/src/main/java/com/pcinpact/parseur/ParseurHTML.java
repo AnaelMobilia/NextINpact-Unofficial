@@ -391,41 +391,47 @@ public class ParseurHTML {
     }
 
     /**
-     * Nombre de commentaires d'un article à partir d'une page de commentaires
+     * Nombre de commentaires d'un article
      *
      * @param unContenu contenu JSON brut
-     * @return nb de commentaires de l'article
+     * @return ArrayList<ArticleItem> reprenant ArticleID & NbCommentaires
      */
-    public static int getNbCommentaires(final String unContenu) {
-        int nbComms = 0;
+    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu) {
+        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
+
         try {
             // Récupération du JSON
             JSONObject contenu_json = new JSONObject(unContenu);
 
-            // L'ID de l'article
-            nbComms = contenu_json.getInt("totalItems");
-        } catch (JSONException e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "getArticle() - Crash JSON", e);
+            // Les articles
+            JSONArray lesArticles = contenu_json.getJSONArray("results");
+
+            ArticleItem monArticleItem;
+            // Pour chaque article
+            for (int i = 0; i < lesArticles.length(); i++) {
+                JSONObject unArticle = lesArticles.getJSONObject(i);
+                monArticleItem = new ArticleItem();
+
+                monArticleItem.setIdInpact(unArticle.getInt("contentId"));
+                monArticleItem.setNbCommentaires(unArticle.getInt("nbTotal"));
+
+                mesArticlesItem.add(monArticleItem);
             }
+        } catch (JSONException e) {
+            Log.e("ParseurHTML", "getNbCommentaires() - Crash JSON", e);
         }
 
-        // DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("ParseurHTML", "getNbCommentaires() - " + nbComms);
-        }
-
-        return nbComms;
+        return mesArticlesItem;
     }
 
     /**
      * Parse les commentaires
      *
      * @param unContenu contenu JSON brut
+     * @param pkArticle PK de l'article
      * @return liste de CommentaireItem
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu) {
+    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final int pkArticle) {
         // mon retour
         ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
 
@@ -441,6 +447,7 @@ public class ParseurHTML {
             for (int i = 0; i < lesCommentaires.length(); i++) {
                 JSONObject unCommentaire = lesCommentaires.getJSONObject(i).getJSONObject("comment");
                 monCommentaireItem = new CommentaireItem();
+                monCommentaireItem.setPkArticle(pkArticle);
 
                 // ID du commentaire
                 monCommentaireItem.setId(unCommentaire.getInt("commentId"));

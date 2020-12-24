@@ -28,7 +28,7 @@ public interface AccountCheckInterface {
     /**
      * Retour d'une vérification d'identifiants abonnés
      *
-     * @param resultat est-ce ok ?
+     * @param token Token à utiliser pour se connecter chez NXI (vide si pas auth)
      */
-    void retourVerifCompte(final boolean resultat);
+    void retourVerifCompte(final String token);
 }
