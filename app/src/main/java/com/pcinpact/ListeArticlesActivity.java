@@ -113,7 +113,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private int dernierePosition;
     /**
-     * Identifiant de l'utilisateur
+     * Identifiant de l'utilisateur (null si non connecté)
      */
     private String token;
     /**
@@ -674,7 +674,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Ais-je téléchargé la partie abonné ?
                 if (monArticle.isAbonne() && !monArticle.isDlContenuAbonne()) {
                     // Suis-je connecté ?
-                    if (!"".equals(token)) {
+                    if (token != null) {
                         monArticle.setDlContenuAbonne(true);
                     }
                 }
@@ -828,19 +828,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             Log.i("ListeArticlesActivity", "retourVerifCompte() - Token : " + unToken);
         }
 
-        // Enregistrement du token
-        token = unToken;
-
         String message;
-        if (token == null) {
+        if (unToken == null) {
             // Pas d'identifiants
             message = getString(R.string.infoOptionAbonne);
-        } else if ("".equals(token)) {
+            token = null;
+        } else if ("".equals(unToken)) {
             // Erreur d'auth
             message = getString(R.string.erreurAuthentification);
+            token = null;
         } else {
             // Compte abonné connecté avec succès
             message = getString(R.string.compteAbonne);
+            token = unToken;
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
@@ -850,7 +850,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         /*
          * Téléchargement des articles dont le contenu n'avait pas été téléchargé
          */
-        telechargeArticles(monDAO.chargerArticlesATelecharger("".equals(token)));
+        telechargeArticles(monDAO.chargerArticlesATelecharger(token != null));
 
         /*
          * Téléchargement des pages de liste d'articles
