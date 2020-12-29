@@ -387,7 +387,7 @@ public class ParseurHTML {
                 unSlideShow.remove();
             }
 
-            // Suppression des attributs sans intérêt
+            // Suppression des attributs sans intérêt pour l'application
             Elements elements = lArticle.select("*");
             for (Element element : elements) {
                 element.removeAttr("target");
@@ -395,6 +395,7 @@ public class ParseurHTML {
                 element.removeAttr("class");
                 element.removeAttr("style");
                 element.removeAttr("data-imageid");
+                element.removeAttr("alt");
             }
 
             // Elimination des htmlentities (beaucoup de &nbsp;)
@@ -405,6 +406,9 @@ public class ParseurHTML {
                 Log.e("ParseurHTML", "getArticle() - Crash JSON", e);
             }
         }
+
+        // Fix des balises <img> => <img /> (*? => * ungreedy)
+        monContenu = monContenu.replaceAll("(<img.*?\"[^/]*?)(>)", "$1 /$2");
 
         return monContenu;
     }
