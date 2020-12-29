@@ -143,7 +143,12 @@ public class ParseurHTML {
             contenu += contenu_json.getString("publicText");
             if (contenu_json.getBoolean("isPaywalled")) {
                 // Contenu privé sur paywall
-                contenu += contenu_json.getString("privateText");
+                String contenuAbonné = contenu_json.getString("privateText");
+                if (!"".equals(contenuAbonné)) {
+                    contenu += contenuAbonné;
+                } else {
+                    contenu += "<br />... (contenu abonné)<br /><br/>";
+                }
             }
             // Auteur de l'article
             JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
