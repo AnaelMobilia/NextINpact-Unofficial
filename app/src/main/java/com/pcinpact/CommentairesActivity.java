@@ -57,7 +57,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     /**
      * Les commentaires
      */
-    private final ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
+    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
      * PK de l'article
      */
@@ -414,7 +414,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Si plus de téléchargement en cours
         if (dlInProgress == 0) {
             // Chargement des commentaires triés
-            mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(articlePk));
+            mesCommentaires = monDAO.chargerCommentairesTriParID(articlePk);
 
             // Je met à jour les données
             monItemsAdapter.updateListeItems(mesCommentaires);
