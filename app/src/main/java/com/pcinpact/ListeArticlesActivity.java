@@ -577,7 +577,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, idSite,
                                                              Constantes.X_INPACT_URL_NB_COMMENTAIRES + param, 0, token);
         // Lancement du téléchargement
-        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
+        launchAHD(monAHD, Constantes.HTML_NOMBRE_COMMENTAIRES);
     }
 
     /**
@@ -687,7 +687,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
 
             // gestion du téléchargement GUI
-            finChargementGUI(Constantes.HTML_ARTICLE);
+            finChargementGUI(Constantes.HTML_NOMBRE_COMMENTAIRES);
         }
     }
 
