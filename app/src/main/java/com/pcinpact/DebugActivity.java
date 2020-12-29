@@ -163,7 +163,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
         if ("".equals(token)) {
             message = getString(R.string.erreurAuthentification);
         } else {
-            message = getString(R.string.optionAbonne);
+            message = getString(R.string.compteAbonne);
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
