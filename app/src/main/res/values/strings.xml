@@ -82,7 +82,7 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Options : Générales -->
     <string name="optionsGenerales">Options générales</string>
     <string name="optionTailleTexte">Taille des textes</string>
-    <string name="optionAbonne">Compte abonné</string>
+    <string name="optionAbonne">Compte abonné connecté</string>
     <string name="optionThemeSombre">Thème sombre</string>
     <!-- Options : PreferenceScreen Abonné -->
     <string name="optionsAbonne">Configurer mon compte abonné</string>
