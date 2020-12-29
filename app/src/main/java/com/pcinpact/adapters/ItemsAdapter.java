@@ -388,7 +388,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Remplissage des textview
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
-                    commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getId()));
+                    commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getNumeroAffichage()));
                     if (Constantes.DEBUG) {
                         Log.i("ItemsAdapter", "getView() - Commentaire : " + ci.getCommentaire());
                     }

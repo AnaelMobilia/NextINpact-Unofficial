@@ -664,6 +664,8 @@ public final class DAO extends SQLiteOpenHelper {
         while (monCursor.moveToNext()) {
             // Je charge les données de l'objet
             monCommentaire = cursorToCommentaireItem(monCursor);
+            // Définition du numéro d'affichage (0 ... n-1)
+            monCommentaire.setNumeroAffichage(monCursor.getPosition() + 1);
 
             // Et l'enregistre
             mesCommentaires.add(monCommentaire);

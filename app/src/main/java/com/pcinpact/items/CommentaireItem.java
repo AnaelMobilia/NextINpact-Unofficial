@@ -52,6 +52,10 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * Timsetamp du commentaire
      */
     private long timeStampPublication;
+    /**
+     * Numéro à afficher (géré directement par la BDD)
+     */
+    private int numeroAffichage;
 
     @Override
     public int getType() {
@@ -119,6 +123,14 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     public String getAuteur() {
         return auteur;
+    }
+
+    public int getNumeroAffichage() {
+        return numeroAffichage;
+    }
+
+    public void setNumeroAffichage(int numeroAffichage) {
+        this.numeroAffichage = numeroAffichage;
     }
 
     /**
