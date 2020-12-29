@@ -353,7 +353,7 @@ public class ParseurHTML {
                     // Passage à l'image pleine taille
                     lImage.attr("src", lienImageFancy.absUrl("href"));
                     // Injection de l'image pleine taille...
-                    lienImageFancy.before("<p>" + lImage.outerHtml() + "</p>");
+                    lienImageFancy.before(lImage.outerHtml());
                 }
                 // Suppression du lien (et ses enfants)
                 lienImageFancy.remove();
@@ -387,6 +387,15 @@ public class ParseurHTML {
                 unSlideShow.remove();
             }
 
+            // Suppression des attributs sans intérêt
+            Elements elements = lArticle.select("*");
+            for (Element element : elements) {
+                element.removeAttr("target");
+                element.removeAttr("rel");
+                element.removeAttr("class");
+                element.removeAttr("style");
+                element.removeAttr("data-imageid");
+            }
 
             // Elimination des htmlentities (beaucoup de &nbsp;)
             monContenu = Parser.unescapeEntities(lArticle.toString(), true);
