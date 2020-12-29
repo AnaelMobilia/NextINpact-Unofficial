@@ -499,7 +499,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param idSite   ID du site
      * @return ArticleItem de l'article
      */
-    private ArticleItem chargerArticle(final int idInpact, final int idSite) {
+    public ArticleItem chargerArticle(final int idInpact, final int idSite) {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?",
                                        new String[]{ String.valueOf(idInpact), String.valueOf(idSite) }, null, null, null);

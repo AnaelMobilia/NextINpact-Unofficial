@@ -682,7 +682,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         else {
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                 // Récupération de l'article depuis la BDD
-                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getPk());
+                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
                 monArticle.setNbCommentaires(unArticle.getNbCommentaires());
                 monDAO.enregistrerArticle(monArticle);
             }

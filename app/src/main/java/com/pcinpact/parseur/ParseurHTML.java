@@ -399,9 +399,10 @@ public class ParseurHTML {
      * Nombre de commentaires d'un article
      *
      * @param unContenu contenu JSON brut
+     * @param idSite    ID du site (NXI, IH, ...)
      * @return ArrayList<ArticleItem> reprenant ArticleID & NbCommentaires
      */
-    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu) {
+    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu, final int idSite) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -419,6 +420,7 @@ public class ParseurHTML {
 
                 monArticleItem.setIdInpact(unArticle.getInt("contentId"));
                 monArticleItem.setNbCommentaires(unArticle.getInt("nbTotal"));
+                monArticleItem.setSite(idSite);
 
                 mesArticlesItem.add(monArticleItem);
             }
