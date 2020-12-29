@@ -21,8 +21,8 @@ package com.pcinpact.datastorage;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -299,10 +299,10 @@ public final class DAO extends SQLiteOpenHelper {
 
         try {
             maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
-        } catch (SQLiteConstraintException e) {
+        } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("DAO", "enregistrerArticle() erreur de contrainte", e);
+                Log.e("DAO", "enregistrerArticle() - erreur SQL", e);
             }
         }
     }
@@ -360,7 +360,14 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        try {
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "setDernierCommentaireLu() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -405,7 +412,14 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_NB_COMMS, nbCommentaires);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        try {
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "updateNbCommentairesArticle() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -418,7 +432,14 @@ public final class DAO extends SQLiteOpenHelper {
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_IS_LU, true);
 
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        try {
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "marquerArticleLu() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -427,10 +448,17 @@ public final class DAO extends SQLiteOpenHelper {
      * @param pkArticle PK de l'article
      */
     public void supprimerArticle(final int pkArticle) {
-        // Article
-        maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
-        // Commentaires
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        try {
+            // Article
+            maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            // Commentaires
+            maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "supprimerArticle() - erreur SQL", e);
+            }
+        }
         // Date de refresh
         this.supprimerDateRefresh(pkArticle);
     }
@@ -452,6 +480,11 @@ public final class DAO extends SQLiteOpenHelper {
         if (monCursor.moveToNext()) {
             // Je charge les données de l'objet
             monArticle = cursorToArticleItem(monCursor);
+        } else {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "chargerArticle() - ID article inconnu : " + pkArticle);
+            }
         }
         // Fermeture du curseur
         monCursor.close();
@@ -561,7 +594,14 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimeStampPublication());
         insertValues.put(COMMENTAIRE_CONTENU, unCommentaire.getCommentaire());
 
-        maBDD.insert(BDD_TABLE_COMMENTAIRES, null, insertValues);
+        try {
+            maBDD.insert(BDD_TABLE_COMMENTAIRES, null, insertValues);
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "enregistrerCommentaire() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -673,7 +713,14 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(REFRESH_ARTICLE_PK, pkArticle);
         insertValues.put(REFRESH_TIMESTAMP, dateRefresh);
 
-        maBDD.insert(BDD_TABLE_REFRESH, null, insertValues);
+        try {
+            maBDD.insert(BDD_TABLE_REFRESH, null, insertValues);
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "enregistrerDateRefresh() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -682,7 +729,14 @@ public final class DAO extends SQLiteOpenHelper {
      * @param pkArticle PK de l'article
      */
     private void supprimerDateRefresh(final int pkArticle) {
-        maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        try {
+            maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "supprimerDateRefresh() - erreur SQL", e);
+            }
+        }
     }
 
     /**
@@ -734,23 +788,37 @@ public final class DAO extends SQLiteOpenHelper {
      * Suppression de tout le contenu de la BDD
      */
     public void vider() {
-        // Les articles
-        maBDD.delete(BDD_TABLE_ARTICLES, null, null);
-        // Les commentaires
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
-        // Date de refresh
-        maBDD.delete(BDD_TABLE_REFRESH, null, null);
+        try {
+            // Les articles
+            maBDD.delete(BDD_TABLE_ARTICLES, null, null);
+            // Les commentaires
+            maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
+            // Date de refresh
+            maBDD.delete(BDD_TABLE_REFRESH, null, null);
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "vider() - erreur SQL", e);
+            }
+        }
     }
 
     /**
      * Suppression des commentaires
      */
     public void viderCommentaires() {
-        // Les commentaires
-        maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
-        // Dernier commentaire lu des articles
-        ContentValues updateValues = new ContentValues();
-        updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, 0);
-        maBDD.update(BDD_TABLE_ARTICLES, updateValues, null, null);
+        try {
+            // Les commentaires
+            maBDD.delete(BDD_TABLE_COMMENTAIRES, null, null);
+            // Dernier commentaire lu des articles
+            ContentValues updateValues = new ContentValues();
+            updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, 0);
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, null, null);
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "viderCommentaires() - erreur SQL", e);
+            }
+        }
     }
 }
