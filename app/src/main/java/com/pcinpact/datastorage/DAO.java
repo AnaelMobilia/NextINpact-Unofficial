@@ -608,18 +608,15 @@ public final class DAO extends SQLiteOpenHelper {
      * Enregistre un commentaire en BDD uniquement s'il n'existe pas déjà.
      *
      * @param unCommentaire CommentaireItem
-     * @return true si nouveau commentaire
      */
-    public boolean enregistrerCommentaireSiNouveau(final CommentaireItem unCommentaire) {
+    public void enregistrerCommentaireSiNouveau(final CommentaireItem unCommentaire) {
         // J'essaye de charger le commentaire depuis la BDD
         CommentaireItem testItem = this.chargerCommentaire(unCommentaire.getPkArticle(), unCommentaire.getId());
 
         // Si je ne l'ai pas récupéré c'est que je peux l'enregistrer en BDD !
         if (testItem.getId() == 0) {
             this.enregistrerCommentaire(unCommentaire);
-            return true;
         }
-        return false;
     }
 
     /**
