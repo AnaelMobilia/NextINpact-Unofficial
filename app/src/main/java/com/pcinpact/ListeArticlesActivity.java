@@ -840,7 +840,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             message = getString(R.string.erreurAuthentification);
         } else {
             // Compte abonné connecté avec succès
-            message = getString(R.string.optionAbonne);
+            message = getString(R.string.compteAbonne);
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
