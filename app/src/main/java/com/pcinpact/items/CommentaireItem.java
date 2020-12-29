@@ -64,7 +64,8 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return Auteur et date
      */
     public String getAuteurDateCommentaire() {
-        Date maDate = new Date(this.getTimeStampPublication());
+        // (*1000 pour passage en millisecondes pour SDF)
+        Date maDate = new Date(this.getTimeStampPublication() * 1000);
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
