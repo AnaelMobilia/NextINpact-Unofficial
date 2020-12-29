@@ -221,7 +221,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, idArticle, null);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk, null);
 
         // DEBUG
         if (Constantes.DEBUG) {
