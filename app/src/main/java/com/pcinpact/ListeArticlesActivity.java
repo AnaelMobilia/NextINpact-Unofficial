@@ -112,10 +112,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private int dernierePosition;
     /**
-     * Identifiants de l'utilisateur
+     * Identifiant de l'utilisateur
      */
-    private String usernameOption;
-    private String passwordOption;
     private String token;
     /**
      * Timestamp de la date jusqu'à laquelle télécharger les articles
@@ -507,9 +505,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         calculerTimeStampMinArticle();
 
         // Récupération des identifiants de l'utilisateur
-        usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
-        passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
-                                                    R.string.defautOptionPassword);
+        String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin,
+                                                           R.string.defautOptionLogin);
+        String passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
+                                                           R.string.defautOptionPassword);
         // Identifiants non définis...
         if ("".equals(usernameOption) && "".equals(passwordOption)) {
             // Lancement du téléchargement des articles

@@ -39,11 +39,11 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
     /**
      * Login du compte NXI/IH
      */
-    private String username;
+    private final String username;
     /**
      * Password du compte NXI/IH
      */
-    private String password;
+    private final String password;
 
     /**
      * Vérification des identifiants d'un compte abonné
@@ -94,15 +94,17 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
     }
 
     public boolean run() {
+        boolean monRetour = false;
         try {
             // Parallélisation des téléchargements pour l'ensemble de l'application
             this.execute();
+            monRetour = true;
         } catch (RejectedExecutionException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("AsyncAccountCheck", "run() - RejectedExecutionException (trop de monde en queue)", e);
             }
         }
-        return true;
+        return monRetour;
     }
 }

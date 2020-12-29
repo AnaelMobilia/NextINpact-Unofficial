@@ -29,6 +29,7 @@ import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -204,16 +205,16 @@ public class CacheManager {
  * Effacement du cache des images (Glide)
  */
 class CleanImageAsyncTask extends AsyncTask<Void, Void, Void> {
-    final private Context monContext;
+    final private WeakReference<Context> monContext;
 
     CleanImageAsyncTask(Context context) {
-        monContext = context;
+        monContext = new WeakReference<>(context);
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         // This method must be called on a background thread.
-        Glide.get(monContext).clearDiskCache();
+        Glide.get(monContext.get()).clearDiskCache();
         return null;
     }
 }

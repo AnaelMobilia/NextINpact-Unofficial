@@ -42,9 +42,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * @author Anael
  */
 public class DebugActivity extends AppCompatActivity implements AccountCheckInterface {
-    // DAO
-    private DAO monDAO;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
@@ -59,7 +56,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
         }
 
         // Chargement du DAO
-        monDAO = DAO.getInstance(getApplicationContext());
+        DAO monDAO = DAO.getInstance(getApplicationContext());
 
         setContentView(R.layout.activity_debug);
 

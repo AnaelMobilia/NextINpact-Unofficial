@@ -82,7 +82,7 @@ public class Downloader {
                 Log.e("Downloader", "download() - " + e.toString());
             }
         }
-        Log.d("Downloader", "download() - Contenu : " + datas);
+        Log.d("Downloader", "download() - " + uneURL + " Contenu : " + datas);
         return datas;
     }
 
