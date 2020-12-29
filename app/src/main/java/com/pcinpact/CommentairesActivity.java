@@ -364,7 +364,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", articlePk);
+            intentDebug.putExtra("ARTICLE_PK_COMMENTAIRE", articlePk);
             startActivity(intentDebug);
         }
         return super.onOptionsItemSelected(pItem);
