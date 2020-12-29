@@ -63,9 +63,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private int articlePk;
     /**
-     * ID du site (NXI, IH)
+     * ID du site (NXI, IH) et de l'article
      */
     private int site;
+    private int idArticle;
     /**
      * ID du dernier commentaire lu
      */
@@ -175,6 +176,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Je récupère le site concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
         site = monArticle.getSite();
+        idArticle = monArticle.getIdInpact();
 
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
@@ -216,10 +218,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Création de l'URL
         String monPath =
-                Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + articlePk;
+                Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk, null);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, idArticle, null);
 
         // DEBUG
         if (Constantes.DEBUG) {
