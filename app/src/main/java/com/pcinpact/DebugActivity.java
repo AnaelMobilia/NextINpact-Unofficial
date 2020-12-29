@@ -143,7 +143,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
 
                 for (CommentaireItem unComentaire : lesCommentaires) {
                     monContenu.append("=====#");
-                    monContenu.append(unComentaire.getId());
+                    monContenu.append(unComentaire.getNumeroAffichage());
                     monContenu.append(" ");
                     monContenu.append(unComentaire.getAuteurDateCommentaire());
                     monContenu.append("=====");
