@@ -50,6 +50,7 @@ import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
+import com.pcinpact.utils.MyURLUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -553,7 +554,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                                                                  unArticle.getPathPourDl(), unArticle.getPk(), token);
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + unArticle.getUrlPartage());
+                Log.i("ListeArticlesActivity",
+                      "telechargeArticles() - DL de " + MyURLUtils.getSiteURL(unArticle.getSite(), unArticle.getPathPourDl(),
+                                                                              false));
             }
             launchAHD(monAHD, Constantes.HTML_ARTICLE);
         }
@@ -646,8 +649,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 if (unArticle.getTimeStampPublication() > timeStampMinArticle) {
                     // Stockage en BDD ssi nouveau
                     if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
+                        // Je recharge l'article depuis la BDD pour récupérer sa PK
+                        ArticleItem monArticle = monDAO.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
                         // Il faut maintenant télécharger le contenu de l'article !
-                        articleADL.add(unArticle);
+                        articleADL.add(monArticle);
                     }
                 }
             }
