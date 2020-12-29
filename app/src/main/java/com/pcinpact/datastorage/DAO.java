@@ -704,7 +704,7 @@ public final class DAO extends SQLiteOpenHelper {
      * @param dateRefresh date de MàJ
      */
     public void enregistrerDateRefresh(final int pkArticle, final long dateRefresh) {
-        supprimerDateRefresh(pkArticle);
+        this.supprimerDateRefresh(pkArticle);
 
         ContentValues insertValues = new ContentValues();
         insertValues.put(REFRESH_ARTICLE_PK, pkArticle);
