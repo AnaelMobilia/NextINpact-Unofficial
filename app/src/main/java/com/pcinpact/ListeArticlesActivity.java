@@ -156,6 +156,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress = new int[5];
         dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
         dlInProgress[Constantes.HTML_ARTICLE] = 0;
+        dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] = 0;
         // Initialisation des numéros de page des listes d'articles
         numPageListeArticle = new int[Constantes.NOMBRE_SITES + 1];
         numPageListeArticle[Constantes.IS_NXI] = 1;
@@ -746,7 +747,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
+            + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
@@ -791,7 +793,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // Si toutes les données sont téléchargées...
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
+            + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
