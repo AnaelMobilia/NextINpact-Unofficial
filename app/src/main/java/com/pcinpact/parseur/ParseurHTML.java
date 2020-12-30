@@ -141,15 +141,17 @@ public class ParseurHTML {
             contenu += "</span>";
             contenu += contenu_json.getString("headlines");
             contenu += contenu_json.getString("publicText");
+
+            // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
+            String contenuAbonne = contenu_json.getString("privateText");
+            if (!"".equals(contenuAbonne)) {
+                contenu += contenuAbonne;
+            }
             if (contenu_json.getBoolean("isPaywalled")) {
                 // Contenu privé sur paywall
-                String contenuAbonné = contenu_json.getString("privateText");
-                if (!"".equals(contenuAbonné)) {
-                    contenu += contenuAbonné;
-                } else {
-                    contenu += "<br />... (contenu abonné)<br /><br/>";
-                }
+                contenu += "<br />... (contenu abonné)<br /><br/>";
             }
+
             // Auteur de l'article
             JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
             contenu += "<footer>";
