@@ -393,7 +393,8 @@ public class ItemsAdapter extends BaseAdapter {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
                                                            new GlideImageGetter(commentaireVH.commentaire, false, true,
                                                                                 R.drawable.smiley_nextinpact,
-                                                                                R.drawable.smiley_nextinpact_barre),
+                                                                                R.drawable.smiley_nextinpact_barre,
+                                                                                checkTelechargementImage(monContext)),
                                                            new TagHandler());
                     } catch (Exception e) {
                         if (Constantes.DEBUG) {
@@ -446,10 +447,22 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem cai = (ContenuArticleItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenu = Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true,
-                                                                                                  R.drawable.logo_nextinpact,
-                                                                                                  R.drawable.logo_nextinpact_barre),
-                                                           new TagHandler());
+                    Spanned spannedContenu;
+                    if (cai.getSite() == Constantes.IS_NXI) {
+                        spannedContenu = Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true,
+                                                                                              R.drawable.logo_nextinpact,
+                                                                                              R.drawable.logo_nextinpact_barre,
+                                                                                              checkTelechargementImage(
+                                                                                                      monContext)),
+                                                       new TagHandler());
+                    } else {
+                        spannedContenu = Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true,
+                                                                                              R.drawable.logo_inpacthardware,
+                                                                                              R.drawable.logo_inpacthardware_barre,
+                                                                                              checkTelechargementImage(
+                                                                                                      monContext)),
+                                                       new TagHandler());
+                    }
                     contenuVH.contenu.setText(spannedContenu);
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
