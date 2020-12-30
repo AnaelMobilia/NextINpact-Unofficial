@@ -40,16 +40,12 @@ public interface Item {
     /**
      * Type "ContenuArticle"
      */
-    int TYPE_CONTENU_ARTICLE_TEXTE = 3;
-    /**
-     * Type "ContenuArticle"
-     */
-    int TYPE_CONTENU_ARTICLE_IMAGE = 4;
+    int TYPE_CONTENU_ARTICLE = 3;
 
     /**
      * Nombre de types existants.
      */
-    int NOMBRE_DE_TYPES = 5;
+    int NOMBRE_DE_TYPES = 4;
 
     /**
      * Type (cf Item.type*) de l'item.
