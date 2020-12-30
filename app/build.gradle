@@ -11,8 +11,8 @@ android {
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 30
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
-        versionCode 252
-        versionName "2.5.2"
+        versionCode 253
+        versionName "2.5.3"
     }
 
     buildTypes {
