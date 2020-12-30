@@ -208,6 +208,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         }
 
         int idDernierCommentaire = 0;
+        isFinCommentaires = false;
         // Si j'ai des commentaires, je récupère le nombre de commentaires
         if (!mesCommentaires.isEmpty()) {
             idDernierCommentaire = mesCommentaires.size();
@@ -439,7 +440,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
-        // Retour vide ? Fin ou pas de connexion
+        // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
         if (desItems.size() < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
             // MàJ de la date de rafraichissement de l'article
             // Date du refresh (/1000 pour passer en secondes)
@@ -458,19 +459,16 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             if (Constantes.DEBUG) {
                 Log.i("CommentairesActivity", "downloadHTMLFini() - fin des commentaires");
             }
-        } else {
-            // Stockage en BDD des nouveaux commentaires
-            for (Item unCommentaire : desItems) {
-                monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unCommentaire);
-            }
-            // Je note que je ne suis pas à la fin des commentaires
-            isFinCommentaires = false;
+        }
+        // Stockage en BDD des nouveaux commentaires
+        for (Item unCommentaire : desItems) {
+            monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unCommentaire);
+        }
 
-            // Chargement de TOUS les commentaires ?
-            if (isChargementTotal) {
-                // Lancement du prochain téléchargement...
-                refreshListeCommentaires();
-            }
+        // Chargement de TOUS les commentaires ?
+        if (isChargementTotal) {
+            // Lancement du prochain téléchargement...
+            refreshListeCommentaires();
         }
         // Arrêt des gris-gris en GUI
         finTelechargement();
