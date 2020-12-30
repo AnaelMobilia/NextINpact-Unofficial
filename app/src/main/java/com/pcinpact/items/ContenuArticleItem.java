@@ -23,7 +23,7 @@ package com.pcinpact.items;
  *
  * @author Anael
  */
-public abstract class ContenuArticleItem implements Item {
+public class ContenuArticleItem implements Item {
 
     /**
      * Contenu de l'article.
@@ -33,6 +33,10 @@ public abstract class ContenuArticleItem implements Item {
      * ID de l'article associé.
      */
     private int pkArticle;
+    /**
+     * Site concerné (IH, NXI, ...)
+     */
+    private int site;
 
     /*
      * (non-Javadoc)
@@ -40,7 +44,7 @@ public abstract class ContenuArticleItem implements Item {
      */
     @Override
     public int getType() {
-        return 0;
+        return Item.TYPE_CONTENU_ARTICLE;
     }
 
     /**
@@ -69,5 +73,19 @@ public abstract class ContenuArticleItem implements Item {
      */
     public void setPkArticle(int pkArticle) {
         this.pkArticle = pkArticle;
+    }
+
+    /**
+     * @return ID du site concerné
+     */
+    public int getSite() {
+        return site;
+    }
+
+    /**
+     * @param site
+     */
+    public void setSite(int site) {
+        this.site = site;
     }
 }

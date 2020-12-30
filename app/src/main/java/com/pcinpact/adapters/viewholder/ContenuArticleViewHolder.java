@@ -18,7 +18,8 @@
  */
 package com.pcinpact.adapters.viewholder;
 
-import com.github.chrisbanes.photoview.PhotoView;
+import android.widget.TextView;
+
 import com.pcinpact.items.Item;
 
 /**
@@ -26,11 +27,11 @@ import com.pcinpact.items.Item;
  *
  * @author Anael
  */
-public class ContenuArticleImageViewHolder implements ItemViewHolder {
+public class ContenuArticleViewHolder implements ItemViewHolder {
     /**
      * Contenu.
      */
-    public PhotoView contenu;
+    public TextView contenu;
 
     /*
      * (non-Javadoc)
@@ -38,6 +39,6 @@ public class ContenuArticleImageViewHolder implements ItemViewHolder {
      */
     @Override
     public int getType() {
-        return Item.TYPE_CONTENU_ARTICLE_IMAGE;
+        return Item.TYPE_CONTENU_ARTICLE;
     }
 }

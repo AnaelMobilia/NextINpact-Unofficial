@@ -48,9 +48,18 @@ public class GlideImageGetter implements Html.ImageGetter {
     private float density = 1.0f;
     private final int placeholder;
     private final int error;
+    private final boolean telecharger;
 
+    /**
+     * @param textView         Endroit où afficher l'image
+     * @param matchParentWidth
+     * @param densityAware
+     * @param placeholderImage Image en attendant le téléchargement
+     * @param errorImage       Image en cas d'erreur
+     * @param telecharger      Faut-il effectuer un téléchargement ou utiliser uniquement le cache ?
+     */
     public GlideImageGetter(TextView textView, boolean matchParentWidth, boolean densityAware, int placeholderImage,
-                            int errorImage) {
+                            int errorImage, boolean telecharger) {
         this.container = new WeakReference<>(textView);
         this.matchParentWidth = matchParentWidth;
         if (densityAware) {
@@ -58,14 +67,22 @@ public class GlideImageGetter implements Html.ImageGetter {
         }
         this.placeholder = placeholderImage;
         this.error = errorImage;
+        this.telecharger = telecharger;
     }
 
     @Override
     public Drawable getDrawable(String source) {
         BitmapDrawablePlaceholder drawable = new BitmapDrawablePlaceholder();
 
-        container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                placeholder).error(error).into(drawable));
+        if (telecharger) {
+            // Téléchargement OK
+            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                    placeholder).error(error).into(drawable));
+        } else {
+            // Uniquement avec le cache
+            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                    placeholder).error(error).onlyRetrieveFromCache(true).into(drawable));
+        }
 
         return drawable;
     }
