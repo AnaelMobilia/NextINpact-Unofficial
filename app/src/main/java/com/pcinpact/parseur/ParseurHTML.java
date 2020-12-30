@@ -146,8 +146,7 @@ public class ParseurHTML {
             String contenuAbonne = contenu_json.getString("privateText");
             if (!"".equals(contenuAbonne)) {
                 contenu += contenuAbonne;
-            }
-            if (contenu_json.getBoolean("isPaywalled")) {
+            } else if (contenu_json.getBoolean("isPaywalled")) {
                 // Contenu privé sur paywall
                 contenu += "<br />... (contenu abonné)<br /><br/>";
             }
