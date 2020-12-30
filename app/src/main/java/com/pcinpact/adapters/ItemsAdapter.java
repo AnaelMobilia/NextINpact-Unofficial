@@ -346,12 +346,25 @@ public class ItemsAdapter extends BaseAdapter {
                     // Gestion de l'image
                     if (checkTelechargementImage(monContext)) {
                         // Téléchargement OK
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
-                                R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                        if (ai.getSite() == Constantes.IS_NXI) {
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                    R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                        } else {
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(
+                                    R.drawable.logo_inpacthardware).error(R.drawable.logo_inpacthardware_barre).into(
+                                    articleVH.imageArticle);
+                        }
                     } else {
                         // Uniquement avec le cache
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
-                                R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                        if (ai.getSite() == Constantes.IS_NXI) {
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
+                                    R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                        } else {
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(
+                                    R.drawable.logo_inpacthardware).error(
+                                    R.drawable.logo_inpacthardware_barre).onlyRetrieveFromCache(true).into(
+                                    articleVH.imageArticle);
+                        }
                     }
 
                     // On applique le zoom éventuel
