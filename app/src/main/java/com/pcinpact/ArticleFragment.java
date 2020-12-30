@@ -32,10 +32,6 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.utils.Constantes;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
-
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -83,6 +79,7 @@ public class ArticleFragment extends Fragment {
         // Création de mon CAI
         ContenuArticleItem monCAI = new ContenuArticleItem();
         monCAI.setPkArticle(pkArticle);
+        monCAI.setSite(monArticle.getSite());
 
         // Gestion de l'absence de contenu
         if ("".equals(monContenu)) {
@@ -104,36 +101,5 @@ public class ArticleFragment extends Fragment {
         monListView.setAdapter(monItemsAdapter);
 
         return maView;
-    }
-
-    /**
-     * Parse récursivement un contenu HTML pour en sortir des ArticleTexteItem & ArticleImageItem
-     *
-     * @param contenuHTML String contenu HTML à parser
-     * @param idArticle   int ID de l'article
-     * @return ArrayList<ContenuArticleItem>
-     */
-    private ArrayList<ContenuArticleItem> parseArticle(String contenuHTML, int idArticle) {
-        ArrayList<ContenuArticleItem> monAr = new ArrayList<>();
-        //DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("ArticleFragment", "parseArticle() - Appel avec " + contenuHTML);
-        }
-
-        // Parsage du contenu
-        Document lArticle = Jsoup.parse(contenuHTML, "", Parser.xmlParser());
-
-        ContenuArticleItem monTexte = new ContenuArticleItem();
-        monTexte.setPkArticle(pkArticle);
-        monTexte.setContenu(contenuHTML);
-        // Ajout à l'ArrayList
-        monAr.add(monTexte);
-
-        //DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("ArticleFragment", "parseArticle() - TEXTE : " + contenuHTML);
-        }
-
-        return monAr;
     }
 }
