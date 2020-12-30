@@ -409,9 +409,6 @@ public class ParseurHTML {
             }
         }
 
-        // Fix des balises <img> => <img /> (*? => * ungreedy)
-        monContenu = monContenu.replaceAll("(<img.*?\"[^/]*?)(>)", "$1 /$2");
-
         return monContenu;
     }
 
