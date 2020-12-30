@@ -42,7 +42,8 @@
 			\nBonne lecture !"</string>
 
     <!-- A propos -->
-    <string name="aboutContent">"NextINpact (Unofficial) est une application développée bénévolement par un lecteur passionné de NextINpact.
+    <string name="aboutContent">"INpact Actualités Informatiques est une application développée bénévolement par un
+        lecteur passionné de NextINpact et INpact Hardware.
 
 Si vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
 https://github.com/AnaelMobilia/NextINpact-Unofficial/issues
@@ -62,7 +63,7 @@ Crédits :
 
 
 Propriété des contenus :
-L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.nextinpact.com et www.inpact-hardware.com
+L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.nextinpact.com et www.inpact-hardware.com .
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
 Si vous appréciez Next INpact et INpact Hardware, abonnez-vous pour soutenir leur indépendance !
