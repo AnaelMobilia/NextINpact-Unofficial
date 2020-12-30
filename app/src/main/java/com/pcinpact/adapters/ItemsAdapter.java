@@ -19,10 +19,15 @@
 package com.pcinpact.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ImageSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -32,6 +37,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.pcinpact.ImageActivity;
 import com.pcinpact.R;
 import com.pcinpact.adapters.viewholder.ArticleItemViewHolder;
 import com.pcinpact.adapters.viewholder.CommentaireItemViewHolder;
@@ -447,23 +453,45 @@ public class ItemsAdapter extends BaseAdapter {
                     ContenuArticleItem cai = (ContenuArticleItem) i;
 
                     // Remplissage des textview
-                    Spanned spannedContenu;
+                    Spannable spannedContenu;
                     if (cai.getSite() == Constantes.IS_NXI) {
-                        spannedContenu = Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true,
-                                                                                              R.drawable.logo_nextinpact,
-                                                                                              R.drawable.logo_nextinpact_barre,
-                                                                                              checkTelechargementImage(
-                                                                                                      monContext)),
-                                                       new TagHandler());
+                        spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
+                                                                   new GlideImageGetter(contenuVH.contenu, false, true,
+                                                                                        R.drawable.logo_nextinpact,
+                                                                                        R.drawable.logo_nextinpact_barre,
+                                                                                        checkTelechargementImage(monContext)),
+                                                                   new TagHandler());
                     } else {
-                        spannedContenu = Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true,
-                                                                                              R.drawable.logo_inpacthardware,
-                                                                                              R.drawable.logo_inpacthardware_barre,
-                                                                                              checkTelechargementImage(
-                                                                                                      monContext)),
-                                                       new TagHandler());
+                        spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
+                                                                   new GlideImageGetter(contenuVH.contenu, false, true,
+                                                                                        R.drawable.logo_inpacthardware,
+                                                                                        R.drawable.logo_inpacthardware_barre,
+                                                                                        checkTelechargementImage(monContext)),
+                                                                   new TagHandler());
+                    }
+                    // Gestion du clic sur une image
+                    for (ImageSpan span : spannedContenu.getSpans(0, spannedContenu.length(), ImageSpan.class)) {
+                        int flags = spannedContenu.getSpanFlags(span);
+                        int start = spannedContenu.getSpanStart(span);
+                        int end = spannedContenu.getSpanEnd(span);
+                        String imageSource = span.getSource();
+
+                        spannedContenu.setSpan(new URLSpan(span.getSource()) {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intentZoomImg = new Intent(monContext, ImageActivity.class);
+                                intentZoomImg.putExtra("URL_IMAGE", imageSource);
+                                // Lancer une application en dehors d'une activité est bien ce qu'on veut faire :-)
+                                intentZoomImg.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                monContext.startActivity(intentZoomImg);
+                                if (Constantes.DEBUG) {
+                                    Log.i("ItemsAdapter", "getView() - Demande de zoom sur " + imageSource);
+                                }
+                            }
+                        }, start, end, flags);
                     }
                     contenuVH.contenu.setText(spannedContenu);
+                    contenuVH.contenu.setMovementMethod(LinkMovementMethod.getInstance());
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
                     contenuVH.contenu.setId(cai.getPkArticle());
