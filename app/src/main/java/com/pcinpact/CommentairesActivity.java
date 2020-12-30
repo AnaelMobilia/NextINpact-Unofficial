@@ -440,7 +440,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     @Override
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Retour vide ? Fin ou pas de connexion
-        if (desItems.isEmpty()) {
+        if (desItems.size() < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
             // MàJ de la date de rafraichissement de l'article
             // Date du refresh (/1000 pour passer en secondes)
             long dateRefresh = new Date().getTime() / 1000;
