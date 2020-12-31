@@ -162,19 +162,6 @@ public class ParseurHTML {
             Elements lArticle = Jsoup.parse(contenu).select("article");
 
             // NETTOYAGE DU CONTENU
-            // #Brief - suppression des liens sur les titres d'article
-            Elements leBriefLiens = lArticle.select("h2 > a[href*=/brief/]");
-            // Récupération de toutes les balises <a...> autour du titre
-            for (Element unLienTitreArticleBrief : leBriefLiens) {
-                // Insertion du titre en h2
-                unLienTitreArticleBrief.before(unLienTitreArticleBrief.html());
-                // Suppression du lien originel
-                unLienTitreArticleBrief.remove();
-            }
-
-            // # Brief - suppression des nombres de commentaires & réseaux sociaux & couleurs
-            lArticle.select("div[class=brief-foot], div[class=brief-circle-container]").remove();
-
             // Suppression des span d'affiliation
             Elements spanAffiliation = lArticle.select("span[data-affiliable]");
             // Récupération de toutes les balises <a...> autour du titre
