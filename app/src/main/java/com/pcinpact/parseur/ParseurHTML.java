@@ -128,6 +128,9 @@ public class ParseurHTML {
             // Récupération du JSON
             JSONObject contenu_json = new JSONObject(unContenu);
 
+            // Est-ce une actualité du Brief ?
+            boolean isBrief = contenu_json.getBoolean("isBrief");
+
             // L'ID de l'article pour le debug
             int idArticle = contenu_json.getInt("contentId");
 
@@ -136,26 +139,31 @@ public class ParseurHTML {
             contenu += "<h1>";
             contenu += contenu_json.getString("title");
             contenu += "</h1>";
-            contenu += "<span>";
-            contenu += contenu_json.getString("subtitle");
-            contenu += "</span>";
-            contenu += contenu_json.getString("headlines");
+            if (!isBrief) {
+                contenu += "<span>";
+                contenu += contenu_json.getString("subtitle");
+                contenu += "</span>";
+                contenu += contenu_json.getString("headlines");
+            }
             contenu += contenu_json.getString("publicText");
 
             // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
             String contenuAbonne = contenu_json.getString("privateText");
-            if (!"".equals(contenuAbonne)) {
+            if (!"".equals(contenuAbonne) && contenuAbonne != "null") {
                 contenu += contenuAbonne;
             } else if (contenu_json.getBoolean("isPaywalled")) {
                 // Contenu privé sur paywall
                 contenu += "<br />... (contenu abonné)<br /><br/>";
             }
 
-            // Auteur de l'article
-            JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
-            contenu += "<footer>";
-            contenu += "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
-            contenu += "</footer>";
+            // Sauf pour le brief...
+            if (!isBrief) {
+                // Auteur de l'article
+                JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
+                contenu += "<footer>";
+                contenu += "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
+                contenu += "</footer>";
+            }
             contenu += "</article>";
 
             // L'article

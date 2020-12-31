@@ -65,12 +65,10 @@ public class Constantes {
     public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
     public static final String IH_CDN_URL = "https://cdnx.inpact-hardware.com/";
     /**
-     * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources ClusterFilter à 2 pour
-     * avoir les articles abonnés dedans
+     * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
     public static final int NB_ARTICLES_PAR_PAGE = 10;
-    public static final String X_INPACT_URL_LISTE_ARTICLE =
-            "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&ClusterFilter=2&Page=";
+    public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&Page=";
     /**
      * Page du Brief
      */
