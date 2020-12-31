@@ -313,8 +313,11 @@ public class ParseurHTML {
             Elements lesLiens = lArticle.select("a[href]");
             // Pour chaque lien
             for (Element unLien : lesLiens) {
-                // Assignation de son URL absolue
-                unLien.attr("href", unLien.absUrl("href"));
+                // Sauf si c'est un mail (ex: https://api-v1.nextinpact.com/api/v1/SimpleContent/44713)
+                if (!unLien.attr("href").startsWith("mailto:")) {
+                    // Assignation de son URL absolue
+                    unLien.attr("href", unLien.absUrl("href"));
+                }
             }
             // Gestion des URL relatives des images
             Elements lesImages = lArticle.select("img[src]");
