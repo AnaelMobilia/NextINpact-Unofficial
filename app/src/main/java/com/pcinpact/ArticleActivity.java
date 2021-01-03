@@ -204,7 +204,7 @@ public class ArticleActivity extends AppCompatActivity {
         // Création de l'intent
         Intent monIntent = new Intent(Intent.ACTION_SEND);
         monIntent.setType("text/plain");
-        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getUrlPartage());
+        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURLseo());
 
         return monIntent;
     }

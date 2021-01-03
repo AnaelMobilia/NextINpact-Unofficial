@@ -121,7 +121,8 @@ public class ParseurHTML {
      * @param unContenu contenu JSON brut
      * @return Contenu parsé
      */
-    public static String getContenuArticle(final String unContenu) {
+    public static ArticleItem getContenuArticle(final String unContenu) {
+        ArticleItem monRetour = new ArticleItem();
         String monContenu = "";
 
         try {
@@ -156,14 +157,32 @@ public class ParseurHTML {
                 contenu += "<br />... (contenu abonné)<br /><br/>";
             }
 
+            // Calcul de l'URL SEO
+            String URLseo;
+            if (contenu_json.getBoolean("isIH")) {
+                URLseo = Constantes.IH_URL_PARTAGE;
+            } else {
+                URLseo = Constantes.NXI_URL_PARTAGE;
+            }
+            URLseo += contenu_json.getString("contentId");
+            URLseo += "/";
+            URLseo += contenu_json.getString("seoUrl");
+            // Enregistrement de l'URL SEO
+            monRetour.setURLseo(URLseo);
+
+            contenu += "<footer>";
             // Sauf pour le brief...
             if (!isBrief) {
                 // Auteur de l'article
                 JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
-                contenu += "<footer>";
                 contenu += "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
-                contenu += "</footer>";
+            } else {
+                contenu += "Par l'équipe Next INpact";
             }
+            // Lien vers l'article
+            contenu += "<br /><br />Article publié sur <a href=\"" + URLseo + "\">" + URLseo + "</a>";
+
+            contenu += "</footer>";
             contenu += "</article>";
 
             // L'article
@@ -406,7 +425,10 @@ public class ParseurHTML {
             }
         }
 
-        return monContenu;
+        // Enregistrement du contenu
+        monRetour.setContenu(monContenu);
+
+        return monRetour;
     }
 
     /**

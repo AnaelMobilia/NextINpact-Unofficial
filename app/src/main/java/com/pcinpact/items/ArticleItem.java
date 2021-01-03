@@ -88,6 +88,10 @@ public class ArticleItem implements Item {
      * L'article est-il une publicite
      */
     private boolean isPublicite;
+    /**
+     * URL SEO de l'article
+     */
+    private String URLseo;
 
     @Override
     public int getType() {
@@ -123,18 +127,6 @@ public class ArticleItem implements Item {
         laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
 
         return laDate;
-    }
-
-    /**
-     * URL de l'article pour partager (calculé dynamiquement)
-     *
-     * @return url
-     */
-    public String getUrlPartage() {
-        // Le "/article" sert juste à passer le routing chez NXI/IH, l'URL sera réécrite
-        String path = Constantes.X_INPACT_URL_ARTICLE_PARTAGE + this.getIdInpact() + "/article";
-
-        return MyURLUtils.getSiteURL(this.getSite(), path, false);
     }
 
     /**
@@ -210,6 +202,20 @@ public class ArticleItem implements Item {
      */
     public String getSousTitre() {
         return sousTitre;
+    }
+
+    /**
+     * @return URL SEO
+     */
+    public String getURLseo() {
+        return URLseo;
+    }
+
+    /**
+     * @param URLseo URL SEO
+     */
+    public void setURLseo(String URLseo) {
+        this.URLseo = URLseo;
     }
 
     /**

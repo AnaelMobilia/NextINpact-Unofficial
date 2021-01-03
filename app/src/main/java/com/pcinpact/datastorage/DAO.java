@@ -41,7 +41,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma)
      */
-    private static final int BDD_VERSION = 8;
+    private static final int BDD_VERSION = 9;
     /**
      * Nom de la BDD
      */
@@ -108,11 +108,16 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_IS_PUBLICITE = "ispublicite";
     /**
+     * Champ articles => URL SEO
+     */
+    private static final String ARTICLE_URL_SEO = "urlseo";
+    /**
      * Toutes les colonnes à charger pour un article
      */
     private static final String[] ARTICLE__COLONNES = new String[]{ ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_SITE, ARTICLE_TITRE,
             ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS,
-            ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE };
+            ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE,
+            ARTICLE_URL_SEO };
     /**
      * Table commentaires
      */
@@ -213,7 +218,7 @@ public final class DAO extends SQLiteOpenHelper {
                 + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, "
                 + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU
                 + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, "
-                + ARTICLE_IS_PUBLICITE + " BOOLEAN);";
+                + ARTICLE_IS_PUBLICITE + " BOOLEAN, " + ARTICLE_URL_SEO + " TEXT);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -257,6 +262,10 @@ public final class DAO extends SQLiteOpenHelper {
                 // Recréation des tables vierges
                 this.onCreate(db);
 
+            case 8:
+                String reqUpdateFrom8 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_URL_SEO + " TEXT;";
+                db.execSQL(reqUpdateFrom8);
+
                 // A mettre avant le default !
                 break;
             default:
@@ -296,6 +305,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
         insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
+        insertValues.put(ARTICLE_URL_SEO, unArticle.getURLseo());
 
         try {
             maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
@@ -761,6 +771,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setDlContenuAbonne((unCursor.getInt(11) > 0));
         monArticle.setDernierCommLu(unCursor.getInt(12));
         monArticle.setPublicite(unCursor.getInt(13) > 0);
+        monArticle.setURLseo(unCursor.getString(14));
 
         return monArticle;
     }

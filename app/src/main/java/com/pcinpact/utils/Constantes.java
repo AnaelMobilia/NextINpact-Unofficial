@@ -102,7 +102,8 @@ public class Constantes {
     /**
      * URL des articles (pour partager)
      */
-    public static final String X_INPACT_URL_ARTICLE_PARTAGE = "article/";
+    public static final String NXI_URL_PARTAGE = "https://www.nextinpact.com/article/";
+    public static final String IH_URL_PARTAGE = "https://www.inpact-hardware.com/article/";
     /**
      * URL des smileys
      */
