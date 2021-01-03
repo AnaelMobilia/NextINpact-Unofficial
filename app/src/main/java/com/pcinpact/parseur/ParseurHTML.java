@@ -119,9 +119,10 @@ public class ParseurHTML {
      * Parse le contenu d'un article
      *
      * @param unContenu contenu JSON brut
+     * @param unSite    Site concerné (NXI, IH, ...)
      * @return Contenu parsé
      */
-    public static ArticleItem getContenuArticle(final String unContenu) {
+    public static ArticleItem getContenuArticle(final String unContenu, final int unSite) {
         ArticleItem monRetour = new ArticleItem();
         String monContenu = "";
 
@@ -159,10 +160,11 @@ public class ParseurHTML {
 
             // Calcul de l'URL SEO
             String URLseo;
-            if (contenu_json.getBoolean("isIH")) {
-                URLseo = Constantes.IH_URL_PARTAGE;
-            } else {
+            // On ne peut pas se base sur isIH qui est toujours à false même chez IH
+            if (unSite == Constantes.IS_NXI) {
                 URLseo = Constantes.NXI_URL_PARTAGE;
+            } else {
+                URLseo = Constantes.IH_URL_PARTAGE;
             }
             URLseo += contenu_json.getString("contentId");
             URLseo += "/";
