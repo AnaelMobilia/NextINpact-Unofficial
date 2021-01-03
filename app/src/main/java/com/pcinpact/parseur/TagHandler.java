@@ -39,6 +39,7 @@ public class TagHandler implements Html.TagHandler {
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+        Log.d("TagHandler", "handleTag() - tag " + tag);
 
         // Liste ordonnée ou simple ?
         if ("ul".equals(tag)) {
@@ -70,10 +71,6 @@ public class TagHandler implements Html.TagHandler {
 
         // Citations en commentaire
         if (Constantes.TAG_HTML_QUOTE.equals(tag)) {
-            if (Constantes.DEBUG) {
-                Log.i("TagHandler", "handleTag() - opening " + opening + " - posDebutQuote " + posDebutQuote);
-                Log.i("TagHandler", "handleTag() - output (" + output.length() + ") : " + output);
-            }
             if (opening) {
                 // On enregistre la position actuelle
                 posDebutQuote = output.length();
@@ -81,7 +78,10 @@ public class TagHandler implements Html.TagHandler {
                 // A la fin de la citation, on applique le style
                 output.setSpan(new CustomQuoteSpan(), posDebutQuote, output.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+            if (Constantes.DEBUG) {
+                Log.i("TagHandler", "handleTag() - TAG_HTML_QUOTE opening " + opening + " - posDebutQuote " + posDebutQuote);
+                Log.i("TagHandler", "handleTag() - TAG_HTML_QUOTE output (" + output.length() + ") : " + output);
+            }
         }
-        Log.d("TagHandler", "handleTag() - tag " + tag);
     }
 }
