@@ -517,8 +517,8 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("\n\n", "<br />");
 
                 // En réponse à ... ex : > (reply:1836898:ErGo_404) - > (quote:1837046:tazvld)
-                contenuHtml = contenuHtml.replaceAll("\\(reply:[\\d*?]:(.*?)\\)", "<b>$1 a écrit : $1</b><br />");
-                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>En réponse à $1 : $1</b><br />");
+                contenuHtml = contenuHtml.replaceAll("\\(reply:[\\d]*?:(.*?)\\)", "<b>En réponse à $1</b><br />");
+                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>$1 a écrit :</b><br />");
 
                 // Gras ex : **texte**
                 // .*? => .* en mode ungreedy (merci Java :-))
