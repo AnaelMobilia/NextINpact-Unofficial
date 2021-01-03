@@ -412,14 +412,17 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // J'enregistre l'état
         dlInProgress--;
 
-        // Si plus de téléchargement en cours
-        if (dlInProgress == 0) {
+        // Si téléchargement fini ou téléchargement de tous les commentaires
+        if (dlInProgress == 0 || isChargementTotal) {
             // Chargement des commentaires triés
             mesCommentaires = monDAO.chargerCommentairesTriParID(articlePk);
+        }
 
-            // Je met à jour les données
+        // Si plus de téléchargement en cours
+        if (dlInProgress == 0) {
+            // Mise à jour des données
             monItemsAdapter.updateListeItems(mesCommentaires);
-            // Je notifie le changement pour un rafraichissement du contenu
+            // Notification du changement pour un rafraichissement du contenu
             monItemsAdapter.notifyDataSetChanged();
 
             // Arrêt du RefreshLayout
