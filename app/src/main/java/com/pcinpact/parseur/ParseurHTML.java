@@ -509,12 +509,12 @@ public class ParseurHTML {
 
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
-                contenuHtml = contenuHtml.replaceAll(">(.*)",
+                contenuHtml = contenuHtml.replaceAll(">[ ]*?(.*)[\n]*",
                                                      "<div><" + Constantes.TAG_HTML_QUOTE + ">$1</" + Constantes.TAG_HTML_QUOTE
                                                      + "></div>");
 
                 // Retours à la ligne
-                contenuHtml = contenuHtml.replace("\n\n", "<br />");
+                contenuHtml = contenuHtml.replace("\n", "<br />");
 
                 // En réponse à ... ex : > (reply:1836898:ErGo_404) - > (quote:1837046:tazvld)
                 contenuHtml = contenuHtml.replaceAll("\\(reply:[\\d]*?:(.*?)\\)", "<b>En réponse à $1</b><br />");
