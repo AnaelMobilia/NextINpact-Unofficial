@@ -76,6 +76,7 @@ public class TagHandler implements Html.TagHandler {
                 posDebutQuote = output.length();
             } else {
                 // A la fin de la citation, on applique le style
+                output.append("\n");
                 output.setSpan(new CustomQuoteSpan(), posDebutQuote, output.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             if (Constantes.DEBUG) {
