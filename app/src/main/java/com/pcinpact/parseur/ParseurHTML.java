@@ -509,16 +509,52 @@ public class ParseurHTML {
 
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
-                contenuHtml = contenuHtml.replaceAll(">[ ]*?(.*)[\n]*",
+                // Cas possibles en entrée :
+                /*
+                ---
+                > (reply:54166:skankhunt42 )\n\n
+                ---
+                > (reply:54166:skankhunt42 )\n
+                ---
+                > (quote:54153:wackyseb)\nNe reste plus que la liste de courses où aucun outil ne remplacera un petit bout de
+                papier.\n\n
+                ---
+                > (quote:54148:seboquoi)\n>Ça a beau être parfois au-delà de mes capacités informatiques\n\n
+                ---
+                > (quote:54167:barlav)\n> Mais garantir l'exécution sans failles demande un peu plus de formation et de
+                préparation.\nTout reste une balance entre le prix du projet, la matière grise impliquée (et sa compétence à
+                anticiper la suite) et le prix des composants pour faire le Prove Of Concept ; puis éventuellement ensuite la
+                prod.\n\n
+                 */
+                // Fix des "En réponse à xxx" "> (reply:54166:skankhunt42 )\n\n" => "> (reply:54166:skankhunt42 )\n"
+                contenuHtml = contenuHtml.replaceAll("(>[ ]*\\(reply:[\\d]*?:.*\\)\n)\n", "$1");
+                // Protection des "En réponse à xxx"
+                String chrProtection = "#%#%#%#%";
+                contenuHtml = contenuHtml.replaceAll(">[ ]*(\\(reply:[\\d]*?:(.*?)\\\n)", chrProtection + "$1");
+
+                // Mise en forme des citations "xxx à écrit" + contenu du texte cité
+                // (?s) => multi lignes
+                contenuHtml = contenuHtml.replaceAll("(?s)>[ ]*(.*?)[\n]{2}",
                                                      "<div><" + Constantes.TAG_HTML_QUOTE + ">$1</" + Constantes.TAG_HTML_QUOTE
                                                      + "></div>");
+                // Suppression des marques markdown de citation restant dans la citation html
+                contenuHtml = contenuHtml.replaceAll(
+                        "(?s)(<" + Constantes.TAG_HTML_QUOTE + ">)(.*?)\n>(.*?)(</" + Constantes.TAG_HTML_QUOTE + ">)",
+                        "$1$2$3$4");
+
+                // Texte des "xxx à écrit"
+                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>$1 a écrit :</b><br />");
+                // Texte des "En réponse à xxx"
+                contenuHtml = contenuHtml.replaceAll(chrProtection + "\\(reply:[\\d]*?:(.*?)\\)\n",
+                                                     "<div><" + Constantes.TAG_HTML_QUOTE + "><b>En réponse à $1</b></"
+                                                     + Constantes.TAG_HTML_QUOTE + "></div>");
 
                 // Retours à la ligne
                 contenuHtml = contenuHtml.replace("\n", "<br />");
 
-                // En réponse à ... ex : > (reply:1836898:ErGo_404) - > (quote:1837046:tazvld)
-                contenuHtml = contenuHtml.replaceAll("\\(reply:[\\d]*?:(.*?)\\)", "<b>En réponse à $1</b><br />");
-                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>$1 a écrit :</b><br />");
+                // Suppression des retours à la ligne en fin de citation
+                contenuHtml = contenuHtml.replace("</" + Constantes.TAG_HTML_QUOTE + "></div><br />",
+                                                  "</" + Constantes.TAG_HTML_QUOTE + "></div>");
 
                 // Gras ex : **texte**
                 // .*? => .* en mode ungreedy (merci Java :-))
