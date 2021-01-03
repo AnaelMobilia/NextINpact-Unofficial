@@ -39,7 +39,7 @@ public class ArticleItem implements Item {
     /**
      * ID de l'article chez NXI/IH (non unique)
      */
-    private int id_inpact;
+    private int idInpact;
     /**
      * Titre de l'article
      */
@@ -167,14 +167,14 @@ public class ArticleItem implements Item {
      * @return id
      */
     public int getIdInpact() {
-        return id_inpact;
+        return idInpact;
     }
 
     /**
-     * @param id_inpact id_inpact
+     * @param idInpact id_inpact
      */
-    public void setIdInpact(int id_inpact) {
-        this.id_inpact = id_inpact;
+    public void setIdInpact(int idInpact) {
+        this.idInpact = idInpact;
     }
 
     /**
