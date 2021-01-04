@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Calcul de dates.
@@ -51,8 +52,8 @@ public class MyDateUtils {
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {
-            // Récupération du timestamp (/1000 pour passer en secondes !)
-            laDateTS = dfm.parse(uneDate).getTime() / 1000;
+            // Récupération du timestamp
+            laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate).getTime());
         } catch (ParseException e) {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
@@ -78,8 +79,7 @@ public class MyDateUtils {
                         0, 0, 0);
 
         monCalendar.add(Calendar.DATE, -1 * nbJours);
-        // /1000 car timestamp en secondes !
-        monRetour = monCalendar.getTimeInMillis() / 1000;
+        monRetour = TimeUnit.MILLISECONDS.toSeconds(monCalendar.getTimeInMillis());
 
         // DEBUG
         if (Constantes.DEBUG) {

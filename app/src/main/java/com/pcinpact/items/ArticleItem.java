@@ -24,6 +24,7 @@ import com.pcinpact.utils.MyURLUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Objet Article.
@@ -104,7 +105,7 @@ public class ArticleItem implements Item {
      * @return Heure & minute de la publication
      */
     public String getHeureMinutePublication() {
-        Date maDate = new Date(this.getTimeStampPublication() * 1000);
+        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Constantes.LOCALE);
 
@@ -117,8 +118,7 @@ public class ArticleItem implements Item {
      * @return Date de la publication
      */
     public String getDatePublication() {
-        // *1000 car passage de secondes en millisecondes
-        Date maDate = new Date(this.getTimeStampPublication() * 1000);
+        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Constantes.LOCALE);
         String laDate = dfm.format(maDate);

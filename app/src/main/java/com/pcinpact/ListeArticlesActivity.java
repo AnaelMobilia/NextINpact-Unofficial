@@ -55,7 +55,7 @@ import com.pcinpact.utils.MyURLUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -635,8 +635,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 telechargeListeArticles(site);
             } else {
                 // MàJ de la date de rafraichissement de la liste des articles
-                // Date du refresh (/1000 pour passer en secondes)
-                long dateRefresh = new Date().getTime() / 1000;
+                // Date du refresh
+                long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                 monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
 
                 // Mise à jour du nombre de commentaires
@@ -732,8 +732,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             monRetour.add(article);
         }
 
-        // MàJ de la date de dernier refresh (*1000 pour passage en millisecondes pour SDF)
-        long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES) * 1000;
+        // MàJ de la date de dernier refresh
+        long dernierRefresh = TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES));
 
         if (dernierRefresh == 0) {
             // Jamais synchro...

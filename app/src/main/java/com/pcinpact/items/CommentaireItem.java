@@ -23,6 +23,7 @@ import com.pcinpact.utils.Constantes;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 
@@ -68,8 +69,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return Auteur et date
      */
     public String getAuteurDateCommentaire() {
-        // (*1000 pour passage en millisecondes pour SDF)
-        Date maDate = new Date(this.getTimeStampPublication() * 1000);
+        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 

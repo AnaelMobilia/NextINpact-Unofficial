@@ -481,8 +481,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      * MàJ de la date de dernière MàJ
      */
     private void majDateRefresh() {
-        // Date de dernier refresh (*1000 pour passage en millisecondes pour SDF)
-        long dernierRefresh = monDAO.chargerDateRefresh(articlePk) * 1000;
+        // Date de dernier refresh
+        long dernierRefresh = TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(articlePk));
 
         if (dernierRefresh == 0) {
             // Jamais synchro...
