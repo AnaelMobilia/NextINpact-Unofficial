@@ -104,7 +104,7 @@ public class ArticleItem implements Item {
      * @return Heure & minute de la publication
      */
     public String getHeureMinutePublication() {
-        Date maDate = new Date(this.getTimeStampPublication());
+        Date maDate = new Date(this.getTimeStampPublication() * 1000);
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Constantes.LOCALE);
 
