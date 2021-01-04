@@ -526,35 +526,78 @@ public class ParseurHTML {
                 anticiper la suite) et le prix des composants pour faire le Prove Of Concept ; puis éventuellement ensuite la
                 prod.\n\n
                  */
-                // Fix des "En réponse à xxx" "> (reply:54166:skankhunt42 )\n\n" => "> (reply:54166:skankhunt42 )\n"
-                contenuHtml = contenuHtml.replaceAll("(>[ ]*\\(reply:[\\d]*?:.*\\)\n)\n", "$1");
+                String ouvreCitation = "<div><" + Constantes.TAG_HTML_QUOTE + ">";
+                String fermeCitation = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
+
+                String debutQuote = "DEBUTQUOTE";
+                String finQuote = "FINQUOTE";
+                String debutQuoteReply = "DEBUTQUOTE1";
+                String finQuoteReply = "FINQUOTE1";
+                String debutQuoteQuote = "DEBUTQUOTE2";
+                String finQuoteQuote = "FINQUOTE2";
+
+                String contenuBefore;
+
                 // Protection des "En réponse à xxx"
-                String chrProtection = "#%#%#%#%";
-                contenuHtml = contenuHtml.replaceAll(">[ ]*(\\(reply:[\\d]*?:(.*?)\\)\n)", chrProtection + "$1");
+                contenuHtml = contenuHtml.replaceAll(">[ ]*\\(reply:[\\d]*?:(.*?)\\)[\n]+",
+                                                     debutQuoteReply + "$1" + finQuoteReply);
 
-                // Mise en forme des citations "xxx à écrit" + contenu du texte cité
-                // (?s) => multi lignes
-                contenuHtml = contenuHtml.replaceAll("(?s)>[ ]*(.*?)[\n]{2}",
-                                                     "<div><" + Constantes.TAG_HTML_QUOTE + ">$1</" + Constantes.TAG_HTML_QUOTE
-                                                     + "></div>");
-                // Suppression des marques markdown de citation restant dans la citation html
+                // Protection des "xxx à écrit" + contenu
+                contenuHtml = contenuHtml.replaceAll("(?s)>[ ]*\\(quote:[\\d]*?:(.*?)\\)(\n.*?)\n\n",
+                                                     debutQuoteQuote + "$1" + finQuoteQuote + debutQuote + "$2" + finQuote);
+                do {
+                    // Nettoyage récursif des marques de citation dans la zone déjà détectée
+                    contenuBefore = contenuHtml;
+                    contenuHtml = contenuHtml.replaceAll("(?s)(" + debutQuote + ".*?)\n>(.*?" + finQuote + ")", "$1\n$2");
+                } while (!contenuBefore.equals(contenuHtml));
+
+                // Protection des "xxx à écrit" sans contenu
+                contenuHtml = contenuHtml.replaceAll(">[ ]*\\(quote:[\\d]*?:(.*?)\\)\n",
+                                                     debutQuoteQuote + "$1" + finQuoteQuote + "\n");
+
+                // Mise en forme de tout ce qui ressemble à une citation
+                contenuHtml = contenuHtml.replaceAll("(?s)\n>[ ]*(.*?)\n\n", debutQuote + "$1" + finQuote + "\n");
+                do {
+                    // Nettoyage récursif des marques de citation dans la zone déjà détectée
+                    contenuBefore = contenuHtml;
+                    contenuHtml = contenuHtml.replaceAll("(?s)(" + debutQuote + ".*?)\n>(.*?" + finQuote + ")", "$1\n$2");
+                } while (!contenuBefore.equals(contenuHtml));
+
+                // Citation en fin de commentaire
+                contenuHtml = contenuHtml.replaceAll("(?s)\n>[ ]*(.*?)$", debutQuote + "$1" + finQuote);
+                do {
+                    // Nettoyage récursif des marques de citation dans la zone déjà détectée
+                    contenuBefore = contenuHtml;
+                    contenuHtml = contenuHtml.replaceAll("(?s)(" + debutQuote + ".*?)\n>(.*?" + finQuote + ")", "$1\n$2");
+                } while (!contenuBefore.equals(contenuHtml));
+
+                // Citation en début de commentaire
+                contenuHtml = contenuHtml.replaceAll("(?s)^>[ ]*(.*?)\n\n", debutQuote + "$1" + finQuote + "\n");
+                do {
+                    // Nettoyage récursif des marques de citation dans la zone déjà détectée
+                    contenuBefore = contenuHtml;
+                    contenuHtml = contenuHtml.replaceAll("(?s)(" + debutQuote + ".*?)\n>(.*?" + finQuote + ")", "$1\n$2");
+                } while (!contenuBefore.equals(contenuHtml));
+
+                // Texte des "xxx à écrit" + contenu
                 contenuHtml = contenuHtml.replaceAll(
-                        "(?s)(<" + Constantes.TAG_HTML_QUOTE + ">)(.*?)\n>(.*?)(</" + Constantes.TAG_HTML_QUOTE + ">)",
-                        "$1$2$3$4");
+                        "(?s)" + debutQuoteQuote + "(.*?)" + finQuoteQuote + ".*?" + debutQuote + "(.*?)" + finQuote,
+                        ouvreCitation + "<b>$1 a écrit :</b><br />$2" + fermeCitation);
 
-                // Texte des "xxx à écrit"
-                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>$1 a écrit :</b><br />");
+                // Texte des "xxx à écrit" sans contenu
+                contenuHtml = contenuHtml.replaceAll(debutQuoteQuote + "(.*?)" + finQuoteQuote,
+                                                     ouvreCitation + "<b>$1 a écrit :</b>" + fermeCitation);
+
                 // Texte des "En réponse à xxx"
-                contenuHtml = contenuHtml.replaceAll(chrProtection + "\\(reply:[\\d]*?:(.*?)\\)\n",
-                                                     "<div><" + Constantes.TAG_HTML_QUOTE + "><b>En réponse à $1</b></"
-                                                     + Constantes.TAG_HTML_QUOTE + "></div>");
+                contenuHtml = contenuHtml.replaceAll(debutQuoteReply + "(.*?)" + finQuoteReply,
+                                                     ouvreCitation + "<b>En réponse à $1</b>" + fermeCitation);
 
-                // Retours à la ligne
+                // Citations génériques
+                contenuHtml = contenuHtml.replaceAll("(?s)" + debutQuote + "(.*?)" + finQuote,
+                                                     ouvreCitation + "$1" + fermeCitation);
+
+                // Conversion des retours à la ligne en HTML
                 contenuHtml = contenuHtml.replace("\n", "<br />");
-
-                // Suppression des retours à la ligne en fin de citation
-                contenuHtml = contenuHtml.replace("</" + Constantes.TAG_HTML_QUOTE + "></div><br />",
-                                                  "</" + Constantes.TAG_HTML_QUOTE + "></div>");
 
                 // Gras ex : **texte**
                 // .*? => .* en mode ungreedy (merci Java :-))
