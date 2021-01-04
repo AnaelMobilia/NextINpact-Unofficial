@@ -70,11 +70,6 @@ public class Constantes {
     public static final int NB_ARTICLES_PAR_PAGE = 10;
     public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&Page=";
     /**
-     * Page du Brief
-     */
-    public static final int NB_BRIEF_PAR_PAGE = 3;
-    public static final String NXI_IURL_BRIEF = "SimpleContent/list?Nb=" + NB_BRIEF_PAR_PAGE + "&Page=";
-    /**
      * Détail d'un article
      */
     public static final String X_INPACT_URL_ARTICLE = "SimpleContent/";
