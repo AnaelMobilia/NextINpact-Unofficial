@@ -530,7 +530,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replaceAll("(>[ ]*\\(reply:[\\d]*?:.*\\)\n)\n", "$1");
                 // Protection des "En réponse à xxx"
                 String chrProtection = "#%#%#%#%";
-                contenuHtml = contenuHtml.replaceAll(">[ ]*(\\(reply:[\\d]*?:(.*?)\\\n)", chrProtection + "$1");
+                contenuHtml = contenuHtml.replaceAll(">[ ]*(\\(reply:[\\d]*?:(.*?)\\)\n)", chrProtection + "$1");
 
                 // Mise en forme des citations "xxx à écrit" + contenu du texte cité
                 // (?s) => multi lignes
