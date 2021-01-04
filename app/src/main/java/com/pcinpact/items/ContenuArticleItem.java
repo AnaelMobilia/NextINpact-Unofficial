@@ -83,7 +83,7 @@ public class ContenuArticleItem implements Item {
     }
 
     /**
-     * @param site
+     * @param site ID du site concerné
      */
     public void setSite(int site) {
         this.site = site;
