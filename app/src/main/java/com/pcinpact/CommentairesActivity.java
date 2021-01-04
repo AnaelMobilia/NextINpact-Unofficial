@@ -42,7 +42,7 @@ import com.pcinpact.utils.Constantes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -420,6 +420,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Si plus de téléchargement en cours
         if (dlInProgress == 0) {
+            // MàJ de la date de rafraichissement des commentaires de l'article
+            // Date du refresh
+            long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+            monDAO.enregistrerDateRefresh(articlePk, dateRefresh);
+
             // Mise à jour des données
             monItemsAdapter.updateListeItems(mesCommentaires);
             // Notification du changement pour un rafraichissement du contenu
@@ -445,11 +450,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
         if (desItems.size() < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
-            // MàJ de la date de rafraichissement de l'article
-            // Date du refresh (/1000 pour passer en secondes)
-            long dateRefresh = new Date().getTime() / 1000;
-            monDAO.enregistrerDateRefresh(articlePk, dateRefresh);
-
             // Je note qu'il n'y a plus de commentaires
             isFinCommentaires = true;
 
