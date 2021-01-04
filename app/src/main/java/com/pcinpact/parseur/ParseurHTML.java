@@ -151,7 +151,7 @@ public class ParseurHTML {
 
             // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
             String contenuAbonne = contenu_json.getString("privateText");
-            if (!"".equals(contenuAbonne) && contenuAbonne != "null") {
+            if (!"".equals(contenuAbonne) && !"null".equals(contenuAbonne)) {
                 contenu += contenuAbonne;
             } else if (contenu_json.getBoolean("isPaywalled")) {
                 // Contenu privé sur paywall
