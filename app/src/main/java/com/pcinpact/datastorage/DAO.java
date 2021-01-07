@@ -277,18 +277,28 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Enregistre (ou MàJ) un article en BDD
+     * Enregistre (ou MàJ) un article en BDD (effacement dans la base de données)
      *
      * @param unArticle ArticleItem
      */
     public void enregistrerArticle(final ArticleItem unArticle) {
+        enregistrerArticle(unArticle, true);
+    }
+
+    /**
+     * Enregistre (ou MàJ) un article en BDD
+     *
+     * @param unArticle             ArticleItem
+     * @param supprimerCommentaires Faut-il effacer les commentaires & date de refresh si c'est un update ?
+     */
+    public void enregistrerArticle(final ArticleItem unArticle, final boolean supprimerCommentaires) {
         ContentValues insertValues = new ContentValues();
 
         // Est-ce un article déjà connu ?
         int oldPk = unArticle.getPk();
         if (oldPk != 0) {
             // Supprimer l'ancienne version mais conserver la PK
-            supprimerArticle(oldPk);
+            supprimerArticle(oldPk, supprimerCommentaires);
             insertValues.put(ARTICLE_PK, oldPk);
         }
 
@@ -338,7 +348,7 @@ public final class DAO extends SQLiteOpenHelper {
             if (testItem.getPk() != 0) {
                 unArticle.setPk(testItem.getPk());
             }
-        } else if (testItem.getContenu().equals("") && !unArticle.getContenu().equals("")) {
+        } else if ("".equals(testItem.getContenu()) && !"".equals(unArticle.getContenu())) {
             // Article existant mais sans contenu en BDD et contenu dans l'article proposé
             enregistrer = true;
             unArticle.setPk(testItem.getPk());
@@ -455,22 +465,30 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Supprime un article de la BDD
      *
-     * @param pkArticle PK de l'article
+     * @param pkArticle             PK de l'article
+     * @param supprimerCommentaires Faut-il supprimer les commentaires & refresh associés ?
      */
-    public void supprimerArticle(final int pkArticle) {
+    public void supprimerArticle(final int pkArticle, final boolean supprimerCommentaires) {
+        if (Constantes.DEBUG) {
+            Log.d("DAO", "supprimerArticle() - Suppression article " + pkArticle);
+        }
         try {
             // Article
             maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
-            // Commentaires
-            maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            if (supprimerCommentaires) {
+                // Commentaires
+                maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            }
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("DAO", "supprimerArticle() - erreur SQL", e);
             }
         }
-        // Date de refresh
-        this.supprimerDateRefresh(pkArticle);
+        if (supprimerCommentaires) {
+            // Date de refresh
+            this.supprimerDateRefresh(pkArticle);
+        }
     }
 
     /**

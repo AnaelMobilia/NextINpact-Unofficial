@@ -690,7 +690,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Récupération de l'article depuis la BDD
                 ArticleItem monArticle = monDAO.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
                 monArticle.setNbCommentaires(unArticle.getNbCommentaires());
-                monDAO.enregistrerArticle(monArticle);
+                // L'enregistrer mais sans effacer les commentaires & date de refresh
+                monDAO.enregistrerArticle(monArticle, false);
             }
 
             // gestion du téléchargement GUI
