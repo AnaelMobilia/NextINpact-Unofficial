@@ -11,7 +11,7 @@
   - [jsoup v1.13.1 - MIT](http://jsoup.org/) : Parsage du code HTML
   - [PhotoView v2.3.0 - Apache 2.0](https://github.com/chrisbanes/PhotoView) : zoom sur les images
   - [Glide v4.11.0 - BSD, part MIT and Apache 2.0](https://github.com/bumptech/glide) : chargement, cache et affichage des images
-  - [OkHttp v4.8.0 - Apache 2.0](https://square.github.io/okhttp/) : Chargement des données et définition du user-agent utilisé
+  - [OkHttp v4.9.0 - Apache 2.0](https://square.github.io/okhttp/) : Chargement des données et définition du user-agent utilisé
   par Glide
 
 ## Outils pratiques :
