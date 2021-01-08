@@ -261,6 +261,8 @@ public final class DAO extends SQLiteOpenHelper {
                 db.execSQL(reqUpdateFrom7);
                 // Recréation des tables vierges
                 this.onCreate(db);
+                // On vient de recréer la base de données de zéro => ne pas faire les upgrade (déjà effectués dans la création)
+                break;
 
             case 8:
                 String reqUpdateFrom8 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_URL_SEO + " TEXT;";
