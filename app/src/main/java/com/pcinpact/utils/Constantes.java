@@ -113,6 +113,11 @@ public class Constantes {
      */
     public static final String TAG_HTML_QUOTE = "myquote";
 
+    /**
+     * Taille (en Mo) du cache sur le disque
+     */
+    public static final int TAILLE_CACHE = 50;
+
 
     /*
      * TYPES DE TELECHARGEMENTS.

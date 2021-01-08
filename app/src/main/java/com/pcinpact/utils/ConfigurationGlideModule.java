@@ -41,7 +41,7 @@ public class ConfigurationGlideModule extends AppGlideModule {
      */
     @Override
     public void applyOptions(@NonNull Context context, GlideBuilder builder) {
-        int diskCacheSizeBytes = 1024 * 1024 * 50; // 50 Mo de cache
+        int diskCacheSizeBytes = 1024 * 1024 * Constantes.TAILLE_CACHE; // 50 Mo de cache
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, diskCacheSizeBytes));
     }
 
