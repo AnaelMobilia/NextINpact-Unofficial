@@ -22,6 +22,9 @@ import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -98,13 +101,29 @@ public class Downloader {
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
 
+            int tokenEi = (int) Math.floor(Math.random() * username.length());
+            int tokenPi = (int) Math.floor(Math.random() * password.length());
+
+            String tokenTk = username.substring(tokenEi, tokenEi + 1) + password.substring(tokenPi, tokenPi + 1);
+
             // Objet JSON pour la connexion (protection des quotes)
-            String monJSON = "{\"" + Constantes.AUTHENTIFICATION_USERNAME + "\":\"" + username.replaceAll("\"", "\\\\\"")
-                             + "\",\"" + Constantes.AUTHENTIFICATION_PASSWORD + "\":\"" + password.replaceAll("\"", "\\\\\"")
-                             + "\"," + "\"noCrossAuth" + "\":false," + "\"ei\":1,\"pi\":23,\"tk\":\"n(\"}";
+            JSONObject monJSON = new JSONObject();
+            try {
+                monJSON.put(Constantes.AUTHENTIFICATION_USERNAME, username);
+                monJSON.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
+                monJSON.put("noCrossAuth", false);
+                monJSON.put("ei", tokenEi);
+                monJSON.put("pi", tokenPi);
+                monJSON.put("tk", tokenTk);
+            } catch (JSONException e) {
+                if (Constantes.DEBUG) {
+                    Log.e("Downloader", "connexionAbonne() - JSONException", e);
+                }
+            }
 
             // Requête d'authentification
-            RequestBody body = RequestBody.create(monJSON, MediaType.get("application/json; charset=utf-8"));
+            RequestBody body = RequestBody.create(monJSON.toString(),
+                                                  MediaType.get("application/json; charset=" + Constantes.X_INPACT_ENCODAGE));
 
             // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
             HttpUrl monURL = HttpUrl.parse(Constantes.NXI_URL + Constantes.X_INPACT_URL_AUTH);
