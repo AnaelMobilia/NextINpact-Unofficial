@@ -1,11 +1,7 @@
 [![Build Status](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial.svg?branch=master)](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial)
 
-<a href="https://f-droid.org/packages/com.pcinpact/" target="_blank">
-  <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">
-</a>
-<a href="https://play.google.com/store/apps/details?id=com.pcinpact" target="_blank">
-  <img src="https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png" alt="Disponible sur Google Play" height="100"/>
-</a>
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">](https://f-droid.org/packages/com.pcinpact/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png" alt="Disponible sur Google Play" height="100"/>](https://play.google.com/store/apps/details?id=com.pcinpact)
 
 ## Bibliothèques utilisées par le projet :
   - [jsoup v1.13.1 - MIT](http://jsoup.org/) : Parsage du code HTML
