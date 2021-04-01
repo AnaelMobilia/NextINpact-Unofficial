@@ -19,16 +19,17 @@
 package com.pcinpact;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Options de l'application.
  *
  * @author Anael
  */
-public class OptionsActivity extends PreferenceActivity {
+public class OptionsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
@@ -36,7 +37,7 @@ public class OptionsActivity extends PreferenceActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);

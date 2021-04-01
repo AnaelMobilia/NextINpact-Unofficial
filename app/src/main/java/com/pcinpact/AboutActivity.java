@@ -18,19 +18,18 @@
  */
 package com.pcinpact;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.pcinpact.utils.Constantes;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A propos...
  *
  * @author Anael
  */
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class AboutActivity extends AppCompatActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                R.bool.defautOptionThemeSombre);
+                                                            R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);

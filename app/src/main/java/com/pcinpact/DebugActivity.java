@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,14 +35,12 @@ import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 /**
  * Debug de l'application.
  *
  * @author Anael
  */
-public class DebugActivity extends AppCompatActivity implements AccountCheckInterface {
+public class DebugActivity extends Activity implements AccountCheckInterface {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité

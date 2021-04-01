@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,14 +28,12 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.pcinpact.utils.Constantes;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 /**
  * Affiche une image en grand
  *
  * @author Anael
  */
-public class ImageActivity extends AppCompatActivity {
+public class ImageActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

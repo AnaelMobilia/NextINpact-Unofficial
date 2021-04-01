@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,8 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
@@ -53,7 +52,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
  *
  * @author Anael
  */
-public class CommentairesActivity extends AppCompatActivity implements RefreshDisplayInterface {
+public class CommentairesActivity extends Activity implements RefreshDisplayInterface {
     /**
      * Les commentaires
      */

@@ -18,12 +18,10 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Thème par défaut de l'application -->
-    <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="NextInpactTheme" parent="android:Theme.DeviceDefault.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_clair
-        </item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_clair</item>
 
@@ -44,10 +42,8 @@
     </style>
 
     <!-- Thème foncé de l'application -->
-    <style name="NextInpactThemeFonce" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="NextInpactThemeFonce" parent="android:Theme.DeviceDefault.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
-        <item name="android:actionBarStyle" tools:targetApi="11">@style/NextInpactActionBar_fonce
-        </item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_fonce</item>
 

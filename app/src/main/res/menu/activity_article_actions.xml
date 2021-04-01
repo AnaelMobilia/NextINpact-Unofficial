@@ -18,16 +18,15 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Share -->
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_menu_share"
         android:title="@string/action_share"
-        yourapp:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
-        yourapp:showAsAction="ifRoom" />
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        android:showAsAction="ifRoom" />
 
     <!-- DEBUG -->
     <item
@@ -35,12 +34,12 @@
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/action_debug"
         android:visible="false"
-        yourapp:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 
     <!-- Commentaires -->
     <item
         android:id="@+id/action_comments"
         android:icon="@drawable/ic_menu_start_conversation"
         android:title="@string/action_comments"
-        yourapp:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 </menu>
