@@ -45,13 +45,17 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
 
-        mesArticles = monDAO.chargerArticlesTriParDate();
+        // Gestion des publicités rédactionnelles
+        Boolean afficherPublicite = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherPublicite,
+                                                                R.bool.defautOptionAfficherPublicite);
+
+        mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        // Récupérationd e l'article concerné
+        // Récupération de l'article concerné
         ArticleItem monArticle = getArticle(position);
         int pkArticle = monArticle.getPk();
 

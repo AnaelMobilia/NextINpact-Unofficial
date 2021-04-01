@@ -550,9 +550,10 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Charge les articles de la BDD triés par date de publication
      *
+     * @param showPub Intégrer les publicités ?
      * @return ArrayList<ArticleItem> les articles demandés
      */
-    public ArrayList<ArticleItem> chargerArticlesTriParDate() {
+    public ArrayList<ArticleItem> chargerArticlesTriParDate(final boolean showPub) {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null,
                                        ARTICLE_TIMESTAMP + " DESC");
@@ -563,6 +564,11 @@ public final class DAO extends SQLiteOpenHelper {
         while (monCursor.moveToNext()) {
             // Je charge les données de l'objet
             monArticle = cursorToArticleItem(monCursor);
+
+            // Gestion des publicités
+            if (monArticle.isPublicite() && !showPub) {
+                continue;
+            }
 
             // Et l'enregistre
             mesArticles.add(monArticle);

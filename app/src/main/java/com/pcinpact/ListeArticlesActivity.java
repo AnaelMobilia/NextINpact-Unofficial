@@ -572,7 +572,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void telechargeNbCommentaires(int idSite) {
         StringBuilder param = new StringBuilder();
         // Récupération des ID d'articles
-        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
+        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate(false)) {
             // Si c'est le bon site, je prends l'article
             if (unArticle.getSite() == idSite) {
                 param.append(Constantes.X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdInpact());
@@ -708,19 +708,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         ArrayList<Item> monRetour = new ArrayList<>();
         String jourActuel = "";
 
-        // Affichage des publicités rédactionnelles
+        // Gestion des publicités rédactionnelles
         Boolean afficherPublicite = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionAfficherPublicite,
                                                                 R.bool.defautOptionAfficherPublicite);
 
         // Chargement des articles depuis la BDD (triés par date de publication)
-        mesArticles = monDAO.chargerArticlesTriParDate();
+        mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
 
         for (ArticleItem article : mesArticles) {
-            // Si c'est de la publicité & que je ne veux pas les afficher...
-            if (article.isPublicite() & !afficherPublicite) {
-                // Je zappe l'article !
-                continue;
-            }
             // Si ce n'est pas la même journée que l'article précédent
             if (!article.getDatePublication().equals(jourActuel)) {
                 // Je met à jour ma date

@@ -61,7 +61,7 @@ public class CacheManager {
         long timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
         // Chargement de tous les articles de la BDD
-        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
+        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(true);
 
         // Boucle sur les articles
         for (ArticleItem unArticle : mesArticles) {
