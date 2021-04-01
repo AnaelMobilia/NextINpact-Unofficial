@@ -617,7 +617,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     @Override
     public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
         // Si c'est un téléchargement de la liste d'articles
-        if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE)) {
+        if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE) && desItems.size() > 0) {
             // Télécharger la prochaine page de la liste des articles
             boolean dlNextPage = true;
 
