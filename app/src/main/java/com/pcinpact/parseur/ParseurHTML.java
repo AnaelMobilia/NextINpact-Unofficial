@@ -172,6 +172,11 @@ public class ParseurHTML {
             // Enregistrement de l'URL SEO
             monRetour.setURLseo(URLseo);
 
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.d("ParseurHTML", "getContenuArticle() - URL SEO " + URLseo);
+            }
+
             contenu += "<footer>";
             // Sauf pour le brief...
             if (!isBrief) {

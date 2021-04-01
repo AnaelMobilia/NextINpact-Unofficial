@@ -57,6 +57,10 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private ViewPager monViewPager;
     private ArticlePagerAdapter pagerAdapter;
+    /**
+     * Cacher le bouton de partage
+     */
+    private boolean cacherBoutonPartage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,18 +128,16 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Récupération du bouton de partage
         MenuItem shareItem = monMenu.findItem(R.id.action_share);
-        // Get the provider and hold onto it to set/change the share intent.
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
-        // Assignation de mon intent
-        mShareActionProvider.setShareIntent(genererShareIntent());
 
         // Option : cacher le bouton de partage
-        Boolean cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
-                                                                  R.bool.defautOptionCacherBoutonPartage);
+        cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
+                                                          R.bool.defautOptionCacherBoutonPartage);
         if (cacherBoutonPartage) {
             // Le cacher
             shareItem.setVisible(false);
+        } else {
+            genererShareIntent();
         }
 
         // Configuration de l'intent
@@ -155,14 +157,10 @@ public class ArticleActivity extends AppCompatActivity {
                 // Marquer l'article comme lu en BDD
                 monDAO.marquerArticleLu(articlePk);
 
-                // MISE A JOUR DE L'INTENT
-                // Récupération du bouton de partage
-                MenuItem shareItem = monMenu.findItem(R.id.action_share);
-                // Get the provider and hold onto it to set/change the share intent.
-                ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-
-                // Assignation de mon intent
-                mShareActionProvider.setShareIntent(genererShareIntent());
+                // Mise à jour de l'intent
+                if (!cacherBoutonPartage) {
+                    genererShareIntent();
+                }
             }
 
             @Override
@@ -193,11 +191,9 @@ public class ArticleActivity extends AppCompatActivity {
     }
 
     /**
-     * Création d'un intent pour le Share (centralisation de code)
-     *
-     * @return Intent voulu
+     * Création d'un intent pour le Share (mutualisation de code)
      */
-    private Intent genererShareIntent() {
+    private void genererShareIntent() {
         // Chargement de l'article concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
 
@@ -206,6 +202,17 @@ public class ArticleActivity extends AppCompatActivity {
         monIntent.setType("text/plain");
         monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURLseo());
 
-        return monIntent;
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
+        }
+
+        // Récupération du bouton de partage
+        MenuItem shareItem = monMenu.findItem(R.id.action_share);
+        // Get the provider and hold onto it to set/change the share intent.
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+        // Assignation de mon intent
+        mShareActionProvider.setShareIntent(monIntent);
     }
 }

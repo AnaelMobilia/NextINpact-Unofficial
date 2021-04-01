@@ -671,6 +671,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 ArticleItem monArticle = monDAO.chargerArticle(unArticle.getPk());
                 monArticle.setContenu(unArticle.getContenu());
                 monArticle.setLu(false);
+                monArticle.setURLseo(unArticle.getURLseo());
                 // Ais-je téléchargé la partie abonné ?
                 if (monArticle.isAbonne() && !monArticle.isDlContenuAbonne()) {
                     // Suis-je connecté ?
