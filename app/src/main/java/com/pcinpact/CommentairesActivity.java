@@ -383,8 +383,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Lancement de l'animation le cas échéant
         if (dlInProgress == 0) {
             // Couleurs du RefreshLayout
-            monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+            monSwipeRefreshLayout.setColorSchemeResources(R.color.refreshBleu, R.color.refreshOrange);
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 

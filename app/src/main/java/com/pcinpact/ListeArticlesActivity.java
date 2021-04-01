@@ -757,8 +757,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
             }
             // Couleurs du RefreshLayout
-            monSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getApplicationContext(), R.color.refreshBleu),
-                                                       ContextCompat.getColor(getApplicationContext(), R.color.refreshOrange));
+            monSwipeRefreshLayout.setColorSchemeResources(R.color.refreshBleu, R.color.refreshOrange);
             // Animation du RefreshLayout
             monSwipeRefreshLayout.setRefreshing(true);
 

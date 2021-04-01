@@ -54,8 +54,6 @@ import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
-
 /**
  * Adapter pour le rendu des *Item.
  *
@@ -285,21 +283,21 @@ public class ItemsAdapter extends BaseAdapter {
                         // Couleur lu
                         // Choix couleur en fonction du thème
                         if (isThemeSombre) {
-                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleLu_fonce);
+                            couleurArticle = R.color.articleLu_fonce;
                         } else {
-                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleLu_clair);
+                            couleurArticle = R.color.articleLu_clair;
                         }
                     } else {
                         // Couleur non lu
                         // Choix couleur en fonction du thème
                         if (isThemeSombre) {
-                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleNonLu_fonce);
+                            couleurArticle = R.color.articleNonLu_fonce;
                         } else {
-                            couleurArticle = ContextCompat.getColor(monContext, R.color.articleNonLu_clair);
+                            couleurArticle = R.color.articleNonLu_clair;
                         }
                     }
                     // Application de la couleur
-                    articleVH.relativeLayout.setBackgroundColor(couleurArticle);
+                    articleVH.relativeLayout.setBackgroundResource(couleurArticle);
 
                     // Gestion du badge abonné
                     if (ai.isAbonne()) {
