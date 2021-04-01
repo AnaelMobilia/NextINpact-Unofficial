@@ -34,7 +34,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Parseur du code HTML
@@ -511,6 +515,15 @@ public class ParseurHTML {
 
                 // Contenu
                 String contenuHtml = unCommentaire.getString("content");
+
+                // Commentaires modérés
+                if (unCommentaire.optInt("moderationReasonId") != 0) {
+                    DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
+
+                    contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(
+                            new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : "
+                                  + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
+                }
 
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
