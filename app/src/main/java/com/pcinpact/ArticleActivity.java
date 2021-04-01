@@ -24,22 +24,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ShareActionProvider;
 
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
-import androidx.core.view.MenuItemCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 /**
  * Affichage d'un article.
  *
  * @author Anael
  */
-public class ArticleActivity extends AppCompatActivity {
+public class ArticleActivity extends FragmentActivity {
     /**
      * PK de l'article actuel.
      */
@@ -55,12 +54,16 @@ public class ArticleActivity extends AppCompatActivity {
     /**
      * Viewpager pour le slide des articles
      */
-    private ViewPager monViewPager;
+    private ViewPager2 monViewPager;
     private ArticlePagerAdapter pagerAdapter;
     /**
      * Cacher le bouton de partage
      */
     private boolean cacherBoutonPartage;
+    /**
+     * Bouton de partage de l'article
+     */
+    MenuItem shareItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // ViewPager (pour le slide des articles)
         monViewPager = findViewById(R.id.article_viewpager);
-        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext());
+        pagerAdapter = new ArticlePagerAdapter(this, getApplicationContext());
         monViewPager.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
@@ -127,8 +130,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Récupération du bouton de partage
-        MenuItem shareItem = monMenu.findItem(R.id.action_share);
-
+        shareItem = monMenu.findItem(R.id.action_share);
 
         // Option : cacher le bouton de partage
         cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
@@ -141,7 +143,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Configuration de l'intent
-        monViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        monViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -207,10 +209,8 @@ public class ArticleActivity extends AppCompatActivity {
             Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
         }
 
-        // Récupération du bouton de partage
-        MenuItem shareItem = monMenu.findItem(R.id.action_share);
         // Get the provider and hold onto it to set/change the share intent.
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
 
         // Assignation de mon intent
         mShareActionProvider.setShareIntent(monIntent);

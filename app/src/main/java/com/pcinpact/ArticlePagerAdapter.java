@@ -28,19 +28,18 @@ import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
+public class ArticlePagerAdapter extends FragmentStateAdapter {
     /**
      * Les articles
      */
     private final ArrayList<ArticleItem> mesArticles;
 
-    ArticlePagerAdapter(FragmentManager fm, Context unContext) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    ArticlePagerAdapter(FragmentActivity fa, Context unContext) {
+        super(fa);
 
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
@@ -52,9 +51,8 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
         mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
     }
 
-    @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         // Récupération de l'article concerné
         ArticleItem monArticle = getArticle(position);
         int pkArticle = monArticle.getPk();
@@ -72,7 +70,7 @@ public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return mesArticles.size();
     }
 
