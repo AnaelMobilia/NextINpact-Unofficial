@@ -28,7 +28,10 @@
         android:largeScreens="true"
         android:xlargeScreens="true" />
 
+    <!-- Téléchargements des articles & images -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Télécharger les images uniquement en WiFi (option) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"

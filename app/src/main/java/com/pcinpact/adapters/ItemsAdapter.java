@@ -21,7 +21,8 @@ package com.pcinpact.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.Spanned;
@@ -53,6 +54,8 @@ import com.pcinpact.parseur.TagHandler;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
+
+import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
 
 /**
  * Adapter pour le rendu des *Item.
@@ -558,22 +561,32 @@ public class ItemsAdapter extends BaseAdapter {
      */
     private boolean checkTelechargementImage(Context monContext) {
         // Téléchargement des images ?
-        boolean telechargerImages = true;
+        boolean telechargerImages = false;
 
         int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
                                                    R.string.defautOptionTelechargerImagesv2);
-        if (valeurOption == 0) {
-            // Pas de téléchargement des images
-            telechargerImages = false;
+        if (valeurOption == 2) {
+            // Téléchargement systématique des images
+            telechargerImages = true;
         } else if (valeurOption == 1) {
             // Téléchargement uniquement en WiFi
             ConnectivityManager cm = (ConnectivityManager) monContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            // Pour chaque réseau connecté
+            for (Network unNetwork : cm.getAllNetworks()) {
+                NetworkCapabilities activeNetwork = cm.getNetworkCapabilities(unNetwork);
 
-            // Est-on connecté en WiFi ?
-            if (activeNetwork == null || activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) {
-                telechargerImages = false;
+                // Est-on connecté en WiFi ?
+                try {
+                    if (activeNetwork.hasTransport(TRANSPORT_WIFI)) {
+                        telechargerImages = true;
+                    }
+                } catch (NullPointerException e) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ItemsAdapter", "checkTelechargementImage() - Check si réseau WiFi", e);
+                    }
+                }
             }
         }
         return telechargerImages;
