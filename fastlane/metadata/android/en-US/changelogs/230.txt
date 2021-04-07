@@ -1,0 +1,8 @@
+v2.3.0 - Pre-release
+<ul>
+<li>[New] Possibilité de zoomer une image en cliquant dessus</li>
+<li>[New] Message en cas d'abonnement expiré</li>
+<li>[New] Gestion des dernières versions d'Android</li>
+<li>[Fix] Prévention de nombreux crash potentiels de l'application</li>
+<li>[Update] Amélioration de la qualité du code</li>
+</ul>

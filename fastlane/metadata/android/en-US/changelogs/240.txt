@@ -1,0 +1,10 @@
+v2.4.0 - Pre-release
+<ul>
+<li>[New] Mise en forme des commentaires (gras, italique, souligné)</li>
+<li>[New] Image des articles zoomables (taper dessus puis écarter / resserrer)</li>
+<li>[New] Option pour masquer les communiqués publi-rédactionnels</li>
+<li>[Fix] Taille des smileys harmonisée dans les commentaires</li>
+<li>[Fix] Certains commentaires ne s'affichaient pas (message d'erreur)</li>
+<li>[New] Intégration de Glide et de PhotoView</li>
+<li>[Update] Version minimale Android 21 (5.0 - Lollipop publiée en octobre 2014)</li>
+</ul>

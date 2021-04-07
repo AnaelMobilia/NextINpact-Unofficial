@@ -1,0 +1,6 @@
+v2.5.5 - Pre-release
+<ul>
+<li>[Update] Meilleure détection et mise en forme des citations</li>
+<li>[Fix] Mauvaise heure de publication affichée</li>
+<li>[Fix] Date de mise à jour des commentaires n'apparaît pas</li>
+</ul>

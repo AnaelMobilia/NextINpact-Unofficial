@@ -1,0 +1,7 @@
+v2.2.7 - Release
+<ul>
+<li>[New] Affichage du #LeBrief</li>
+<li>[Fix] Nombre de commentaires à 0</li>
+<li>[Update] Meilleure gestion des contenus d'iframes</li>
+<li>[Fix] NullPointerException à la réouverture d'un article après un arrêt de l'application</li>
+</ul>

@@ -1,0 +1,5 @@
+v2.3.1 - Pre-release
+<ul>
+<li>[Update] Meilleure distinction des citations dans les comment</li>
+<li>[Fix] Perte de la position dans la liste des articles lorsqu'on revient dessus</li>
+</ul>
