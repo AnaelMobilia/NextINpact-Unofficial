@@ -19,16 +19,20 @@
 package com.pcinpact;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 /**
  * Options de l'application.
  *
  * @author Anael
  */
-public class OptionsActivity extends PreferenceActivity {
+public class OptionsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité
@@ -42,6 +46,22 @@ public class OptionsActivity extends PreferenceActivity {
             setTheme(R.style.NextInpactThemeFonce);
         }
 
-        addPreferencesFromResource(R.xml.options);
+        // On définit la vue
+        setContentView(R.layout.activity_options);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.optionsLayout, new OptionsActivityFragment()).commit();
+    }
+
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        // Instantiate the new Fragment
+        final Bundle args = pref.getExtras();
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(),
+                                                                                               pref.getFragment());
+        fragment.setArguments(args);
+        fragment.setTargetFragment(caller, 0);
+        // Replace the existing Fragment with the new Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.optionsLayout, fragment).addToBackStack(null).commit();
+        return true;
     }
 }
