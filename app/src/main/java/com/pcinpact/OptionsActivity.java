@@ -19,17 +19,16 @@
 package com.pcinpact;
 
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
 import com.pcinpact.utils.Constantes;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Options de l'application.
  *
  * @author Anael
  */
-public class OptionsActivity extends AppCompatActivity {
+public class OptionsActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Je lance l'activité

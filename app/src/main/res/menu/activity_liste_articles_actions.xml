@@ -18,21 +18,22 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
-        android:showAsAction="ifRoom" />
+        yourapp:showAsAction="ifRoom" />
 
     <!-- Overflow (...) -->
     <item
         android:id="@+id/action_overflow"
         android:icon="@drawable/ic_menu_moreoverflow_normal_holo_dark"
         android:title="@string/action_overflow"
-        android:showAsAction="ifRoom">
+        yourapp:showAsAction="ifRoom">
         <menu>
 
             <!-- Paramètres -->
@@ -40,7 +41,7 @@
                 android:id="@+id/action_settings"
                 android:icon="@drawable/ic_sysbar_quicksettings"
                 android:title="@string/action_settings"
-                android:showAsAction="ifRoom" />
+                yourapp:showAsAction="ifRoom" />
 
             <!-- A propos -->
             <item

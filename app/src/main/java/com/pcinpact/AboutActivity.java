@@ -18,18 +18,19 @@
  */
 package com.pcinpact;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A propos...
  *
  * @author Anael
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

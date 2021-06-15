@@ -18,7 +18,6 @@
  */
 package com.pcinpact;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -59,7 +58,6 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
@@ -67,7 +65,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends Activity implements RefreshDisplayInterface, OnItemClickListener,
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener,
         AccountCheckInterface {
     /**
      * Les articles
@@ -240,7 +238,7 @@ public class ListeArticlesActivity extends Activity implements RefreshDisplayInt
             // Menu debug
             else if (key.equals(getResources().getString(R.string.idOptionDebug))) {
                 // invalidation du menu
-                invalidateOptionsMenu();
+                supportInvalidateOptionsMenu();
 
                 // DEBUG
                 if (Constantes.DEBUG) {
