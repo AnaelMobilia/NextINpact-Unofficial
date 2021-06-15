@@ -334,6 +334,17 @@ public class ParseurHTML {
                 }
             }
 
+            // Gestion des videos HTML5
+            Elements lesVideos = lArticle.select("video");
+            for (Element uneVideo : lesVideos) {
+                String monRemplacement = "<a href=\"" + uneVideo.absUrl("src")
+                                         + "\"><img src=\"android.resource://com.pcinpact/drawable/"
+                                         + R.drawable.iframe_non_supportee + "\" /></a>";
+                // Je remplace la vidéo par mon contenu
+                uneVideo.before(monRemplacement);
+                uneVideo.remove();
+            }
+
             // Gestion des URL relatives des liens
             Elements lesLiens = lArticle.select("a[href]");
             // Pour chaque lien
