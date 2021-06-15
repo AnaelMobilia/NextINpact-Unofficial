@@ -103,14 +103,11 @@ public class ArticleActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Stockage du menu
-        Menu monMenu = menu;
-
-        super.onCreateOptionsMenu(monMenu);
+        super.onCreateOptionsMenu(menu);
 
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_article_actions, monMenu);
+        inflater.inflate(R.menu.activity_article_actions, menu);
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
@@ -126,7 +123,7 @@ public class ArticleActivity extends FragmentActivity {
         }
 
         // Récupération du bouton de partage
-        shareItem = monMenu.findItem(R.id.action_share);
+        shareItem = menu.findItem(R.id.action_share);
 
         // Option : cacher le bouton de partage
         cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,

@@ -205,7 +205,7 @@ public class ItemsAdapter extends BaseAdapter {
                     // Je crée mon viewHolder
                     ContenuArticleViewHolder contenuVH = new ContenuArticleViewHolder();
                     // Je prépare mon holder
-                    contenuVH.contenu = (TextView) maView.findViewById(R.id.texteArticle);
+                    contenuVH.contenu = maView.findViewById(R.id.texteArticle);
                     // Et l'assigne
                     maView.setTag(contenuVH);
                     break;
