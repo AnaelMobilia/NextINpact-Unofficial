@@ -93,18 +93,15 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
         }
     }
 
-    public boolean run() {
-        boolean monRetour = false;
+    public void run() {
         try {
             // Parallélisation des téléchargements pour l'ensemble de l'application
             this.execute();
-            monRetour = true;
         } catch (RejectedExecutionException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("AsyncAccountCheck", "run() - RejectedExecutionException (trop de monde en queue)", e);
             }
         }
-        return monRetour;
     }
 }

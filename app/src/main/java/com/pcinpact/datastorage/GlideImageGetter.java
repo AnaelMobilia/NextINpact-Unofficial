@@ -52,8 +52,8 @@ public class GlideImageGetter implements Html.ImageGetter {
 
     /**
      * @param textView         Endroit où afficher l'image
-     * @param matchParentWidth
-     * @param densityAware
+     * @param matchParentWidth Mêmes dimensions que le parent
+     * @param densityAware     Prendre en compte la densité d'affichage
      * @param placeholderImage Image en attendant le téléchargement
      * @param errorImage       Image en cas d'erreur
      * @param telecharger      Faut-il effectuer un téléchargement ou utiliser uniquement le cache ?

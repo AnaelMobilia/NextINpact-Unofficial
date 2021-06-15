@@ -48,10 +48,6 @@ public class ArticleActivity extends FragmentActivity {
      */
     private DAO monDAO;
     /**
-     * Accès au menu
-     */
-    private Menu monMenu;
-    /**
      * Viewpager pour le slide des articles
      */
     private ViewPager2 monViewPager;
@@ -108,7 +104,7 @@ public class ArticleActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Stockage du menu
-        monMenu = menu;
+        Menu monMenu = menu;
 
         super.onCreateOptionsMenu(monMenu);
 
