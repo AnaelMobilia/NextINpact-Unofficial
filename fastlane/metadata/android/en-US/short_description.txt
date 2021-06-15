@@ -1,0 +1,15 @@
+Lisez les actualités et les commentaires de Next INpact et INpact Hardware lorsque vous êtes connecté à Internet, et également "hors-ligne" (métro, zones hors réseau, etc) grâce à un système de cache intégré !
+L'application gère les contenus abonnés.
+Un thème sombre est également présent.
+
+Application NON officielle développée par un lecteur (passionné) de Next INpact et INpact Hardware.
+N'hésitez pas à m'indiquer vos attentes !
+Code source disponible sur le site de l'application.
+
+Si vous appréciez leur travail, abonnez-vous à Next INpact pour soutenir leur indépendance !
+=> http://www.nextinpact.com/abonnement
+
+---
+Envie de tester les nouvelle versions en avant-première ? Activez la réception des versions bêta dans votre compte Google : https://play.google.com/apps/testing/com.pcinpact
+
+NXI IH

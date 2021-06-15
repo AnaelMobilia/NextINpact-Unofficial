@@ -1,0 +1,7 @@
+v2.2.5 - Release
+<ul>
+<li>[Fix] Prise en compte incorrecte de l'option de téléchargement des images uniquement en WiFi</li>
+<li>[Fix] Erreur si chargement images uniquement en wifi et absence de connexion (NPE)</li>
+<li>[Fix] Erreur (peu fréquente) à l'ouverture d'un article (PagerAdapter / NPE)</li>
+<li>[Fix] Erreur si trop d'images chargées simultanément et appareil avec peu de RAM (OOM)</li>
+</ul>

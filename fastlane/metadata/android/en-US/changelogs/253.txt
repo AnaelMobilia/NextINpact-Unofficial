@@ -1,0 +1,10 @@
+v2.5.3 - Pre-release
+<ul>
+<li>[New] Nouveau logo pour l'application</li>
+<li>[New] Affichage du bon logo pour les images à télécharger</li>
+<li>[Update] Image d'un article zoomable</li>
+<li>[Fix] Rendus HTML de certains articles incorrect</li>
+<li>[Fix] Certains articles étaient tronqués</li>
+<li>[Fix] Chargement des commentaires en continu si peu de commentaires</li>
+<li>[Fix] Duplication des commentaires lors du téléchargement des nouveaux commentaires</li>
+</ul>

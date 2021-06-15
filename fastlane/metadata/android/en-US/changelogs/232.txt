@@ -1,0 +1,6 @@
+v2.3.2 - Release
+<ul>
+<li>[Fix] Crash dans les commentaires</li>
+<li>[Fix] Mauvais affichage des citations</li>
+<li>[Update] Passage à AndroidX</li>
+</ul>

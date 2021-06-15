@@ -1,0 +1,4 @@
+v2.5.6 - Pre-release
+<ul>
+<li>[Fix] Perte des commentaires déjà téléchargés lors du téléchargement de la liste d'articles</li>
+</ul>

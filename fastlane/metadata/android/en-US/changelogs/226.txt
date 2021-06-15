@@ -1,0 +1,5 @@
+v2.2.6 - Release
+<ul>
+<li>[New] Meilleure gestion des nouvelles versions d'Android</li>
+<li>[Fix] Plus de rafraichissement - Merci à Mathy pour le signalement</li>
+</ul>

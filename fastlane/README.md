@@ -1,0 +1,1 @@
+Dossier pour le rendu de l'application dans le store F-Droid

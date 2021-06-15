@@ -1,0 +1,5 @@
+v2.4.1 - Release
+<ul>
+<li>[Fix] Non affichage des images locales</li>
+<li>[Fix] Clignotement de la liste des commentaires lors du chargement de l'ensemble des commentaires</li>
+</ul>

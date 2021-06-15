@@ -1,0 +1,4 @@
+v2.5.8
+<ul>
+<li>[Fix] Connexion au compte abonné impossible</li>
+</ul>

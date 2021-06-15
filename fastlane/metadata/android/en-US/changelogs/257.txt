@@ -1,0 +1,6 @@
+v2.5.7 - Pre-release
+<ul>
+<li>[Fix] Crash à la mise à jour de la BDD</li>
+<li>[New] Utilisation de OkHttp pour Glide (affichage des images)</li>
+<li>[Update] OkHttp v4.9.0</li>
+</ul>

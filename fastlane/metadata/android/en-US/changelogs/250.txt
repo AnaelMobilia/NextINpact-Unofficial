@@ -1,0 +1,7 @@
+v2.5.0 - Pre-release
+<ul>
+<li>[New] Prise en charge d'INpact-Hardware</li>
+<li>[New] Choix du nombre de jours d'actualités à télécharger</li>
+<li>[Fix] Prise en charge de la v7</li>
+<li>[New] Passage à OKHTTP pour la gestion des téléchargements</li>
+</ul>

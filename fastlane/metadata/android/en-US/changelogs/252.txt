@@ -1,0 +1,14 @@
+v2.5.2 - Pre-release
+<ul>
+<li>[New] Utilisation d'un Bearer token pour la connexion</li>
+<li>[New] Modification du stockage des articles (clef unique)</li>
+<li>[New] Protection des accès à la base de données</li>
+<li>[New] Amélioration des performances mémoire</li>
+<li>[New] Amélioration des téléchargements</li>
+<li>[Fix] Commentaires non liés à l'article</li>
+<li>[Fix] Echec de la connexion au compte abonné pour certains mots de passe</li>
+<li>[Fix] ID de commentaires peu lisibles</li>
+<li>[Fix] Contenu abonné non affiché</li>
+<li>[Fix] Nombre de commentaires incorrect</li>
+<li>[Fix] Formatage des dates</li>
+</ul>

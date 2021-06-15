@@ -1,0 +1,9 @@
+v2.5.4 - Pre-release
+<ul>
+<li>[New] Ajout de l'URL de l'article en pied de page</li>
+<li>[New] Gestion des blocs de citation</li>
+<li>[Fix] Certains commentaires n'apparaissaient pas</li>
+<li>[Fix] Chargement total des commentaires n'abouttissait pas</li>
+<li>[Fix] Articles du Brief n'apparaissaient plus</li>
+<li>[Fix] Les balises de lien pour les mails étaient supprimées</li>
+</ul>
