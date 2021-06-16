@@ -1,0 +1,15 @@
+name: Build
+on: [ pull_request, push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Build the app
+        run: |
+          wget https://downloads.gradle.org/distributions/gradle-6.7.1-bin.zip
+          unzip gradle-6.7.1-bin.zip
+          export GRADLE_HOME=$PWD/gradle-6.7.1
+          export PATH=$GRADLE_HOME/bin:$PATH
+          ./gradlew build
