@@ -11,7 +11,7 @@ android:
     - platform-tools
 
     # Build tools requis par le projet
-    - build-tools-30.0.2
+    - build-tools-30.0.3
     # Version du SDK pour compiler le projet
     - android-30
 
@@ -23,9 +23,9 @@ android:
 
 # https://gradle.org/install/#manually
 before_install:
-  - wget https://downloads.gradle.org/distributions/gradle-6.7-bin.zip
-  - unzip gradle-6.7-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-6.7
+  - wget https://downloads.gradle.org/distributions/gradle-6.7.1-bin.zip
+  - unzip gradle-6.7.1-bin.zip
+  - export GRADLE_HOME=$PWD/gradle-6.7.1
   - export PATH=$GRADLE_HOME/bin:$PATH
 
 script:
