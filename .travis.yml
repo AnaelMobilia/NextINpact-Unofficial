@@ -27,6 +27,10 @@ before_install:
   - unzip gradle-6.7.1-bin.zip
   - export GRADLE_HOME=$PWD/gradle-6.7.1
   - export PATH=$GRADLE_HOME/bin:$PATH
+# https://issuetracker.google.com/issues/162255866
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-30"
+  - yes | sdkmanager "build-tools;30.0.3"
 
 script:
   - gradle -v
