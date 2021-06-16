@@ -8,5 +8,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Build the app
         run: |
-          chmod +x ./gradlew
-          ./gradlew build
+          wget https://downloads.gradle.org/distributions/gradle-6.7.1-bin.zip
+          unzip gradle-6.7.1-bin.zip
+          export GRADLE_HOME=$PWD/gradle-6.7.1
+          export PATH=$GRADLE_HOME/bin:$PATH
+          gradle -v
+          gradle build
