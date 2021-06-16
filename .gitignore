@@ -7,8 +7,5 @@
 /app/release/
 /build/
 /captures/
-/gradle/
 local.properties
-gradlew
-gradlew.bat
 /fastlane/
