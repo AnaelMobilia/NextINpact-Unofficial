@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial.svg?branch=master)](https://travis-ci.org/AnaelMobilia/NextINpact-Unofficial)
+[![Build Status](https://github.com/AnaelMobilia/NextINpact-Unofficial/actions/workflows/build.yaml/badge.svg)](https://github.com/AnaelMobilia/NextINpact-Unofficial/actions/workflows/build.yaml)
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">](https://f-droid.org/packages/com.pcinpact/)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png" alt="Disponible sur Google Play" height="100"/>](https://play.google.com/store/apps/details?id=com.pcinpact)
