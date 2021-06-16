@@ -1,0 +1,10 @@
+v2.6.1
+<ul>
+<li>[New] Ne pas afficher les publi-rédactionnels par défaut</li>
+<li>[New] Indication des commentaires modérés</li>
+<li>[Fix] Téléchargement sans fin si hors-ligne</li>
+<li>[Fix] Publi-rédactionnels systématiquement affichés lors du swipe</li>
+<li>[Fix] Le bouton de partage ne fonctionnait plus</li>
+<li>[Update] Amélioration de la qualité du code</li>
+<li>[Update] Mise à jour des dépendances</li>
+</ul>
