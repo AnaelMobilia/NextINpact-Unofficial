@@ -30,7 +30,7 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 /**
@@ -38,7 +38,7 @@ import androidx.viewpager2.widget.ViewPager2;
  *
  * @author Anael
  */
-public class ArticleActivity extends FragmentActivity {
+public class ArticleActivity extends AppCompatActivity {
     /**
      * PK de l'article actuel.
      */
