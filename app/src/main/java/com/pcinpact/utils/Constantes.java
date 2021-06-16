@@ -37,7 +37,7 @@ public class Constantes {
     /**
      * MODE DEBUG.
      */
-    public static final Boolean DEBUG = true;
+    public static final Boolean DEBUG = false;
     /**
      * Contact du développeur
      */
