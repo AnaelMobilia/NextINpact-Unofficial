@@ -24,14 +24,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ShareActionProvider;
 
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Affichage d'un article.
@@ -48,18 +49,18 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private DAO monDAO;
     /**
+     * Accès au menu
+     */
+    private Menu monMenu;
+    /**
      * Viewpager pour le slide des articles
      */
-    private ViewPager2 monViewPager;
+    private ViewPager monViewPager;
     private ArticlePagerAdapter pagerAdapter;
     /**
      * Cacher le bouton de partage
      */
     private boolean cacherBoutonPartage;
-    /**
-     * Bouton de partage de l'article
-     */
-    MenuItem shareItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // ViewPager (pour le slide des articles)
         monViewPager = findViewById(R.id.article_viewpager);
-        pagerAdapter = new ArticlePagerAdapter(this, getApplicationContext());
+        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext());
         monViewPager.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
@@ -103,11 +104,14 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        // Stockage du menu
+        monMenu = menu;
+
+        super.onCreateOptionsMenu(monMenu);
 
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_article_actions, menu);
+        inflater.inflate(R.menu.activity_article_actions, monMenu);
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
@@ -123,7 +127,8 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Récupération du bouton de partage
-        shareItem = menu.findItem(R.id.action_share);
+        MenuItem shareItem = monMenu.findItem(R.id.action_share);
+
 
         // Option : cacher le bouton de partage
         cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
@@ -136,7 +141,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Configuration de l'intent
-        monViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        monViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -202,8 +207,10 @@ public class ArticleActivity extends AppCompatActivity {
             Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
         }
 
+        // Récupération du bouton de partage
+        MenuItem shareItem = monMenu.findItem(R.id.action_share);
         // Get the provider and hold onto it to set/change the share intent.
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
         // Assignation de mon intent
         mShareActionProvider.setShareIntent(monIntent);

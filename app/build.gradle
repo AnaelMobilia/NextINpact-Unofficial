@@ -49,6 +49,8 @@ android {
  * Dépendances de l'application
  */
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
