@@ -183,13 +183,20 @@ public class ParseurHTML {
 
             contenu += "<footer>";
             // Sauf pour le brief...
+            String auteur = "Par l'équipe Next INpact";
             if (!isBrief) {
                 // Auteur de l'article
-                JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
-                contenu += "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
-            } else {
-                contenu += "Par l'équipe Next INpact";
+                try {
+                    JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
+                    auteur = "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
+                } catch (JSONException e) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ParseurHTML", "getArticle() - Crash JSON auteur", e);
+                    }
+                }
             }
+            contenu += auteur;
             // Lien vers l'article
             contenu += "<br /><br />Article publié sur <a href=\"" + URLseo + "\">" + URLseo + "</a>";
 
