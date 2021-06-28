@@ -85,7 +85,10 @@ public class Downloader {
                 Log.e("Downloader", "download() - " + e.toString());
             }
         }
-        Log.d("Downloader", "download() - " + uneURL + " Contenu : " + datas);
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("Downloader", "download() - " + uneURL + " Contenu : " + datas);
+        }
         return datas;
     }
 
