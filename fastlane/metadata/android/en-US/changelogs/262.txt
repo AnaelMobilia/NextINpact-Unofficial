@@ -1,0 +1,5 @@
+v2.6.2
+<ul>
+<li>[Fix] Les news sans auteur ne s'affichaient pas</li>
+<li>[Fix] Crash lors du partage de l'article</li>
+</ul>
