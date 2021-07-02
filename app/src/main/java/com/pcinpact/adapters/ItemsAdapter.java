@@ -320,14 +320,10 @@ public class ItemsAdapter extends BaseAdapter {
                                                                         R.bool.defautOptionAfficherNbNouveauComm);
                     // Ssi commentaires déjà lus
                     if (nbNouveauComm && ai.getDernierCommLu() > 0) {
-
-                        // Calcul du nb de nouveaux commentaires
-                        int nbCommentaires = ai.getNbCommentaires() - ai.getDernierCommLu();
-
                         // Affichage seulement si des nouveaux commentaires
-                        if (nbCommentaires > 0) {
-                            // Insertion dans texte (+1 pour effet de bord)
-                            texteCommentaires += " (+" + ++nbCommentaires + ")";
+                        if (ai.getNbCommentairesNonLus() > 0) {
+                            // Insertion dans texte
+                            texteCommentaires += " (+" + ai.getNbCommentairesNonLus() + ")";
                         }
                     }
 
