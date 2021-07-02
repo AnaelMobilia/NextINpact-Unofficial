@@ -49,11 +49,9 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.preference:preference:1.1.1"
     implementation 'com.google.android.material:material:1.4.0'
@@ -62,8 +60,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:annotations:4.12.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    implementation('com.squareup.okhttp3:okhttp:4.9.1')
-    implementation('com.github.andremion:counterfab:1.2.2')
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.github.andremion:counterfab:1.2.2'
 }
 
 /**
