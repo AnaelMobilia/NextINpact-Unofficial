@@ -24,7 +24,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
@@ -100,6 +102,16 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Définition de l'article demandé !
         monViewPager.setCurrentItem(pagerAdapter.getPosition(articlePk));
+
+        // Bouton des commentaires
+        FloatingActionButton fab = findViewById(R.id.action_comments);
+        fab.setOnClickListener((View arg0) -> {
+            // Afficher les commentaires
+            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+            intentComms.putExtra("ARTICLE_PK", articlePk);
+            startActivity(intentComms);
+        });
+
     }
 
     @Override
@@ -175,12 +187,7 @@ public class ArticleActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem pItem) {
         int id = pItem.getItemId();
-        if (id == R.id.action_comments) {
-            // Afficher les commentaires
-            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-            intentComms.putExtra("ARTICLE_PK", articlePk);
-            startActivity(intentComms);
-        } else if (id == R.id.action_debug) {
+        if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
             intentDebug.putExtra("ARTICLE_PK", articlePk);
