@@ -26,15 +26,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pcinpact.datastorage.DAO;
-import com.pcinpact.items.ArticleItem;
-import com.pcinpact.utils.Constantes;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ShareActionProvider;
 import androidx.core.view.MenuItemCompat;
 import androidx.viewpager.widget.ViewPager;
+
+import com.andremion.counterfab.CounterFab;
+import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.utils.Constantes;
 
 /**
  * Affichage d'un article.
@@ -104,14 +104,7 @@ public class ArticleActivity extends AppCompatActivity {
         monViewPager.setCurrentItem(pagerAdapter.getPosition(articlePk));
 
         // Bouton des commentaires
-        FloatingActionButton fab = findViewById(R.id.action_comments);
-        fab.setOnClickListener((View arg0) -> {
-            // Afficher les commentaires
-            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-            intentComms.putExtra("ARTICLE_PK", articlePk);
-            startActivity(intentComms);
-        });
-
+        genererBadgeCommentaires();
     }
 
     @Override
@@ -173,6 +166,9 @@ public class ArticleActivity extends AppCompatActivity {
                 if (!cacherBoutonPartage) {
                     genererShareIntent();
                 }
+
+                // Bouton des commentaires
+                genererBadgeCommentaires();
             }
 
             @Override
@@ -221,5 +217,21 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Assignation de mon intent
         mShareActionProvider.setShareIntent(monIntent);
+    }
+
+    /**
+     * Piloter le bouton pour voir les commentaires
+     */
+    private void genererBadgeCommentaires() {
+        CounterFab counterFab = findViewById(R.id.action_comments);
+        counterFab.setOnClickListener((View arg0) -> {
+            // Afficher les commentaires
+            Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
+            intentComms.putExtra("ARTICLE_PK", articlePk);
+            startActivity(intentComms);
+        });
+        // Nombre de commentaires non lus
+        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+        counterFab.setCount(monArticle.getNbCommentairesNonLus());
     }
 }
