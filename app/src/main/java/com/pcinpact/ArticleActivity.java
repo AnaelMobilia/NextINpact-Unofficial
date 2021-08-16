@@ -26,15 +26,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
-import androidx.core.view.MenuItemCompat;
-import androidx.viewpager.widget.ViewPager;
-
 import com.andremion.counterfab.CounterFab;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Affichage d'un article.
@@ -54,6 +54,10 @@ public class ArticleActivity extends AppCompatActivity {
      * Accès au menu
      */
     private Menu monMenu;
+    /**
+     * Bouton de partage
+     */
+    MenuItem shareItem;
     /**
      * Viewpager pour le slide des articles
      */
@@ -132,7 +136,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Récupération du bouton de partage
-        MenuItem shareItem = monMenu.findItem(R.id.action_share);
+        shareItem = monMenu.findItem(R.id.action_share);
 
 
         // Option : cacher le bouton de partage
@@ -210,11 +214,11 @@ public class ArticleActivity extends AppCompatActivity {
             Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
         }
 
-        // Récupération du bouton de partage
-        MenuItem shareItem = monMenu.findItem(R.id.action_share);
         // Get the provider and hold onto it to set/change the share intent.
         ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
 
+        // Ne pas afficher l'icône de la dernière application utilisés pour le partage
+        mShareActionProvider.setShareHistoryFileName(null);
         // Assignation de mon intent
         mShareActionProvider.setShareIntent(monIntent);
     }
