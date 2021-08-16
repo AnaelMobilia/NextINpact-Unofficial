@@ -109,7 +109,7 @@ public class ParseurHTML {
                 // Et je le stocke
                 mesArticlesItem.add(monArticleItem);
             }
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getListeArticles() - Crash JSON", e);
