@@ -1,0 +1,6 @@
+v2.6.3
+<ul>
+<li>[New] Ajout d'un bouton "Commentaires" plus accessible</li>
+<li>[Update] Ne plus afficher l'icône de la dernière application utilisée pour partager un article</li>
+<li>[Update] Mise à jour des dépendances</li>
+</ul>
