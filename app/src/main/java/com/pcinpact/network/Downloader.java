@@ -107,7 +107,7 @@ public class Downloader {
             int tokenEi = (int) Math.floor(Math.random() * username.length());
             int tokenPi = (int) Math.floor(Math.random() * password.length());
 
-            String tokenTk = username.substring(tokenEi, tokenEi + 1) + password.substring(tokenPi, tokenPi + 1);
+            String tokenTk = "" + username.charAt(tokenEi) + password.charAt(tokenPi);
 
             // Objet JSON pour la connexion (protection des quotes)
             JSONObject monJSON = new JSONObject();
