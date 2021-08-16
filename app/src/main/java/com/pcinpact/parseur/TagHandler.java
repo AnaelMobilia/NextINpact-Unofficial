@@ -39,7 +39,9 @@ public class TagHandler implements Html.TagHandler {
 
     @Override
     public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-        Log.d("TagHandler", "handleTag() - tag " + tag);
+        if (Constantes.DEBUG) {
+            Log.d("TagHandler", "handleTag() - tag " + tag);
+        }
 
         // Liste ordonnée ou simple ?
         if ("ul".equals(tag)) {
