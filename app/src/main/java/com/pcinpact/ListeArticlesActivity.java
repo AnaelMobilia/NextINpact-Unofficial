@@ -474,9 +474,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
         }
 
-        // Nettoyage du cache de l'application
-        CacheManager.nettoyerCache(getApplicationContext());
-
         super.onDestroy();
     }
 
