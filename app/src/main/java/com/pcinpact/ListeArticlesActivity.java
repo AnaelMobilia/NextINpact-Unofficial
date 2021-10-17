@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -131,6 +132,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Activation du debug Glide
             System.setProperty("log.tag.Glide", "VERBOSE");
             System.setProperty("log.tag.Engine", "VERBOSE");
+
+            // Détection des violations des politiques Android
+            StrictMode.VmPolicy policy = new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setVmPolicy(policy);
         }
 
         super.onCreate(savedInstanceState);
