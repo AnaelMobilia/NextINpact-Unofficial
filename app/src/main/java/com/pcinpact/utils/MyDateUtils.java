@@ -54,7 +54,7 @@ public class MyDateUtils {
         try {
             // Récupération du timestamp
             laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate).getTime());
-        } catch (ParseException e) {
+        } catch (ParseException | NullPointerException e) {
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
             }
