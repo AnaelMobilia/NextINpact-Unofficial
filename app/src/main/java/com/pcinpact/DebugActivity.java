@@ -74,7 +74,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
             // Retour utilisateur
-            Toast monToast = Toast.makeText(getApplicationContext(),
+            Toast monToast = Toast.makeText(this,
                                             getApplicationContext().getString(R.string.debugEffacerCacheToast),
                                             Toast.LENGTH_LONG);
             monToast.show();
@@ -89,7 +89,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             CacheManager.effacerCacheCommentaire(getApplicationContext());
 
             // Retour utilisateur
-            Toast monToast = Toast.makeText(getApplicationContext(),
+            Toast monToast = Toast.makeText(this,
                                             getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast),
                                             Toast.LENGTH_LONG);
             monToast.show();
@@ -166,7 +166,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             message = getString(R.string.compteAbonne);
         }
         // Retour utilisateur
-        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         monToast.show();
     }
 }

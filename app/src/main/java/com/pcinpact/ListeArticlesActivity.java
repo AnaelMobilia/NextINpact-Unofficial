@@ -454,7 +454,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 startActivity(intent);
             } catch (ActivityNotFoundException e) {
                 // Affichage du numéro de version
-                Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(this, getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
                 monToast.show();
 
                 // DEBUG
@@ -607,7 +607,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // Retour utilisateur ?
             if (debug) {
-                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                Toast monToast = Toast.makeText(this, R.string.erreurAHDdl, Toast.LENGTH_SHORT);
                 monToast.show();
             }
 
@@ -843,7 +843,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             token = unToken;
         }
         // Retour utilisateur
-        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         monToast.show();
 
 
