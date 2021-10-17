@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -131,6 +132,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Activation du debug Glide
             System.setProperty("log.tag.Glide", "VERBOSE");
             System.setProperty("log.tag.Engine", "VERBOSE");
+
+            // Détection des violations des politiques Android
+            StrictMode.VmPolicy policy = new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build();
+            StrictMode.setVmPolicy(policy);
         }
 
         super.onCreate(savedInstanceState);
@@ -446,7 +454,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 startActivity(intent);
             } catch (ActivityNotFoundException e) {
                 // Affichage du numéro de version
-                Toast monToast = Toast.makeText(getApplicationContext(), getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
+                Toast monToast = Toast.makeText(this, getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
                 monToast.show();
 
                 // DEBUG
@@ -599,7 +607,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // Retour utilisateur ?
             if (debug) {
-                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                Toast monToast = Toast.makeText(this, R.string.erreurAHDdl, Toast.LENGTH_SHORT);
                 monToast.show();
             }
 
@@ -835,7 +843,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             token = unToken;
         }
         // Retour utilisateur
-        Toast monToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         monToast.show();
 
 

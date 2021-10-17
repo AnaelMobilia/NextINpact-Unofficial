@@ -68,7 +68,7 @@ public class ImageActivity extends AppCompatActivity {
             }
 
             // Affichage d'un toast d'erreur
-            Toast monToast = Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.erreurZoomImage),
+            Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.erreurZoomImage),
                                             Toast.LENGTH_LONG);
             monToast.show();
             // fin

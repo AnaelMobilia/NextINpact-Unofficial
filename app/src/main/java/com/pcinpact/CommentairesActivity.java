@@ -239,7 +239,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
             // Retour utilisateur ?
             if (debug) {
-                Toast monToast = Toast.makeText(getApplicationContext(), R.string.erreurAHDdl, Toast.LENGTH_SHORT);
+                Toast monToast = Toast.makeText(this, R.string.erreurAHDdl, Toast.LENGTH_SHORT);
                 monToast.show();
             }
         }

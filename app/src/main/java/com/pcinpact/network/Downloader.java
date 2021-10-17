@@ -18,6 +18,7 @@
  */
 package com.pcinpact.network;
 
+import android.net.TrafficStats;
 import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
@@ -66,6 +67,8 @@ public class Downloader {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader(
                         "Authorization", "Bearer " + unToken).build();
             }
+            // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
+            TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
 
             // Gestion d'un code erreur
@@ -134,6 +137,8 @@ public class Downloader {
             Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(
                     body).build();
 
+            // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
+            TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
 
             // Authentification OK

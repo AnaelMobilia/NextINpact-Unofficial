@@ -49,7 +49,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         // Affichage du numéro de version
-        Toast monToast = Toast.makeText(getApplicationContext(), Constantes.getUserAgent(), Toast.LENGTH_LONG);
+        Toast monToast = Toast.makeText(this, Constantes.getUserAgent(), Toast.LENGTH_LONG);
         monToast.show();
     }
 }
