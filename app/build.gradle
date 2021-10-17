@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.pcinpact"
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-        targetSdkVersion 30
+        targetSdkVersion 31
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
         versionCode 263
         versionName "2.6.3"
