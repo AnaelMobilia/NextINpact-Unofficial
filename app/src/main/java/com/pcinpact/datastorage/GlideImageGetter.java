@@ -29,6 +29,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +37,7 @@ import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.pcinpact.utils.Constantes;
 
 import java.lang.ref.WeakReference;
 
@@ -74,14 +76,23 @@ public class GlideImageGetter implements Html.ImageGetter {
     public Drawable getDrawable(String source) {
         BitmapDrawablePlaceholder drawable = new BitmapDrawablePlaceholder();
 
-        if (telecharger) {
-            // Téléchargement OK
-            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                    placeholder).error(error).into(drawable));
-        } else {
-            // Uniquement avec le cache
-            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                    placeholder).error(error).onlyRetrieveFromCache(true).into(drawable));
+        try {
+            if (telecharger) {
+                // Téléchargement OK
+                container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                        placeholder).error(error).into(drawable));
+            } else {
+                // Uniquement avec le cache
+                container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                        placeholder).error(error).onlyRetrieveFromCache(true).into(drawable));
+            }
+        } catch (IllegalArgumentException e) {
+            if (Constantes.DEBUG) {
+                Log.e("GlideImageGetter", "getDrawable() -> Exception", e);
+            }
+            // On ne devrait pas avoir d'erreur, mais ça arrive quand même => image d'erreur !
+            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(error).placeholder(
+                    placeholder).into(drawable));
         }
 
         return drawable;
