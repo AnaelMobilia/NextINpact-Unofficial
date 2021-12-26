@@ -29,6 +29,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +37,7 @@ import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.pcinpact.utils.Constantes;
 
 import java.lang.ref.WeakReference;
 
@@ -98,7 +100,13 @@ public class GlideImageGetter implements Html.ImageGetter {
         @Override
         public void draw(final Canvas canvas) {
             if (drawable != null) {
-                drawable.draw(canvas);
+                try {
+                    drawable.draw(canvas);
+                } catch (Exception e) {
+                    if(Constantes.DEBUG) {
+                        Log.e("GlideImageGetter", "draw() - Exception " + e);
+                    }
+                }
             }
         }
 
