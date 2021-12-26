@@ -1,0 +1,4 @@
+v2.66
+<ul>
+<li>[Fix] Partage des articles</li>
+</ul>
