@@ -162,23 +162,26 @@ public class CacheManager {
         // Protection du context
         Context monContext = unContext.getApplicationContext();
 
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS);
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES);
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS);
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, "");
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, "");
+        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, "");
     }
 
     /**
      * Efface tous les fichiers d'un répertoire.
      *
-     * @param unPath répertoire
+     * @param unPath       répertoire
+     * @param startingWith Début du pattern du nom du fichier ("" pour tous les fichiers)
      */
-    private static void effacerContenuRepertoire(final String unPath) {
+    public static void effacerContenuRepertoire(final String unPath, final String startingWith) {
         File[] mesFichiers = new File(unPath).listFiles();
 
         if (mesFichiers != null) {
             for (File unFichier : mesFichiers) {
-                // Fichier à effacer
-                unFichier.delete();
+                if (unFichier.getName().startsWith(startingWith)) {
+                    // Fichier à effacer
+                    unFichier.delete();
+                }
             }
         }
     }

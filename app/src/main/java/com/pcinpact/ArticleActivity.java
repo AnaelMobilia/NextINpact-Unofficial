@@ -36,6 +36,8 @@ import androidx.appcompat.widget.ShareActionProvider;
 import androidx.core.view.MenuItemCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.UUID;
+
 /**
  * Affichage d'un article.
  *
@@ -74,7 +76,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // Gestion du thème sombre (option utilisateur)
         Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+                R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -146,7 +148,7 @@ public class ArticleActivity extends AppCompatActivity {
             // Le cacher
             shareItem.setVisible(false);
         } else {
-            genererShareIntent();
+            genererShareIntent(true);
         }
 
         // Configuration de l'intent
@@ -168,7 +170,7 @@ public class ArticleActivity extends AppCompatActivity {
 
                 // Mise à jour de l'intent
                 if (!cacherBoutonPartage) {
-                    genererShareIntent();
+                    genererShareIntent(false);
                 }
 
                 // Bouton des commentaires
@@ -199,8 +201,10 @@ public class ArticleActivity extends AppCompatActivity {
 
     /**
      * Création d'un intent pour le Share (mutualisation de code)
+     *
+     * @param isNewActivity boolean Est-ce une nouvelle activité ou un glissement d'article ?
      */
-    private void genererShareIntent() {
+    private void genererShareIntent(boolean isNewActivity) {
         // Chargement de l'article concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
 
@@ -214,13 +218,18 @@ public class ArticleActivity extends AppCompatActivity {
             Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
         }
 
-        // Get the provider and hold onto it to set/change the share intent.
-        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-
+        ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
         // Ne pas afficher l'icône de la dernière application utilisés pour le partage
-        mShareActionProvider.setShareHistoryFileName(null);
+        // Génère des exceptions malgré la doc "java.lang.IllegalStateException: No preceding call to #readHistoricalData"
+        //myShareActionProvider.setShareHistoryFileName(null);
+        // Du coup on utilise un nom de fichier random qui sera effacé à la fermeture de l'application
+        myShareActionProvider.setShareHistoryFileName(Constantes.PREFIXE_SHARE_HISTORY_FILE_NAME + UUID.randomUUID().toString());
         // Assignation de mon intent
-        mShareActionProvider.setShareIntent(monIntent);
+        myShareActionProvider.setShareIntent(monIntent);
+        // Si ce n'est pas une nouvelle activité, rafraîchir le menu pour supprimer la dernière action
+        if (!isNewActivity) {
+            supportInvalidateOptionsMenu();
+        }
     }
 
     /**

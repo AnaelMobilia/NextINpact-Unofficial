@@ -475,6 +475,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Détachement du listener pour la taille des textes
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
                     listenerOptions);
+
+            // Suppression des fichiers temporaires pour l'historique du ShareActionProvider
+            CacheManager.effacerContenuRepertoire(getFilesDir().toString(), Constantes.PREFIXE_SHARE_HISTORY_FILE_NAME);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {
