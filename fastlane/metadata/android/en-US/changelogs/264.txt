@@ -1,0 +1,4 @@
+v2.6.4
+<ul>
+<li>[Fix] Meilleur affichage des citations dans les commentaires</li>
+</ul>

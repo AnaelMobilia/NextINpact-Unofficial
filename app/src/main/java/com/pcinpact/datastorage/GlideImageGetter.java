@@ -76,14 +76,23 @@ public class GlideImageGetter implements Html.ImageGetter {
     public Drawable getDrawable(String source) {
         BitmapDrawablePlaceholder drawable = new BitmapDrawablePlaceholder();
 
-        if (telecharger) {
-            // Téléchargement OK
-            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                    placeholder).error(error).into(drawable));
-        } else {
-            // Uniquement avec le cache
-            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
-                    placeholder).error(error).onlyRetrieveFromCache(true).into(drawable));
+        try {
+            if (telecharger) {
+                // Téléchargement OK
+                container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                        placeholder).error(error).into(drawable));
+            } else {
+                // Uniquement avec le cache
+                container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(source).placeholder(
+                        placeholder).error(error).onlyRetrieveFromCache(true).into(drawable));
+            }
+        } catch (IllegalArgumentException e) {
+            if (Constantes.DEBUG) {
+                Log.e("GlideImageGetter", "getDrawable() -> Exception", e);
+            }
+            // On ne devrait pas avoir d'erreur, mais ça arrive quand même => image d'erreur !
+            container.get().post(() -> Glide.with(container.get().getContext()).asBitmap().load(error).placeholder(
+                    placeholder).into(drawable));
         }
 
         return drawable;
