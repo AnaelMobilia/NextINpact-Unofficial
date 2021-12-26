@@ -1,0 +1,4 @@
+v2.6.7
+<ul>
+<li>[Fix] Formatage des commentaires</li>
+</ul>
