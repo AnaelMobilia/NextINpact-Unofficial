@@ -572,16 +572,27 @@ public class ParseurHTML {
                 // Conversion des retours à la ligne en HTML
                 contenuHtml = contenuHtml.replace("\n", "<br />");
 
-                // Gras ex : **texte**
+                // Gras 1 - ex : **texte**
                 // Dans une citation
                 contenuHtml = contenuHtml.replace("\\*\\*", "**");
                 // .*? => .* en mode ungreedy (merci Java :-))
                 contenuHtml = contenuHtml.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
 
-                // Italique ex : *jekyll <jesaispluslenomdel'argument> ;*
+                // Gras 2 - ex : __texte__
+                // Dans une citation
+                contenuHtml = contenuHtml.replace("\\_\\_", "__");
+                // .*? => .* en mode ungreedy (merci Java :-))
+                contenuHtml = contenuHtml.replaceAll("__(.*?)__", "<b>$1</b>");
+
+                // Italique 1 - ex : *jekyll <jesaispluslenomdel'argument> ;*
                 // Dans une citation
                 contenuHtml = contenuHtml.replace("\\*", "*");
                 contenuHtml = contenuHtml.replaceAll("\\*(.*?)\\*", "<i>$1</i>");
+
+                // Italique 2 - ex : _jekyll <jesaispluslenomdel'argument> ;_
+                // Dans une citation
+                contenuHtml = contenuHtml.replace("\\_", "_");
+                contenuHtml = contenuHtml.replaceAll("_(.*?)_", "<i>$1</i>");
 
                 // Barré ex : ~~texte~~
                 // Dans une citation
