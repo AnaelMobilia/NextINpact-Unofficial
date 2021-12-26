@@ -1,0 +1,4 @@
+v2.6.5
+<ul>
+<li>[Fix] Gestion des images/li>
+</ul>
