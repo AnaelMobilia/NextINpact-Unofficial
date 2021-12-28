@@ -548,7 +548,12 @@ public class ParseurHTML {
                 String fermeCitation = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
 
                 // Flèches
+                contenuHtml = contenuHtml.replaceAll("--->", "→");
+                contenuHtml = contenuHtml.replaceAll("-->", "→");
                 contenuHtml = contenuHtml.replaceAll("->", "→");
+                contenuHtml = contenuHtml.replaceAll("===>", "→");
+                contenuHtml = contenuHtml.replaceAll("==>", "→");
+                contenuHtml = contenuHtml.replaceAll("=>", "→");
 
                 // Citations
                 contenuHtml = contenuHtml.replaceAll(">[ ]*(.*?)[\n]+", ouvreCitation + "$1" + fermeCitation);
