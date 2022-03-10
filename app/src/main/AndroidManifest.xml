@@ -43,7 +43,6 @@
         <activity
             android:name=".ListeArticlesActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/NextInpactTheme">
             <intent-filter>
