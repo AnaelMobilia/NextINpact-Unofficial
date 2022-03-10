@@ -82,6 +82,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
+     * [ 0, HTML_LISTE_ARTICLES, HTML_ARTICLE, 0 (HTML_COMMENTAIRES), HTML_NOMBRE_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -670,6 +671,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        } // Chargement de la liste des articles ayant échouée
+        else if(pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE) && desItems.size() == 0) {
+            // gestion du téléchargement GUI
+            finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         }
         // Téléchargement du contenu d'un article
         else if (pathURL.startsWith(Constantes.X_INPACT_URL_ARTICLE)) {
@@ -757,6 +762,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
+        // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
             + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
@@ -802,6 +808,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // Si toutes les données sont téléchargées...
+        // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
         if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE]
             + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
