@@ -79,8 +79,8 @@ public class Downloader {
                 }
             } else {
                 datas = response.body().string();
-                response.close();
             }
+            response.close();
         } catch (IOException | NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
