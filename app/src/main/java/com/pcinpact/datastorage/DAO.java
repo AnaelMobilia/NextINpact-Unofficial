@@ -472,7 +472,11 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public void supprimerArticle(final int pkArticle, final boolean supprimerCommentaires) {
         if (Constantes.DEBUG) {
-            Log.d("DAO", "supprimerArticle() - Suppression article " + pkArticle);
+            if (supprimerCommentaires) {
+                Log.d("DAO", "supprimerArticle() - Suppression article " + pkArticle);
+            } else {
+                Log.d("DAO", "supprimerArticle() - MàJ du nombre de commentaires " + pkArticle);
+            }
         }
         try {
             // Article
