@@ -785,6 +785,12 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":auto:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "auto.gif\" />");
                 contenuHtml = contenuHtml.replace(":pciwin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "champion.gif\" />");
 
+                // Suppression des retours à la ligne surnuméraires
+                // Au début du commentaire
+                contenuHtml = contenuHtml.replaceAll("^(<br \\/>[ ]*)*", "");
+                // A la fin du commentaire
+                // Conversion des retours à la ligne en HTML
+                contenuHtml = contenuHtml.replaceAll("(<br \\/>[ ]*)*$", "");
 
                 monCommentaireItem.setCommentaire(contenuHtml);
                 // Et je le stocke
