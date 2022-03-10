@@ -600,6 +600,9 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("\\~\\~", "~~");
                 contenuHtml = contenuHtml.replaceAll("~~(.*?)~~", "<s>$1</s>");
 
+                // Simple tilde ex ~50Ko/s
+                contenuHtml = contenuHtml.replace("\\~", "~");
+
                 // Lien ex : [Texte](http://)
                 // Dans une citation
                 contenuHtml = contenuHtml.replace("\\[", "[");
