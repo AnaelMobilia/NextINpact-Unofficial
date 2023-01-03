@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "32.0.0"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.1"
 
     defaultConfig {
         applicationId "com.pcinpact"
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-        targetSdkVersion 32
+        targetSdkVersion 33
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
         versionCode 268
         versionName "2.6.8"
@@ -54,18 +54,19 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'org.jsoup:jsoup:1.15.3'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.preference:preference:1.2.0"
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.7.0'
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'com.github.bumptech.glide:annotations:4.12.0'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.github.bumptech.glide:annotations:4.14.2'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.github.andremion:counterfab:1.2.2'
 }
 
