@@ -8,9 +8,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Build the app
         run: |
-          wget https://downloads.gradle-dn.com/distributions/gradle-7.4.1-bin.zip
-          unzip gradle-7.4.1-bin.zip
-          export GRADLE_HOME=$PWD/gradle-7.4.1
+          wget https://services.gradle.org/distributions/gradle-7.4.2-bin.zip
+          unzip gradle-7.4.2-bin.zip
+          export GRADLE_HOME=$PWD/gradle-7.4.2
           export PATH=$GRADLE_HOME/bin:$PATH
           gradle -v
           gradle build
