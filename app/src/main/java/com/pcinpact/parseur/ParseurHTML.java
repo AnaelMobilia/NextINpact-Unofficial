@@ -142,8 +142,17 @@ public class ParseurHTML {
                 contenu += "<span>";
                 contenu += contenu_json.getString("subtitle");
                 contenu += "</span>";
+            }
+            // Gestion de la mise à jour de l'article
+            if (!"null".equals(contenu_json.getString("updateText"))) {
+                contenu += "<header>";
+                contenu += contenu_json.getString("updateText");
+                contenu += "</header>";
+            }
+            if (!"null".equals(contenu_json.getString("headlines"))) {
                 contenu += contenu_json.getString("headlines");
             }
+
             contenu += contenu_json.getString("publicText");
 
             // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
