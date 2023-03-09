@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 - 2022 Anael Mobilia and contributors
+ * Copyright 2013 - 2023 Anael Mobilia and contributors
  *
  * This file is part of NextINpact-Unofficial.
  *
