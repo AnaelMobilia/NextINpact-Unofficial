@@ -79,15 +79,10 @@ public class ParseurHTML {
                 String laDate = unArticle.getString("datePublished");
                 monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
 
-                // Le Brief
-                boolean estBrief = unArticle.getBoolean("isBrief");
-
                 // Publicité
                 boolean estPub = false;
-                if (!estBrief) {
-                    // isSponsored est null si isBrief est true...
-                    estPub = unArticle.getBoolean("isSponsored");
-                }
+                // isSponsored est null si isBrief est true...
+                estPub = (!"null".equals(unArticle.getString("isSponsored")) && unArticle.getBoolean("isSponsored"));
                 monArticleItem.setPublicite(estPub);
 
                 // ID de l'image d'illustration
@@ -134,9 +129,6 @@ public class ParseurHTML {
             // Récupération du JSON
             JSONObject contenu_json = new JSONObject(unContenu);
 
-            // Est-ce une actualité du Brief ?
-            boolean isBrief = contenu_json.getBoolean("isBrief");
-
             // L'ID de l'article pour le debug
             int idArticle = contenu_json.getInt("contentId");
 
@@ -145,7 +137,8 @@ public class ParseurHTML {
             contenu += "<h1>";
             contenu += contenu_json.getString("title");
             contenu += "</h1>";
-            if (!isBrief) {
+            // Pas de sous-titre dans le brief
+            if (!"null".equals(contenu_json.getString("subtitle"))) {
                 contenu += "<span>";
                 contenu += contenu_json.getString("subtitle");
                 contenu += "</span>";
@@ -184,17 +177,11 @@ public class ParseurHTML {
             contenu += "<footer>";
             // Sauf pour le brief...
             String auteur = "Par l'équipe Next INpact";
-            if (!isBrief) {
-                // Auteur de l'article
-                try {
-                    JSONObject monAuteur = contenu_json.getJSONArray("authors").getJSONObject(0);
-                    auteur = "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
-                } catch (JSONException e) {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.i("ParseurHTML", "getArticle() - Crash JSON auteur", e);
-                    }
-                }
+            // Auteur de l'article
+            JSONArray auteurs = contenu_json.getJSONArray("authors");
+            if (auteurs.length() > 0) {
+                JSONObject monAuteur = auteurs.getJSONObject(0);
+                auteur = "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
             }
             contenu += auteur;
             // Lien vers l'article
