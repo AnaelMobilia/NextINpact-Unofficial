@@ -25,6 +25,9 @@
         <item name="android:actionBarStyle">@style/NextInpactActionBar_clair</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_clair</item>
+        <!-- Thème du menu -->
+        <item name="android:itemBackground">#064358</item>
+        <item name="android:textColor">#CCD8C7</item>
 
         <!-- Mes familles de style : liaison nom / style -->
         <item name="themeBanniereFond">@style/BanniereFond_clair</item>
@@ -48,6 +51,9 @@
         <item name="android:actionBarStyle">@style/NextInpactActionBar_fonce</item>
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/NextInpactActionBar_fonce</item>
+        <!-- Thème du menu -->
+        <item name="android:itemBackground">#064358</item>
+        <item name="android:textColor">#CCD8C7</item>
 
         <!-- Mes familles de style : liaison nom / style -->
         <item name="themeBanniereFond">@style/BanniereFond_fonce</item>
