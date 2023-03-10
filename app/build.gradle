@@ -38,6 +38,8 @@ android {
      * Configuration de lint
      */
     lint {
+        // https://github.com/bumptech/glide/issues/4940
+        lintConfig = file("$rootDir/android-lint.xml")
         // Affichage sur stdout des erreurs
         textOutput file('stdout')
         textReport true
