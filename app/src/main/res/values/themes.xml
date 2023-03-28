@@ -23,8 +23,6 @@
     <style name="NextInpactTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
         <item name="android:actionBarStyle">@style/NextInpactActionBar_clair</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/NextInpactActionBar_clair</item>
         <!-- Thème du menu -->
         <item name="android:itemBackground">#064358</item>
         <item name="android:textColor">#CCD8C7</item>
@@ -49,8 +47,6 @@
     <style name="NextInpactThemeFonce" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Thème de l'action Bar -->
         <item name="android:actionBarStyle">@style/NextInpactActionBar_fonce</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/NextInpactActionBar_fonce</item>
         <!-- Thème du menu -->
         <item name="android:itemBackground">#064358</item>
         <item name="android:textColor">#CCD8C7</item>
@@ -76,15 +72,11 @@
     <style name="NextInpactActionBar_clair" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <!-- Image de fond -->
         <item name="android:background">#064358</item>
-        <!-- Support library compatibility -->
-        <item name="background">@color/banniereFond</item>
     </style>
 
     <style name="NextInpactActionBar_fonce" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <!-- Image de fond -->
         <item name="android:background">#064358</item>
-        <!-- Support library compatibility -->
-        <item name="background">@color/banniereFond</item>
     </style>
 
     <!-- Taille de texte personalisée -->
