@@ -23,11 +23,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/article_viewpager"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/article_viewpager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.viewpager.widget.ViewPager>
+    </androidx.viewpager2.widget.ViewPager2>
 
     <RelativeLayout
         android:layout_width="wrap_content"

@@ -34,7 +34,7 @@ import com.pcinpact.utils.Constantes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ShareActionProvider;
 import androidx.core.view.MenuItemCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.UUID;
 
@@ -61,9 +61,9 @@ public class ArticleActivity extends AppCompatActivity {
      */
     MenuItem shareItem;
     /**
-     * Viewpager pour le slide des articles
+     * Viewpager2 pour le slide des articles
      */
-    private ViewPager monViewPager;
+    private ViewPager2 monViewPager2;
     private ArticlePagerAdapter pagerAdapter;
     /**
      * Cacher le bouton de partage
@@ -101,13 +101,13 @@ public class ArticleActivity extends AppCompatActivity {
         // Lien sur BDD
         monDAO = DAO.getInstance(getApplicationContext());
 
-        // ViewPager (pour le slide des articles)
-        monViewPager = findViewById(R.id.article_viewpager);
-        pagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager(), getApplicationContext());
-        monViewPager.setAdapter(pagerAdapter);
+        // ViewPager2 (pour le slide des articles)
+        monViewPager2 = findViewById(R.id.article_viewpager2);
+        pagerAdapter = new ArticlePagerAdapter(this, getApplicationContext());
+        monViewPager2.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
-        monViewPager.setCurrentItem(pagerAdapter.getPosition(articlePk));
+        monViewPager2.setCurrentItem(pagerAdapter.getPosition(articlePk));
 
         // Bouton des commentaires
         genererBadgeCommentaires();
@@ -152,7 +152,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         // Configuration de l'intent
-        monViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        monViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

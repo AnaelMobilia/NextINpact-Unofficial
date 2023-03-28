@@ -35,6 +35,7 @@ import com.pcinpact.utils.Constantes;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -43,6 +44,7 @@ import androidx.fragment.app.Fragment;
 public class ArticleFragment extends Fragment {
     private int pkArticle;
     private Context monContext;
+    private LayoutInflater monLayoutInflater;
 
     /**
      * Passage de toutes les valeurs requises
@@ -63,8 +65,14 @@ public class ArticleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View maView = inflater.inflate(R.layout.article_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Conserver le LayoutInflater
+        monLayoutInflater = inflater;
+        return inflater.inflate(R.layout.article_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View maView, @Nullable Bundle savedInstanceState) {
         // Listview qui contiendra l'article
         ListView monListView = maView.findViewById(R.id.contenuArticle);
 
@@ -84,12 +92,12 @@ public class ArticleFragment extends Fragment {
         // Gestion de l'absence de contenu
         if ("".equals(monContenu)) {
             if (Constantes.DEBUG) {
-                Log.w("ArticleFragment", "onCreateView() - Article vide");
+                Log.w("ArticleFragment", "onViewCreated() - Article vide");
             }
             monCAI.setContenu(getString(R.string.articleVideErreurHTML));
         } else {
             if (Constantes.DEBUG) {
-                Log.w("ArticleFragment", "onCreateView() - Article non vide");
+                Log.w("ArticleFragment", "onViewCreated() - Article non vide");
             }
             monCAI.setContenu(monContenu);
         }
@@ -97,9 +105,7 @@ public class ArticleFragment extends Fragment {
         monAR.add(monCAI);
 
         // MàJ de l'affichage
-        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, inflater, monAR);
+        ItemsAdapter monItemsAdapter = new ItemsAdapter(monContext, monLayoutInflater, monAR);
         monListView.setAdapter(monItemsAdapter);
-
-        return maView;
     }
 }
