@@ -127,8 +127,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
                 default:
                     if (Constantes.DEBUG) {
-                        Log.e("AsyncHTMLDownloader",
-                              "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + fullURL);
+                        Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + fullURL);
                     }
                     break;
             }

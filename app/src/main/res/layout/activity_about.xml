@@ -18,8 +18,8 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<ScrollView style="?attr/themeArticleFond"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/themeArticleFond"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="web|email"
-            android:paddingBottom="5dp"
-            android:paddingEnd="?android:attr/scrollbarSize"
             android:paddingStart="5dp"
+            android:paddingEnd="?android:attr/scrollbarSize"
+            android:paddingBottom="5dp"
             android:text="@string/aboutContent" />
     </LinearLayout>
 </ScrollView>

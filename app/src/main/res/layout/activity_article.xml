@@ -26,22 +26,21 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/article_viewpager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.viewpager2.widget.ViewPager2>
+        android:layout_height="match_parent"></androidx.viewpager2.widget.ViewPager2>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom">
-    <!-- Commentaires -->
-    <com.andremion.counterfab.CounterFab
-        android:id="@+id/action_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        app:fabSize="mini"
-        android:contentDescription="@string/action_comments"
-        android:src="@drawable/ic_menu_start_conversation" />
+        <!-- Commentaires -->
+        <com.andremion.counterfab.CounterFab
+            android:id="@+id/action_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/action_comments"
+            android:src="@drawable/ic_menu_start_conversation"
+            app:fabSize="mini" />
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

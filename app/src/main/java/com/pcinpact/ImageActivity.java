@@ -23,11 +23,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.pcinpact.utils.Constantes;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Affiche une image en grand
@@ -42,8 +42,7 @@ public class ImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Gestion du thème sombre (option utilisateur)
-        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre, R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -68,8 +67,7 @@ public class ImageActivity extends AppCompatActivity {
             }
 
             // Affichage d'un toast d'erreur
-            Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.erreurZoomImage),
-                                            Toast.LENGTH_LONG);
+            Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.erreurZoomImage), Toast.LENGTH_LONG);
             monToast.show();
             // fin
             finish();

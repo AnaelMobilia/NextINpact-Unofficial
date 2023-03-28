@@ -20,12 +20,12 @@ package com.pcinpact;
 
 import android.os.Bundle;
 
-import com.pcinpact.utils.Constantes;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.pcinpact.utils.Constantes;
 
 /**
  * Options de l'application.
@@ -39,8 +39,7 @@ public class OptionsActivity extends AppCompatActivity implements PreferenceFrag
         super.onCreate(savedInstanceState);
 
         // Gestion du thème sombre (option utilisateur)
-        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre, R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -56,8 +55,7 @@ public class OptionsActivity extends AppCompatActivity implements PreferenceFrag
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         // Instantiate the new Fragment
         final Bundle args = pref.getExtras();
-        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(),
-                                                                                               pref.getFragment());
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(), pref.getFragment());
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment

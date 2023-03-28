@@ -26,6 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
@@ -33,10 +37,6 @@ import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 /**
  * Contenu d'article, utilisé pour le slider

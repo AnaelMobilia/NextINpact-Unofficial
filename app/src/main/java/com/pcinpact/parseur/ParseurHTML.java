@@ -216,7 +216,7 @@ public class ParseurHTML {
             // Gestion des iframe
             Elements lesIframes = lArticle.select("iframe");
             // généralisation de l'URL en dehors du scheme
-            String[] schemes = { "https://", "http://", "//" };
+            String[] schemes = {"https://", "http://", "//"};
             // Pour chaque iframe
             for (Element uneIframe : lesIframes) {
                 // URL du lecteur
@@ -228,8 +228,7 @@ public class ParseurHTML {
                         urlLecteur = urlLecteur.substring(unScheme.length());
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.w("ParseurHTML",
-                                  "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+                            Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
                         }
                     }
                 }
@@ -246,83 +245,62 @@ public class ParseurHTML {
                      * Liste de lecture Youtube
                      */
                     // Recalcul de l'ID de la vidéo (cas particulier)
-                    idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split(
-                            "#")[0];
-                    monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_liste_youtube + "\" /></a>";
-                } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith(
-                        "www.youtube-nocookie.com/embed/")) {
+                    idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
+                    monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
+                } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
                     /*
                      * Youtube
                      */
-                    monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube
-                                      + "\" /></a>";
+                    monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
                 } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
                     /*
                      * Dailymotion
                      */
-                    monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion
-                                      + "\" /></a>";
+                    monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
                 } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
                     /*
                      * VIMEO
                      */
-                    monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo
-                                      + "\" /></a>";
+                    monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
                 } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
                     /*
                      * Videos.gouv.fr
                      */
-                    monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                    monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
                 } else if (urlLecteur.startsWith("vid.me")) {
                     /*
                      * Vidme
                      */
-                    monRemplacement =
-                            "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                            + R.drawable.iframe_vidme + "\" /></a>";
+                    monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
                 } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
                     /*
                      * Soundcloud (l'URL commence bien par w.soundcloud !)
                      */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_soundcloud + "\" /></a>";
+                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
                 } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                     /*
                      * Scribd
                      */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_scribd + "\" /></a>";
+                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
                 } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
                     /*
                      * Canal+
                      */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_canalplus + "\" /></a>";
+                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
                 } else if (urlLecteur.startsWith("www.arte.tv/")) {
                     /*
                      * Arte
                      */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_arte + "\" /></a>";
+                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
                 } else {
                     /*
                      * Déchet (catch all)
                      */
-                    monRemplacement = "<a href=\"" + uneIframe.absUrl("src")
-                                      + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                      + R.drawable.iframe_non_supportee + "\" /></a>";
+                    monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.e("ParseurHTML",
-                              "getArticle() - Iframe non gérée dans " + idArticle + " : " + uneIframe.absUrl("src"));
+                        Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + idArticle + " : " + uneIframe.absUrl("src"));
                     }
                 }
 
@@ -340,9 +318,7 @@ public class ParseurHTML {
             // Gestion des videos HTML5
             Elements lesVideos = lArticle.select("video");
             for (Element uneVideo : lesVideos) {
-                String monRemplacement = "<a href=\"" + uneVideo.absUrl("src")
-                                         + "\"><img src=\"android.resource://com.pcinpact/drawable/"
-                                         + R.drawable.iframe_non_supportee + "\" /></a>";
+                String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
                 // Je remplace la vidéo par mon contenu
                 uneVideo.before(monRemplacement);
                 uneVideo.remove();
@@ -524,8 +500,7 @@ public class ParseurHTML {
                 monCommentaireItem.setAuteur(unCommentaire.getString("userName"));
 
                 // Date
-                monCommentaireItem.setTimeStampPublication(
-                        MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
+                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
 
                 // Contenu
                 String contenuHtml = unCommentaire.getString("content");
@@ -534,9 +509,7 @@ public class ParseurHTML {
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
                     DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
-                    contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(
-                            new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : "
-                                  + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
+                    contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : " + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
                 }
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
@@ -556,8 +529,7 @@ public class ParseurHTML {
                 do {
                     contenuBefore = contenuHtml;
                     // (?s) => Pattern.DOTALL "." capture aussi les retours à la ligne
-                    contenuHtml = contenuHtml.replaceAll("(?s)" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/") + "[\n]*" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/"),
-                            ouvreCitation + "$1\n$2" + fermeCitation);
+                    contenuHtml = contenuHtml.replaceAll("(?s)" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/") + "[\n]*" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/"), ouvreCitation + "$1\n$2" + fermeCitation);
                 } while (!contenuBefore.equals(contenuHtml));
 
                 // Citations - "xxx à écrit"
@@ -616,7 +588,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":baffe:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "baffe.gif\" />");
                 contenuHtml = contenuHtml.replace(":stress:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "stress.gif\" />");
                 contenuHtml = contenuHtml.replace(":jesquate:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "jesquate.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "jesquate.gif\" />");
                 contenuHtml = contenuHtml.replace(":xzombi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cerf.gif\" />");
                 contenuHtml = contenuHtml.replace(":oui2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "oui2.gif\" />");
                 contenuHtml = contenuHtml.replace(":duel1:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "lsvader.gif\" />");
@@ -632,33 +604,33 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":pleure:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pleure.gif\" />");
                 contenuHtml = contenuHtml.replace(":mad2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mad2.gif\" />");
                 contenuHtml = contenuHtml.replace(":oops:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_redface.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_redface.gif\" />");
                 contenuHtml = contenuHtml.replace(":keskidit:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "keskidit2.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "keskidit2.gif\" />");
                 contenuHtml = contenuHtml.replace(":byebye:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "byebye.gif\" />");
                 contenuHtml = contenuHtml.replace(":fou:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "fou.gif\" />");
                 contenuHtml = contenuHtml.replace(":prof:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "prof.gif\" />");
                 contenuHtml = contenuHtml.replace(":8", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "lunettes1.gif\" />");
                 contenuHtml = contenuHtml.replace(":love:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "love.gif\" />");
                 contenuHtml = contenuHtml.replace(":roll:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_rolleyes.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_rolleyes.gif\" />");
                 contenuHtml = contenuHtml.replace(":ooo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ooo.gif\" />");
                 contenuHtml = contenuHtml.replace(":francais:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "francais2.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "francais2.gif\" />");
                 contenuHtml = contenuHtml.replace(":eeek2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "eeek2.gif\" />");
                 contenuHtml = contenuHtml.replace(":bravo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bravo.gif\" />");
                 contenuHtml = contenuHtml.replace(":reflechis:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "reflechis.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "reflechis.gif\" />");
                 contenuHtml = contenuHtml.replace(":dors:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dors2.gif\" />");
                 contenuHtml = contenuHtml.replace(":cartonjaune:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonjaune.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonjaune.gif\" />");
                 contenuHtml = contenuHtml.replace(":cartonrouge:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonrouge.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonrouge.gif\" />");
                 contenuHtml = contenuHtml.replace(":mad:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mad.gif\" />");
                 contenuHtml = contenuHtml.replace(":smack:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "smack.gif\" />");
                 contenuHtml = contenuHtml.replace(":ouioui:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouioui.gif\" />");
                 contenuHtml = contenuHtml.replace(":censored:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "censored.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "censored.gif\" />");
                 contenuHtml = contenuHtml.replace(":transpi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "transpi.gif\" />");
                 contenuHtml = contenuHtml.replace(":langue:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "langue.gif\" />");
                 contenuHtml = contenuHtml.replace(":mdr2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mdr2.gif\" />");
@@ -669,51 +641,51 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":heben:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "heben.png\" />");
                 contenuHtml = contenuHtml.replace(":arrow:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_arrow.gif\" />");
                 contenuHtml = contenuHtml.replace(":mrgreen:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_mrgreen.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_mrgreen.gif\" />");
                 contenuHtml = contenuHtml.replace(":fume:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "fume.gif\" />");
                 contenuHtml = contenuHtml.replace(":frown:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "frown.gif\" />");
                 contenuHtml = contenuHtml.replace(":embarassed:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "embarassed.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "embarassed.gif\" />");
                 contenuHtml = contenuHtml.replace(":eeek:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "eek.gif\" />");
                 contenuHtml = contenuHtml.replace(":duelsw:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "duelSW.gif\" />");
                 contenuHtml = contenuHtml.replace(":devil:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "devil.gif\" />");
                 contenuHtml = contenuHtml.replace(":copain:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "copain.png\" />");
                 contenuHtml = contenuHtml.replace(":bouletdujour:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bouletdujour.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bouletdujour.gif\" />");
                 contenuHtml = contenuHtml.replace(":boulet:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "boulet.gif\" />");
                 contenuHtml = contenuHtml.replace(":birthday:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "birthday.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "birthday.gif\" />");
                 contenuHtml = contenuHtml.replace(":ouimaistusors:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouimaistusors.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouimaistusors.gif\" />");
                 contenuHtml = contenuHtml.replace(":musique:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "music.gif\" />");
                 contenuHtml = contenuHtml.replace(":merci:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "merci.gif\" />");
                 contenuHtml = contenuHtml.replace(":best:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "meilleur.gif\" />");
                 contenuHtml = contenuHtml.replace(":iloveyou:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "loveeyessmly.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "loveeyessmly.gif\" />");
                 contenuHtml = contenuHtml.replace(":kimouss:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "kimouss.gif\" />");
                 contenuHtml = contenuHtml.replace(":kill:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "kill.gif\" />");
                 contenuHtml = contenuHtml.replace(":neutral:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_neutral.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_neutral.gif\" />");
                 contenuHtml = contenuHtml.replace(":zzz:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "zzzzz.gif\" />");
                 contenuHtml = contenuHtml.replace(":youhou:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "youhou.gif\" />");
                 contenuHtml = contenuHtml.replace(":yoda:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "yoda.gif\" />");
                 contenuHtml = contenuHtml.replace(":vomi2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "vomi2.gif\" />");
                 contenuHtml = contenuHtml.replace(":vomi1:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "vomi1.gif\" />");
                 contenuHtml = contenuHtml.replace(":inpactitude:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude3.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude3.gif\" />");
                 contenuHtml = contenuHtml.replace(":tchintchin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "tchin.gif\" />");
                 contenuHtml = contenuHtml.replace(":sm:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "sm.gif\" />");
                 contenuHtml = contenuHtml.replace(":rhooo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "rhooo.gif\" />");
                 contenuHtml = contenuHtml.replace(":bigssourire:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "biggerGrin.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "biggerGrin.gif\" />");
                 contenuHtml = contenuHtml.replace(":nonnon:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ripeer.gif\" />");
                 contenuHtml = contenuHtml.replace(":yaisse:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "yaisse.gif\" />");
                 contenuHtml = contenuHtml.replace(":crever:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "crever.gif\" />");
                 contenuHtml = contenuHtml.replace(":cap:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "maitrecapello.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "maitrecapello.gif\" />");
                 contenuHtml = contenuHtml.replace(":naz:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "naz.gif\" />");
                 contenuHtml = contenuHtml.replace(":supervomi:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "supervomi.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "supervomi.gif\" />");
                 contenuHtml = contenuHtml.replace(":pet:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pet.gif\" />");
                 contenuHtml = contenuHtml.replace(":roule2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "roule2.gif\" />");
                 contenuHtml = contenuHtml.replace(":dent:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dent.gif\" />");
@@ -731,7 +703,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":poke:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "poke.gif\" />");
                 contenuHtml = contenuHtml.replace(":icq:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icq.gif\" />");
                 contenuHtml = contenuHtml.replace(":surenchere:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "surenchere.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "surenchere.gif\" />");
                 contenuHtml = contenuHtml.replace(":dix:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dix.gif\" />");
                 contenuHtml = contenuHtml.replace(":neuf:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "neuf.gif\" />");
                 contenuHtml = contenuHtml.replace(":huit:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "huit.gif\" />");
@@ -745,7 +717,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":zero:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "zero.gif\" />");
                 contenuHtml = contenuHtml.replace(":top:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "top.gif\" />");
                 contenuHtml = contenuHtml.replace(":accident:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "accident.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "accident.gif\" />");
                 contenuHtml = contenuHtml.replace(":tristan:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bosse.gif\" />");
                 contenuHtml = contenuHtml.replace(":baton:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "baton.gif\" />");
                 contenuHtml = contenuHtml.replace(":prison:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "prison.gif\" />");
@@ -765,9 +737,9 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":muscu:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "muscu.gif\" />");
                 contenuHtml = contenuHtml.replace(":cbon:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mangezen.gif\" />");
                 contenuHtml = contenuHtml.replace(":pastaper:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pastaper.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pastaper.gif\" />");
                 contenuHtml = contenuHtml.replace(":inpactitude2:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude2.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude2.gif\" />");
                 contenuHtml = contenuHtml.replace(":troll:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "troll.gif\" />");
                 contenuHtml = contenuHtml.replace(":phiphi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "phiphi.gif\" />");
                 contenuHtml = contenuHtml.replace(":perv:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "perv.gif\" />");
@@ -780,7 +752,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":sucre:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "sucre.gif\" />");
                 contenuHtml = contenuHtml.replace(":rem:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "rem.gif\" />");
                 contenuHtml = contenuHtml.replace(":plantage:",
-                                                  "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
+                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
                 contenuHtml = contenuHtml.replace(":auto:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "auto.gif\" />");
                 contenuHtml = contenuHtml.replace(":pciwin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "champion.gif\" />");
 

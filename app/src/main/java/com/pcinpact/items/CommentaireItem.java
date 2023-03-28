@@ -18,14 +18,14 @@
  */
 package com.pcinpact.items;
 
+import androidx.annotation.NonNull;
+
 import com.pcinpact.utils.Constantes;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
 
 /**
  * Objet Commentaire

@@ -128,8 +128,7 @@ public class Downloader {
             }
 
             // Requête d'authentification
-            RequestBody body = RequestBody.create(monJSON.toString(),
-                                                  MediaType.get("application/json; charset=" + Constantes.X_INPACT_ENCODAGE));
+            RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_INPACT_ENCODAGE));
 
             // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
             HttpUrl monURL = HttpUrl.parse(Constantes.NXI_URL + Constantes.X_INPACT_URL_AUTH);

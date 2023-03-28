@@ -24,6 +24,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
@@ -33,8 +35,6 @@ import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Debug de l'application.
@@ -48,8 +48,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
         super.onCreate(savedInstanceState);
 
         // Gestion du thème sombre (option utilisateur)
-        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre,
-                                                            R.bool.defautOptionThemeSombre);
+        Boolean isThemeSombre = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionThemeSombre, R.bool.defautOptionThemeSombre);
         if (isThemeSombre) {
             // Si actif, on applique le style
             setTheme(R.style.NextInpactThemeFonce);
@@ -69,14 +68,11 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             CacheManager.effacerCache(getApplicationContext());
 
             // Notification à ListeArticlesActivity (modification d'une fausse option, suivie par l'activité)
-            Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache,
-                                                                 R.bool.defautOptionDebugEffacerCache);
+            Boolean valeurActuelle = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, R.bool.defautOptionDebugEffacerCache);
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionDebugEffacerCache, !valeurActuelle);
 
             // Retour utilisateur
-            Toast monToast = Toast.makeText(this,
-                                            getApplicationContext().getString(R.string.debugEffacerCacheToast),
-                                            Toast.LENGTH_LONG);
+            Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
             monToast.show();
         });
 
@@ -89,9 +85,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             CacheManager.effacerCacheCommentaire(getApplicationContext());
 
             // Retour utilisateur
-            Toast monToast = Toast.makeText(this,
-                                            getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast),
-                                            Toast.LENGTH_LONG);
+            Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast), Toast.LENGTH_LONG);
             monToast.show();
         });
 
@@ -101,10 +95,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
          */
         Button buttonTesterConnexion = this.findViewById(R.id.buttonTesterConnexion);
 
-        String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin,
-                                                           R.string.defautOptionLogin);
-        String passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword,
-                                                           R.string.defautOptionPassword);
+        String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
+        String passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword, R.string.defautOptionPassword);
 
         buttonTesterConnexion.setOnClickListener((View arg0) -> {
             // Lancement de la vérif des identifiants (flux réseau donc asynchrone=

@@ -248,12 +248,13 @@ public class ArticleItem implements Item {
 
     /**
      * Nb de commentaires non lus
+     *
      * @return int
      */
     public int getNbCommentairesNonLus() {
         int nbComms = this.getNbCommentaires() - this.getDernierCommLu();
         // Prévenir un cas négatif
-        if(nbComms < 0) {
+        if (nbComms < 0) {
             nbComms = 0;
         }
         return nbComms;

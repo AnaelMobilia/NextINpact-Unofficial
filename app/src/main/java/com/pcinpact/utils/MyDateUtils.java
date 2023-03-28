@@ -75,8 +75,7 @@ public class MyDateUtils {
         // Date du jour
         Calendar monCalendar = Calendar.getInstance();
         // Ce jour 00h00:00 (pour prendre tous les articles de la dernière journée également)
-        monCalendar.set(monCalendar.get(Calendar.YEAR), monCalendar.get(Calendar.MONTH), monCalendar.get(Calendar.DAY_OF_MONTH),
-                        0, 0, 0);
+        monCalendar.set(monCalendar.get(Calendar.YEAR), monCalendar.get(Calendar.MONTH), monCalendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 
         monCalendar.add(Calendar.DATE, -1 * nbJours);
         monRetour = TimeUnit.MILLISECONDS.toSeconds(monCalendar.getTimeInMillis());

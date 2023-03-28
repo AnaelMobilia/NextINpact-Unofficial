@@ -22,11 +22,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import androidx.preference.PreferenceManager;
+
 import com.pcinpact.BuildConfig;
 
 import java.util.Locale;
-
-import androidx.preference.PreferenceManager;
 
 /**
  * Constantes et outils.

@@ -32,6 +32,9 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SizeReadyCallback;
@@ -40,9 +43,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.pcinpact.utils.Constantes;
 
 import java.lang.ref.WeakReference;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class GlideImageGetter implements Html.ImageGetter {
     private final WeakReference<TextView> container;
@@ -112,7 +112,7 @@ public class GlideImageGetter implements Html.ImageGetter {
                 try {
                     drawable.draw(canvas);
                 } catch (Exception e) {
-                    if(Constantes.DEBUG) {
+                    if (Constantes.DEBUG) {
                         Log.e("GlideImageGetter", "draw() - Exception " + e);
                     }
                 }

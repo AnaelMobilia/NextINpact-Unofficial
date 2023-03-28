@@ -18,8 +18,8 @@
  * along with NextINpact-Unofficial. If not, see <http://www.gnu.org/licenses/>
  */
 -->
-<LinearLayout style="?attr/themeArticleFond"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/themeArticleFond"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -29,6 +29,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:contentDescription="@string/accueilImageArticleAlt"/>
+        android:contentDescription="@string/accueilImageArticleAlt" />
 
 </LinearLayout>

@@ -114,10 +114,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un article
      */
-    private static final String[] ARTICLE__COLONNES = new String[]{ ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_SITE, ARTICLE_TITRE,
-            ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS,
-            ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE,
-            ARTICLE_URL_SEO };
+    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_SITE, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE, ARTICLE_URL_SEO};
     /**
      * Table commentaires
      */
@@ -145,8 +142,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un commentaire
      */
-    private static final String[] COMMENTAIRE__COLONNES = new String[]{ COMMENTAIRE_ID, COMMENTAIRE_ARTICLE_PK,
-            COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU };
+    private static final String[] COMMENTAIRE__COLONNES = new String[]{COMMENTAIRE_ID, COMMENTAIRE_ARTICLE_PK, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU};
     /**
      * Table refresh (date de msie à jour)
      */
@@ -162,7 +158,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un refresh
      */
-    private static final String[] REFRESH__COLONNES = new String[]{ REFRESH_TIMESTAMP };
+    private static final String[] REFRESH__COLONNES = new String[]{REFRESH_TIMESTAMP};
 
     /**
      * Table cacheImage => plus utilisée (conservé pour la suppression de la table)
@@ -212,27 +208,15 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
-        String reqCreateArticles =
-                "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_SITE
-                + " INTEGER NOT NULL, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, "
-                + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, "
-                + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU
-                + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, "
-                + ARTICLE_IS_PUBLICITE + " BOOLEAN, " + ARTICLE_URL_SEO + " TEXT);";
+        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_SITE + " INTEGER NOT NULL, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN, " + ARTICLE_URL_SEO + " TEXT);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
-        String reqCreateCommentaires =
-                "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " + COMMENTAIRE_ARTICLE_PK
-                + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_PK + "), " + COMMENTAIRE_AUTEUR + " TEXT, "
-                + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID + ", "
-                + COMMENTAIRE_ARTICLE_PK + "));";
+        String reqCreateCommentaires = "CREATE TABLE " + BDD_TABLE_COMMENTAIRES + " (" + COMMENTAIRE_ID + " INTEGER NOT NULL, " + COMMENTAIRE_ARTICLE_PK + " INTEGER NOT NULL REFERENCES " + BDD_TABLE_ARTICLES + "(" + ARTICLE_PK + "), " + COMMENTAIRE_AUTEUR + " TEXT, " + COMMENTAIRE_TIMESTAMP + " INTEGER, " + COMMENTAIRE_CONTENU + " TEXT, PRIMARY KEY (" + COMMENTAIRE_ID + ", " + COMMENTAIRE_ARTICLE_PK + "));";
         db.execSQL(reqCreateCommentaires);
 
         // Table des refresh
-        String reqCreateRefresh =
-                "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_PK + " INTEGER PRIMARY KEY, " + REFRESH_TIMESTAMP
-                + " INTEGER);";
+        String reqCreateRefresh = "CREATE TABLE " + BDD_TABLE_REFRESH + " (" + REFRESH_ARTICLE_PK + " INTEGER PRIMARY KEY, " + REFRESH_TIMESTAMP + " INTEGER);";
         db.execSQL(reqCreateRefresh);
     }
 
@@ -383,7 +367,7 @@ public final class DAO extends SQLiteOpenHelper {
         updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
 
         try {
-            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -400,11 +384,10 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public int getDernierCommentaireLu(final int pkArticle) {
         // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ ARTICLE_DERNIER_COMMENTAIRE_LU };
+        String[] mesColonnes = new String[]{ARTICLE_DERNIER_COMMENTAIRE_LU};
 
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_PK + "=?",
-                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)}, null, null, null);
 
         int retour = 0;
 
@@ -435,7 +418,7 @@ public final class DAO extends SQLiteOpenHelper {
         updateValues.put(ARTICLE_NB_COMMS, nbCommentaires);
 
         try {
-            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -455,7 +438,7 @@ public final class DAO extends SQLiteOpenHelper {
         updateValues.put(ARTICLE_IS_LU, true);
 
         try {
-            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
@@ -480,10 +463,10 @@ public final class DAO extends SQLiteOpenHelper {
         }
         try {
             // Article
-            maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            maBDD.delete(BDD_TABLE_ARTICLES, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
             if (supprimerCommentaires) {
                 // Commentaires
-                maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+                maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
             }
         } catch (SQLiteException e) {
             // DEBUG
@@ -505,8 +488,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArticleItem chargerArticle(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_PK + "=?",
-                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)}, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
@@ -535,8 +517,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArticleItem chargerArticle(final int idInpact, final int idSite) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?",
-                                       new String[]{ String.valueOf(idInpact), String.valueOf(idSite) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?", new String[]{String.valueOf(idInpact), String.valueOf(idSite)}, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
@@ -559,8 +540,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<ArticleItem> chargerArticlesTriParDate(final boolean showPub) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null,
-                                       ARTICLE_TIMESTAMP + " DESC");
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, ARTICLE_TIMESTAMP + " DESC");
 
         ArrayList<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
@@ -595,11 +575,11 @@ public final class DAO extends SQLiteOpenHelper {
         String where;
         if (estConnecte) {
             // Articles vides et des articles abonnés non DL
-            contenu = new String[]{ "", "1", "0" };
+            contenu = new String[]{"", "1", "0"};
             where = ARTICLE_CONTENU + "=? OR (" + ARTICLE_IS_ABONNE + "=? AND " + ARTICLE_DL_CONTENU_ABONNE + "=?)";
         } else {
             // Articles vides uniquement
-            contenu = new String[]{ "" };
+            contenu = new String[]{""};
             where = ARTICLE_CONTENU + "=?";
         }
         Cursor monCursor = maBDD.query(true, BDD_TABLE_ARTICLES, ARTICLE__COLONNES, where, contenu, null, null, null, null);
@@ -668,10 +648,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private CommentaireItem chargerCommentaire(final int pkArticle, final int idCommentaire) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES,
-                                       COMMENTAIRE_ARTICLE_PK + "=? AND " + COMMENTAIRE_ID + "=?",
-                                       new String[]{ String.valueOf(pkArticle), String.valueOf(idCommentaire) }, null, null,
-                                       null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_PK + "=? AND " + COMMENTAIRE_ID + "=?", new String[]{String.valueOf(pkArticle), String.valueOf(idCommentaire)}, null, null, null);
 
         CommentaireItem monCommentaire = new CommentaireItem();
 
@@ -695,8 +672,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public ArrayList<CommentaireItem> chargerCommentairesTriParID(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_PK + "=?",
-                                       new String[]{ String.valueOf(pkArticle) }, null, null, "1");
+        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)}, null, null, "1");
 
         ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;
@@ -724,8 +700,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public long chargerDateRefresh(final int pkArticle) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_REFRESH, REFRESH__COLONNES, REFRESH_ARTICLE_PK + "=?",
-                                       new String[]{ String.valueOf(pkArticle) }, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_REFRESH, REFRESH__COLONNES, REFRESH_ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)}, null, null, null);
 
         long retour = 0;
 
@@ -769,7 +744,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private void supprimerDateRefresh(final int pkArticle) {
         try {
-            maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{ String.valueOf(pkArticle) });
+            maBDD.delete(BDD_TABLE_REFRESH, REFRESH_ARTICLE_PK + "=?", new String[]{String.valueOf(pkArticle)});
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {

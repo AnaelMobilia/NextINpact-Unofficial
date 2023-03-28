@@ -22,16 +22,16 @@ package com.pcinpact;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ArticlePagerAdapter extends FragmentStateAdapter {
     /**
@@ -46,8 +46,7 @@ public class ArticlePagerAdapter extends FragmentStateAdapter {
         DAO monDAO = DAO.getInstance(monContext);
 
         // Gestion des publicités rédactionnelles
-        Boolean afficherPublicite = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherPublicite,
-                                                                R.bool.defautOptionAfficherPublicite);
+        Boolean afficherPublicite = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherPublicite, R.bool.defautOptionAfficherPublicite);
 
         mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
     }

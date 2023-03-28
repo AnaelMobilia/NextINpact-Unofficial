@@ -35,10 +35,10 @@
             app:title="@string/optionTailleTexte" />
 
         <SwitchPreferenceCompat
+            style="?attr/themeArticleTexte"
             app:defaultValue="@bool/defautOptionThemeSombre"
             app:key="@string/idOptionThemeSombre"
-            app:title="@string/optionThemeSombre"
-            style="?attr/themeArticleTexte" />
+            app:title="@string/optionThemeSombre" />
     </PreferenceCategory>
 
     <!-- Options spécifiques aux articles -->

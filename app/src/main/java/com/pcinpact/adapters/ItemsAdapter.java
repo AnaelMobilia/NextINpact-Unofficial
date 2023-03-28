@@ -277,8 +277,7 @@ public class ItemsAdapter extends BaseAdapter {
                     ArticleItem ai = (ArticleItem) i;
 
                     // Gestion du thème (option utilisateur=
-                    Boolean isThemeSombre = Constantes.getOptionBoolean(monContext, R.string.idOptionThemeSombre,
-                                                                        R.bool.defautOptionThemeSombre);
+                    Boolean isThemeSombre = Constantes.getOptionBoolean(monContext, R.string.idOptionThemeSombre, R.bool.defautOptionThemeSombre);
 
                     // L'article est-il déjà lu ?
                     int couleurArticle;
@@ -316,8 +315,7 @@ public class ItemsAdapter extends BaseAdapter {
                     // Gestion du nombre de commentaires (+ nouveaux)
                     String texteCommentaires = String.valueOf(ai.getNbCommentaires());
 
-                    boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm,
-                                                                        R.bool.defautOptionAfficherNbNouveauComm);
+                    boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm, R.bool.defautOptionAfficherNbNouveauComm);
                     // Ssi commentaires déjà lus
                     if (nbNouveauComm && ai.getDernierCommLu() > 0) {
                         // Affichage seulement si des nouveaux commentaires
@@ -394,11 +392,7 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire;
                     try {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                                           new GlideImageGetter(commentaireVH.commentaire, false, true,
-                                                                                R.drawable.smiley_nextinpact,
-                                                                                R.drawable.smiley_nextinpact_barre,
-                                                                                checkTelechargementImage(monContext)),
-                                                           new TagHandler());
+                                new GlideImageGetter(commentaireVH.commentaire, false, true, R.drawable.smiley_nextinpact, R.drawable.smiley_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
                     } catch (Exception e) {
                         if (Constantes.DEBUG) {
                             Log.e("ItemsAdapter", "getView() - Html.fromHtml() ", e);
@@ -411,9 +405,7 @@ public class ItemsAdapter extends BaseAdapter {
                     commentaireVH.commentaire.setId(ci.getId());
 
                     // Liens cliquables ? option utilisateur !
-                    Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext,
-                                                                                   R.string.idOptionLiensDansCommentaires,
-                                                                                   R.bool.defautOptionLiensDansCommentaires);
+                    Boolean lienCommentaireClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansCommentaires, R.bool.defautOptionLiensDansCommentaires);
                     if (lienCommentaireClickable) {
                         // Active les liens a href
                         commentaireVH.commentaire.setMovementMethod(new GestionLiens());
@@ -453,18 +445,10 @@ public class ItemsAdapter extends BaseAdapter {
                     Spannable spannedContenu;
                     if (cai.getSite() == Constantes.IS_NXI) {
                         spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
-                                                                   new GlideImageGetter(contenuVH.contenu, false, true,
-                                                                                        R.drawable.logo_nextinpact,
-                                                                                        R.drawable.logo_nextinpact_barre,
-                                                                                        checkTelechargementImage(monContext)),
-                                                                   new TagHandler());
+                                new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_nextinpact, R.drawable.logo_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
                     } else {
                         spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
-                                                                   new GlideImageGetter(contenuVH.contenu, false, true,
-                                                                                        R.drawable.logo_inpacthardware,
-                                                                                        R.drawable.logo_inpacthardware_barre,
-                                                                                        checkTelechargementImage(monContext)),
-                                                                   new TagHandler());
+                                new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_inpacthardware, R.drawable.logo_inpacthardware_barre, checkTelechargementImage(monContext)), new TagHandler());
                     }
                     // Gestion du clic sur une image
                     for (ImageSpan span : spannedContenu.getSpans(0, spannedContenu.length(), ImageSpan.class)) {
@@ -494,8 +478,7 @@ public class ItemsAdapter extends BaseAdapter {
                     contenuVH.contenu.setId(cai.getPkArticle());
 
                     // Liens cliquables ? option utilisateur !
-                    Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles,
-                                                                               R.bool.defautOptionLiensDansArticles);
+                    Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles, R.bool.defautOptionLiensDansArticles);
                     if (lienArticleClickable) {
                         // Active les liens a href
                         contenuVH.contenu.setMovementMethod(new GestionLiens());
@@ -544,8 +527,7 @@ public class ItemsAdapter extends BaseAdapter {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ItemsAdapter",
-                  "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
+            Log.d("ItemsAdapter", "appliqueZoom() - " + monCoeffZoom + " - taille originale " + defaultSize + " => " + nouvelleTaille);
         }
     }
 
@@ -559,8 +541,7 @@ public class ItemsAdapter extends BaseAdapter {
         // Téléchargement des images ?
         boolean telechargerImages = false;
 
-        int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2,
-                                                   R.string.defautOptionTelechargerImagesv2);
+        int valeurOption = Constantes.getOptionInt(monContext, R.string.idOptionTelechargerImagesv2, R.string.defautOptionTelechargerImagesv2);
         if (valeurOption == 2) {
             // Téléchargement systématique des images
             telechargerImages = true;

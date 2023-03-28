@@ -26,15 +26,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.andremion.counterfab.CounterFab;
-import com.pcinpact.datastorage.DAO;
-import com.pcinpact.items.ArticleItem;
-import com.pcinpact.utils.Constantes;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ShareActionProvider;
 import androidx.core.view.MenuItemCompat;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.andremion.counterfab.CounterFab;
+import com.pcinpact.datastorage.DAO;
+import com.pcinpact.items.ArticleItem;
+import com.pcinpact.utils.Constantes;
 
 import java.util.UUID;
 
@@ -125,8 +125,7 @@ public class ArticleActivity extends AppCompatActivity {
         inflater.inflate(R.menu.activity_article_actions, monMenu);
 
         // Suis-je en mode DEBUG ?
-        Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug,
-                                                        R.bool.defautOptionDebug);
+        Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug);
 
         // Si mode debug
         if (modeDebug) {
@@ -142,8 +141,7 @@ public class ArticleActivity extends AppCompatActivity {
 
 
         // Option : cacher le bouton de partage
-        cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage,
-                                                          R.bool.defautOptionCacherBoutonPartage);
+        cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage, R.bool.defautOptionCacherBoutonPartage);
         if (cacherBoutonPartage) {
             // Le cacher
             shareItem.setVisible(false);
