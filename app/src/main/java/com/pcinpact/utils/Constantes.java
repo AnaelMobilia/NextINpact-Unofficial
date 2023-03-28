@@ -61,11 +61,6 @@ public class Constantes {
     public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
     public static final String NXI_CDN_URL = "https://cdnx.nextinpact.com/";
     /**
-     * URL de téléchargement INPACT-HARDWARE.
-     */
-    public static final String IH_URL = "https://api-v1.inpact-hardware.com/api/v1/";
-    public static final String IH_CDN_URL = "https://cdnx.inpact-hardware.com/";
-    /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
     public static final int NB_ARTICLES_PAR_PAGE = 10;
@@ -93,13 +88,11 @@ public class Constantes {
      * URL des images
      */
     public static final String NXI_URL_IMG = "data-next/images/bd/square-linked-media/";
-    public static final String IH_URL_IMG = "data-prod/images/bd/square-linked-media/";
     public static final String X_INPACT_URL_IMG_EXT = ".jpg";
     /**
      * URL des articles (pour partager)
      */
     public static final String NXI_URL_PARTAGE = "https://www.nextinpact.com/article/";
-    public static final String IH_URL_PARTAGE = "https://www.inpact-hardware.com/article/";
     /**
      * URL des smileys
      */
@@ -156,9 +149,9 @@ public class Constantes {
      */
     public static final int IS_IH = 2;
     /**
-     * Nombre de sites possibles (IH, NXI)
+     * Nombre de sites possibles (NXI)
      */
-    public static final int NOMBRE_SITES = 2;
+    public static final int NOMBRE_SITES = 1;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.

@@ -165,13 +165,7 @@ public class ParseurHTML {
             }
 
             // Calcul de l'URL SEO
-            String URLseo;
-            // On ne peut pas se base sur isIH qui est toujours à false même chez IH
-            if (unSite == Constantes.IS_NXI) {
-                URLseo = Constantes.NXI_URL_PARTAGE;
-            } else {
-                URLseo = Constantes.IH_URL_PARTAGE;
-            }
+            String URLseo = Constantes.NXI_URL_PARTAGE;
             URLseo += contenu_json.getString("contentId");
             URLseo += "/";
             URLseo += contenu_json.getString("seoUrl");

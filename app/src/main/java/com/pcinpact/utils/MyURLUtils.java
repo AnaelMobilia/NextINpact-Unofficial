@@ -41,11 +41,6 @@ public class MyURLUtils {
                     return Constantes.NXI_CDN_URL + path;
                 }
                 return Constantes.NXI_URL + path;
-            case Constantes.IS_IH:
-                if (useCdn) {
-                    return Constantes.IH_CDN_URL + path;
-                }
-                return Constantes.IH_URL + path;
         }
 
         // DEBUG

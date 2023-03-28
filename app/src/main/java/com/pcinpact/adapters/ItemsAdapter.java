@@ -329,25 +329,10 @@ public class ItemsAdapter extends BaseAdapter {
                     // Gestion de l'image
                     if (checkTelechargementImage(monContext)) {
                         // Téléchargement OK
-                        if (ai.getSite() == Constantes.IS_NXI) {
-                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
-                                    R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
-                        } else {
-                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(
-                                    R.drawable.logo_inpacthardware).error(R.drawable.logo_inpacthardware_barre).into(
-                                    articleVH.imageArticle);
-                        }
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
                     } else {
                         // Uniquement avec le cache
-                        if (ai.getSite() == Constantes.IS_NXI) {
-                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(
-                                    R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
-                        } else {
-                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(
-                                    R.drawable.logo_inpacthardware).error(
-                                    R.drawable.logo_inpacthardware_barre).onlyRetrieveFromCache(true).into(
-                                    articleVH.imageArticle);
-                        }
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
                     }
 
                     // On applique le zoom éventuel
@@ -443,13 +428,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Remplissage des textview
                     Spannable spannedContenu;
-                    if (cai.getSite() == Constantes.IS_NXI) {
-                        spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
-                                new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_nextinpact, R.drawable.logo_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
-                    } else {
-                        spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(),
-                                new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_inpacthardware, R.drawable.logo_inpacthardware_barre, checkTelechargementImage(monContext)), new TagHandler());
-                    }
+                    spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_nextinpact, R.drawable.logo_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
                     // Gestion du clic sur une image
                     for (ImageSpan span : spannedContenu.getSpans(0, spannedContenu.length(), ImageSpan.class)) {
                         int flags = spannedContenu.getSpanFlags(span);

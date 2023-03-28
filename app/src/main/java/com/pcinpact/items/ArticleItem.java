@@ -144,13 +144,7 @@ public class ArticleItem implements Item {
      * @return urlIllustration
      */
     public String getUrlIllustration() {
-        String path;
-        if (this.getSite() == Constantes.IS_NXI) {
-            path = Constantes.NXI_URL_IMG;
-        } else {
-            path = Constantes.IH_URL_IMG;
-        }
-        path += this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
+        String path = Constantes.NXI_URL_IMG + this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
 
         return MyURLUtils.getSiteURL(this.getSite(), path, true);
     }

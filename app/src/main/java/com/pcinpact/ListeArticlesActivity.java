@@ -166,7 +166,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Initialisation des numéros de page des listes d'articles
         numPageListeArticle = new int[Constantes.NOMBRE_SITES + 1];
         numPageListeArticle[Constantes.IS_NXI] = 1;
-        numPageListeArticle[Constantes.IS_IH] = 1;
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -625,7 +624,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
                 // Mise à jour du nombre de commentaires
                 telechargeNbCommentaires(Constantes.IS_NXI);
-                telechargeNbCommentaires(Constantes.IS_IH);
             }
 
             // Je regarde pour chaque article si je dois le récupérer
@@ -838,7 +836,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
          * Téléchargement des pages de liste d'articles
          */
         telechargeListeArticles(Constantes.IS_NXI);
-        telechargeListeArticles(Constantes.IS_IH);
 
         // GUI : fin de l'activité en cours...
         finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
