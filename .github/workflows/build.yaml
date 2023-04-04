@@ -9,7 +9,7 @@ jobs:
       - name: Build the app
         run: |
           wget --no-verbose https://services.gradle.org/distributions/gradle-7.5-bin.zip
-          unzip gradle-7.5-bin.zip
+          unzip -q gradle-7.5-bin.zip
           export GRADLE_HOME=$PWD/gradle-7.5
           export PATH=$GRADLE_HOME/bin:$PATH
           gradle -v
