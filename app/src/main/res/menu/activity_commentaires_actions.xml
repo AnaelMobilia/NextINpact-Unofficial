@@ -24,7 +24,7 @@
     <!-- DEBUG -->
     <item
         android:id="@+id/action_debug"
-        android:icon="@drawable/ic_menu_preferences"
+        android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/action_debug"
         android:visible="false"
         yourapp:showAsAction="ifRoom" />
@@ -32,7 +32,7 @@
     <!-- Rafraichir -->
     <item
         android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_menu_refresh"
+        android:icon="@android:drawable/ic_menu_refresh"
         android:title="@string/action_refresh"
         yourapp:showAsAction="ifRoom" />
 </menu>
