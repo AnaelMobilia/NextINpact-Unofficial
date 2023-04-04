@@ -8,7 +8,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build the app
         run: |
-          wget https://services.gradle.org/distributions/gradle-7.5-bin.zip
+          wget --no-verbose https://services.gradle.org/distributions/gradle-7.5-bin.zip
           unzip gradle-7.5-bin.zip
           export GRADLE_HOME=$PWD/gradle-7.5
           export PATH=$GRADLE_HOME/bin:$PATH
