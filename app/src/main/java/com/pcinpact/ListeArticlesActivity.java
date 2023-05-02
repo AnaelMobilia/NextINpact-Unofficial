@@ -425,29 +425,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Debug
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
             startActivity(intentDebug);
-        } else if (id == R.id.action_support) {
-            // Support
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            // Sujet du mail
-            intent.putExtra(Intent.EXTRA_SUBJECT, Constantes.getUserAgent());
-            // Corps du mail
-            intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.supportMessage));
-            // A qui...
-            intent.setDataAndType(Uri.parse("mailto:" + Constantes.MAIL_DEVELOPPEUR), "text/plain");
-            // Si touche retour : revient a l'application et pas aux mails
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                // Affichage du numéro de version
-                Toast monToast = Toast.makeText(this, getString(R.string.erreurEnvoiMail), Toast.LENGTH_LONG);
-                monToast.show();
-
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.e("ListeArticlesActivity", "onOptionsItemSelected() - Support -> exception", e);
-                }
-            }
         }
         return true;
     }
