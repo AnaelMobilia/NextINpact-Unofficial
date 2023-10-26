@@ -1,0 +1,6 @@
+v2.6.9
+<ul>
+<li>[Fix] Gestion des articles mis à jour</li>
+<li>Mise à jour des dépendances</li>
+<li>Compilation sur Android 14</li>
+</ul>
