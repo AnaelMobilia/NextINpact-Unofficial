@@ -5,7 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Update JVM
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Build the app
         run: |
           wget https://services.gradle.org/distributions/gradle-8.1.1-bin.zip
