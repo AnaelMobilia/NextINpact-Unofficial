@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.1"
-
     defaultConfig {
         applicationId "com.pcinpact"
+        // SDK utilisé pour compiler l'application
+        compileSdk 33
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
@@ -42,8 +41,10 @@ android {
     }
     namespace 'com.pcinpact'
     gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked"
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                options.compilerArgs << "-Xlint:unchecked"
+            }
         }
     }
 }
@@ -53,12 +54,12 @@ android {
  */
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     implementation 'org.jsoup:jsoup:1.15.4'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.preference:preference:1.2.0"
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation "androidx.preference:preference:1.2.1"
+    implementation 'com.google.android.material:material:1.10.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'com.github.bumptech.glide:annotations:4.15.1'
@@ -86,7 +87,9 @@ dependencies {
  * Affichage des warnings java à la compilation
  */
 allprojects {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:deprecation"
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
     }
 }
