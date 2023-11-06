@@ -95,8 +95,8 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionsListeArticle">Liste des articles</string>
     <!--<string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>-->
     <string name="optionNbJoursArticles">"Télécharger x jours d'actualités"</string>
-    <string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>
-    <string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe NXI/IH"</string>
+    <!--<string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>-->
+    <!--<string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe Next"</string>-->
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>
     <string name="optionAfficherNbNouveauCommDetail">Affichage sous la forme (+12)</string>
     <!-- Options : Articles -->

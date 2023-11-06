@@ -44,11 +44,7 @@ public class ArticlePagerAdapter extends FragmentStateAdapter {
 
         Context monContext = unContext.getApplicationContext();
         DAO monDAO = DAO.getInstance(monContext);
-
-        // Gestion des publicités rédactionnelles
-        Boolean afficherPublicite = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherPublicite, R.bool.defautOptionAfficherPublicite);
-
-        mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
+        mesArticles = monDAO.chargerArticlesTriParDate();
     }
 
     @NonNull

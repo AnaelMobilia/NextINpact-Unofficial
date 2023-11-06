@@ -49,11 +49,10 @@ public class ParseurHTML {
     /**
      * Parse la liste des articles
      *
-     * @param site      ID du site (NXI, IH, ...)
      * @param unContenu contenu JSON brut
      * @return liste d'articleItem
      */
-    public static ArrayList<ArticleItem> getListeArticles(final int site, final String unContenu) {
+    public static ArrayList<ArticleItem> getListeArticles(final String unContenu) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -430,10 +429,9 @@ public class ParseurHTML {
      * Nombre de commentaires d'un article
      *
      * @param unContenu contenu JSON brut
-     * @param idSite    ID du site (NXI, IH, ...)
      * @return ArrayList<ArticleItem> reprenant ArticleID & NbCommentaires
      */
-    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu, final int idSite) {
+    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -451,7 +449,6 @@ public class ParseurHTML {
 
                 monArticleItem.setIdInpact(unArticle.getInt("contentId"));
                 monArticleItem.setNbCommentaires(unArticle.getInt("nbTotal"));
-                monArticleItem.setSite(idSite);
 
                 mesArticlesItem.add(monArticleItem);
             }

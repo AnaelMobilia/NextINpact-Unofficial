@@ -54,7 +54,6 @@ import com.pcinpact.network.AsyncHTMLDownloader;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
-import com.pcinpact.utils.MyURLUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
-     * [ 0, HTML_LISTE_ARTICLES, HTML_ARTICLE, 0 (HTML_COMMENTAIRES), HTML_NOMBRE_COMMENTAIRES ]
+     * [ 0, HTML_LISTE_ARTICLES, (HTML_COMMENTAIRES), HTML_NOMBRE_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -122,9 +121,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private long timeStampMinArticle;
     /**
-     * Numéro de la page de la liste d'articles en cours de téléchargement pour chaque site
+     * Numéro de la page de la liste d'articles en cours de téléchargement
      */
-    private int[] numPageListeArticle;
+    private int numPageListeArticle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,11 +160,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[5];
         dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
-        dlInProgress[Constantes.HTML_ARTICLE] = 0;
         dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] = 0;
         // Initialisation des numéros de page des listes d'articles
-        numPageListeArticle = new int[Constantes.NOMBRE_SITES + 1];
-        numPageListeArticle[Constantes.IS_NXI] = 1;
+        numPageListeArticle = 1;
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -173,7 +170,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         monListView.setOnItemClickListener(this);
 
         // onRefresh
-        monSwipeRefreshLayout.setOnRefreshListener(this::telechargeListeArticles);
+        monSwipeRefreshLayout.setOnRefreshListener(this::prepareTelechargementListeArticles);
 
         // On active le SwipeRefreshLayout ssi on est en haut de la listview
         monListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -305,7 +302,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             CacheManager.effacerCacheV180(getApplicationContext());
 
             // Lancement d'un téléchargement des articles
-            telechargeListeArticles();
+            prepareTelechargementListeArticles();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // Titre
@@ -412,7 +409,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         int id = pItem.getItemId();
         if (id == R.id.action_refresh) {
             // Rafraichir la liste des articles
-            telechargeListeArticles();
+            prepareTelechargementListeArticles();
         } else if (id == R.id.action_settings) {
             // Menu Options
             Intent intentOptions = new Intent(getApplicationContext(), OptionsActivity.class);
@@ -487,13 +484,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Lance le téléchargement de la liste des articles.
      */
-    private void telechargeListeArticles() {
+    private void prepareTelechargementListeArticles() {
         // GUI : activité en cours...
         nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "telechargeListeArticles()");
+            Log.i("ListeArticlesActivity", "prepareTelechargementListeArticles()");
         }
 
         // TimeStamp de la date depuis laquelle télécharger les articles
@@ -521,50 +518,24 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     /**
      * Télécharge la liste d'articles d'un site
-     *
-     * @param idSite ID du site (Cf Constantes.IS_xxx)
      */
-    private void telechargeListeArticles(int idSite) {
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, idSite, Constantes.X_INPACT_URL_LISTE_ARTICLE + numPageListeArticle[idSite], 0, token);
+    private void telechargeListeArticles() {
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + numPageListeArticle, 0, token);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
     }
 
     /**
-     * Lance le téléchargement des articles.
-     *
-     * @param desItems liste d'articles à télécharger
-     */
-    private void telechargeArticles(final ArrayList<? extends Item> desItems) {
-        for (Item unItem : desItems) {
-            ArticleItem unArticle = (ArticleItem) unItem;
-
-            // Téléchargement de la ressource
-            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_ARTICLE, unArticle.getSite(), unArticle.getPathPourDl(), unArticle.getPk(), token);
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.i("ListeArticlesActivity", "telechargeArticles() - DL de " + MyURLUtils.getSiteURL(unArticle.getSite(), unArticle.getPathPourDl(), false));
-            }
-            launchAHD(monAHD, Constantes.HTML_ARTICLE);
-        }
-    }
-
-    /**
      * Télécharge le nombre de commentaires de chaque article
-     *
-     * @param idSite ID du site (Cf Constantes.IS_xxx)
      */
-    private void telechargeNbCommentaires(int idSite) {
+    private void telechargeNbCommentaires() {
         StringBuilder param = new StringBuilder();
         // Récupération des ID d'articles
-        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate(false)) {
-            // Si c'est le bon site, je prends l'article
-            if (unArticle.getSite() == idSite) {
-                param.append(Constantes.X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdInpact());
-            }
+        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
+            param.append(Constantes.NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdInpact());
         }
 
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, idSite, Constantes.X_INPACT_URL_NB_COMMENTAIRES + param, 0, token);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, Constantes.NEXT_URL_NB_COMMENTAIRES + param, 0, token);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.HTML_NOMBRE_COMMENTAIRES);
     }
@@ -598,9 +569,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
         // Si c'est un téléchargement de la liste d'articles
-        if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE) && desItems.size() > 0) {
+        if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && desItems.size() > 0) {
             // Télécharger la prochaine page de la liste des articles
             boolean dlNextPage = true;
 
@@ -608,14 +579,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Le dernier article récupéré est plus vieux que ma limite
             if (lastArticle.getTimeStampPublication() < timeStampMinArticle) {
                 // On réinitialise à la première page de la liste d'article pour le prochain refresh
-                numPageListeArticle[site] = 1;
+                numPageListeArticle = 1;
                 // Plus de téléchargement de la liste des articles
                 dlNextPage = false;
             }
             if (dlNextPage) {
                 // Le dernier article n'est pas assez vieux => télécharger la page suivante
-                numPageListeArticle[site]++;
-                telechargeListeArticles(site);
+                numPageListeArticle++;
+                prepareTelechargementListeArticles();
             } else {
                 // MàJ de la date de rafraichissement de la liste des articles
                 // Date du refresh
@@ -675,7 +646,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         else {
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                 // Récupération de l'article depuis la BDD
-                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
+                ArticleItem monArticle = monDAO.chargerArticleByIdArticle(unArticle.getIdInpact());
                 monArticle.setNbCommentaires(unArticle.getNbCommentaires());
                 // L'enregistrer mais sans effacer les commentaires & date de refresh
                 monDAO.enregistrerArticle(monArticle, false);
@@ -695,11 +666,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         ArrayList<Item> monRetour = new ArrayList<>();
         String jourActuel = "";
 
-        // Gestion des publicités rédactionnelles
-        Boolean afficherPublicite = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionAfficherPublicite, R.bool.defautOptionAfficherPublicite);
-
         // Chargement des articles depuis la BDD (triés par date de publication)
-        mesArticles = monDAO.chargerArticlesTriParDate(afficherPublicite);
+        mesArticles = monDAO.chargerArticlesTriParDate();
 
         for (ArticleItem article : mesArticles) {
             // Si ce n'est pas la même journée que l'article précédent
@@ -735,7 +703,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
@@ -766,8 +734,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Je note la fin du téléchargement
         dlInProgress[typeDL]--;
 
-        // Si la liste d'articles est chargée (et qu'on ne vient pas de finir de télécharger un article...)
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0 && typeDL != Constantes.HTML_ARTICLE) {
+        // Si la liste d'articles est chargée
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
@@ -780,7 +748,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Si toutes les données sont téléchargées...
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_ARTICLE] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
@@ -835,7 +803,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         /*
          * Téléchargement des pages de liste d'articles
          */
-        telechargeListeArticles(Constantes.IS_NXI);
+        telechargeListeArticles();
 
         // GUI : fin de l'activité en cours...
         finChargementGUI(Constantes.HTML_LISTE_ARTICLES);

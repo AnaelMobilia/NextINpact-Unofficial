@@ -87,7 +87,6 @@ public class ArticleFragment extends Fragment {
         // Création de mon CAI
         ContenuArticleItem monCAI = new ContenuArticleItem();
         monCAI.setPkArticle(pkArticle);
-        monCAI.setSite(monArticle.getSite());
 
         // Gestion de l'absence de contenu
         if ("".equals(monContenu)) {

@@ -62,9 +62,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private int articlePk;
     /**
-     * ID du site (NXI, IH) et de l'article
+     * ID de l'article
      */
-    private int site;
     private int idArticle;
     /**
      * ID du dernier commentaire lu
@@ -173,7 +172,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Je récupère le site concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
-        site = monArticle.getSite();
         idArticle = monArticle.getIdInpact();
 
         // MàJ de l'affichage
@@ -219,7 +217,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                 Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, site, monPath, articlePk, null);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monPath, articlePk, null);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -436,7 +434,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     @Override
-    public void downloadHTMLFini(int site, String pathURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
         // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
         if (desItems.size() < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
             // Je note qu'il n'y a plus de commentaires

@@ -19,7 +19,6 @@
 package com.pcinpact.items;
 
 import com.pcinpact.utils.Constantes;
-import com.pcinpact.utils.MyURLUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,13 +57,9 @@ public class ArticleItem implements Item {
      */
     private int nbCommentaires;
     /**
-     * Site concerné (IH, NXI, ...)
+     * URL de la miniature de l'article
      */
-    private int site;
-    /**
-     * ID de la miniature de l'article
-     */
-    private int idIllustration;
+    private String urlIllustration;
     /**
      * Contenu de l'article
      */
@@ -85,10 +80,6 @@ public class ArticleItem implements Item {
      * ID du dernier commentaire lu
      */
     private int dernierCommLu = 0;
-    /**
-     * L'article est-il une publicite
-     */
-    private boolean isPublicite;
     /**
      * URL SEO de l'article
      */
@@ -127,26 +118,6 @@ public class ArticleItem implements Item {
         laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
 
         return laDate;
-    }
-
-    /**
-     * Path de l'article pour télécharger (calculé dynamiquement)
-     *
-     * @return path
-     */
-    public String getPathPourDl() {
-        return Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
-    }
-
-    /**
-     * URL de l'illustration (calculée dynamiquement)
-     *
-     * @return urlIllustration
-     */
-    public String getUrlIllustration() {
-        String path = Constantes.NXI_URL_IMG + this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
-
-        return MyURLUtils.getSiteURL(this.getSite(), path, true);
     }
 
     /**
@@ -262,31 +233,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return site
-     */
-    public int getSite() {
-        return site;
-    }
-
-    /**
-     * @param site site
-     */
-    public void setSite(int site) {
-        this.site = site;
-    }
-
-    /**
      * @return idIllustration
      */
-    public int getIdIllustration() {
-        return idIllustration;
+    public String getUrlIllustration() {
+        return urlIllustration;
     }
 
     /**
-     * @param idIllustration urlIllustration
+     * @param urlIllustration urlIllustration
      */
-    public void setIdIllustration(int idIllustration) {
-        this.idIllustration = idIllustration;
+    public void setUrlIllustration(String urlIllustration) {
+        this.urlIllustration = urlIllustration;
     }
 
     /**
@@ -357,19 +314,5 @@ public class ArticleItem implements Item {
      */
     public void setDernierCommLu(int dernierCommLu) {
         this.dernierCommLu = dernierCommLu;
-    }
-
-    /**
-     * @return isPublicite
-     */
-    public boolean isPublicite() {
-        return isPublicite;
-    }
-
-    /**
-     * @param publicite isPublicite
-     */
-    public void setPublicite(boolean publicite) {
-        isPublicite = publicite;
     }
 }

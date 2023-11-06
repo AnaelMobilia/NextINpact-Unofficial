@@ -33,10 +33,6 @@ public class ContenuArticleItem implements Item {
      * ID de l'article associé.
      */
     private int pkArticle;
-    /**
-     * Site concerné (IH, NXI, ...)
-     */
-    private int site;
 
     /*
      * (non-Javadoc)
@@ -73,19 +69,5 @@ public class ContenuArticleItem implements Item {
      */
     public void setPkArticle(int pkArticle) {
         this.pkArticle = pkArticle;
-    }
-
-    /**
-     * @return ID du site concerné
-     */
-    public int getSite() {
-        return site;
-    }
-
-    /**
-     * @param site ID du site concerné
-     */
-    public void setSite(int site) {
-        this.site = site;
     }
 }

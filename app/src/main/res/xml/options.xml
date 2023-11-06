@@ -56,11 +56,11 @@
             app:key="@string/idOptionNbJoursArticles"
             app:title="@string/optionNbJoursArticles" />
 
-        <SwitchPreferenceCompat
+        <!--<SwitchPreferenceCompat
             app:defaultValue="@bool/defautOptionAfficherPublicite"
             app:key="@string/idOptionAfficherPublicite"
             app:summary="@string/optionAfficherPubliciteDetail"
-            app:title="@string/optionAfficherPublicite" />
+            app:title="@string/optionAfficherPublicite" />-->
 
         <SwitchPreferenceCompat
             app:defaultValue="@bool/defautOptionAfficherNbNouveauComm"

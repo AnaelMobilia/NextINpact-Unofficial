@@ -41,7 +41,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma)
      */
-    private static final int BDD_VERSION = 9;
+    private static final int BDD_VERSION = 10;
     /**
      * Nom de la BDD
      */
@@ -72,13 +72,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_TIMESTAMP = "timestamp";
     /**
-     * Champ articles => Site (NXI, IH, ...)
-     */
-    private static final String ARTICLE_SITE = "site";
-    /**
      * Champ articles => URL miniature
      */
-    private static final String ARTICLE_ILLUSTRATION_ID = "miniatureid";
+    private static final String ARTICLE_ILLUSTRATION_URL = "urlillustration";
     /**
      * Champ articles => Contenu
      */
@@ -104,17 +100,13 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_DERNIER_COMMENTAIRE_LU = "dernierCommentaireLu";
     /**
-     * Champ articles => publicite
-     */
-    private static final String ARTICLE_IS_PUBLICITE = "ispublicite";
-    /**
      * Champ articles => URL SEO
      */
     private static final String ARTICLE_URL_SEO = "urlseo";
     /**
      * Toutes les colonnes à charger pour un article
      */
-    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_SITE, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_ID, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_IS_PUBLICITE, ARTICLE_URL_SEO};
+    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_URL_SEO};
     /**
      * Table commentaires
      */
@@ -208,7 +200,7 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
-        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_SITE + " INTEGER NOT NULL, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_ID + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_IS_PUBLICITE + " BOOLEAN, " + ARTICLE_URL_SEO + " TEXT);";
+        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_URL_SEO + " TEXT);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -233,26 +225,21 @@ public final class DAO extends SQLiteOpenHelper {
             case 5:
             case 6:
             case 7:
-                // Refonte des BDD pour NXI v7 (multi site)
+            case 8:
+            case 9:
+                // Refonte des BDD pour Next
                 // Suppression des tables existantes
-                String reqUpdateFrom7 = "DROP TABLE IF EXISTS " + BDD_TABLE_ARTICLES + ";";
-                db.execSQL(reqUpdateFrom7);
-                reqUpdateFrom7 = "DROP TABLE IF EXISTS " + BDD_TABLE_COMMENTAIRES + ";";
-                db.execSQL(reqUpdateFrom7);
-                reqUpdateFrom7 = "DROP TABLE IF EXISTS " + BDD_TABLE_REFRESH + ";";
-                db.execSQL(reqUpdateFrom7);
-                reqUpdateFrom7 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
-                db.execSQL(reqUpdateFrom7);
+                String reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_ARTICLES + ";";
+                db.execSQL(reqUpdateFrom9);
+                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_COMMENTAIRES + ";";
+                db.execSQL(reqUpdateFrom9);
+                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_REFRESH + ";";
+                db.execSQL(reqUpdateFrom9);
+                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
+                db.execSQL(reqUpdateFrom9);
                 // Recréation des tables vierges
                 this.onCreate(db);
                 // On vient de recréer la base de données de zéro => ne pas faire les upgrade (déjà effectués dans la création)
-                break;
-
-            case 8:
-                String reqUpdateFrom8 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_URL_SEO + " TEXT;";
-                db.execSQL(reqUpdateFrom8);
-
-                // A mettre avant le default !
                 break;
             default:
                 // DEBUG
@@ -289,18 +276,16 @@ public final class DAO extends SQLiteOpenHelper {
         }
 
         insertValues.put(ARTICLE_ID_INPACT, unArticle.getIdInpact());
-        insertValues.put(ARTICLE_SITE, unArticle.getSite());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
         insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
-        insertValues.put(ARTICLE_ILLUSTRATION_ID, unArticle.getIdIllustration());
+        insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getUrlIllustration());
         insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
         insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
         insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
         insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
         insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
-        insertValues.put(ARTICLE_IS_PUBLICITE, unArticle.isPublicite());
         insertValues.put(ARTICLE_URL_SEO, unArticle.getURLseo());
 
         try {
@@ -323,7 +308,7 @@ public final class DAO extends SQLiteOpenHelper {
         // Est-il déjà présent en BDD ?
         // Identification par ID INpact car la PK est générée à l'enregistrement de l'article
         // Je n'ai donc pas encore cette PK dans unArticle !
-        ArticleItem testItem = this.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
+        ArticleItem testItem = this.chargerArticleByIdArticle(unArticle.getIdInpact());
 
         boolean enregistrer = false;
         // Cas validant un enregistrement
@@ -509,15 +494,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Charger un article depuis la BDD - ID inpact / ID site Utile pour vérifier si un article est à enregistrer
+     * Charger un article depuis la BDD
+     * Utile pour vérifier si un article est à enregistrer
      *
      * @param idInpact ID de l'article
-     * @param idSite   ID du site
      * @return ArticleItem de l'article
      */
-    public ArticleItem chargerArticle(final int idInpact, final int idSite) {
+    public ArticleItem chargerArticleByIdArticle(final int idInpact) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=? AND " + ARTICLE_SITE + "=?", new String[]{String.valueOf(idInpact), String.valueOf(idSite)}, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=?", new String[]{String.valueOf(idInpact)}, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
@@ -535,10 +520,9 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Charge les articles de la BDD triés par date de publication
      *
-     * @param showPub Intégrer les publicités ?
      * @return ArrayList<ArticleItem> les articles demandés
      */
-    public ArrayList<ArticleItem> chargerArticlesTriParDate(final boolean showPub) {
+    public ArrayList<ArticleItem> chargerArticlesTriParDate() {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, ARTICLE_TIMESTAMP + " DESC");
 
@@ -548,12 +532,6 @@ public final class DAO extends SQLiteOpenHelper {
         while (monCursor.moveToNext()) {
             // Je charge les données de l'objet
             monArticle = cursorToArticleItem(monCursor);
-
-            // Gestion des publicités
-            if (monArticle.isPublicite() && !showPub) {
-                continue;
-            }
-
             // Et l'enregistre
             mesArticles.add(monArticle);
         }
@@ -764,19 +742,17 @@ public final class DAO extends SQLiteOpenHelper {
 
         monArticle.setPk(unCursor.getInt(0));
         monArticle.setIdInpact(unCursor.getInt(1));
-        monArticle.setSite(unCursor.getInt(2));
-        monArticle.setTitre(unCursor.getString(3));
-        monArticle.setSousTitre(unCursor.getString(4));
-        monArticle.setTimeStampPublication(unCursor.getLong(5));
-        monArticle.setIdIllustration(unCursor.getInt(6));
-        monArticle.setContenu(unCursor.getString(7));
-        monArticle.setNbCommentaires(unCursor.getInt(8));
-        monArticle.setAbonne((unCursor.getInt(9) > 0));
-        monArticle.setLu((unCursor.getInt(10) > 0));
-        monArticle.setDlContenuAbonne((unCursor.getInt(11) > 0));
-        monArticle.setDernierCommLu(unCursor.getInt(12));
-        monArticle.setPublicite(unCursor.getInt(13) > 0);
-        monArticle.setURLseo(unCursor.getString(14));
+        monArticle.setTitre(unCursor.getString(2));
+        monArticle.setSousTitre(unCursor.getString(3));
+        monArticle.setTimeStampPublication(unCursor.getLong(4));
+        monArticle.setUrlIllustration(unCursor.getString(5));
+        monArticle.setContenu(unCursor.getString(6));
+        monArticle.setNbCommentaires(unCursor.getInt(7));
+        monArticle.setAbonne((unCursor.getInt(8) > 0));
+        monArticle.setLu((unCursor.getInt(9) > 0));
+        monArticle.setDlContenuAbonne((unCursor.getInt(10) > 0));
+        monArticle.setDernierCommLu(unCursor.getInt(11));
+        monArticle.setURLseo(unCursor.getString(12));
 
         return monArticle;
     }
