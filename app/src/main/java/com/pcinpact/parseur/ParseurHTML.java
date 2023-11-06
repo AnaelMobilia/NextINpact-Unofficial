@@ -57,10 +57,7 @@ public class ParseurHTML {
 
         try {
             // Récupération du JSON
-            JSONObject contenu_json = new JSONObject(unContenu);
-
-            // Les articles
-            JSONArray lesArticles = contenu_json.getJSONArray("results");
+            JSONArray lesArticles = new JSONArray(unContenu);
 
             ArticleItem monArticleItem;
             // Pour chaque article
@@ -69,36 +66,277 @@ public class ParseurHTML {
                 monArticleItem = new ArticleItem();
 
                 // ID de l'article
-                monArticleItem.setIdInpact(unArticle.getInt("contentId"));
-
-                // Site concerné
-                monArticleItem.setSite(site);
+                monArticleItem.setIdInpact(unArticle.getInt("id"));
 
                 // Date de publication de l'article
-                String laDate = unArticle.getString("datePublished");
+                String laDate = unArticle.getString("date");
                 monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
 
-                // Publicité
-                boolean estPub = false;
-                // isSponsored est null si isBrief est true...
-                estPub = (!"null".equals(unArticle.getString("isSponsored")) && unArticle.getBoolean("isSponsored"));
-                monArticleItem.setPublicite(estPub);
-
-                // ID de l'image d'illustration
-                monArticleItem.setIdIllustration(unArticle.getInt("imageId"));
-
+                // URL de l'image d'illustration
+                monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
                 // Titre de l'article
-                monArticleItem.setTitre(unArticle.getString("title"));
+                monArticleItem.setTitre(Parser.unescapeEntities(unArticle.getJSONObject("title").getString("rendered"), true));
 
                 // Sous titre
-                monArticleItem.setSousTitre(unArticle.getString("subtitle"));
+                monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
 
                 // Nombre de commentaires
                 int nbCommentaires = 0;
                 monArticleItem.setNbCommentaires(nbCommentaires);
 
                 // Statut abonné
-                monArticleItem.setAbonne(unArticle.getBoolean("isPaywalled"));
+                String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
+                if ("".equals(dateFinBlocage)) {
+                    monArticleItem.setAbonne(false);
+                } else {
+                    monArticleItem.setAbonne(true);
+                }
+
+                // URL Seo
+                monArticleItem.setURLseo(unArticle.getString("link"));
+
+                // Contenu de l'article
+                String contenu = "<article>";
+                contenu += "<h1>";
+                contenu += monArticleItem.getTitre();
+                contenu += "</h1>";
+                // Pas de sous-titre dans le brief
+                if (!"null".equals(monArticleItem.getSousTitre())) {
+                    contenu += "<span>";
+                    contenu += monArticleItem.getSousTitre();
+                    contenu += "</span>";
+                }
+                contenu += unArticle.getJSONObject("content").getString("rendered");
+                contenu += "<footer>";
+                // Auteur de l'article
+                String auteur = unArticle.getJSONObject("_embedded").getJSONArray("author").getJSONObject(0).getString("name");
+                contenu += "Par " + auteur + " - actu" + "@" + "nextinpact.com";
+                // Lien vers l'article
+                contenu += "<br /><br />Article publié sur <a href=\"" + monArticleItem.getURLseo() + "\">" + monArticleItem.getURLseo() + "</a>";
+                contenu += "</footer>";
+                contenu += "</article>";
+
+                // L'article
+                Elements lArticle = Jsoup.parse(contenu).select("article");
+
+                // NETTOYAGE DU CONTENU
+                // Suppression des span d'affiliation
+                Elements spanAffiliation = lArticle.select("span[data-affiliable]");
+                // Récupération de toutes les balises <a...> autour du titre
+                for (Element unSpan : spanAffiliation) {
+                    // Insertion du contenu
+                    unSpan.before(unSpan.html());
+                    // Suppression du lien originel
+                    unSpan.remove();
+                }
+
+                // Gestion des iframe
+                Elements lesIframes = lArticle.select("iframe");
+                // généralisation de l'URL en dehors du scheme
+                String[] schemes = {"https://", "http://", "//"};
+                // Pour chaque iframe
+                for (Element uneIframe : lesIframes) {
+                    // URL du lecteur
+                    String urlLecteur = uneIframe.attr("src").toLowerCase(Constantes.LOCALE);
+
+                    for (String unScheme : schemes) {
+                        if (urlLecteur.startsWith(unScheme)) {
+                            // Suppression du scheme
+                            urlLecteur = urlLecteur.substring(unScheme.length());
+                            // DEBUG
+                            if (Constantes.DEBUG) {
+                                Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+                            }
+                        }
+                    }
+
+                    // ID de la vidéo
+                    String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+
+                    // Ma substitution
+                    String monRemplacement;
+
+                    // Gestion des lecteurs vidéos
+                    if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
+                        /*
+                         * Liste de lecture Youtube
+                         */
+                        // Recalcul de l'ID de la vidéo (cas particulier)
+                        idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
+                        monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
+                        /*
+                         * Youtube
+                         */
+                        monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+                        /*
+                         * Dailymotion
+                         */
+                        monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
+                    } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+                        /*
+                         * VIMEO
+                         */
+                        monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
+                    } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+                        /*
+                         * Videos.gouv.fr
+                         */
+                        monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                    } else if (urlLecteur.startsWith("vid.me")) {
+                        /*
+                         * Vidme
+                         */
+                        monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
+                    } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+                        /*
+                         * Soundcloud (l'URL commence bien par w.soundcloud !)
+                         */
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+                        /*
+                         * Scribd
+                         */
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
+                    } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
+                        /*
+                         * Canal+
+                         */
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.arte.tv/")) {
+                        /*
+                         * Arte
+                         */
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
+                    } else {
+                        /*
+                         * Déchet (catch all)
+                         */
+                        monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
+
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getIdInpact() + " : " + uneIframe.absUrl("src"));
+                        }
+                    }
+
+
+                    // Je remplace l'iframe par mon contenu
+                    uneIframe.before(monRemplacement);
+                    uneIframe.remove();
+
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ParseurHTML", "Remplacement par une iframe : " + monRemplacement);
+                    }
+                }
+
+                // Gestion des videos HTML5
+                Elements lesVideos = lArticle.select("video");
+                for (Element uneVideo : lesVideos) {
+                    String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
+                    // Je remplace la vidéo par mon contenu
+                    uneVideo.before(monRemplacement);
+                    uneVideo.remove();
+                }
+
+                // Gestion des URL relatives des liens
+                Elements lesLiens = lArticle.select("a[href]");
+                // Pour chaque lien
+                for (Element unLien : lesLiens) {
+                    // Sauf si c'est un mail (ex: https://api-v1.nextinpact.com/api/v1/SimpleContent/44713)
+                    if (!unLien.attr("href").startsWith("mailto:")) {
+                        // Assignation de son URL absolue
+                        unLien.attr("href", unLien.absUrl("href"));
+                    }
+                }
+                // Gestion des URL relatives des images
+                Elements lesImages = lArticle.select("img[src]");
+                // Pour chaque image
+                for (Element uneImage : lesImages) {
+                    // Si ce n'est pas un drawable de l'application
+                    if (!uneImage.attr("src").startsWith("android.resource://")) {
+                        // Assignation de son URL absolue
+                        uneImage.attr("src", uneImage.absUrl("src"));
+                    }
+                }
+
+
+                /*
+                 * Gestion des images #232
+                 */
+                // Standard
+                // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
+                // -12.htm
+                // <p style="text-align: center;"><img src="https://cdn2.nextinpact.com/images/bd/news/168187.png" alt="Orange Bouquet
+                // => Rien à faire !
+
+                // fancyimg
+                // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
+                // -12.htm
+                // <p style="text-align: center;
+                // "><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168188.png" rel="group_fancy"><img
+                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168188.png" alt="Orange ePresse izneo" height="216"
+                // /></a><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168189.png" rel="group_fancy"><img
+                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168189.png" alt="Orange ePresse izneo" /><br /></a><span
+                // style="font-size: smaller; font-weight: bold;">ePresse avec Orange et izneo, également avec Orange</span></p>
+                Elements liensImagesFancy = lArticle.select("a[class=fancyimg]:has(img)");
+                // Pour chaque <a>
+                for (Element lienImageFancy : liensImagesFancy) {
+                    // Pour chaque image...
+                    for (Element lImage : lienImageFancy.select("img")) {
+                        // Passage à l'image pleine taille
+                        lImage.attr("src", lienImageFancy.absUrl("href"));
+                        // Injection de l'image pleine taille...
+                        lienImageFancy.before(lImage.outerHtml());
+                    }
+                    // Suppression du lien (et ses enfants)
+                    lienImageFancy.remove();
+                }
+
+                // slideshow-container
+                // https://m.nextinpact.com/news/105361-pcspecialist-arrive-en-france-avec-ses-pc-fixes-et-portables
+                // -personnalisables.htm
+                // <ul class="slideshow-container"><li><a href="https://cdn2.nextinpact.com/images/bd/news/168239.png"><img
+                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168239.png" alt="PCSpecialist"
+                // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168239.png"
+                // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168240.png"><img src="https://cdn2.nextinpact
+                // .com/images/bd/news/mini-168240.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
+                // .com/images/bd/news/168240.png" /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168241.png"><img
+                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168241.png" alt="PCSpecialist"
+                // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168241.png"
+                // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168242.png"><img src="https://cdn2.nextinpact
+                // .com/images/bd/news/mini-168242.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
+                // .com/images/bd/news/168242.png" /></a></li></ul>
+                Elements lesSlideShow = lArticle.select("ul[class=slideshow-container]:has(li > a > img)");
+                // Pour chaque slideshow
+                for (Element unSlideShow : lesSlideShow) {
+                    // Pour chaque <img> du slideshow !
+                    for (Element imageSlideShow : unSlideShow.select("img")) {
+                        // Prise de l'image en pleine taille
+                        imageSlideShow.attr("src", imageSlideShow.absUrl("data-large-src"));
+                        // Injection de l'image pleine taille...
+                        unSlideShow.before("<p>" + imageSlideShow.outerHtml() + "</p>");
+                    }
+                    // Suppression du slideshow
+                    unSlideShow.remove();
+                }
+
+                // Suppression des attributs sans intérêt pour l'application
+                Elements elements = lArticle.select("*");
+                for (Element element : elements) {
+                    element.removeAttr("target");
+                    element.removeAttr("rel");
+                    element.removeAttr("class");
+                    element.removeAttr("style");
+                    element.removeAttr("data-imageid");
+                    element.removeAttr("alt");
+                }
+
+                // Elimination des htmlentities (beaucoup de &nbsp;)
+                contenu = Parser.unescapeEntities(lArticle.toString(), true);
+                monArticleItem.setContenu(contenu);
 
                 // Et je le stocke
                 mesArticlesItem.add(monArticleItem);
@@ -111,318 +349,6 @@ public class ParseurHTML {
         }
 
         return mesArticlesItem;
-    }
-
-    /**
-     * Parse le contenu d'un article
-     *
-     * @param unContenu contenu JSON brut
-     * @param unSite    Site concerné (NXI, IH, ...)
-     * @return Contenu parsé
-     */
-    public static ArticleItem getContenuArticle(final String unContenu, final int unSite) {
-        ArticleItem monRetour = new ArticleItem();
-        String monContenu = "";
-
-        try {
-            // Récupération du JSON
-            JSONObject contenu_json = new JSONObject(unContenu);
-
-            // L'ID de l'article pour le debug
-            int idArticle = contenu_json.getInt("contentId");
-
-            // Contenu de l'article
-            String contenu = "<article>";
-            contenu += "<h1>";
-            contenu += contenu_json.getString("title");
-            contenu += "</h1>";
-            // Pas de sous-titre dans le brief
-            if (!"null".equals(contenu_json.getString("subtitle"))) {
-                contenu += "<span>";
-                contenu += contenu_json.getString("subtitle");
-                contenu += "</span>";
-            }
-            // Gestion de la mise à jour de l'article
-            if (!"null".equals(contenu_json.getString("updateText"))) {
-                contenu += "<header>";
-                contenu += contenu_json.getString("updateText");
-                contenu += "</header>";
-            }
-            if (!"null".equals(contenu_json.getString("headlines"))) {
-                contenu += contenu_json.getString("headlines");
-            }
-
-            contenu += contenu_json.getString("publicText");
-
-            // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
-            String contenuAbonne = contenu_json.getString("privateText");
-            if (!"".equals(contenuAbonne) && !"null".equals(contenuAbonne)) {
-                contenu += contenuAbonne;
-            } else if (contenu_json.getBoolean("isPaywalled")) {
-                // Contenu privé sur paywall
-                contenu += "<br />... (contenu abonné)<br /><br/>";
-            }
-
-            // Calcul de l'URL SEO
-            String URLseo = Constantes.NXI_URL_PARTAGE;
-            URLseo += contenu_json.getString("contentId");
-            URLseo += "/";
-            URLseo += contenu_json.getString("seoUrl");
-            // Enregistrement de l'URL SEO
-            monRetour.setURLseo(URLseo);
-
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.d("ParseurHTML", "getContenuArticle() - URL SEO " + URLseo);
-            }
-
-            contenu += "<footer>";
-            // Sauf pour le brief...
-            String auteur = "Par l'équipe Next INpact";
-            // Auteur de l'article
-            JSONArray auteurs = contenu_json.getJSONArray("authors");
-            if (auteurs.length() > 0) {
-                JSONObject monAuteur = auteurs.getJSONObject(0);
-                auteur = "Par " + monAuteur.getString("name") + " - " + monAuteur.getString("email");
-            }
-            contenu += auteur;
-            // Lien vers l'article
-            contenu += "<br /><br />Article publié sur <a href=\"" + URLseo + "\">" + URLseo + "</a>";
-
-            contenu += "</footer>";
-            contenu += "</article>";
-
-            // L'article
-            Elements lArticle = Jsoup.parse(contenu).select("article");
-
-            // NETTOYAGE DU CONTENU
-            // Suppression des span d'affiliation
-            Elements spanAffiliation = lArticle.select("span[data-affiliable]");
-            // Récupération de toutes les balises <a...> autour du titre
-            for (Element unSpan : spanAffiliation) {
-                // Insertion du contenu
-                unSpan.before(unSpan.html());
-                // Suppression du lien originel
-                unSpan.remove();
-            }
-
-            // Gestion des iframe
-            Elements lesIframes = lArticle.select("iframe");
-            // généralisation de l'URL en dehors du scheme
-            String[] schemes = {"https://", "http://", "//"};
-            // Pour chaque iframe
-            for (Element uneIframe : lesIframes) {
-                // URL du lecteur
-                String urlLecteur = uneIframe.attr("src").toLowerCase(Constantes.LOCALE);
-
-                for (String unScheme : schemes) {
-                    if (urlLecteur.startsWith(unScheme)) {
-                        // Suppression du scheme
-                        urlLecteur = urlLecteur.substring(unScheme.length());
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
-                        }
-                    }
-                }
-
-                // ID de la vidéo
-                String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-
-                // Ma substitution
-                String monRemplacement;
-
-                // Gestion des lecteurs vidéos
-                if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
-                    /*
-                     * Liste de lecture Youtube
-                     */
-                    // Recalcul de l'ID de la vidéo (cas particulier)
-                    idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
-                    monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
-                } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
-                    /*
-                     * Youtube
-                     */
-                    monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
-                } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
-                    /*
-                     * Dailymotion
-                     */
-                    monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
-                } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
-                    /*
-                     * VIMEO
-                     */
-                    monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
-                } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
-                    /*
-                     * Videos.gouv.fr
-                     */
-                    monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
-                } else if (urlLecteur.startsWith("vid.me")) {
-                    /*
-                     * Vidme
-                     */
-                    monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
-                } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
-                    /*
-                     * Soundcloud (l'URL commence bien par w.soundcloud !)
-                     */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
-                } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
-                    /*
-                     * Scribd
-                     */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
-                } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
-                    /*
-                     * Canal+
-                     */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
-                } else if (urlLecteur.startsWith("www.arte.tv/")) {
-                    /*
-                     * Arte
-                     */
-                    monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
-                } else {
-                    /*
-                     * Déchet (catch all)
-                     */
-                    monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
-
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + idArticle + " : " + uneIframe.absUrl("src"));
-                    }
-                }
-
-
-                // Je remplace l'iframe par mon contenu
-                uneIframe.before(monRemplacement);
-                uneIframe.remove();
-
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.i("ParseurHTML", "Remplacement par une iframe : " + monRemplacement);
-                }
-            }
-
-            // Gestion des videos HTML5
-            Elements lesVideos = lArticle.select("video");
-            for (Element uneVideo : lesVideos) {
-                String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
-                // Je remplace la vidéo par mon contenu
-                uneVideo.before(monRemplacement);
-                uneVideo.remove();
-            }
-
-            // Gestion des URL relatives des liens
-            Elements lesLiens = lArticle.select("a[href]");
-            // Pour chaque lien
-            for (Element unLien : lesLiens) {
-                // Sauf si c'est un mail (ex: https://api-v1.nextinpact.com/api/v1/SimpleContent/44713)
-                if (!unLien.attr("href").startsWith("mailto:")) {
-                    // Assignation de son URL absolue
-                    unLien.attr("href", unLien.absUrl("href"));
-                }
-            }
-            // Gestion des URL relatives des images
-            Elements lesImages = lArticle.select("img[src]");
-            // Pour chaque image
-            for (Element uneImage : lesImages) {
-                // Si ce n'est pas un drawable de l'application
-                if (!uneImage.attr("src").startsWith("android.resource://")) {
-                    // Assignation de son URL absolue
-                    uneImage.attr("src", uneImage.absUrl("src"));
-                }
-            }
-
-
-            /*
-             * Gestion des images #232
-             */
-            // Standard
-            // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
-            // -12.htm
-            // <p style="text-align: center;"><img src="https://cdn2.nextinpact.com/images/bd/news/168187.png" alt="Orange Bouquet
-            // => Rien à faire !
-
-            // fancyimg
-            // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
-            // -12.htm
-            // <p style="text-align: center;
-            // "><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168188.png" rel="group_fancy"><img
-            // src="https://cdn2.nextinpact.com/images/bd/news/mini-168188.png" alt="Orange ePresse izneo" height="216"
-            // /></a><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168189.png" rel="group_fancy"><img
-            // src="https://cdn2.nextinpact.com/images/bd/news/mini-168189.png" alt="Orange ePresse izneo" /><br /></a><span
-            // style="font-size: smaller; font-weight: bold;">ePresse avec Orange et izneo, également avec Orange</span></p>
-            Elements liensImagesFancy = lArticle.select("a[class=fancyimg]:has(img)");
-            // Pour chaque <a>
-            for (Element lienImageFancy : liensImagesFancy) {
-                // Pour chaque image...
-                for (Element lImage : lienImageFancy.select("img")) {
-                    // Passage à l'image pleine taille
-                    lImage.attr("src", lienImageFancy.absUrl("href"));
-                    // Injection de l'image pleine taille...
-                    lienImageFancy.before(lImage.outerHtml());
-                }
-                // Suppression du lien (et ses enfants)
-                lienImageFancy.remove();
-            }
-
-            // slideshow-container
-            // https://m.nextinpact.com/news/105361-pcspecialist-arrive-en-france-avec-ses-pc-fixes-et-portables
-            // -personnalisables.htm
-            // <ul class="slideshow-container"><li><a href="https://cdn2.nextinpact.com/images/bd/news/168239.png"><img
-            // src="https://cdn2.nextinpact.com/images/bd/news/mini-168239.png" alt="PCSpecialist"
-            // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168239.png"
-            // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168240.png"><img src="https://cdn2.nextinpact
-            // .com/images/bd/news/mini-168240.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
-            // .com/images/bd/news/168240.png" /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168241.png"><img
-            // src="https://cdn2.nextinpact.com/images/bd/news/mini-168241.png" alt="PCSpecialist"
-            // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168241.png"
-            // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168242.png"><img src="https://cdn2.nextinpact
-            // .com/images/bd/news/mini-168242.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
-            // .com/images/bd/news/168242.png" /></a></li></ul>
-            Elements lesSlideShow = lArticle.select("ul[class=slideshow-container]:has(li > a > img)");
-            // Pour chaque slideshow
-            for (Element unSlideShow : lesSlideShow) {
-                // Pour chaque <img> du slideshow !
-                for (Element imageSlideShow : unSlideShow.select("img")) {
-                    // Prise de l'image en pleine taille
-                    imageSlideShow.attr("src", imageSlideShow.absUrl("data-large-src"));
-                    // Injection de l'image pleine taille...
-                    unSlideShow.before("<p>" + imageSlideShow.outerHtml() + "</p>");
-                }
-                // Suppression du slideshow
-                unSlideShow.remove();
-            }
-
-            // Suppression des attributs sans intérêt pour l'application
-            Elements elements = lArticle.select("*");
-            for (Element element : elements) {
-                element.removeAttr("target");
-                element.removeAttr("rel");
-                element.removeAttr("class");
-                element.removeAttr("style");
-                element.removeAttr("data-imageid");
-                element.removeAttr("alt");
-            }
-
-            // Elimination des htmlentities (beaucoup de &nbsp;)
-            monContenu = Parser.unescapeEntities(lArticle.toString(), true);
-        } catch (JSONException e) {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "getArticle() - Crash JSON", e);
-            }
-        }
-
-        // Enregistrement du contenu
-        monRetour.setContenu(monContenu);
-
-        return monRetour;
     }
 
     /**

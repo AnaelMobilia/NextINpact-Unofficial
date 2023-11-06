@@ -56,43 +56,30 @@ public class Constantes {
      */
     public static final String X_INPACT_ENCODAGE = "UTF-8";
     /**
-     * URL de téléchargement NXI.
+     * URL de téléchargement Next.
      */
-    public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
-    public static final String NXI_CDN_URL = "https://cdnx.nextinpact.com/";
+    public static final String NEXT_BASE_URL = "https://beta.next.ink/wp-json/wp/v2/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
     public static final int NB_ARTICLES_PAR_PAGE = 10;
-    public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&Page=";
-    /**
-     * Détail d'un article
-     */
-    public static final String X_INPACT_URL_ARTICLE = "SimpleContent/";
+    // _embed permet d'avoir les données associées directement dans la réponse
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
     /**
      * URL de téléchargement des commentaires.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
-    public static final String X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "Commentaire/list?Page=";
+    public static final String NEXT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
     /**
      * URL du nombre de commentaires
      */
-    public static final String X_INPACT_URL_NB_COMMENTAIRES = "Commentaire/count?";
-    public static final String X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE = "&ids=";
+    public static final String NEXT_URL_NB_COMMENTAIRES = NEXT_BASE_URL + "Commentaire/count?";
+    public static final String NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE = "&ids=";
     /**
      * URL d'authentification.
      */
-    public static final String X_INPACT_URL_AUTH = "Auth/login";
-    /**
-     * URL des images
-     */
-    public static final String NXI_URL_IMG = "data-next/images/bd/square-linked-media/";
-    public static final String X_INPACT_URL_IMG_EXT = ".jpg";
-    /**
-     * URL des articles (pour partager)
-     */
-    public static final String NXI_URL_PARTAGE = "https://www.nextinpact.com/article/";
+    public static final String NEXT_URL_AUTH = "Auth/login";
     /**
      * URL des smileys
      */
@@ -124,10 +111,6 @@ public class Constantes {
      * Type : liste des articles.
      */
     public static final int HTML_LISTE_ARTICLES = 1;
-    /**
-     * Type : contenu d'un article.
-     */
-    public static final int HTML_ARTICLE = 2;
     /**
      * Type : commentaires.
      */

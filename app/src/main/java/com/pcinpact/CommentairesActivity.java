@@ -213,8 +213,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         int maPage = (idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
 
         // Création de l'URL
-        String monPath =
-                Constantes.X_INPACT_URL_COMMENTAIRES + maPage + Constantes.X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
+        String monPath = Constantes.NEXT_URL_COMMENTAIRES + maPage + Constantes.NEXT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
 
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monPath, articlePk, null);

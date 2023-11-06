@@ -600,47 +600,15 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Je regarde pour chaque article si je dois le récupérer
             ArrayList<ArticleItem> articleADL = new ArrayList<>();
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                // Vérification de la date de l'article
-                if (unArticle.getTimeStampPublication() > timeStampMinArticle) {
-                    // Stockage en BDD ssi nouveau
-                    if (monDAO.enregistrerArticleSiNouveau(unArticle)) {
-                        // Je recharge l'article depuis la BDD pour récupérer sa PK
-                        ArticleItem monArticle = monDAO.chargerArticle(unArticle.getIdInpact(), unArticle.getSite());
-                        // Il faut maintenant télécharger le contenu de l'article !
-                        articleADL.add(monArticle);
-                    }
-                }
+                // Stockage en BDD ssi nouveau
+                monDAO.enregistrerArticleSiNouveau(unArticle);
             }
-            // Téléchargement des articles dont la date est OK
-            telechargeArticles(articleADL);
-
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         } // Chargement de la liste des articles ayant échouée
-        else if (pathURL.startsWith(Constantes.X_INPACT_URL_LISTE_ARTICLE) && desItems.size() == 0) {
+        else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && desItems.size() == 0) {
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-        }
-        // Téléchargement du contenu d'un article
-        else if (pathURL.startsWith(Constantes.X_INPACT_URL_ARTICLE)) {
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                // Récupération de l'article depuis la BDD
-                ArticleItem monArticle = monDAO.chargerArticle(unArticle.getPk());
-                monArticle.setContenu(unArticle.getContenu());
-                monArticle.setLu(false);
-                monArticle.setURLseo(unArticle.getURLseo());
-                // Ais-je téléchargé la partie abonné ?
-                if (monArticle.isAbonne() && !monArticle.isDlContenuAbonne()) {
-                    // Suis-je connecté ?
-                    if (token != null) {
-                        monArticle.setDlContenuAbonne(true);
-                    }
-                }
-                monDAO.enregistrerArticle(monArticle);
-            }
-
-            // gestion du téléchargement GUI
-            finChargementGUI(Constantes.HTML_ARTICLE);
         }
         // Téléchargement du nombre de commentaires
         else {
@@ -793,12 +761,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Retour utilisateur
         Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         monToast.show();
-
-
-        /*
-         * Téléchargement des articles dont le contenu n'avait pas été téléchargé
-         */
-        telechargeArticles(monDAO.chargerArticlesATelecharger(token != null));
 
         /*
          * Téléchargement des pages de liste d'articles

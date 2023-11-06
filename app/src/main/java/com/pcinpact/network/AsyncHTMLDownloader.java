@@ -86,21 +86,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         if (datas != null) {
             switch (typeHTML) {
                 case Constantes.HTML_LISTE_ARTICLES:
-                    monRetour = ParseurHTML.getListeArticles(site, datas);
-                    break;
-
-                case Constantes.HTML_ARTICLE:
-                    ArticleItem monArticle = new ArticleItem();
-                    monArticle.setPk(pkArticle);
-                    // Récupération des infos du contenu
-                    ArticleItem articleParse = ParseurHTML.getContenuArticle(datas, site);
-                    monArticle.setContenu(articleParse.getContenu());
-                    // URL SEO
-                    monArticle.setURLseo(articleParse.getURLseo());
-
-                    ArrayList<ArticleItem> monRetourTmp = new ArrayList<>();
-                    monRetourTmp.add(monArticle);
-                    monRetour = monRetourTmp;
+                    monRetour = ParseurHTML.getListeArticles(datas);
                     break;
 
                 case Constantes.HTML_COMMENTAIRES:
