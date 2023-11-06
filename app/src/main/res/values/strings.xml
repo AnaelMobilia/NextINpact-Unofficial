@@ -30,19 +30,19 @@
     <string name="action_share">Partager</string>
 
     <!-- Ecran d'accueil -->
-    <string name="app_name">INpact Actualités informatiques</string>
+    <string name="app_name">Next Actualités informatiques</string>
     <string name="lastUpdate">"Dernière synchronisation : "</string>
     <string name="lastUpdateNever">Jamais synchronisé</string>
     <string name="contentDescriptionImageArticle">"Illustration de l'article"</string>
 
     <!-- Disclaimer -->
-    <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next INpact.
-			\nLes contenus affichés dans l'application sont issus des sites de INpact Mediagroup (www.nextinpact.com et www.inpact-hardware.com) et sont la pleine propriété de leurs auteurs.
-			\nSi vous appréciez Next INpact et INpact Hardware, abonnez-vous pour soutenir leur indépendance !
+    <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next (INpact).
+			\nLes contenus affichés dans l'application sont issus du site de Next (www.next.ink) et sont la pleine propriété de leurs auteurs.
+			\nSi vous appréciez Next (INpact), abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"</string>
 
     <!-- A propos -->
-    <string name="aboutContent">"INpact Actualités Informatiques est une application développée bénévolement par un lecteur passionné de NextINpact et INpact Hardware.
+    <string name="aboutContent">"Next Actualités Informatiques est une application développée bénévolement par un lecteur passionné de Next (INpact).
 
 Si vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
 https://github.com/AnaelMobilia/NextINpact-Unofficial/issues
@@ -62,18 +62,18 @@ Crédits :
 
 
 Propriété des contenus :
-L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.nextinpact.com et www.inpact-hardware.com .
+L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.next.ink .
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
-Si vous appréciez Next INpact et INpact Hardware, abonnez-vous pour soutenir leur indépendance !
+Si vous appréciez Next (INpact), abonnez-vous pour soutenir leur indépendance !
 https://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
     <string name="articleVideErreurHTML">"Oups…! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
-    <string name="erreurAuthentification">"Erreur lors de l'authentification sur nextinpact.com. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
+    <string name="erreurAuthentification">"Erreur lors de l'authentification sur next.ink. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
     <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné NXI/IH dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
-    <string name="erreurCompteAbonnement">"Votre abonnement NXI/IH est expiré, les articles Abonné ne pourront pas être lus !"</string>
+    <string name="erreurCompteAbonnement">"Votre abonnement Next est expiré, les articles Abonné ne pourront pas être lus !"</string>
     <string name="erreurZoomImage">"Oups…! Cette image ne peut pas être affichée."</string>
     <string name="erreurAHDdl">"Téléchargement impossible : trop de téléchargements simultanés !"</string>
     <string name="compteAbonne">"Compte abonné connecté !"</string>
@@ -88,7 +88,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionsAbonne">Configurer mon compte abonné</string>
     <string name="optionAbonneDisclaimer">"J'accepte que les identifiants de mon compte soient stockés sur cet appareil afin de me permettre de lire les contenus abonnés du site."</string>
     <string name="optionLogin">Identifiant</string>
-    <string name="optionLoginDetail">Votre pseudo ou email Next INpact / INpact Hardware</string>
+    <string name="optionLoginDetail">Votre pseudo ou email Next (INpact)</string>
     <string name="optionPassword">Mot de passe</string>
     <string name="optionPasswordDetail">Le mot de passe associé à votre compte</string>
     <!-- Options liste des articles -->
