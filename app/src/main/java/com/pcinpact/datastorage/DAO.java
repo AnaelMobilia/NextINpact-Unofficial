@@ -56,7 +56,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_PK = "idpk";
     /**
-     * Champ articles => ID chez NXI / IH
+     * Champ articles => ID chez Next
      */
     private static final String ARTICLE_ID_INPACT = "idinpact";
     /**

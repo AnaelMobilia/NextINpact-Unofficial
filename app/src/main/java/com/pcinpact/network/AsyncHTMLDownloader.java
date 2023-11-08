@@ -52,7 +52,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final int pkArticle;
     /**
-     * Token du compte NXI/IH
+     * Token du compte Next
      */
     private final String token;
 

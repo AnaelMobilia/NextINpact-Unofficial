@@ -37,7 +37,7 @@ public class ArticleItem implements Item {
      */
     private int pk;
     /**
-     * ID de l'article chez NXI/IH (non unique)
+     * ID de l'article chez Next
      */
     private int idInpact;
     /**
