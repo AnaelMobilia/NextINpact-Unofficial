@@ -43,7 +43,7 @@
         android:id="@+id/labelAbonne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="5dp"
         android:layout_toEndOf="@id/imageArticle"
         android:background="@drawable/liste_articles_item_article_background_badge_abonne"
         android:text="@string/accueilBadgeAbonne"
