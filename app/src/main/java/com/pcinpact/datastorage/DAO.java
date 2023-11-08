@@ -58,7 +58,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Champ articles => ID chez Next
      */
-    private static final String ARTICLE_ID_INPACT = "idinpact";
+    private static final String ARTICLE_ID_NEXT = "idnext";
     /**
      * Champ articles => Titre
      */
@@ -106,7 +106,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Toutes les colonnes à charger pour un article
      */
-    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_PK, ARTICLE_ID_INPACT, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_URL_SEO};
+    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_PK, ARTICLE_ID_NEXT, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_DERNIER_COMMENTAIRE_LU, ARTICLE_URL_SEO};
     /**
      * Table commentaires
      */
@@ -200,7 +200,7 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
-        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_ID_INPACT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_URL_SEO + " TEXT);";
+        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ARTICLE_ID_NEXT + " INTEGER NOT NULL, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_URL_SEO + " TEXT);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -275,7 +275,7 @@ public final class DAO extends SQLiteOpenHelper {
             insertValues.put(ARTICLE_PK, oldPk);
         }
 
-        insertValues.put(ARTICLE_ID_INPACT, unArticle.getIdInpact());
+        insertValues.put(ARTICLE_ID_NEXT, unArticle.getIdNext());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
         insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
@@ -306,9 +306,9 @@ public final class DAO extends SQLiteOpenHelper {
      */
     public boolean enregistrerArticleSiNouveau(final ArticleItem unArticle) {
         // Est-il déjà présent en BDD ?
-        // Identification par ID INpact car la PK est générée à l'enregistrement de l'article
+        // Identification par ID Next car la PK est générée à l'enregistrement de l'article
         // Je n'ai donc pas encore cette PK dans unArticle !
-        ArticleItem testItem = this.chargerArticleByIdArticle(unArticle.getIdInpact());
+        ArticleItem testItem = this.chargerArticleByIdArticle(unArticle.getIdNext());
 
         boolean enregistrer = false;
         // Cas validant un enregistrement
@@ -497,12 +497,12 @@ public final class DAO extends SQLiteOpenHelper {
      * Charger un article depuis la BDD
      * Utile pour vérifier si un article est à enregistrer
      *
-     * @param idInpact ID de l'article
+     * @param idNext ID de l'article
      * @return ArticleItem de l'article
      */
-    public ArticleItem chargerArticleByIdArticle(final int idInpact) {
+    public ArticleItem chargerArticleByIdArticle(final int idNext) {
         // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_INPACT + "=?", new String[]{String.valueOf(idInpact)}, null, null, null);
+        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, ARTICLE_ID_NEXT + "=?", new String[]{String.valueOf(idNext)}, null, null, null);
 
         ArticleItem monArticle = new ArticleItem();
 
@@ -741,7 +741,7 @@ public final class DAO extends SQLiteOpenHelper {
         ArticleItem monArticle = new ArticleItem();
 
         monArticle.setPk(unCursor.getInt(0));
-        monArticle.setIdInpact(unCursor.getInt(1));
+        monArticle.setIdNext(unCursor.getInt(1));
         monArticle.setTitre(unCursor.getString(2));
         monArticle.setSousTitre(unCursor.getString(3));
         monArticle.setTimeStampPublication(unCursor.getLong(4));

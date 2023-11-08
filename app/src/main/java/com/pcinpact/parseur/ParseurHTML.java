@@ -66,7 +66,7 @@ public class ParseurHTML {
                 monArticleItem = new ArticleItem();
 
                 // ID de l'article
-                monArticleItem.setIdInpact(unArticle.getInt("id"));
+                monArticleItem.setIdNext(unArticle.getInt("id"));
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("date");
@@ -217,7 +217,7 @@ public class ParseurHTML {
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getIdInpact() + " : " + uneIframe.absUrl("src"));
+                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getIdNext() + " : " + uneIframe.absUrl("src"));
                         }
                     }
 
@@ -373,7 +373,7 @@ public class ParseurHTML {
                 JSONObject unArticle = lesArticles.getJSONObject(i);
                 monArticleItem = new ArticleItem();
 
-                monArticleItem.setIdInpact(unArticle.getInt("contentId"));
+                monArticleItem.setIdNext(unArticle.getInt("contentId"));
                 monArticleItem.setNbCommentaires(unArticle.getInt("nbTotal"));
 
                 mesArticlesItem.add(monArticleItem);

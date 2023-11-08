@@ -532,7 +532,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         StringBuilder param = new StringBuilder();
         // Récupération des ID d'articles
         for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
-            param.append(Constantes.NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdInpact());
+            param.append(Constantes.NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdNext());
         }
 
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, Constantes.NEXT_URL_NB_COMMENTAIRES + param, 0, token);
@@ -594,7 +594,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
 
                 // Mise à jour du nombre de commentaires
-                telechargeNbCommentaires(Constantes.IS_NXI);
+                telechargeNbCommentaires();
             }
 
             // Je regarde pour chaque article si je dois le récupérer
@@ -614,7 +614,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         else {
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                 // Récupération de l'article depuis la BDD
-                ArticleItem monArticle = monDAO.chargerArticleByIdArticle(unArticle.getIdInpact());
+                ArticleItem monArticle = monDAO.chargerArticleByIdArticle(unArticle.getIdNext());
                 monArticle.setNbCommentaires(unArticle.getNbCommentaires());
                 // L'enregistrer mais sans effacer les commentaires & date de refresh
                 monDAO.enregistrerArticle(monArticle, false);

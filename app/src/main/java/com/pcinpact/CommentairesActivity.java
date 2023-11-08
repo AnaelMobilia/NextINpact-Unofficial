@@ -172,7 +172,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // Je récupère le site concerné
         ArticleItem monArticle = monDAO.chargerArticle(articlePk);
-        idArticle = monArticle.getIdInpact();
+        idArticle = monArticle.getIdNext();
 
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);

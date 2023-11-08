@@ -39,7 +39,7 @@ public class ArticleItem implements Item {
     /**
      * ID de l'article chez Next
      */
-    private int idInpact;
+    private int idNext;
     /**
      * Titre de l'article
      */
@@ -123,15 +123,15 @@ public class ArticleItem implements Item {
     /**
      * @return id
      */
-    public int getIdInpact() {
-        return idInpact;
+    public int getIdNext() {
+        return idNext;
     }
 
     /**
-     * @param idInpact id_inpact
+     * @param idNext ID chez Next
      */
-    public void setIdInpact(int idInpact) {
-        this.idInpact = idInpact;
+    public void setIdNext(int idNext) {
+        this.idNext = idNext;
     }
 
     /**

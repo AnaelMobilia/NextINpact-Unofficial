@@ -54,7 +54,7 @@ public class Constantes {
     /**
      * Encodage des pages.
      */
-    public static final String X_INPACT_ENCODAGE = "UTF-8";
+    public static final String X_NEXT_ENCODAGE = "UTF-8";
     /**
      * URL de téléchargement Next.
      */
@@ -210,7 +210,7 @@ public class Constantes {
     /**
      * USER AGENT.
      */
-    private static final String USER_AGENT = "NextInpact (Unofficial) v";
+    private static final String USER_AGENT = "Next Actualites informatiques v";
 
     /**
      * User agent pour les requêtes réseau.
