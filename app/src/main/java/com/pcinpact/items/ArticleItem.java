@@ -55,7 +55,7 @@ public class ArticleItem implements Item {
     /**
      * Nombre de commentaires de l'article
      */
-    private int nbCommentaires;
+    private int nbCommentaires = 0;
     /**
      * URL de la miniature de l'article
      */

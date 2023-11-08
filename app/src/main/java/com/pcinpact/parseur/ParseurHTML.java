@@ -80,10 +80,6 @@ public class ParseurHTML {
                 // Sous titre
                 monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
 
-                // Nombre de commentaires
-                int nbCommentaires = 0;
-                monArticleItem.setNbCommentaires(nbCommentaires);
-
                 // Statut abonné
                 String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
                 if ("".equals(dateFinBlocage)) {
