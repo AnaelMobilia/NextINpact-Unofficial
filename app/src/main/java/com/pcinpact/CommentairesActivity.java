@@ -213,7 +213,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         int maPage = (idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
 
         // Création de l'URL
-        String monPath = Constantes.NEXT_URL_COMMENTAIRES + maPage + Constantes.NEXT_URL_COMMENTAIRES_PARAM_ARTICLE + idArticle;
+        String monPath = Constantes.NEXT_URL_COMMENTAIRES + idArticle + Constantes.NEXT_URL_COMMENTAIRES_PARAM_PAGE + maPage;
 
         // Ma tâche de DL
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monPath, articlePk, null);
@@ -450,8 +450,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             }
         }
         // Stockage en BDD des nouveaux commentaires
-        for (Item unCommentaire : desItems) {
-            monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unCommentaire);
+        for (Item unItem : desItems) {
+            if (unItem instanceof CommentaireItem) {
+                monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
+            }
         }
 
         // Chargement de TOUS les commentaires ?

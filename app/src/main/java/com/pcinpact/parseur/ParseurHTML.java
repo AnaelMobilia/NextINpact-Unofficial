@@ -23,6 +23,7 @@ import android.util.Log;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
+import com.pcinpact.items.Item;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
@@ -39,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parseur du code HTML
@@ -348,75 +351,55 @@ public class ParseurHTML {
     }
 
     /**
-     * Nombre de commentaires d'un article
-     *
-     * @param unContenu contenu JSON brut
-     * @return ArrayList<ArticleItem> reprenant ArticleID & NbCommentaires
-     */
-    public static ArrayList<ArticleItem> getNbCommentaires(final String unContenu) {
-        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
-
-        try {
-            // Récupération du JSON
-            JSONObject contenu_json = new JSONObject(unContenu);
-
-            // Les articles
-            JSONArray lesArticles = contenu_json.getJSONArray("results");
-
-            ArticleItem monArticleItem;
-            // Pour chaque article
-            for (int i = 0; i < lesArticles.length(); i++) {
-                JSONObject unArticle = lesArticles.getJSONObject(i);
-                monArticleItem = new ArticleItem();
-
-                monArticleItem.setIdNext(unArticle.getInt("contentId"));
-                monArticleItem.setNbCommentaires(unArticle.getInt("nbTotal"));
-
-                mesArticlesItem.add(monArticleItem);
-            }
-        } catch (JSONException e) {
-            Log.e("ParseurHTML", "getNbCommentaires() - Crash JSON", e);
-        }
-
-        return mesArticlesItem;
-    }
-
-    /**
      * Parse les commentaires
      *
      * @param unContenu contenu JSON brut
+     * @param headers   entêtes bruts (Nb total de commentaires)
      * @param pkArticle PK de l'article
-     * @return liste de CommentaireItem
+     * @return liste de CommentaireItem (10 premiers commentaires) et ArticleItem (Nb total de commentaires)
      */
-    public static ArrayList<CommentaireItem> getCommentaires(final String unContenu, final int pkArticle) {
+    public static ArrayList<Item> getCommentaires(final String unContenu, final String headers, final int pkArticle) {
         // mon retour
-        ArrayList<CommentaireItem> mesCommentairesItem = new ArrayList<>();
+        ArrayList<Item> monRetour = new ArrayList<>();
+
+        // Mon Article
+        ArticleItem monArticle = new ArticleItem();
+        monArticle.setPk(pkArticle);
+        // Nombre total de commentaires
+        Pattern p = Pattern.compile(Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL + "(\\d+)\n");
+        Matcher m = p.matcher(headers);
+        while (m.find()) {
+            monArticle.setNbCommentaires(Integer.parseInt(m.group(1)));
+        }
+        // DEBUG
+        if (Constantes.DEBUG) {
+            Log.d("ParseurHTML", "getCommentaires() - " + Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL + " " + monArticle.getNbCommentaires() + " - pkArticle : " + pkArticle);
+        }
+
+        monRetour.add(monArticle);
 
         try {
             // Récupération du JSON
-            JSONObject contenu_json = new JSONObject(unContenu);
-
-            // Les commentaire
-            JSONArray lesCommentaires = contenu_json.getJSONArray("results");
+            JSONArray lesCommentaires = new JSONArray(unContenu);
 
             CommentaireItem monCommentaireItem;
             // Pour chaque commentaire
             for (int i = 0; i < lesCommentaires.length(); i++) {
-                JSONObject unCommentaire = lesCommentaires.getJSONObject(i).getJSONObject("comment");
+                JSONObject unCommentaire = lesCommentaires.getJSONObject(i);
                 monCommentaireItem = new CommentaireItem();
                 monCommentaireItem.setPkArticle(pkArticle);
 
                 // ID du commentaire
-                monCommentaireItem.setId(unCommentaire.getInt("commentId"));
+                monCommentaireItem.setId(unCommentaire.getInt("id"));
 
                 // Auteur
-                monCommentaireItem.setAuteur(unCommentaire.getString("userName"));
+                monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("author_name"), true));
 
                 // Date
-                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(unCommentaire.getString("dateCreated")));
+                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(unCommentaire.getString("date")));
 
                 // Contenu
-                String contenuHtml = unCommentaire.getString("content");
+                String contenuHtml = unCommentaire.getJSONObject("content").getString("rendered");
 
                 // Commentaires modérés
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
@@ -678,7 +661,7 @@ public class ParseurHTML {
 
                 monCommentaireItem.setCommentaire(contenuHtml);
                 // Et je le stocke
-                mesCommentairesItem.add(monCommentaireItem);
+                monRetour.add(monCommentaireItem);
             }
         } catch (JSONException e) {
             // DEBUG
@@ -687,6 +670,6 @@ public class ParseurHTML {
             }
         }
 
-        return mesCommentairesItem;
+        return monRetour;
     }
 }

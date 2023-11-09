@@ -62,7 +62,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param parent       parent à callback à la fin
      * @param unType       type de la ressource (Cf Constantes.TYPE_)
      * @param uneURL       URL de la ressource à télécharger
-     * @param unePkArticle PK de l'article (cas DL article & commentaires)
+     * @param unePkArticle PK de l'article
      * @param unToken      token de connexion
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unePkArticle, final String unToken) {
@@ -80,21 +80,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         ArrayList<? extends Item> monRetour = new ArrayList<>();
 
         // Récupération du contenu HTML
-        String datas = Downloader.download(URL, token);
+        String[] datas = Downloader.download(URL, token);
 
         // Vérifie que j'ai bien un retour (vs erreur DL)
         if (datas != null) {
             switch (typeHTML) {
                 case Constantes.HTML_LISTE_ARTICLES:
-                    monRetour = ParseurHTML.getListeArticles(datas);
+                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
                     break;
 
                 case Constantes.HTML_COMMENTAIRES:
-                    monRetour = ParseurHTML.getCommentaires(datas, pkArticle);
-                    break;
-
-                case Constantes.HTML_NOMBRE_COMMENTAIRES:
-                    monRetour = ParseurHTML.getNbCommentaires(datas);
+                    monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], pkArticle);
                     break;
 
                 default:

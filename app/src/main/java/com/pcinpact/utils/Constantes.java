@@ -69,13 +69,9 @@ public class Constantes {
      * URL de téléchargement des commentaires.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "Commentaire/list?Page=";
-    public static final String NEXT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
-    /**
-     * URL du nombre de commentaires
-     */
-    public static final String NEXT_URL_NB_COMMENTAIRES = NEXT_BASE_URL + "Commentaire/count?";
-    public static final String NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE = "&ids=";
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "comments?post=";
+    public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
+    public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
      * URL d'authentification.
      */
@@ -114,11 +110,7 @@ public class Constantes {
     /**
      * Type : commentaires.
      */
-    public static final int HTML_COMMENTAIRES = 3;
-    /**
-     * Type : Nombre de commentaires
-     */
-    public static final int HTML_NOMBRE_COMMENTAIRES = 4;
+    public static final int HTML_COMMENTAIRES = 2;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.

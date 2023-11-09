@@ -46,6 +46,7 @@ import com.pcinpact.adapters.ItemsAdapter;
 import com.pcinpact.datastorage.CacheManager;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
+import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.AccountCheckInterface;
@@ -81,7 +82,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
-     * [ 0, HTML_LISTE_ARTICLES, (HTML_COMMENTAIRES), HTML_NOMBRE_COMMENTAIRES ]
+     * [ 0, HTML_LISTE_ARTICLES, HTML_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -158,9 +159,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         headerTextView = findViewById(R.id.header_text);
 
         // Initialisation de l'array de supervision des téléchargements
-        dlInProgress = new int[5];
-        dlInProgress[Constantes.HTML_LISTE_ARTICLES] = 0;
-        dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] = 0;
+        dlInProgress = new int[3];
         // Initialisation des numéros de page des listes d'articles
         numPageListeArticle = 1;
 
@@ -526,18 +525,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Télécharge le nombre de commentaires de chaque article
+     * Télécharge le nombre de commentaires de chaque article.
+     * Prend également les 10 premiers commentaires.
      */
     private void telechargeNbCommentaires() {
-        StringBuilder param = new StringBuilder();
         // Récupération des ID d'articles
         for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
-            param.append(Constantes.NEXT_URL_NB_COMMENTAIRES_PARAM_ARTICLE).append(unArticle.getIdNext());
+            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getIdNext(), unArticle.getPk(), token);
+            // Lancement du téléchargement
+            launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
         }
-
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_NOMBRE_COMMENTAIRES, Constantes.NEXT_URL_NB_COMMENTAIRES + param, 0, token);
-        // Lancement du téléchargement
-        launchAHD(monAHD, Constantes.HTML_NOMBRE_COMMENTAIRES);
     }
 
     /**
@@ -570,8 +567,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
+        // faudrait voir si on peut pas faire enregistrer en asynchrone les datas
+        // au moins ça reste en dessous et pas de soucis de remontée multiple de datas
+
         // Si c'est un téléchargement de la liste d'articles
         if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && desItems.size() > 0) {
+            // Enregistrer en BDD les articles (si nouveau)
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                monDAO.enregistrerArticleSiNouveau(unArticle);
+            }
+
             // Télécharger la prochaine page de la liste des articles
             boolean dlNextPage = true;
 
@@ -597,12 +602,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 telechargeNbCommentaires();
             }
 
-            // Je regarde pour chaque article si je dois le récupérer
-            ArrayList<ArticleItem> articleADL = new ArrayList<>();
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                // Stockage en BDD ssi nouveau
-                monDAO.enregistrerArticleSiNouveau(unArticle);
-            }
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         } // Chargement de la liste des articles ayant échouée
@@ -610,18 +609,25 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         }
-        // Téléchargement du nombre de commentaires
+        // Téléchargement du nombre de commentaires et des 10 premiers commentaires
         else {
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                // Récupération de l'article depuis la BDD
-                ArticleItem monArticle = monDAO.chargerArticleByIdArticle(unArticle.getIdNext());
-                monArticle.setNbCommentaires(unArticle.getNbCommentaires());
-                // L'enregistrer mais sans effacer les commentaires & date de refresh
-                monDAO.enregistrerArticle(monArticle, false);
+            for (Item unItem : desItems) {
+                // Nombre de commentaires
+                if (unItem instanceof ArticleItem) {
+                    // Récupération de l'article depuis la BDD
+                    ArticleItem monArticle = monDAO.chargerArticle(((ArticleItem) unItem).getPk());
+                    monArticle.setNbCommentaires(((ArticleItem) unItem).getNbCommentaires());
+                    // L'enregistrer mais sans effacer les commentaires & date de refresh
+                    monDAO.enregistrerArticle(monArticle, false);
+                }
+                // Commentaires
+                else {
+                    monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
+                }
             }
 
             // gestion du téléchargement GUI
-            finChargementGUI(Constantes.HTML_NOMBRE_COMMENTAIRES);
+            finChargementGUI(Constantes.HTML_COMMENTAIRES);
         }
     }
 
@@ -671,7 +677,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void nouveauChargementGUI(int typeDL) {
         // Si c'est le premier => activation des gri-gri GUI
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
@@ -716,7 +722,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Si toutes les données sont téléchargées...
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_NOMBRE_COMMENTAIRES] == 0) {
+        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_COMMENTAIRES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");

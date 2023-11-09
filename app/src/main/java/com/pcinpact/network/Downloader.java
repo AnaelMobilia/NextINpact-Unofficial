@@ -43,16 +43,21 @@ import okhttp3.Response;
  * @author Anael
  */
 public class Downloader {
+    public static final int CONTENT_HEADERS = 0;
+    public static final int CONTENT_BODY = 1;
+
     /**
      * Téléchargement d'une ressource
      *
      * @param uneURL  URL de la ressource à télécharger
      * @param unToken Token d'authentification NXI
-     * @return ressource demandée brute (JSON)
+     * @return tableau ["headers", "body"] avec le contenu brut de chaque
      */
-    public static String download(final String uneURL, final String unToken) {
+    public static String[] download(final String uneURL, final String unToken) {
         // Retour
-        String datas = null;
+        String[] datas = new String[2];
+        datas[CONTENT_HEADERS] = "";
+        datas[CONTENT_BODY] = "";
 
         try {
             if (Constantes.DEBUG) {
@@ -78,7 +83,8 @@ public class Downloader {
                     Log.e("Downloader", "download() - Erreur " + response.code() + " au dl de " + uneURL);
                 }
             } else {
-                datas = response.body().string();
+                datas[CONTENT_BODY] = response.body().string();
+                datas[CONTENT_HEADERS] = response.headers().toString();
             }
             response.close();
         } catch (IOException | NullPointerException e) {
