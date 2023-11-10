@@ -69,8 +69,7 @@ public class Downloader {
             if (unToken == null || "".equals(unToken)) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
             } else {
-                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader(
-                        "Authorization", "Bearer " + unToken).build();
+                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", unToken).build();
             }
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
@@ -113,20 +112,11 @@ public class Downloader {
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
 
-            int tokenEi = (int) Math.floor(Math.random() * username.length());
-            int tokenPi = (int) Math.floor(Math.random() * password.length());
-
-            String tokenTk = "" + username.charAt(tokenEi) + password.charAt(tokenPi);
-
             // Objet JSON pour la connexion (protection des quotes)
             JSONObject monJSON = new JSONObject();
             try {
                 monJSON.put(Constantes.AUTHENTIFICATION_USERNAME, username);
                 monJSON.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
-                monJSON.put("noCrossAuth", false);
-                monJSON.put("ei", tokenEi);
-                monJSON.put("pi", tokenPi);
-                monJSON.put("tk", tokenTk);
             } catch (JSONException e) {
                 if (Constantes.DEBUG) {
                     Log.e("Downloader", "connexionAbonne() - JSONException", e);
@@ -136,11 +126,8 @@ public class Downloader {
             // Requête d'authentification
             RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_NEXT_ENCODAGE));
 
-            // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
-            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_BASE_URL + Constantes.NEXT_URL_AUTH);
-
-            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(
-                    body).build();
+            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
+            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
 
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
@@ -155,8 +142,8 @@ public class Downloader {
                 // Je passe en revue les cookies retournés
                 for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
                     // Si c'est le bon cookie :-)
-                    if (Constantes.AUTHENTIFICATION_COOKIE_AUTH.equals(unCookie.name())) {
-                        monToken = unCookie.value();
+                    if (unCookie.name().startsWith(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
+                        monToken = unCookie.name() + "=" + unCookie.value();
                     }
                 }
             }

@@ -58,24 +58,24 @@ public class Constantes {
     /**
      * URL de téléchargement Next.
      */
-    public static final String NEXT_BASE_URL = "https://beta.next.ink/wp-json/wp/v2/";
+    public static final String NEXT_BASE_URL = "https://beta.next.ink/wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
     public static final int NB_ARTICLES_PAR_PAGE = 10;
     // _embed permet d'avoir les données associées directement dans la réponse
-    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
     /**
      * URL de téléchargement des commentaires.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "comments?post=";
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "wp/v2/comments?post=";
     public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
     public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
      * URL d'authentification.
      */
-    public static final String NEXT_URL_AUTH = "Auth/login";
+    public static final String NEXT_URL_AUTH = NEXT_BASE_URL + "auth/v1/authenticate";
     /**
      * URL des smileys
      */
@@ -190,7 +190,7 @@ public class Constantes {
     /**
      * Paramètre utilisateur.
      */
-    public static final String AUTHENTIFICATION_USERNAME = "emailOrLogin";
+    public static final String AUTHENTIFICATION_USERNAME = "username";
     /**
      * Paramètre mot de passe.
      */
@@ -198,7 +198,7 @@ public class Constantes {
     /**
      * Nom du cookie retourné à l'authentification.
      */
-    public static final String AUTHENTIFICATION_COOKIE_AUTH = "__crossAuth";
+    public static final String AUTHENTIFICATION_COOKIE_AUTH = "wordpress_logged_in_";
     /**
      * USER AGENT.
      */
