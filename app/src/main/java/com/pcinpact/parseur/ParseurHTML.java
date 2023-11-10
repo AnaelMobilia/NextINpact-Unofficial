@@ -125,16 +125,6 @@ public class ParseurHTML {
                 Elements lArticle = Jsoup.parse(contenu).select("article");
 
                 // NETTOYAGE DU CONTENU
-                // Suppression des span d'affiliation
-                Elements spanAffiliation = lArticle.select("span[data-affiliable]");
-                // Récupération de toutes les balises <a...> autour du titre
-                for (Element unSpan : spanAffiliation) {
-                    // Insertion du contenu
-                    unSpan.before(unSpan.html());
-                    // Suppression du lien originel
-                    unSpan.remove();
-                }
-
                 // Gestion des iframe
                 Elements lesIframes = lArticle.select("iframe");
                 // généralisation de l'URL en dehors du scheme
