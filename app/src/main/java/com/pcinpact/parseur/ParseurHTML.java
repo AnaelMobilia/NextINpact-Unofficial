@@ -80,13 +80,15 @@ public class ParseurHTML {
                 // Titre de l'article
                 monArticleItem.setTitre(Parser.unescapeEntities(unArticle.getJSONObject("title").getString("rendered"), true));
 
-                // Sous titre
-                monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
-
-                // Statut abonné
-                String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
-                if (!"".equals(dateFinBlocage)) {
-                    monArticleItem.setAbonne(true);
+                // Champs non présents dans le brief
+                if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
+                    // Sous titre
+                    monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
+                    // Statut abonné
+                    String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
+                    if (!"".equals(dateFinBlocage)) {
+                        monArticleItem.setAbonne(true);
+                    }
                 }
 
                 // URL Seo
@@ -106,7 +108,13 @@ public class ParseurHTML {
                 contenu += unArticle.getJSONObject("content").getString("rendered");
                 contenu += "<footer>";
                 // Auteur de l'article
-                String auteur = unArticle.getJSONObject("_embedded").getJSONArray("author").getJSONObject(0).getString("name");
+                String auteur;
+                if (Constantes.NEXT_TYPE_ARTICLES_BRIEF.equals(unArticle.getString("type"))) {
+                    // Pas d'auteur pour le brief
+                    auteur = "l'équipe Next";
+                } else {
+                    auteur = unArticle.getJSONObject("_embedded").getJSONArray("author").getJSONObject(0).getString("name");
+                }
                 contenu += "Par " + auteur + " - actu" + "@" + "nextinpact.com";
                 // Lien vers l'article
                 contenu += "<br /><br />Article publié sur <a href=\"" + monArticleItem.getURLseo() + "\">" + monArticleItem.getURLseo() + "</a>";

@@ -65,6 +65,12 @@ public class Constantes {
     public static final int NB_ARTICLES_PAR_PAGE = 10;
     // _embed permet d'avoir les données associées directement dans la réponse
     public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
+    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_BASE_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
+    /**
+     * Type de données Articles chez Next
+     */
+    public static final String NEXT_TYPE_ARTICLES_STANDARD = "post";
+    public static final String NEXT_TYPE_ARTICLES_BRIEF= "brief_article";
     /**
      * URL de téléchargement des commentaires.
      */
