@@ -93,10 +93,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionPasswordDetail">Le mot de passe associé à votre compte</string>
     <!-- Options liste des articles -->
     <string name="optionsListeArticle">Liste des articles</string>
-    <!--<string name="optionNbArticles">"Nombre d'articles (pour chaque site)"</string>-->
     <string name="optionNbJoursArticles">"Télécharger x jours d'actualités"</string>
-    <!--<string name="optionAfficherPublicite">"Afficher les publicités rédactionnelles"</string>-->
-    <!--<string name="optionAfficherPubliciteDetail">"Rédigées par l'équipe Next"</string>-->
     <string name="optionAfficherNbNouveauComm">Commentaires non lus</string>
     <string name="optionAfficherNbNouveauCommDetail">Affichage sous la forme (+12)</string>
     <!-- Options : Articles -->
@@ -110,23 +107,18 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionActiverLiensCommentaire">Liens hypertextes</string>
     <string name="optionPositionCommentaire">Mémoriser la position</string>
     <string name="optionPositionCommentaireDetail">Rouvrir au dernier commentaire lu</string>
-    <!-- <string name="optionTelechargerCommentaires">Télécharger</string> -->
-    <!-- <string name="optionTelechargerCommentairesDetail">Télécharger les 10 premiers commentaires</string> -->
     <string name="optionCommentairesTelechargementContinu">Chargement en continu</string>
     <string name="optionCommentairesTelechargementContinuDetail">Télécharger les commentaires suivants au fil de la lecture</string>
     <!-- Options : Debug -->
     <string name="optionsDeveloppement">Paramètrages avancés</string>
-    <string name="optionDebug">Activer le débuggage</string>
+    <string name="optionDebug">Mode développeur</string>
 
     <!-- Options - ID des clefs -->
     <string name="idOptionLiensDansArticles">1</string>
     <string name="idOptionLiensDansCommentaires">2</string>
     <string name="idOptionZoomTexte">3</string>
-    <!-- Unused now -->
-    <string name="idOptionTelechargerCommentaires">4</string>
     <string name="idOptionDebug">6</string>
     <string name="idOptionCommentairesTelechargementContinu">7</string>
-    <!--string name="idOptionNbArticles">8</string-->
     <string name="idOptionInstallationApplication">9</string>
     <string name="idOptionAbonne">10</string>
     <string name="idOptionLogin">11</string>
@@ -134,19 +126,14 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionInfoCompteAbonne">13</string>
     <!-- Option sans GUI, sert à notifier l'effacement uniquement -->
     <string name="idOptionDebugEffacerCache">14</string>
-    <!-- Pour mémoire -->
-    <!-- <string name="idOptionImagesEnHTTP">15</string> -->
     <string name="idOptionPositionCommentaire">16</string>
     <string name="idOptionCacherBoutonPartage">17</string>
     <string name="idOptionAfficherNbNouveauComm">18</string>
     <string name="idOptionThemeSombre">19</string>
-    <!-- Pour mémoire (actif car migration de valeur)-->
+    <!-- Pour mémoire (actif car migration de valeur) -->
     <string name="idOptionTelechargerImages">20</string>
     <string name="idOptionTelechargerImagesv2">21</string>
-    <string name="idOptionAfficherPublicite">22</string>
-    <!-- Version 2.4.0 -->
-    <string name="idOptionVersion240">23</string>
-    <!-- Nb de jours d'articles à télécharge-->
+    <!-- Nb de jours d'articles à télécharger -->
     <string name="idOptionNbJoursArticles">24</string>
 
     <!-- Liste des articles -->
@@ -165,7 +152,6 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="debugEffacerCacheToast">"Effacement du cache de l'application !"</string>
     <string name="debugEffacerCacheCommentaire">"Effacer les commentaires du cache de l'application"</string>
     <string name="debugEffacerCacheCommentaireToast">"Effacement des commentaires du cache de l'application !"</string>
-    <string name="debugGenererArrayList">"Développement - Log.e(ArrayList[ArticleItem])"</string>
     <string name="debugTesterConnexion">Tester la connexion compte abonné</string>
 
     <!-- Support -->

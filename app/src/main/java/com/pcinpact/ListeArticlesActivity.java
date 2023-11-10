@@ -320,15 +320,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
         }
 
-        // Est-ce le premier lancement en v2.4.0 (changement de gestion du cache des images)
-        Boolean version240 = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionVersion240, R.bool.defautOptionVersion240);
-        if (!version240) {
-            // Effacement du cache de l'application v < 2.4.0
-            CacheManager.effacerCacheV240(getApplicationContext());
-            // Enregistrement de l'action
-            Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionVersion240, true);
-        }
-
         return true;
     }
 

@@ -21,7 +21,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Options génériques -->
     <PreferenceCategory app:title="@string/optionsGenerales">
-
         <!-- Compte abonné -->
         <Preference
             app:fragment="com.pcinpact.OptionsActivityFragmentCompteAbonne"
@@ -41,26 +40,14 @@
             app:title="@string/optionThemeSombre" />
     </PreferenceCategory>
 
-    <!-- Options spécifiques aux articles -->
+    <!-- Options spécifiques à la liste des articles -->
     <PreferenceCategory app:title="@string/optionsListeArticle">
-        <!--<ListPreference
-            app:defaultValue="@string/defautOptionNbArticles"
-            app:entries="@array/nbArticles"
-            app:entryValues="@array/nbArticles"
-            app:key="@string/idOptionNbArticles"
-            app:title="@string/optionNbArticles" />-->
         <ListPreference
             app:defaultValue="@string/defautOptionNbJoursArticles"
             app:entries="@array/nbJoursArticles"
             app:entryValues="@array/nbJoursArticles"
             app:key="@string/idOptionNbJoursArticles"
             app:title="@string/optionNbJoursArticles" />
-
-        <!--<SwitchPreferenceCompat
-            app:defaultValue="@bool/defautOptionAfficherPublicite"
-            app:key="@string/idOptionAfficherPublicite"
-            app:summary="@string/optionAfficherPubliciteDetail"
-            app:title="@string/optionAfficherPublicite" />-->
 
         <SwitchPreferenceCompat
             app:defaultValue="@bool/defautOptionAfficherNbNouveauComm"
@@ -87,19 +74,14 @@
             app:key="@string/idOptionCacherBoutonPartage"
             app:title="@string/optionCacherBoutonPartage" />
     </PreferenceCategory>
+
     <!-- Options spécifiques aux commentaires -->
     <PreferenceCategory app:title="@string/optionsCommentaires">
-
         <SwitchPreferenceCompat
             app:defaultValue="@bool/defautOptionPositionCommentaire"
             app:key="@string/idOptionPositionCommentaire"
             app:summary="@string/optionPositionCommentaireDetail"
             app:title="@string/optionPositionCommentaire" />
-        <!-- <SwitchPreferenceCompat -->
-        <!-- app:defaultValue="@bool/defautOptionTelechargerCommentaires" -->
-        <!-- app:key="@string/idOptionTelechargerCommentaires" -->
-        <!-- app:summary="@string/optionTelechargerCommentairesDetail" -->
-        <!-- app:title="@string/optionTelechargerCommentaires" /> -->
         <SwitchPreferenceCompat
             app:defaultValue="@bool/defautOptionLiensDansCommentaires"
             app:key="@string/idOptionLiensDansCommentaires"
@@ -110,6 +92,7 @@
             app:summary="@string/optionCommentairesTelechargementContinuDetail"
             app:title="@string/optionCommentairesTelechargementContinu" />
     </PreferenceCategory>
+
     <!-- Développement -->
     <PreferenceCategory app:title="@string/optionsDeveloppement">
         <SwitchPreferenceCompat

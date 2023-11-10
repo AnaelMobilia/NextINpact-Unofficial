@@ -154,20 +154,6 @@ public class CacheManager {
     }
 
     /**
-     * Efface le cache avant la v2.4.0
-     *
-     * @param unContext contexte
-     */
-    public static void effacerCacheV240(final Context unContext) {
-        // Protection du context
-        Context monContext = unContext.getApplicationContext();
-
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, "");
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, "");
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, "");
-    }
-
-    /**
      * Efface tous les fichiers d'un répertoire.
      *
      * @param unPath       répertoire

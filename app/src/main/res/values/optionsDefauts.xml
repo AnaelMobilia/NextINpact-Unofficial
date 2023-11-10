@@ -25,9 +25,7 @@
     <bool name="defautOptionCommentairesTelechargementContinu">true</bool>
     <string name="defautOptionZoomTexte">16</string>
     <bool name="defautOptionInstallationApplication">true</bool>
-    <bool name="defautOptionTelechargerCommentaires">false</bool>
     <bool name="defautOptionDebug">false</bool>
-    <!--<string name="defautOptionNbArticles">30</string>-->
     <bool name="defautOptionAbonne">false</bool>
     <string name="defautOptionLogin">""</string>
     <string name="defautOptionPassword">""</string>
@@ -40,7 +38,5 @@
     <bool name="defautOptionTelechargerImages">true</bool>
     <string name="defautOptionTelechargerImagesv2Test">27</string>
     <string name="defautOptionTelechargerImagesv2">2</string>
-    <bool name="defautOptionAfficherPublicite">false</bool>
-    <bool name="defautOptionVersion240">false</bool>
     <string name="defautOptionNbJoursArticles">7</string>
 </resources>
