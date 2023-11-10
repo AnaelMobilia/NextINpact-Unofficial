@@ -19,6 +19,7 @@
 package com.pcinpact;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -147,6 +148,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             refreshListeCommentaires();
         });
         buttonDl10Commentaires.setText(getResources().getString(R.string.commentairesPlusDeCommentaires));
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonDl10Commentaires.setTextColor(Color.BLACK);
         monListView.addFooterView(buttonDl10Commentaires);
 
         // Adapter pour l'affichage des données

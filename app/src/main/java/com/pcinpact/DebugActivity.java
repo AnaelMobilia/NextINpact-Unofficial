@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,6 +76,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
             monToast.show();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonCache.setTextColor(Color.BLACK);
 
         /*
          * Bouton : effacement des commentaires
@@ -88,6 +91,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast), Toast.LENGTH_LONG);
             monToast.show();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonCommentaire.setTextColor(Color.BLACK);
 
 
         /*
@@ -103,6 +108,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
             maVerif.run();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonTesterConnexion.setTextColor(Color.BLACK);
 
         /*
          * Afficher le code source d'un article
