@@ -85,9 +85,7 @@ public class ParseurHTML {
 
                 // Statut abonné
                 String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
-                if ("".equals(dateFinBlocage)) {
-                    monArticleItem.setAbonne(false);
-                } else {
+                if (!"".equals(dateFinBlocage)) {
                     monArticleItem.setAbonne(true);
                 }
 

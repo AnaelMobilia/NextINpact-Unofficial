@@ -51,7 +51,7 @@ public class ArticleItem implements Item {
     /**
      * Est-ce un article abonné ?
      */
-    private boolean isAbonne;
+    private boolean isAbonne = false;
     /**
      * Nombre de commentaires de l'article
      */
