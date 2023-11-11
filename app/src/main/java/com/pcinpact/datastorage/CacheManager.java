@@ -171,23 +171,6 @@ public class CacheManager {
             }
         }
     }
-
-    /**
-     * Effacement du cache v < 1.8.0
-     *
-     * @param unContext contexte de l'application
-     */
-    public static void effacerCacheV180(final Context unContext) {
-        // Protection du context
-        Context monContext = unContext.getApplicationContext();
-
-        String[] savedFiles = monContext.fileList();
-
-        for (String file : savedFiles) {
-            // Article à effacer
-            monContext.deleteFile(file);
-        }
-    }
 }
 
 /**

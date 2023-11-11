@@ -35,8 +35,6 @@
     <bool name="defautOptionCacherBoutonPartage">false</bool>
     <bool name="defautOptionAfficherNbNouveauComm">true</bool>
     <bool name="defautOptionThemeSombre">true</bool>
-    <bool name="defautOptionTelechargerImages">true</bool>
-    <string name="defautOptionTelechargerImagesv2Test">27</string>
     <string name="defautOptionTelechargerImagesv2">2</string>
     <string name="defautOptionNbJoursArticles">7</string>
 </resources>

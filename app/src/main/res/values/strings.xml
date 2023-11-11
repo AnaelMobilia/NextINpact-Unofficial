@@ -130,8 +130,6 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="idOptionCacherBoutonPartage">17</string>
     <string name="idOptionAfficherNbNouveauComm">18</string>
     <string name="idOptionThemeSombre">19</string>
-    <!-- Pour mémoire (actif car migration de valeur) -->
-    <string name="idOptionTelechargerImages">20</string>
     <string name="idOptionTelechargerImagesv2">21</string>
     <!-- Nb de jours d'articles à télécharger -->
     <string name="idOptionNbJoursArticles">24</string>

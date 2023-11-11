@@ -204,23 +204,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Chargement des articles & MàJ de l'affichage
         monItemsAdapter.updateListeItems(prepareAffichage());
 
-        // Migration de préférences
-        int valeurDefaut = Integer.parseInt(getString(R.string.defautOptionTelechargerImagesv2Test));
-        if (Constantes.getOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2, R.string.defautOptionTelechargerImagesv2Test) == valeurDefaut) {
-            // Si pas de valeur cohérente pour l'option de téléchargement des images
-            // Ancienne valeur
-            boolean valeurOld = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionTelechargerImages, R.bool.defautOptionTelechargerImages);
-            // Nouvelle valeur (actif tout le temps par défaut)
-            String valeurNew = getString(R.string.defautOptionTelechargerImagesv2);
-            if (!valeurOld) {
-                // Pas de téléchargement automatique des images
-                valeurNew = "0";
-            }
-
-            Constantes.setOptionInt(getApplicationContext(), R.string.idOptionTelechargerImagesv2, valeurNew);
-        }
-
-
         // Gestion du changement d'options de l'application
         listenerOptions = (SharedPreferences sharedPreferences, String key) -> {
 
@@ -299,9 +282,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         Boolean premiereUtilisation = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, R.bool.defautOptionInstallationApplication);
         // Si première utilisation : on affiche un disclaimer
         if (premiereUtilisation) {
-            // Effacement du cache de l'application v < 1.8.0
-            CacheManager.effacerCacheV180(getApplicationContext());
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // Titre
             builder.setTitle(getResources().getString(R.string.app_name));
