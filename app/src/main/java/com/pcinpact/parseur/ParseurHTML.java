@@ -396,6 +396,8 @@ public class ParseurHTML {
 
                 // Contenu
                 String contenuHtml = unCommentaire.getJSONObject("content").getString("rendered");
+                // Enlever le retour à la ligne final
+                contenuHtml = contenuHtml.trim();
 
                 // Commentaires modérés
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
@@ -403,74 +405,21 @@ public class ParseurHTML {
 
                     contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : " + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
                 }
+
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
                 String ouvreCitation = "<div><" + Constantes.TAG_HTML_QUOTE + ">";
                 String fermeCitation = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
 
-                // Flèches
-                contenuHtml = contenuHtml.replaceAll("[-]+>", "→");
-                contenuHtml = contenuHtml.replaceAll("[=]+>", "→");
+                int parentId = unCommentaire.getInt("parent");
+                if (parentId != 0) {
+                    // Citations - "En réponse à xxx"
+                    contenuHtml = ouvreCitation + "<b>En réponse à " + parentId + "</b>" + fermeCitation + contenuHtml;
+                }
 
-                // Citations
-                contenuHtml = contenuHtml.replaceAll(">[ ]*(.*?)[\n]+", ouvreCitation + "$1" + fermeCitation);
-
-                // Plusieurs citations à la suite => citation sur plusieurs lignes
-                String contenuBefore;
-                // Nettoyage récursif !
-                do {
-                    contenuBefore = contenuHtml;
-                    // (?s) => Pattern.DOTALL "." capture aussi les retours à la ligne
-                    contenuHtml = contenuHtml.replaceAll("(?s)" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/") + "[\n]*" + ouvreCitation + "(.*?)" + fermeCitation.replace("/", "\\/"), ouvreCitation + "$1\n$2" + fermeCitation);
-                } while (!contenuBefore.equals(contenuHtml));
-
-                // Citations - "xxx à écrit"
-                contenuHtml = contenuHtml.replaceAll("\\(quote:[\\d]*?:(.*?)\\)", "<b>$1 a écrit :</b>\n");
-
-                // Citations - "En réponse à xxx"
-                contenuHtml = contenuHtml.replaceAll("\\(reply:[\\d]*?:(.*?)\\)", "<b>En réponse à $1</b>");
-
-                // Conversion des retours à la ligne en HTML
-                contenuHtml = contenuHtml.replace("\n", "<br />");
-
-                // Gras 1 - ex : **texte**
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\*\\*", "**");
-                // .*? => .* en mode ungreedy (merci Java :-))
-                contenuHtml = contenuHtml.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
-
-                // Gras 2 - ex : __texte__
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\_\\_", "__");
-                // .*? => .* en mode ungreedy (merci Java :-))
-                contenuHtml = contenuHtml.replaceAll("__(.*?)__", "<b>$1</b>");
-
-                // Italique 1 - ex : *jekyll <jesaispluslenomdel'argument> ;*
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\*", "*");
-                contenuHtml = contenuHtml.replaceAll("\\*(.*?)\\*", "<i>$1</i>");
-
-                // Italique 2 - ex : _jekyll <jesaispluslenomdel'argument> ;_
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\_", "_");
-                contenuHtml = contenuHtml.replaceAll("_(.*?)_", "<i>$1</i>");
-
-                // Barré ex : ~~texte~~
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\~\\~", "~~");
-                contenuHtml = contenuHtml.replaceAll("~~(.*?)~~", "<s>$1</s>");
-
-                // Simple tilde ex ~50Ko/s
-                contenuHtml = contenuHtml.replace("\\~", "~");
-
-                // Lien ex : [Texte](http://)
-                // Dans une citation
-                contenuHtml = contenuHtml.replace("\\[", "[");
-                contenuHtml = contenuHtml.replace("\\]", "]");
-                contenuHtml = contenuHtml.replaceAll("\\[(.*?)\\]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
-
-                // hr ex : ---
-                contenuHtml = contenuHtml.replaceAll("---", "<hr />");
+                // Remplacement des citations "blockquote" par la custom
+                contenuHtml = contenuHtml.replace("<blockquote>", ouvreCitation);
+                contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
 
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
@@ -479,8 +428,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":windu:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "windu.gif\" />");
                 contenuHtml = contenuHtml.replace(":baffe:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "baffe.gif\" />");
                 contenuHtml = contenuHtml.replace(":stress:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "stress.gif\" />");
-                contenuHtml = contenuHtml.replace(":jesquate:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "jesquate.gif\" />");
+                contenuHtml = contenuHtml.replace(":jesquate:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "jesquate.gif\" />");
                 contenuHtml = contenuHtml.replace(":xzombi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cerf.gif\" />");
                 contenuHtml = contenuHtml.replace(":oui2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "oui2.gif\" />");
                 contenuHtml = contenuHtml.replace(":duel1:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "lsvader.gif\" />");
@@ -495,34 +443,26 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":craint:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "frown.gif\" />");
                 contenuHtml = contenuHtml.replace(":pleure:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pleure.gif\" />");
                 contenuHtml = contenuHtml.replace(":mad2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mad2.gif\" />");
-                contenuHtml = contenuHtml.replace(":oops:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_redface.gif\" />");
-                contenuHtml = contenuHtml.replace(":keskidit:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "keskidit2.gif\" />");
+                contenuHtml = contenuHtml.replace(":oops:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_redface.gif\" />");
+                contenuHtml = contenuHtml.replace(":keskidit:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "keskidit2.gif\" />");
                 contenuHtml = contenuHtml.replace(":byebye:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "byebye.gif\" />");
                 contenuHtml = contenuHtml.replace(":fou:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "fou.gif\" />");
                 contenuHtml = contenuHtml.replace(":prof:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "prof.gif\" />");
                 contenuHtml = contenuHtml.replace(":8", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "lunettes1.gif\" />");
                 contenuHtml = contenuHtml.replace(":love:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "love.gif\" />");
-                contenuHtml = contenuHtml.replace(":roll:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_rolleyes.gif\" />");
+                contenuHtml = contenuHtml.replace(":roll:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_rolleyes.gif\" />");
                 contenuHtml = contenuHtml.replace(":ooo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ooo.gif\" />");
-                contenuHtml = contenuHtml.replace(":francais:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "francais2.gif\" />");
+                contenuHtml = contenuHtml.replace(":francais:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "francais2.gif\" />");
                 contenuHtml = contenuHtml.replace(":eeek2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "eeek2.gif\" />");
                 contenuHtml = contenuHtml.replace(":bravo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bravo.gif\" />");
-                contenuHtml = contenuHtml.replace(":reflechis:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "reflechis.gif\" />");
+                contenuHtml = contenuHtml.replace(":reflechis:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "reflechis.gif\" />");
                 contenuHtml = contenuHtml.replace(":dors:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dors2.gif\" />");
-                contenuHtml = contenuHtml.replace(":cartonjaune:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonjaune.gif\" />");
-                contenuHtml = contenuHtml.replace(":cartonrouge:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonrouge.gif\" />");
+                contenuHtml = contenuHtml.replace(":cartonjaune:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonjaune.gif\" />");
+                contenuHtml = contenuHtml.replace(":cartonrouge:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "cartonrouge.gif\" />");
                 contenuHtml = contenuHtml.replace(":mad:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mad.gif\" />");
                 contenuHtml = contenuHtml.replace(":smack:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "smack.gif\" />");
                 contenuHtml = contenuHtml.replace(":ouioui:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouioui.gif\" />");
-                contenuHtml = contenuHtml.replace(":censored:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "censored.gif\" />");
+                contenuHtml = contenuHtml.replace(":censored:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "censored.gif\" />");
                 contenuHtml = contenuHtml.replace(":transpi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "transpi.gif\" />");
                 contenuHtml = contenuHtml.replace(":langue:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "langue.gif\" />");
                 contenuHtml = contenuHtml.replace(":mdr2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mdr2.gif\" />");
@@ -532,52 +472,41 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":humour:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "humour.png\" />");
                 contenuHtml = contenuHtml.replace(":heben:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "heben.png\" />");
                 contenuHtml = contenuHtml.replace(":arrow:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_arrow.gif\" />");
-                contenuHtml = contenuHtml.replace(":mrgreen:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_mrgreen.gif\" />");
+                contenuHtml = contenuHtml.replace(":mrgreen:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_mrgreen.gif\" />");
                 contenuHtml = contenuHtml.replace(":fume:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "fume.gif\" />");
                 contenuHtml = contenuHtml.replace(":frown:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "frown.gif\" />");
-                contenuHtml = contenuHtml.replace(":embarassed:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "embarassed.gif\" />");
+                contenuHtml = contenuHtml.replace(":embarassed:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "embarassed.gif\" />");
                 contenuHtml = contenuHtml.replace(":eeek:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "eek.gif\" />");
                 contenuHtml = contenuHtml.replace(":duelsw:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "duelSW.gif\" />");
                 contenuHtml = contenuHtml.replace(":devil:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "devil.gif\" />");
                 contenuHtml = contenuHtml.replace(":copain:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "copain.png\" />");
-                contenuHtml = contenuHtml.replace(":bouletdujour:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bouletdujour.gif\" />");
+                contenuHtml = contenuHtml.replace(":bouletdujour:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bouletdujour.gif\" />");
                 contenuHtml = contenuHtml.replace(":boulet:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "boulet.gif\" />");
-                contenuHtml = contenuHtml.replace(":birthday:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "birthday.gif\" />");
-                contenuHtml = contenuHtml.replace(":ouimaistusors:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouimaistusors.gif\" />");
+                contenuHtml = contenuHtml.replace(":birthday:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "birthday.gif\" />");
+                contenuHtml = contenuHtml.replace(":ouimaistusors:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ouimaistusors.gif\" />");
                 contenuHtml = contenuHtml.replace(":musique:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "music.gif\" />");
                 contenuHtml = contenuHtml.replace(":merci:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "merci.gif\" />");
                 contenuHtml = contenuHtml.replace(":best:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "meilleur.gif\" />");
-                contenuHtml = contenuHtml.replace(":iloveyou:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "loveeyessmly.gif\" />");
+                contenuHtml = contenuHtml.replace(":iloveyou:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "loveeyessmly.gif\" />");
                 contenuHtml = contenuHtml.replace(":kimouss:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "kimouss.gif\" />");
                 contenuHtml = contenuHtml.replace(":kill:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "kill.gif\" />");
-                contenuHtml = contenuHtml.replace(":neutral:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_neutral.gif\" />");
+                contenuHtml = contenuHtml.replace(":neutral:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icon_neutral.gif\" />");
                 contenuHtml = contenuHtml.replace(":zzz:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "zzzzz.gif\" />");
                 contenuHtml = contenuHtml.replace(":youhou:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "youhou.gif\" />");
                 contenuHtml = contenuHtml.replace(":yoda:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "yoda.gif\" />");
                 contenuHtml = contenuHtml.replace(":vomi2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "vomi2.gif\" />");
                 contenuHtml = contenuHtml.replace(":vomi1:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "vomi1.gif\" />");
-                contenuHtml = contenuHtml.replace(":inpactitude:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude3.gif\" />");
+                contenuHtml = contenuHtml.replace(":inpactitude:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude3.gif\" />");
                 contenuHtml = contenuHtml.replace(":tchintchin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "tchin.gif\" />");
                 contenuHtml = contenuHtml.replace(":sm:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "sm.gif\" />");
                 contenuHtml = contenuHtml.replace(":rhooo:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "rhooo.gif\" />");
-                contenuHtml = contenuHtml.replace(":bigssourire:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "biggerGrin.gif\" />");
+                contenuHtml = contenuHtml.replace(":bigssourire:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "biggerGrin.gif\" />");
                 contenuHtml = contenuHtml.replace(":nonnon:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "ripeer.gif\" />");
                 contenuHtml = contenuHtml.replace(":yaisse:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "yaisse.gif\" />");
                 contenuHtml = contenuHtml.replace(":crever:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "crever.gif\" />");
-                contenuHtml = contenuHtml.replace(":cap:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "maitrecapello.gif\" />");
+                contenuHtml = contenuHtml.replace(":cap:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "maitrecapello.gif\" />");
                 contenuHtml = contenuHtml.replace(":naz:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "naz.gif\" />");
-                contenuHtml = contenuHtml.replace(":supervomi:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "supervomi.gif\" />");
+                contenuHtml = contenuHtml.replace(":supervomi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "supervomi.gif\" />");
                 contenuHtml = contenuHtml.replace(":pet:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pet.gif\" />");
                 contenuHtml = contenuHtml.replace(":roule2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "roule2.gif\" />");
                 contenuHtml = contenuHtml.replace(":dent:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dent.gif\" />");
@@ -594,8 +523,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":fou3:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "fou3.gif\" />");
                 contenuHtml = contenuHtml.replace(":poke:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "poke.gif\" />");
                 contenuHtml = contenuHtml.replace(":icq:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "icq.gif\" />");
-                contenuHtml = contenuHtml.replace(":surenchere:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "surenchere.gif\" />");
+                contenuHtml = contenuHtml.replace(":surenchere:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "surenchere.gif\" />");
                 contenuHtml = contenuHtml.replace(":dix:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "dix.gif\" />");
                 contenuHtml = contenuHtml.replace(":neuf:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "neuf.gif\" />");
                 contenuHtml = contenuHtml.replace(":huit:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "huit.gif\" />");
@@ -608,8 +536,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":un:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "un.gif\" />");
                 contenuHtml = contenuHtml.replace(":zero:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "zero.gif\" />");
                 contenuHtml = contenuHtml.replace(":top:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "top.gif\" />");
-                contenuHtml = contenuHtml.replace(":accident:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "accident.gif\" />");
+                contenuHtml = contenuHtml.replace(":accident:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "accident.gif\" />");
                 contenuHtml = contenuHtml.replace(":tristan:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "bosse.gif\" />");
                 contenuHtml = contenuHtml.replace(":baton:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "baton.gif\" />");
                 contenuHtml = contenuHtml.replace(":prison:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "prison.gif\" />");
@@ -628,10 +555,8 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":pleure2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pleure2.gif\" />");
                 contenuHtml = contenuHtml.replace(":muscu:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "muscu.gif\" />");
                 contenuHtml = contenuHtml.replace(":cbon:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "mangezen.gif\" />");
-                contenuHtml = contenuHtml.replace(":pastaper:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pastaper.gif\" />");
-                contenuHtml = contenuHtml.replace(":inpactitude2:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude2.gif\" />");
+                contenuHtml = contenuHtml.replace(":pastaper:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "pastaper.gif\" />");
+                contenuHtml = contenuHtml.replace(":inpactitude2:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "inpactitude2.gif\" />");
                 contenuHtml = contenuHtml.replace(":troll:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "troll.gif\" />");
                 contenuHtml = contenuHtml.replace(":phiphi:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "phiphi.gif\" />");
                 contenuHtml = contenuHtml.replace(":perv:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "perv.gif\" />");
@@ -643,17 +568,9 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":zarb:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "zarb.gif\" />");
                 contenuHtml = contenuHtml.replace(":sucre:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "sucre.gif\" />");
                 contenuHtml = contenuHtml.replace(":rem:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "rem.gif\" />");
-                contenuHtml = contenuHtml.replace(":plantage:",
-                        "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
+                contenuHtml = contenuHtml.replace(":plantage:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
                 contenuHtml = contenuHtml.replace(":auto:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "auto.gif\" />");
                 contenuHtml = contenuHtml.replace(":pciwin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "champion.gif\" />");
-
-                // Suppression des retours à la ligne surnuméraires
-                // Au début du commentaire
-                contenuHtml = contenuHtml.replaceAll("^(<br \\/>[ ]*)*", "");
-                // A la fin du commentaire
-                // Conversion des retours à la ligne en HTML
-                contenuHtml = contenuHtml.replaceAll("(<br \\/>[ ]*)*$", "");
 
                 monCommentaireItem.setCommentaire(contenuHtml);
                 // Et je le stocke

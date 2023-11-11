@@ -75,7 +75,8 @@ public class Constantes {
      * URL de téléchargement des commentaires.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "wp/v2/comments?post=";
+    // On veut avoir les commentaires par ordre chronologique (donc croissant)
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "wp/v2/comments?orderby=date_gmt&order=asc&post=";
     public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
     public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
