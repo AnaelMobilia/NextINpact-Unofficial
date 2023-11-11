@@ -302,9 +302,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Effacement du cache de l'application v < 1.8.0
             CacheManager.effacerCacheV180(getApplicationContext());
 
-            // Lancement d'un téléchargement des articles
-            prepareTelechargementListeArticles();
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // Titre
             builder.setTitle(getResources().getString(R.string.app_name));
@@ -318,6 +315,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // Enregistrement de l'affichage
             Constantes.setOptionBoolean(getApplicationContext(), R.string.idOptionInstallationApplication, false);
+        }
+
+        // Si on a jamais synchronisé, lancer un téléchargement des articles
+        if (TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES)) == 0) {
+            prepareTelechargementListeArticles();
         }
 
         return true;
