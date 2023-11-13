@@ -59,7 +59,7 @@ public class ArticleActivity extends AppCompatActivity {
     /**
      * Bouton de partage
      */
-    MenuItem shareItem;
+    private MenuItem shareItem;
     /**
      * Viewpager2 pour le slide des articles
      */

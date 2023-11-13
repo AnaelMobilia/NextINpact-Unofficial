@@ -125,19 +125,19 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
         return auteur;
     }
 
+    /**
+     * @param auteur auteur
+     */
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
     public int getNumeroAffichage() {
         return numeroAffichage;
     }
 
     public void setNumeroAffichage(int numeroAffichage) {
         this.numeroAffichage = numeroAffichage;
-    }
-
-    /**
-     * @param auteur auteur
-     */
-    public void setAuteur(String auteur) {
-        this.auteur = auteur;
     }
 
     /**

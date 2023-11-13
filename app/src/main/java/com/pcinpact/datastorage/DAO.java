@@ -302,7 +302,7 @@ public final class DAO extends SQLiteOpenHelper {
      * Enregistre un article en BDD uniquement s'il n'existait pas ou qu'il a été mis à jour
      *
      * @param unArticle ArticleItem
-     * @return true si nouveau commentaire
+     * @return true si nouvel article
      */
     public boolean enregistrerArticleSiNouveau(final ArticleItem unArticle) {
         // Est-il déjà présent en BDD ?

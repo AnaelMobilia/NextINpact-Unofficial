@@ -70,7 +70,7 @@ public class Constantes {
      * Type de données Articles chez Next
      */
     public static final String NEXT_TYPE_ARTICLES_STANDARD = "post";
-    public static final String NEXT_TYPE_ARTICLES_BRIEF= "brief_article";
+    public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief_article";
     /**
      * URL de téléchargement des commentaires.
      */

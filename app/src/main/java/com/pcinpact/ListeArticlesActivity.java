@@ -66,8 +66,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Anael
  */
-public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener,
-        AccountCheckInterface {
+public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener, AccountCheckInterface {
     /**
      * Les articles
      */
@@ -131,10 +130,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             System.setProperty("log.tag.Engine", "VERBOSE");
 
             // Détection des violations des politiques Android
-            StrictMode.VmPolicy policy = new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build();
+            StrictMode.VmPolicy policy = new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build();
             StrictMode.setVmPolicy(policy);
         }
 
@@ -238,8 +234,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
         };
         // Attachement du superviseur aux préférences
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(
-                listenerOptions);
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(listenerOptions);
     }
 
     @Override
@@ -425,8 +420,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     protected void onDestroy() {
         try {
             // Détachement du listener pour la taille des textes
-            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(
-                    listenerOptions);
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listenerOptions);
 
             // Suppression des fichiers temporaires pour l'historique du ShareActionProvider
             CacheManager.effacerContenuRepertoire(getFilesDir().toString(), Constantes.PREFIXE_SHARE_HISTORY_FILE_NAME);
@@ -663,10 +657,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress[typeDL]--;
 
         // Si la liste d'articles est chargée
-        if (
-                typeDL == Constantes.HTML_LISTE_ARTICLES
-                && dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0
-        ) {
+        if (typeDL == Constantes.HTML_LISTE_ARTICLES && dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");

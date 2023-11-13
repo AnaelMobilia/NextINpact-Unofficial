@@ -170,6 +170,13 @@ public class ArticleItem implements Item {
     }
 
     /**
+     * @param sousTitre sousTitre
+     */
+    public void setSousTitre(String sousTitre) {
+        this.sousTitre = sousTitre;
+    }
+
+    /**
      * @return URL SEO
      */
     public String getURLseo() {
@@ -181,13 +188,6 @@ public class ArticleItem implements Item {
      */
     public void setURLseo(String URLseo) {
         this.URLseo = URLseo;
-    }
-
-    /**
-     * @param sousTitre sousTitre
-     */
-    public void setSousTitre(String sousTitre) {
-        this.sousTitre = sousTitre;
     }
 
     /**
@@ -212,6 +212,13 @@ public class ArticleItem implements Item {
     }
 
     /**
+     * @param nbCommentaires nbCommentaires
+     */
+    public void setNbCommentaires(int nbCommentaires) {
+        this.nbCommentaires = nbCommentaires;
+    }
+
+    /**
      * Nb de commentaires non lus
      *
      * @return int
@@ -223,13 +230,6 @@ public class ArticleItem implements Item {
             nbComms = 0;
         }
         return nbComms;
-    }
-
-    /**
-     * @param nbCommentaires nbCommentaires
-     */
-    public void setNbCommentaires(int nbCommentaires) {
-        this.nbCommentaires = nbCommentaires;
     }
 
     /**
