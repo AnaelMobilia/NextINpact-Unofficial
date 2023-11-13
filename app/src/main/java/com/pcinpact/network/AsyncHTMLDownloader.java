@@ -82,28 +82,20 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         // Récupération du contenu HTML
         String[] datas = Downloader.download(URL, token);
 
-        // Vérifie que j'ai bien un retour (vs erreur DL)
-        if (datas != null) {
-            switch (typeHTML) {
-                case Constantes.HTML_LISTE_ARTICLES:
-                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
-                    break;
+        switch (typeHTML) {
+            case Constantes.HTML_LISTE_ARTICLES:
+                monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
+                break;
 
-                case Constantes.HTML_COMMENTAIRES:
-                    monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], pkArticle);
-                    break;
+            case Constantes.HTML_COMMENTAIRES:
+                monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], pkArticle);
+                break;
 
-                default:
-                    if (Constantes.DEBUG) {
-                        Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + URL);
-                    }
-                    break;
-            }
-        } else {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.w("AsyncHTMLDownloader", "doInBackground() - pas de contenu retourné pour " + URL);
-            }
+            default:
+                if (Constantes.DEBUG) {
+                    Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + URL);
+                }
+                break;
         }
         return monRetour;
     }
