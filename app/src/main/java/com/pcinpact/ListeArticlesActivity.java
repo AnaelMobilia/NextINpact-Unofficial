@@ -120,12 +120,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Timestamp de la date jusqu'à laquelle télécharger les articles
      */
-    private long timeStampMinArticle;
-    /**
-     * Numéro de la page de la liste d'articles en cours de téléchargement
-     */
-    private int numPageListeArticle;
-    private int numPageListeArticleBrief;
+    private long timestampMinArticle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,9 +156,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         // Initialisation de l'array de supervision des téléchargements
         dlInProgress = new int[3];
-        // Initialisation des numéros de page des listes d'articles
-        numPageListeArticle = 1;
-        numPageListeArticleBrief = 1;
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -455,7 +447,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Nombre de jours demandés par l'utilisateur
         int nbJours = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbJoursArticles, R.string.defautOptionNbJoursArticles);
 
-        timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
+        timestampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
     }
 
     /**
@@ -502,14 +494,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         AsyncHTMLDownloader monAHD;
         // Les articles
         if (isDownloadBrief == null || !isDownloadBrief) {
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + numPageListeArticle, 0, token);
+            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
             // Lancement du téléchargement
             launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
         }
 
         // Le brief
         if (isDownloadBrief == null || isDownloadBrief) {
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + numPageListeArticleBrief, 0, token);
+            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
             // Lancement du1 téléchargement
             launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
         }
@@ -580,60 +572,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
         // Téléchargement d'articles ou du brief
         else {
-            // Déterminer le type d'articles téléchargés
-            boolean isBrief = false;
-            if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
-                isBrief = true;
-            }
-
             // Si c'est un téléchargement de la liste d'articles
             if (desItems.size() > 0) {
                 // Enregistrer en BDD les articles s'il est nouveau ou mis à jour (erreur de téléchargement, accès au contenu abonné, ...)
                 for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                     monDAO.enregistrerArticleSiNouveau(unArticle);
                 }
-
-                // Télécharger la prochaine page de la liste des articles
-                boolean dlNextPage = true;
-
-                ArticleItem lastArticle = (ArticleItem) desItems.get(desItems.size() - 1);
-                // Le dernier article récupéré est plus vieux que ma limite
-                if (lastArticle.getTimeStampPublication() < timeStampMinArticle) {
-                    // On réinitialise à la première page de la liste d'article pour le prochain refresh
-                    if (isBrief) {
-                        numPageListeArticleBrief = 1;
-                    } else {
-                        numPageListeArticle = 1;
-                    }
-                    // Plus de téléchargement de la liste des articles
-                    dlNextPage = false;
-                }
-                if (dlNextPage) {
-                    // Le dernier article n'est pas assez vieux => télécharger la page suivante
-                    if (isBrief) {
-                        numPageListeArticleBrief++;
-                        telechargeListeArticles(true);
-                    } else {
-                        numPageListeArticle++;
-                        telechargeListeArticles(false);
-                    }
-                } else {
-                    // MàJ de la date de rafraichissement de la liste des articles
-                    // Date du refresh
-                    long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                    monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
-
-                    // Mise à jour du nombre de commentaires
-                    telechargeNbCommentaires();
-                }
-
-                // gestion du téléchargement GUI
-                finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
-            } // Chargement de la liste des articles ayant échouée
-            else {
-                // gestion du téléchargement GUI
-                finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
             }
+
+            // gestion du téléchargement GUI
+            finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
         }
     }
 
@@ -723,6 +671,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
             }
+            // MàJ de la date de rafraichissement de la liste des articles
+            // Date du refresh
+            long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+            monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
+
+            // Mise à jour du nombre de commentaires
+            telechargeNbCommentaires();
+
             // Je met à jour les données
             monItemsAdapter.updateListeItems(prepareAffichage());
             // Je notifie le changement pour un rafraichissement du contenu

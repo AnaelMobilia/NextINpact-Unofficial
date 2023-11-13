@@ -73,7 +73,7 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("date");
-                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(laDate));
+                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimestamp(laDate));
 
                 // URL de l'image d'illustration
                 monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
@@ -392,7 +392,7 @@ public class ParseurHTML {
                 monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("author_name"), true));
 
                 // Date
-                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimeStamp(unCommentaire.getString("date")));
+                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date")));
 
                 // Contenu
                 String contenuHtml = unCommentaire.getJSONObject("content").getString("rendered");

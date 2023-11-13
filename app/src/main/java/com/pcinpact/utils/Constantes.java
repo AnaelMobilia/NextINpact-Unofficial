@@ -62,10 +62,10 @@ public class Constantes {
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
-    public static final int NB_ARTICLES_PAR_PAGE = 10;
+    public static final int NB_ARTICLES_PAR_PAGE = 100;
     // _embed permet d'avoir les données associées directement dans la réponse
-    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
-    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_BASE_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&page=";
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_BASE_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&after=";
     /**
      * Type de données Articles chez Next
      */
