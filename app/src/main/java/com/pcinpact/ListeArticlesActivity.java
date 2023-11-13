@@ -712,7 +712,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress[typeDL]--;
 
         // Si la liste d'articles est chargée
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
+        if (
+                typeDL == Constantes.HTML_LISTE_ARTICLES
+                && dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0
+        ) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
