@@ -95,7 +95,8 @@ public class Downloader {
         }
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("Downloader", "download() - " + uneURL + " Contenu : " + datas[CONTENT_BODY] + " - Headers : " + datas[CONTENT_HEADERS]);
+            Log.i("Downloader", "download() - " + uneURL);
+            Log.d("Downloader", "download() - Contenu : " + datas[CONTENT_BODY] + " - Headers : " + datas[CONTENT_HEADERS]);
         }
         return datas;
     }

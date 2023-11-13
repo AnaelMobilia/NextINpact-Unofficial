@@ -305,6 +305,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         return true;
     }
 
+
+    // TODO : liste des appels à dl (voir meme des notifs qui remonteraient du downloader) avec les URL concernées
+
     /**
      * Gestion du clic sur un article => l'ouvrir
      */
