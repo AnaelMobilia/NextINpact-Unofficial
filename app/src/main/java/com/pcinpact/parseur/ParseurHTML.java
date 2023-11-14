@@ -333,6 +333,13 @@ public class ParseurHTML {
                 contenu = Parser.unescapeEntities(lArticle.toString(), true);
                 monArticleItem.setContenu(contenu);
 
+                // ID du dernier commentaire (sert à piloter la vérification du # de commentaires)
+                int lastComment = -1;
+                if (unArticle.getJSONObject("_embedded").has("replies")) {
+                    lastComment = unArticle.getJSONObject("_embedded").getJSONArray("replies").getJSONArray(0).getJSONObject(0).getInt("id");
+                }
+                monArticleItem.setParseurLastCommentId(lastComment);
+
                 // Et je le stocke
                 mesArticlesItem.add(monArticleItem);
             }

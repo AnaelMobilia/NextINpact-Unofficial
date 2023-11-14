@@ -79,6 +79,10 @@ public class ArticleItem implements Item {
      * URL SEO de l'article
      */
     private String URLseo;
+    /**
+     * Dernier ID de commentaire lors du parsage
+     */
+    private int parseurLastCommentId = 0;
 
     @Override
     public int getType() {
@@ -295,5 +299,19 @@ public class ArticleItem implements Item {
      */
     public void setDernierCommLu(int dernierCommLu) {
         this.dernierCommLu = dernierCommLu;
+    }
+
+    /**
+     * @return ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
+     */
+    public int getParseurLastCommentId() {
+        return parseurLastCommentId;
+    }
+
+    /**
+     * @param parseurLastCommentId ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
+     */
+    public void setParseurLastCommentId(int parseurLastCommentId) {
+        this.parseurLastCommentId = parseurLastCommentId;
     }
 }

@@ -502,19 +502,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Télécharge le nombre de commentaires de chaque article.
-     * Prend également les 10 premiers commentaires.
-     */
-    private void telechargeNbCommentaires() {
-        // Récupération des ID d'articles
-        for (ArticleItem unArticle : monDAO.chargerArticlesTriParDate()) {
-            AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getIdNext(), unArticle.getPk(), token);
-            // Lancement du téléchargement
-            launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
-        }
-    }
-
-    /**
      * Lance une tâche asynchrone de téléchargement et notifie l'user en cas d'erreur
      *
      * @param unAHD  object AsyncHTMLDownloader
@@ -568,9 +555,16 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         else {
             // Si c'est un téléchargement de la liste d'articles
             if (desItems.size() > 0) {
-                // Enregistrer en BDD les articles s'il est nouveau ou mis à jour (erreur de téléchargement, accès au contenu abonné, ...)
                 for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                    // Enregistrer en BDD les articles s'il est nouveau ou mis à jour (erreur de téléchargement, accès au contenu abonné, ...)
                     monDAO.enregistrerArticleSiNouveau(unArticle);
+
+                    // Télécharger le nombre de commentaires de chaque article (sauf s'il n'y en a pas)
+                    if (unArticle.getParseurLastCommentId() != -1) {
+                        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
+                        // Lancement du téléchargement
+                        launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
+                    }
                 }
             }
 
@@ -666,9 +660,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Date du refresh
             long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
             monDAO.enregistrerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES, dateRefresh);
-
-            // Mise à jour du nombre de commentaires
-            telechargeNbCommentaires();
 
             // Je met à jour les données
             monItemsAdapter.updateListeItems(prepareAffichage());
