@@ -675,6 +675,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
             }
 
+            // Je met à jour les données (mise à jour # commentaires)
+            monItemsAdapter.updateListeItems(prepareAffichage());
+            // Je notifie le changement pour un rafraichissement du contenu
+            monItemsAdapter.notifyDataSetChanged();
+
             // On stoppe l'animation du SwipeRefreshLayout
             monSwipeRefreshLayout.setRefreshing(false);
 
