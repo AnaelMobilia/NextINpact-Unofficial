@@ -308,11 +308,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Récupère l'article en question
         ArticleItem monArticle = (ArticleItem) monItemsAdapter.getItem(position);
         // Le marquer comme lu en BDD
-        monDAO.marquerArticleLu(monArticle.getPk());
+        monDAO.marquerArticleLu(monArticle.getId());
 
         // Lance l'ouverture de l'article
         Intent monIntent = new Intent(getApplicationContext(), ArticleActivity.class);
-        monIntent.putExtra("ARTICLE_PK", monArticle.getPk());
+        monIntent.putExtra("ARTICLE_ID", monArticle.getId());
         startActivity(monIntent);
     }
 
@@ -550,7 +550,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Nombre de commentaires
                 if (unItem instanceof ArticleItem) {
                     // Récupération de l'article depuis la BDD
-                    ArticleItem monArticle = monDAO.chargerArticle(((ArticleItem) unItem).getPk());
+                    ArticleItem monArticle = monDAO.chargerArticle(((ArticleItem) unItem).getId());
                     monArticle.setNbCommentaires(((ArticleItem) unItem).getNbCommentaires());
                     // L'enregistrer mais sans effacer les commentaires & date de refresh
                     monDAO.enregistrerArticle(monArticle, false);

@@ -31,15 +31,10 @@ import java.util.concurrent.TimeUnit;
  * @author Anael
  */
 public class ArticleItem implements Item {
-
     /**
-     * Clef unique de l'article dans l'app
+     * ID de l'article
      */
-    private int pk;
-    /**
-     * ID de l'article chez Next
-     */
-    private int idNext;
+    private int id;
     /**
      * Titre de l'article
      */
@@ -123,29 +118,15 @@ public class ArticleItem implements Item {
     /**
      * @return id
      */
-    public int getIdNext() {
-        return idNext;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param idNext ID chez Next
+     * @param id ID
      */
-    public void setIdNext(int idNext) {
-        this.idNext = idNext;
-    }
-
-    /**
-     * @return pk
-     */
-    public int getPk() {
-        return pk;
-    }
-
-    /**
-     * @param pk pk
-     */
-    public void setPk(int pk) {
-        this.pk = pk;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

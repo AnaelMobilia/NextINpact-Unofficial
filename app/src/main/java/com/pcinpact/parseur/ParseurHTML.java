@@ -69,7 +69,7 @@ public class ParseurHTML {
                 monArticleItem = new ArticleItem();
 
                 // ID de l'article
-                monArticleItem.setIdNext(unArticle.getInt("id"));
+                monArticleItem.setId(unArticle.getInt("id"));
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("date");
@@ -212,7 +212,7 @@ public class ParseurHTML {
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getIdNext() + " : " + uneIframe.absUrl("src"));
+                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
                         }
                     }
 
@@ -351,16 +351,16 @@ public class ParseurHTML {
      *
      * @param unContenu contenu JSON brut
      * @param headers   entêtes bruts (Nb total de commentaires)
-     * @param pkArticle PK de l'article
+     * @param idArticle ID de l'article
      * @return liste de CommentaireItem (10 premiers commentaires) et ArticleItem (Nb total de commentaires)
      */
-    public static ArrayList<Item> getCommentaires(final String unContenu, final String headers, final int pkArticle) {
+    public static ArrayList<Item> getCommentaires(final String unContenu, final String headers, final int idArticle) {
         // mon retour
         ArrayList<Item> monRetour = new ArrayList<>();
 
         // Mon Article
         ArticleItem monArticle = new ArticleItem();
-        monArticle.setPk(pkArticle);
+        monArticle.setId(idArticle);
         // Nombre total de commentaires
         Pattern p = Pattern.compile(Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL + "(\\d+)\n");
         Matcher m = p.matcher(headers);
@@ -369,7 +369,7 @@ public class ParseurHTML {
         }
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ParseurHTML", "getCommentaires() - " + Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL + " " + monArticle.getNbCommentaires() + " - pkArticle : " + pkArticle);
+            Log.d("ParseurHTML", "getCommentaires() - " + Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL + " " + monArticle.getNbCommentaires() + " - idArticle : " + idArticle);
         }
 
         monRetour.add(monArticle);
@@ -383,7 +383,7 @@ public class ParseurHTML {
             for (int i = 0; i < lesCommentaires.length(); i++) {
                 JSONObject unCommentaire = lesCommentaires.getJSONObject(i);
                 monCommentaireItem = new CommentaireItem();
-                monCommentaireItem.setPkArticle(pkArticle);
+                monCommentaireItem.setIdArticle(idArticle);
 
                 // ID du commentaire
                 monCommentaireItem.setId(unCommentaire.getInt("id"));

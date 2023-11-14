@@ -59,10 +59,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
-     * PK de l'article
-     */
-    private int articlePk;
-    /**
      * ID de l'article
      */
     private int idArticle;
@@ -156,13 +152,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
         monListView.setAdapter(monItemsAdapter);
 
-        // PK de l'article concerné
+        // ID de l'article concerné
         try {
-            articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
+            idArticle = getIntent().getExtras().getInt("ARTICLE_ID");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("CommentairesActivity", "onCreate() - Récupération PK article de l'intent", e);
+                Log.e("CommentairesActivity", "onCreate() - Récupération ID article de l'intent", e);
             }
             // Arrêt de l'activité
             this.finish();
@@ -171,11 +167,11 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // J'active la BDD
         monDAO = DAO.getInstance(getApplicationContext());
         // Je charge mes commentaires
-        mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(articlePk));
+        mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(idArticle));
 
         // Je récupère le site concerné
-        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
-        idArticle = monArticle.getIdNext();
+        ArticleItem monArticle = monDAO.chargerArticle(idArticle);
+        idArticle = monArticle.getId();
 
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
@@ -188,7 +184,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(articlePk) - 1;
+            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(idArticle) - 1;
             monListView.setSelection(idDernierCommentaireLu);
         }
 
@@ -219,7 +215,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         String monPath = Constantes.NEXT_URL_COMMENTAIRES + idArticle + Constantes.NEXT_URL_COMMENTAIRES_PARAM_PAGE + maPage;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monPath, articlePk, null);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, monPath, idArticle, null);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -314,12 +310,12 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
-                    monDAO.setDernierCommentaireLu(articlePk, lastVisibleItem);
+                    monDAO.setDernierCommentaireLu(idArticle, lastVisibleItem);
                     // Mise à jour de la copie locale
                     idDernierCommentaireLu = lastVisibleItem;
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.d("CommentairesActivity", "onScroll() - setDernierCommentaireLu(" + articlePk + ", " + lastVisibleItem + ")");
+                        Log.d("CommentairesActivity", "onScroll() - setDernierCommentaireLu(" + idArticle + ", " + lastVisibleItem + ")");
                     }
                 }
 
@@ -355,7 +351,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-            intentDebug.putExtra("ARTICLE_PK_COMMENTAIRE", articlePk);
+            intentDebug.putExtra("ARTICLE_ID_COMMENTAIRE", idArticle);
             startActivity(intentDebug);
         }
         return super.onOptionsItemSelected(pItem);
@@ -404,7 +400,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Si téléchargement fini ou téléchargement de tous les commentaires
         if (dlInProgress == 0 || isChargementTotal) {
             // Chargement des commentaires triés
-            mesCommentaires = monDAO.chargerCommentairesTriParID(articlePk);
+            mesCommentaires = monDAO.chargerCommentairesTriParID(idArticle);
         }
 
         // Si plus de téléchargement en cours
@@ -412,7 +408,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             // MàJ de la date de rafraichissement des commentaires de l'article
             // Date du refresh
             long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-            monDAO.enregistrerDateRefresh(articlePk, dateRefresh);
+            monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
 
             // Mise à jour des données
             monItemsAdapter.updateListeItems(mesCommentaires);
@@ -473,7 +469,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private void majDateRefresh() {
         // Date de dernier refresh
-        long dernierRefresh = TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(articlePk));
+        long dernierRefresh = TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(idArticle));
 
         if (dernierRefresh == 0) {
             // Jamais synchro...

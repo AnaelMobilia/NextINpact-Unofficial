@@ -48,9 +48,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final int typeHTML;
     /**
-     * PK de l'article lié (DL article ou commentaires)
+     * ID de l'article lié (DL article ou commentaires)
      */
-    private final int pkArticle;
+    private final int idArticle;
     /**
      * Token du compte Next
      */
@@ -62,16 +62,16 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param parent       parent à callback à la fin
      * @param unType       type de la ressource (Cf Constantes.TYPE_)
      * @param uneURL       URL de la ressource à télécharger
-     * @param unePkArticle PK de l'article
+     * @param unIdArticle  ID de l'article
      * @param unToken      token de connexion
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unePkArticle, final String unToken) {
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final String unToken) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
         URL = uneURL;
         typeHTML = unType;
-        pkArticle = unePkArticle;
+        idArticle = unIdArticle;
         token = unToken;
     }
 
@@ -88,7 +88,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                 break;
 
             case Constantes.HTML_COMMENTAIRES:
-                monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], pkArticle);
+                monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], idArticle);
                 break;
 
             default:

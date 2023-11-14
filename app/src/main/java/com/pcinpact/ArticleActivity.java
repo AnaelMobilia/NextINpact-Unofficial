@@ -45,9 +45,9 @@ import java.util.UUID;
  */
 public class ArticleActivity extends AppCompatActivity {
     /**
-     * PK de l'article actuel.
+     * ID de l'article actuel.
      */
-    private int articlePk = 0;
+    private int articleId = 0;
     /**
      * Accès BDD
      */
@@ -87,11 +87,11 @@ public class ArticleActivity extends AppCompatActivity {
 
         // PK de l'article concerné
         try {
-            articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
+            articleId = getIntent().getExtras().getInt("ARTICLE_ID");
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ArticleActivity", "onCreate() - Récupération PK article de l'intent", e);
+                Log.e("ArticleActivity", "onCreate() - Récupération ID article de l'intent", e);
             }
 
             // Arrêt de l'activité
@@ -107,7 +107,7 @@ public class ArticleActivity extends AppCompatActivity {
         monViewPager2.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
-        monViewPager2.setCurrentItem(pagerAdapter.getPosition(articlePk));
+        monViewPager2.setCurrentItem(pagerAdapter.getPosition(articleId));
 
         // Bouton des commentaires
         genererBadgeCommentaires();
@@ -161,10 +161,10 @@ public class ArticleActivity extends AppCompatActivity {
                 // Récupération de l'article
                 ArticleItem unArticle = pagerAdapter.getArticle(position);
                 // Mise à jour de l'article concerné
-                articlePk = unArticle.getPk();
+                articleId = unArticle.getId();
 
                 // Marquer l'article comme lu en BDD
-                monDAO.marquerArticleLu(articlePk);
+                monDAO.marquerArticleLu(articleId);
 
                 // Mise à jour de l'intent
                 if (!cacherBoutonPartage) {
@@ -190,7 +190,7 @@ public class ArticleActivity extends AppCompatActivity {
         if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
-            intentDebug.putExtra("ARTICLE_PK", articlePk);
+            intentDebug.putExtra("ARTICLE_ID", articleId);
             startActivity(intentDebug);
         }
 
@@ -204,7 +204,7 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private void genererShareIntent(boolean isNewActivity) {
         // Chargement de l'article concerné
-        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+        ArticleItem monArticle = monDAO.chargerArticle(articleId);
 
         // Création de l'intent
         Intent monIntent = new Intent(Intent.ACTION_SEND);
@@ -213,7 +213,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ArticleActivity", "genererShareIntent() - Intent " + articlePk + " / " + monArticle.getURLseo());
+            Log.i("ArticleActivity", "genererShareIntent() - Intent " + articleId + " / " + monArticle.getURLseo());
         }
 
         ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
@@ -238,11 +238,11 @@ public class ArticleActivity extends AppCompatActivity {
         counterFab.setOnClickListener((View arg0) -> {
             // Afficher les commentaires
             Intent intentComms = new Intent(getApplicationContext(), CommentairesActivity.class);
-            intentComms.putExtra("ARTICLE_PK", articlePk);
+            intentComms.putExtra("ARTICLE_ID", articleId);
             startActivity(intentComms);
         });
         // Nombre de commentaires non lus
-        ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+        ArticleItem monArticle = monDAO.chargerArticle(articleId);
         counterFab.setCount(monArticle.getNbCommentairesNonLus());
     }
 }

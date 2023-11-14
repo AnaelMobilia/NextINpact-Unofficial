@@ -72,7 +72,7 @@ public class CacheManager {
                     Log.w("CacheManager", "nettoyerCache() - suppression de " + unArticle.getTitre());
                 }
                 // Je le supprime
-                monDAO.supprimerArticle(unArticle.getPk(), true);
+                monDAO.supprimerArticle(unArticle.getId(), true);
             }
         }
     }
