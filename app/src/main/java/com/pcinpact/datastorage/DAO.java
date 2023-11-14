@@ -319,6 +319,10 @@ public final class DAO extends SQLiteOpenHelper {
             // Je met à jour le nb de comms de l'article en question...
             updateNbCommentairesArticle(unArticle.getId(), unArticle.getNbCommentaires());
         }
+
+        if (Constantes.DEBUG) {
+            Log.d("DAO", "enregistrerArticleSiNouveau() - enregistrer : " + enregistrer);
+        }
     }
 
     /**
