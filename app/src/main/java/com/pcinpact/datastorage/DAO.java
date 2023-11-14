@@ -469,7 +469,7 @@ public final class DAO extends SQLiteOpenHelper {
         } else {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("DAO", "chargerArticle() - ID article inconnu : " + idArticle);
+                Log.i("DAO", "chargerArticle() - ID article inconnu : " + idArticle);
             }
         }
         // Fermeture du curseur
