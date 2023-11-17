@@ -117,20 +117,26 @@ public class GlideImageGetter implements Html.ImageGetter {
         }
 
         private void setDrawable(Drawable drawable) {
-            this.drawable = drawable;
-            int drawableWidth = (int) (drawable.getIntrinsicWidth() * density);
-            int drawableHeight = (int) (drawable.getIntrinsicHeight() * density);
-            int maxWidth = container.get().getMeasuredWidth();
-            if ((drawableWidth > maxWidth) || matchParentWidth) {
-                int calculatedHeight = maxWidth * drawableHeight / drawableWidth;
-                drawable.setBounds(0, 0, maxWidth, calculatedHeight);
-                setBounds(0, 0, maxWidth, calculatedHeight);
-            } else {
-                drawable.setBounds(0, 0, drawableWidth, drawableHeight);
-                setBounds(0, 0, drawableWidth, drawableHeight);
-            }
+            try {
+                this.drawable = drawable;
+                int drawableWidth = (int) (drawable.getIntrinsicWidth() * density);
+                int drawableHeight = (int) (drawable.getIntrinsicHeight() * density);
+                int maxWidth = container.get().getMeasuredWidth();
+                if ((drawableWidth > maxWidth) || matchParentWidth) {
+                    int calculatedHeight = maxWidth * drawableHeight / drawableWidth;
+                    drawable.setBounds(0, 0, maxWidth, calculatedHeight);
+                    setBounds(0, 0, maxWidth, calculatedHeight);
+                } else {
+                    drawable.setBounds(0, 0, drawableWidth, drawableHeight);
+                    setBounds(0, 0, drawableWidth, drawableHeight);
+                }
 
-            container.get().setText(container.get().getText());
+                container.get().setText(container.get().getText());
+            } catch (NullPointerException e) {
+                if (Constantes.DEBUG) {
+                    Log.e("GlideImageGetter", "setDrawable() -> NPE", e);
+                }
+            }
         }
 
         @Override
@@ -149,7 +155,13 @@ public class GlideImageGetter implements Html.ImageGetter {
 
         @Override
         public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
-            setDrawable(new BitmapDrawable(container.get().getResources(), bitmap));
+            try {
+                setDrawable(new BitmapDrawable(container.get().getResources(), bitmap));
+            } catch (NullPointerException e) {
+                if (Constantes.DEBUG) {
+                    Log.e("GlideImageGetter", "onResourceReady() -> NPE", e);
+                }
+            }
         }
 
         @Override
