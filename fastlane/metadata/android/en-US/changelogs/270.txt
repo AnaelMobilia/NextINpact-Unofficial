@@ -1,0 +1,8 @@
+v2.7.0
+- Prise en charge de next.ink
+
+Fonctionnalités en cours de traitement par Next :
+- Gestion du contenu abonné
+- Sous-titres
+- Auteur des commentaires
+=> Elles seront intégrées dans l'application dès qu'elles seront disponibles.
