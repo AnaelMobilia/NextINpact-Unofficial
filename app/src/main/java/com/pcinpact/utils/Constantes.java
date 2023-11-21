@@ -58,7 +58,7 @@ public class Constantes {
     /**
      * URL de téléchargement Next.
      */
-    public static final String NEXT_BASE_URL = "https://beta.next.ink/wp-json/";
+    public static final String NEXT_BASE_URL = "https://next.ink/wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
