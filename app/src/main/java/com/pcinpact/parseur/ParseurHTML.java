@@ -82,17 +82,36 @@ public class ParseurHTML {
 
                 // Champs non présents dans le brief
                 if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
+                    // TODO - https://github.com/NextINpact/Next/issues/82
+                    /*
                     // Sous titre
-                    monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
+                    monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("yoast_head_json").getString("description"), true));
+                     */
+
+                    // TODO - https://github.com/NextINpact/Next/issues/82
+                    /*
                     // Statut abonné
                     String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
                     if (!"".equals(dateFinBlocage)) {
                         monArticleItem.setAbonne(true);
                     }
+                     */
                 }
 
                 // URL Seo
                 monArticleItem.setURLseo(unArticle.getString("link"));
+
+                // TODO - https://github.com/NextINpact/Next/issues/100
+                /*
+                // Certains articles ont du contenu en privateText mais ne sont pas paywalled... #281
+                String contenuAbonne = contenu_json.getString("privateText");
+                if (!"".equals(contenuAbonne) && !"null".equals(contenuAbonne)) {
+                    contenu += contenuAbonne;
+                } else if (contenu_json.getBoolean("isPaywalled")) {
+                    // Contenu privé sur paywall
+                    contenu += "<br />... (contenu abonné)<br /><br/>";
+                }
+                */
 
                 // Contenu de l'article
                 String contenu = "<article>";
@@ -406,6 +425,8 @@ public class ParseurHTML {
                 // Enlever le retour à la ligne final
                 contenuHtml = contenuHtml.trim();
 
+                // TODO - https://github.com/AnaelMobilia/NextINpact-Unofficial/issues/309#issuecomment-1796525253
+                //  Peut-être "statut : approved"
                 // Commentaires modérés
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
                     DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
@@ -421,6 +442,7 @@ public class ParseurHTML {
                 int parentId = unCommentaire.getInt("parent");
                 if (parentId != 0) {
                     // Citations - "En réponse à xxx"
+                    // TODO - https://github.com/NextINpact/Next/issues/73
                     contenuHtml = ouvreCitation + "<b>En réponse à " + parentId + "</b>" + fermeCitation + contenuHtml;
                 }
 
@@ -428,6 +450,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("<blockquote>", ouvreCitation);
                 contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
 
+                // TODO - https://github.com/NextINpact/Next/issues/160
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
                 // regexp : .*tag":"(.*)".*,"image":"(.*)".* ==> contenuHtml = contenuHtml.replace("$1", "<img src=\\"" +
