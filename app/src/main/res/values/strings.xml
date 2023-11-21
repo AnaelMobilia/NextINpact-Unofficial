@@ -36,13 +36,13 @@
     <string name="contentDescriptionImageArticle">"Illustration de l'article"</string>
 
     <!-- Disclaimer -->
-    <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next (INpact).
+    <string name="disclaimerContent">"Cette application est développée par un lecteur (passionné) de Next.
 			\nLes contenus affichés dans l'application sont issus du site de Next (www.next.ink) et sont la pleine propriété de leurs auteurs.
-			\nSi vous appréciez Next (INpact), abonnez-vous pour soutenir leur indépendance !
+			\nSi vous appréciez Next, abonnez-vous pour soutenir leur indépendance !
 			\nBonne lecture !"</string>
 
     <!-- A propos -->
-    <string name="aboutContent">"Next Actualités Informatiques est une application développée bénévolement par un lecteur passionné de Next (INpact).
+    <string name="aboutContent">"Next Actualités Informatiques est une application développée bénévolement par un lecteur passionné de Next.
 
 Si vous souhaitez rapporter un dysfonctionnement, proposer une idée ou contribuer au projet, vous êtes bienvenu(e) !
 https://github.com/AnaelMobilia/NextINpact-Unofficial/issues
@@ -65,7 +65,7 @@ Propriété des contenus :
 L'ensemble des contenus affichés dans l'application (textes, images et logos) sont issus des sites www.next.ink .
 Les contenus sont la pleine propriété de leurs auteurs respectifs.
 
-Si vous appréciez Next (INpact), abonnez-vous pour soutenir leur indépendance !
+Si vous appréciez Next, abonnez-vous pour soutenir leur indépendance !
 https://www.nextinpact.com/abonnement"</string>
 
     <!-- Message d'erreur / information en Toast -->
@@ -88,7 +88,7 @@ https://www.nextinpact.com/abonnement"</string>
     <string name="optionsAbonne">Configurer mon compte abonné</string>
     <string name="optionAbonneDisclaimer">"J'accepte que les identifiants de mon compte soient stockés sur cet appareil afin de me permettre de lire les contenus abonnés du site."</string>
     <string name="optionLogin">Identifiant</string>
-    <string name="optionLoginDetail">Votre pseudo ou email Next (INpact)</string>
+    <string name="optionLoginDetail">Votre pseudo ou email Next</string>
     <string name="optionPassword">Mot de passe</string>
     <string name="optionPasswordDetail">Le mot de passe associé à votre compte</string>
     <!-- Options liste des articles -->
