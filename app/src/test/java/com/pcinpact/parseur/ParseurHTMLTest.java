@@ -54,7 +54,7 @@ public class ParseurHTMLTest {
          * Traitement du fichier...
          */
         ArrayList<ArticleItem> articlesCalcules;
-        articlesCalcules = ParseurHTML.getListeArticles(Constantes.IS_NXI, contenuIS);
+        articlesCalcules = ParseurHTML.getListeArticles(contenuIS);
 
         /*
          * Vérification...

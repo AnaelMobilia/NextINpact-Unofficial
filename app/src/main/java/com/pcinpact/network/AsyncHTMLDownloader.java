@@ -21,11 +21,9 @@ package com.pcinpact.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
-import com.pcinpact.utils.MyURLUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -42,27 +40,19 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final WeakReference<RefreshDisplayInterface> monParent;
     /**
-     * Site concerné (IH, NXI, ...).
-     */
-    private final int site;
-    /**
-     * Paramètres de l'URL de base du site.
-     */
-    private final String pathURL;
-    /**
      * URL FQDN.
      */
-    private final String fullURL;
+    private final String URL;
     /**
      * Type de la ressource.
      */
     private final int typeHTML;
     /**
-     * PK de l'article lié (DL article ou commentaires)
+     * ID de l'article lié (DL article ou commentaires)
      */
-    private final int pkArticle;
+    private final int idArticle;
     /**
-     * Token du compte NXI/IH
+     * Token du compte Next
      */
     private final String token;
 
@@ -71,21 +61,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      *
      * @param parent       parent à callback à la fin
      * @param unType       type de la ressource (Cf Constantes.TYPE_)
-     * @param unSite       ID du site (NXI, IH, ...)
-     * @param unPathURL    Chemin à ajouter à l'URL
-     * @param unePkArticle PK de l'article (cas DL article & commentaires)
+     * @param uneURL       URL de la ressource à télécharger
+     * @param unIdArticle  ID de l'article
      * @param unToken      token de connexion
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final int unSite, final String unPathURL,
-                               final int unePkArticle, final String unToken) {
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final String unToken) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
-        site = unSite;
-        pathURL = unPathURL;
-        fullURL = MyURLUtils.getSiteURL(unSite, unPathURL, false);
+        URL = uneURL;
         typeHTML = unType;
-        pkArticle = unePkArticle;
+        idArticle = unIdArticle;
         token = unToken;
     }
 
@@ -94,48 +80,22 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         ArrayList<? extends Item> monRetour = new ArrayList<>();
 
         // Récupération du contenu HTML
-        String datas = Downloader.download(fullURL, token);
+        String[] datas = Downloader.download(URL, token);
 
-        // Vérifie que j'ai bien un retour (vs erreur DL)
-        if (datas != null) {
-            switch (typeHTML) {
-                case Constantes.HTML_LISTE_ARTICLES:
-                    monRetour = ParseurHTML.getListeArticles(site, datas);
-                    break;
+        switch (typeHTML) {
+            case Constantes.HTML_LISTE_ARTICLES:
+                monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
+                break;
 
-                case Constantes.HTML_ARTICLE:
-                    ArticleItem monArticle = new ArticleItem();
-                    monArticle.setPk(pkArticle);
-                    // Récupération des infos du contenu
-                    ArticleItem articleParse = ParseurHTML.getContenuArticle(datas, site);
-                    monArticle.setContenu(articleParse.getContenu());
-                    // URL SEO
-                    monArticle.setURLseo(articleParse.getURLseo());
+            case Constantes.HTML_COMMENTAIRES:
+                monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], idArticle);
+                break;
 
-                    ArrayList<ArticleItem> monRetourTmp = new ArrayList<>();
-                    monRetourTmp.add(monArticle);
-                    monRetour = monRetourTmp;
-                    break;
-
-                case Constantes.HTML_COMMENTAIRES:
-                    monRetour = ParseurHTML.getCommentaires(datas, pkArticle);
-                    break;
-
-                case Constantes.HTML_NOMBRE_COMMENTAIRES:
-                    monRetour = ParseurHTML.getNbCommentaires(datas, site);
-                    break;
-
-                default:
-                    if (Constantes.DEBUG) {
-                        Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + fullURL);
-                    }
-                    break;
-            }
-        } else {
-            // DEBUG
-            if (Constantes.DEBUG) {
-                Log.w("AsyncHTMLDownloader", "doInBackground() - pas de contenu retourné pour " + fullURL);
-            }
+            default:
+                if (Constantes.DEBUG) {
+                    Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + URL);
+                }
+                break;
         }
         return monRetour;
     }
@@ -144,7 +104,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     protected void onPostExecute(ArrayList<? extends Item> result) {
         try {
             // Le parent peut avoir été garbage collecté
-            monParent.get().downloadHTMLFini(site, pathURL, result);
+            monParent.get().downloadHTMLFini(URL, result);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {

@@ -59,7 +59,7 @@ public class ImageActivity extends AppCompatActivity {
             urlImage = getIntent().getExtras().getString("URL_IMAGE");
 
             // Chargement de l'image...
-            Glide.with(getApplicationContext()).load(urlImage).error(R.drawable.logo_nextinpact_barre).into(monImageView);
+            Glide.with(getApplicationContext()).load(urlImage).error(R.drawable.logo_next_barre).into(monImageView);
         } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {

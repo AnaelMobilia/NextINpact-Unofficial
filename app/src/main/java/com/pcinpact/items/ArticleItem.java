@@ -19,7 +19,6 @@
 package com.pcinpact.items;
 
 import com.pcinpact.utils.Constantes;
-import com.pcinpact.utils.MyURLUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,15 +31,10 @@ import java.util.concurrent.TimeUnit;
  * @author Anael
  */
 public class ArticleItem implements Item {
-
     /**
-     * Clef unique de l'article dans l'app
+     * ID de l'article
      */
-    private int pk;
-    /**
-     * ID de l'article chez NXI/IH (non unique)
-     */
-    private int idInpact;
+    private int id;
     /**
      * Titre de l'article
      */
@@ -52,19 +46,15 @@ public class ArticleItem implements Item {
     /**
      * Est-ce un article abonné ?
      */
-    private boolean isAbonne;
+    private boolean isAbonne = false;
     /**
      * Nombre de commentaires de l'article
      */
-    private int nbCommentaires;
+    private int nbCommentaires = 0;
     /**
-     * Site concerné (IH, NXI, ...)
+     * URL de la miniature de l'article
      */
-    private int site;
-    /**
-     * ID de la miniature de l'article
-     */
-    private int idIllustration;
+    private String urlIllustration;
     /**
      * Contenu de l'article
      */
@@ -86,13 +76,13 @@ public class ArticleItem implements Item {
      */
     private int dernierCommLu = 0;
     /**
-     * L'article est-il une publicite
-     */
-    private boolean isPublicite;
-    /**
      * URL SEO de l'article
      */
     private String URLseo;
+    /**
+     * Dernier ID de commentaire lors du parsage
+     */
+    private int parseurLastCommentId = 0;
 
     @Override
     public int getType() {
@@ -130,51 +120,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Path de l'article pour télécharger (calculé dynamiquement)
-     *
-     * @return path
-     */
-    public String getPathPourDl() {
-        return Constantes.X_INPACT_URL_ARTICLE + this.getIdInpact();
-    }
-
-    /**
-     * URL de l'illustration (calculée dynamiquement)
-     *
-     * @return urlIllustration
-     */
-    public String getUrlIllustration() {
-        String path = Constantes.NXI_URL_IMG + this.getIdIllustration() + Constantes.X_INPACT_URL_IMG_EXT;
-
-        return MyURLUtils.getSiteURL(this.getSite(), path, true);
-    }
-
-    /**
      * @return id
      */
-    public int getIdInpact() {
-        return idInpact;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param idInpact id_inpact
+     * @param id ID
      */
-    public void setIdInpact(int idInpact) {
-        this.idInpact = idInpact;
-    }
-
-    /**
-     * @return pk
-     */
-    public int getPk() {
-        return pk;
-    }
-
-    /**
-     * @param pk pk
-     */
-    public void setPk(int pk) {
-        this.pk = pk;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -199,6 +155,13 @@ public class ArticleItem implements Item {
     }
 
     /**
+     * @param sousTitre sousTitre
+     */
+    public void setSousTitre(String sousTitre) {
+        this.sousTitre = sousTitre;
+    }
+
+    /**
      * @return URL SEO
      */
     public String getURLseo() {
@@ -210,13 +173,6 @@ public class ArticleItem implements Item {
      */
     public void setURLseo(String URLseo) {
         this.URLseo = URLseo;
-    }
-
-    /**
-     * @param sousTitre sousTitre
-     */
-    public void setSousTitre(String sousTitre) {
-        this.sousTitre = sousTitre;
     }
 
     /**
@@ -241,6 +197,13 @@ public class ArticleItem implements Item {
     }
 
     /**
+     * @param nbCommentaires nbCommentaires
+     */
+    public void setNbCommentaires(int nbCommentaires) {
+        this.nbCommentaires = nbCommentaires;
+    }
+
+    /**
      * Nb de commentaires non lus
      *
      * @return int
@@ -255,38 +218,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @param nbCommentaires nbCommentaires
-     */
-    public void setNbCommentaires(int nbCommentaires) {
-        this.nbCommentaires = nbCommentaires;
-    }
-
-    /**
-     * @return site
-     */
-    public int getSite() {
-        return site;
-    }
-
-    /**
-     * @param site site
-     */
-    public void setSite(int site) {
-        this.site = site;
-    }
-
-    /**
      * @return idIllustration
      */
-    public int getIdIllustration() {
-        return idIllustration;
+    public String getUrlIllustration() {
+        return urlIllustration;
     }
 
     /**
-     * @param idIllustration urlIllustration
+     * @param urlIllustration urlIllustration
      */
-    public void setIdIllustration(int idIllustration) {
-        this.idIllustration = idIllustration;
+    public void setUrlIllustration(String urlIllustration) {
+        this.urlIllustration = urlIllustration;
     }
 
     /**
@@ -360,16 +302,16 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return isPublicite
+     * @return ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
      */
-    public boolean isPublicite() {
-        return isPublicite;
+    public int getParseurLastCommentId() {
+        return parseurLastCommentId;
     }
 
     /**
-     * @param publicite isPublicite
+     * @param parseurLastCommentId ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
      */
-    public void setPublicite(boolean publicite) {
-        isPublicite = publicite;
+    public void setParseurLastCommentId(int parseurLastCommentId) {
+        this.parseurLastCommentId = parseurLastCommentId;
     }
 }

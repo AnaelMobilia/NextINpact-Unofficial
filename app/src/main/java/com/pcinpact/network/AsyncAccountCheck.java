@@ -37,11 +37,11 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
      */
     private final WeakReference<AccountCheckInterface> monParent;
     /**
-     * Login du compte NXI/IH
+     * Login du compte Next
      */
     private final String username;
     /**
-     * Password du compte NXI/IH
+     * Password du compte Next
      */
     private final String password;
 

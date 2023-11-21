@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -75,6 +76,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheToast), Toast.LENGTH_LONG);
             monToast.show();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonCache.setTextColor(Color.BLACK);
 
         /*
          * Bouton : effacement des commentaires
@@ -88,6 +91,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             Toast monToast = Toast.makeText(this, getApplicationContext().getString(R.string.debugEffacerCacheCommentaireToast), Toast.LENGTH_LONG);
             monToast.show();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonCommentaire.setTextColor(Color.BLACK);
 
 
         /*
@@ -103,6 +108,8 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
             maVerif.run();
         });
+        // Forcer la couleur du texte (par défaut gris sur gris)
+        buttonTesterConnexion.setTextColor(Color.BLACK);
 
         /*
          * Afficher le code source d'un article
@@ -112,23 +119,23 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             // Je cache tous les boutons génériques !
             buttonTesterConnexion.setVisibility(View.GONE);
 
-            // PK de l'article concerné
-            int articlePk = getIntent().getExtras().getInt("ARTICLE_PK");
+            // ID de l'article concerné
+            int articleId = getIntent().getExtras().getInt("ARTICLE_ID");
             // Si j'ai un article
-            if (articlePk != 0) {
+            if (articleId != 0) {
                 // Chargement de l'article
-                ArticleItem monArticle = monDAO.chargerArticle(articlePk);
+                ArticleItem monArticle = monDAO.chargerArticle(articleId);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 maTextView.setText(monArticle.getContenu());
             }
 
-            // PK de l'article concerné - Affichage des commentaires
-            articlePk = getIntent().getExtras().getInt("ARTICLE_PK_COMMENTAIRE");
+            // ID de l'article concerné - Affichage des commentaires
+            articleId = getIntent().getExtras().getInt("ARTICLE_ID_COMMENTAIRE");
             // Si j'ai un article
-            if (articlePk != 0) {
+            if (articleId != 0) {
                 // Chargement des commentaires
-                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParID(articlePk);
+                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParID(articleId);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 StringBuilder monContenu = new StringBuilder();

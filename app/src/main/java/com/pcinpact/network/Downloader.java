@@ -19,6 +19,7 @@
 package com.pcinpact.network;
 
 import android.net.TrafficStats;
+import android.util.Base64;
 import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
@@ -43,16 +45,21 @@ import okhttp3.Response;
  * @author Anael
  */
 public class Downloader {
+    public static final int CONTENT_HEADERS = 0;
+    public static final int CONTENT_BODY = 1;
+
     /**
      * Téléchargement d'une ressource
      *
      * @param uneURL  URL de la ressource à télécharger
      * @param unToken Token d'authentification NXI
-     * @return ressource demandée brute (JSON)
+     * @return tableau ["headers", "body"] avec le contenu brut de chaque
      */
-    public static String download(final String uneURL, final String unToken) {
+    public static String[] download(final String uneURL, final String unToken) {
         // Retour
-        String datas = null;
+        String[] datas = new String[2];
+        datas[CONTENT_HEADERS] = "";
+        datas[CONTENT_BODY] = "";
 
         try {
             if (Constantes.DEBUG) {
@@ -61,12 +68,17 @@ public class Downloader {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
             Request request;
             // Pas de token
-            if (unToken == null || "".equals(unToken)) {
+            //if (unToken == null || "".equals(unToken)) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
-            } else {
-                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader(
-                        "Authorization", "Bearer " + unToken).build();
-            }
+            //} else {
+                // TODO - https://github.com/NextINpact/Next/issues/100
+                //request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", unToken).build();
+
+                //byte[] data = "username:password".getBytes(StandardCharsets.UTF_8);
+                //String base64 = Base64.encodeToString(data, Base64.NO_WRAP);
+
+                //request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Authorization", "Basic " + base64).build();
+            //}
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
@@ -78,7 +90,8 @@ public class Downloader {
                     Log.e("Downloader", "download() - Erreur " + response.code() + " au dl de " + uneURL);
                 }
             } else {
-                datas = response.body().string();
+                datas[CONTENT_BODY] = response.body().string();
+                datas[CONTENT_HEADERS] = response.headers().toString();
             }
             response.close();
         } catch (IOException | NullPointerException e) {
@@ -90,7 +103,8 @@ public class Downloader {
         }
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("Downloader", "download() - " + uneURL + " Contenu : " + datas);
+            Log.i("Downloader", "download() - " + uneURL);
+            Log.d("Downloader", "download() - Contenu : " + datas[CONTENT_BODY] + " - Headers : " + datas[CONTENT_HEADERS]);
         }
         return datas;
     }
@@ -107,20 +121,11 @@ public class Downloader {
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
 
-            int tokenEi = (int) Math.floor(Math.random() * username.length());
-            int tokenPi = (int) Math.floor(Math.random() * password.length());
-
-            String tokenTk = "" + username.charAt(tokenEi) + password.charAt(tokenPi);
-
             // Objet JSON pour la connexion (protection des quotes)
             JSONObject monJSON = new JSONObject();
             try {
                 monJSON.put(Constantes.AUTHENTIFICATION_USERNAME, username);
                 monJSON.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
-                monJSON.put("noCrossAuth", false);
-                monJSON.put("ei", tokenEi);
-                monJSON.put("pi", tokenPi);
-                monJSON.put("tk", tokenTk);
             } catch (JSONException e) {
                 if (Constantes.DEBUG) {
                     Log.e("Downloader", "connexionAbonne() - JSONException", e);
@@ -128,13 +133,10 @@ public class Downloader {
             }
 
             // Requête d'authentification
-            RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_INPACT_ENCODAGE));
+            RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_NEXT_ENCODAGE));
 
-            // Url NXI "hardocdée" puisque l'auth est commune aux deux sites...
-            HttpUrl monURL = HttpUrl.parse(Constantes.NXI_URL + Constantes.X_INPACT_URL_AUTH);
-
-            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(
-                    body).build();
+            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
+            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
 
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
@@ -149,8 +151,8 @@ public class Downloader {
                 // Je passe en revue les cookies retournés
                 for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
                     // Si c'est le bon cookie :-)
-                    if (Constantes.AUTHENTIFICATION_COOKIE_AUTH.equals(unCookie.name())) {
-                        monToken = unCookie.value();
+                    if (unCookie.name().startsWith(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
+                        monToken = unCookie.name() + "=" + unCookie.value();
                     }
                 }
             }

@@ -35,12 +35,12 @@ import java.util.concurrent.TimeUnit;
 public class MyDateUtils {
 
     /**
-     * Convertit une date texte en timestamp au format NXI
+     * Convertit une date texte en timestamp au format Next
      *
      * @param uneDate date au format textuel
      * @return timestamp
      */
-    public static long convertToTimeStamp(String uneDate) {
+    public static long convertToTimestamp(String uneDate) {
         // Ex de dates : 2020-11-13T15:52:42.0216538 / 2020-11-05T14:00:18.239 / 2020-11-04T07:30:08.4
         // => Suppression à partir du ".XXX" (millisecondes)
         int posPoint = uneDate.indexOf(".");
@@ -61,6 +61,18 @@ public class MyDateUtils {
         }
 
         return laDateTS;
+    }
+
+    /**
+     * Convertit un timestamp en date ISO8601
+     *
+     * @param unTimestamp timestamp
+     * @return String
+     */
+    public static String convertToDateISO8601(long unTimestamp) {
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE, Constantes.LOCALE);
+        dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        return dfm.format(unTimestamp * 1000L);
     }
 
     /**

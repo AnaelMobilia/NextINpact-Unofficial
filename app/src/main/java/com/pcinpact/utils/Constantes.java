@@ -54,45 +54,35 @@ public class Constantes {
     /**
      * Encodage des pages.
      */
-    public static final String X_INPACT_ENCODAGE = "UTF-8";
+    public static final String X_NEXT_ENCODAGE = "UTF-8";
     /**
-     * URL de téléchargement NXI.
+     * URL de téléchargement Next.
      */
-    public static final String NXI_URL = "https://api-v1.nextinpact.com/api/v1/";
-    public static final String NXI_CDN_URL = "https://cdnx.nextinpact.com/";
+    public static final String NEXT_BASE_URL = "https://next.ink/wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
-    public static final int NB_ARTICLES_PAR_PAGE = 10;
-    public static final String X_INPACT_URL_LISTE_ARTICLE = "SimpleContent/list?Nb=" + NB_ARTICLES_PAR_PAGE + "&Page=";
+    public static final int NB_ARTICLES_PAR_PAGE = 100;
+    // _embed permet d'avoir les données associées directement dans la réponse
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_BASE_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed&after=";
     /**
-     * Détail d'un article
+     * Type de données Articles chez Next
      */
-    public static final String X_INPACT_URL_ARTICLE = "SimpleContent/";
+    public static final String NEXT_TYPE_ARTICLES_STANDARD = "post";
+    public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief_article";
     /**
      * URL de téléchargement des commentaires.
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    public static final String X_INPACT_URL_COMMENTAIRES = "Commentaire/list?Page=";
-    public static final String X_INPACT_URL_COMMENTAIRES_PARAM_ARTICLE = "&ArticleId=";
-    /**
-     * URL du nombre de commentaires
-     */
-    public static final String X_INPACT_URL_NB_COMMENTAIRES = "Commentaire/count?";
-    public static final String X_INPACT_URL_NB_COMMENTAIRES_PARAM_ARTICLE = "&ids=";
+    // On veut avoir les commentaires par ordre chronologique (donc croissant)
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "wp/v2/comments?orderby=date_gmt&order=asc&post=";
+    public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
+    public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
      * URL d'authentification.
      */
-    public static final String X_INPACT_URL_AUTH = "Auth/login";
-    /**
-     * URL des images
-     */
-    public static final String NXI_URL_IMG = "data-next/images/bd/square-linked-media/";
-    public static final String X_INPACT_URL_IMG_EXT = ".jpg";
-    /**
-     * URL des articles (pour partager)
-     */
-    public static final String NXI_URL_PARTAGE = "https://www.nextinpact.com/article/";
+    public static final String NEXT_URL_AUTH = NEXT_BASE_URL + "auth/v1/authenticate";
     /**
      * URL des smileys
      */
@@ -125,33 +115,9 @@ public class Constantes {
      */
     public static final int HTML_LISTE_ARTICLES = 1;
     /**
-     * Type : contenu d'un article.
-     */
-    public static final int HTML_ARTICLE = 2;
-    /**
      * Type : commentaires.
      */
-    public static final int HTML_COMMENTAIRES = 3;
-    /**
-     * Type : Nombre de commentaires
-     */
-    public static final int HTML_NOMBRE_COMMENTAIRES = 4;
-
-    /*
-     * TYPE DU SITE
-     */
-    /**
-     * Site : NXI
-     */
-    public static final int IS_NXI = 1;
-    /**
-     * Site : IH
-     */
-    public static final int IS_IH = 2;
-    /**
-     * Nombre de sites possibles (NXI)
-     */
-    public static final int NOMBRE_SITES = 1;
+    public static final int HTML_COMMENTAIRES = 2;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.
@@ -231,7 +197,7 @@ public class Constantes {
     /**
      * Paramètre utilisateur.
      */
-    public static final String AUTHENTIFICATION_USERNAME = "emailOrLogin";
+    public static final String AUTHENTIFICATION_USERNAME = "username";
     /**
      * Paramètre mot de passe.
      */
@@ -239,11 +205,11 @@ public class Constantes {
     /**
      * Nom du cookie retourné à l'authentification.
      */
-    public static final String AUTHENTIFICATION_COOKIE_AUTH = "__crossAuth";
+    public static final String AUTHENTIFICATION_COOKIE_AUTH = "wordpress_logged_in_";
     /**
      * USER AGENT.
      */
-    private static final String USER_AGENT = "NextInpact (Unofficial) v";
+    private static final String USER_AGENT = "Next Actualites informatiques v";
 
     /**
      * User agent pour les requêtes réseau.

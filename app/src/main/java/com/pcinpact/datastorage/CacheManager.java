@@ -61,7 +61,7 @@ public class CacheManager {
         long timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
         // Chargement de tous les articles de la BDD
-        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate(true);
+        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
 
         // Boucle sur les articles
         for (ArticleItem unArticle : mesArticles) {
@@ -72,7 +72,7 @@ public class CacheManager {
                     Log.w("CacheManager", "nettoyerCache() - suppression de " + unArticle.getTitre());
                 }
                 // Je le supprime
-                monDAO.supprimerArticle(unArticle.getPk(), true);
+                monDAO.supprimerArticle(unArticle.getId(), true);
             }
         }
     }
@@ -154,20 +154,6 @@ public class CacheManager {
     }
 
     /**
-     * Efface le cache avant la v2.4.0
-     *
-     * @param unContext contexte
-     */
-    public static void effacerCacheV240(final Context unContext) {
-        // Protection du context
-        Context monContext = unContext.getApplicationContext();
-
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_SMILEYS, "");
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_MINIATURES, "");
-        effacerContenuRepertoire(monContext.getFilesDir() + Constantes.PATH_IMAGES_ILLUSTRATIONS, "");
-    }
-
-    /**
      * Efface tous les fichiers d'un répertoire.
      *
      * @param unPath       répertoire
@@ -183,23 +169,6 @@ public class CacheManager {
                     unFichier.delete();
                 }
             }
-        }
-    }
-
-    /**
-     * Effacement du cache v < 1.8.0
-     *
-     * @param unContext contexte de l'application
-     */
-    public static void effacerCacheV180(final Context unContext) {
-        // Protection du context
-        Context monContext = unContext.getApplicationContext();
-
-        String[] savedFiles = monContext.fileList();
-
-        for (String file : savedFiles) {
-            // Article à effacer
-            monContext.deleteFile(file);
         }
     }
 }

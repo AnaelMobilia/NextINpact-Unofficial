@@ -42,17 +42,17 @@ import java.util.ArrayList;
  * Contenu d'article, utilisé pour le slider
  */
 public class ArticleFragment extends Fragment {
-    private int pkArticle;
+    private int idArticle;
     private Context monContext;
     private LayoutInflater monLayoutInflater;
 
     /**
      * Passage de toutes les valeurs requises
      *
-     * @param unePkArticle PK de l'article concerné
+     * @param unIdArticle ID de l'article concerné
      */
-    public void initialisation(int unePkArticle) {
-        pkArticle = unePkArticle;
+    public void initialisation(int unIdArticle) {
+        idArticle = unIdArticle;
 
         // Ne pas recréer le Fragment en cas de rotation d'écran pour ne pas perdre les paramètres
         this.setRetainInstance(true);
@@ -78,7 +78,7 @@ public class ArticleFragment extends Fragment {
 
         // Chargement de la DB
         DAO monDAO = DAO.getInstance(monContext);
-        ArticleItem monArticle = monDAO.chargerArticle(pkArticle);
+        ArticleItem monArticle = monDAO.chargerArticle(idArticle);
         String monContenu = monArticle.getContenu();
 
         // Stockage en ArrayList pour l'itemAdapter
@@ -86,8 +86,7 @@ public class ArticleFragment extends Fragment {
 
         // Création de mon CAI
         ContenuArticleItem monCAI = new ContenuArticleItem();
-        monCAI.setPkArticle(pkArticle);
-        monCAI.setSite(monArticle.getSite());
+        monCAI.setIdArticle(idArticle);
 
         // Gestion de l'absence de contenu
         if ("".equals(monContenu)) {

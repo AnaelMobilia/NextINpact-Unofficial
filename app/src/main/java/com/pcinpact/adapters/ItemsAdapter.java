@@ -329,10 +329,10 @@ public class ItemsAdapter extends BaseAdapter {
                     // Gestion de l'image
                     if (checkTelechargementImage(monContext)) {
                         // Téléchargement OK
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(R.drawable.logo_nextinpact_barre).into(articleVH.imageArticle);
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).into(articleVH.imageArticle);
                     } else {
                         // Uniquement avec le cache
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_nextinpact).error(R.drawable.logo_nextinpact_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
                     }
 
                     // On applique le zoom éventuel
@@ -377,7 +377,7 @@ public class ItemsAdapter extends BaseAdapter {
                     Spanned spannedCommentaire;
                     try {
                         spannedCommentaire = Html.fromHtml(ci.getCommentaire(),
-                                new GlideImageGetter(commentaireVH.commentaire, false, true, R.drawable.smiley_nextinpact, R.drawable.smiley_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
+                                new GlideImageGetter(commentaireVH.commentaire, false, true, R.drawable.smiley_next, R.drawable.smiley_next_barre, checkTelechargementImage(monContext)), new TagHandler());
                     } catch (Exception e) {
                         if (Constantes.DEBUG) {
                             Log.e("ItemsAdapter", "getView() - Html.fromHtml() ", e);
@@ -428,7 +428,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // Remplissage des textview
                     Spannable spannedContenu;
-                    spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_nextinpact, R.drawable.logo_nextinpact_barre, checkTelechargementImage(monContext)), new TagHandler());
+                    spannedContenu = (Spannable) Html.fromHtml(cai.getContenu(), new GlideImageGetter(contenuVH.contenu, false, true, R.drawable.logo_next, R.drawable.logo_next_barre, checkTelechargementImage(monContext)), new TagHandler());
                     // Gestion du clic sur une image
                     for (ImageSpan span : spannedContenu.getSpans(0, spannedContenu.length(), ImageSpan.class)) {
                         int flags = spannedContenu.getSpanFlags(span);
@@ -454,7 +454,7 @@ public class ItemsAdapter extends BaseAdapter {
                     contenuVH.contenu.setMovementMethod(LinkMovementMethod.getInstance());
 
                     // Définition de l'ID du textview (pour gestion callback si dl image)
-                    contenuVH.contenu.setId(cai.getPkArticle());
+                    contenuVH.contenu.setId(cai.getIdArticle());
 
                     // Liens cliquables ? option utilisateur !
                     Boolean lienArticleClickable = Constantes.getOptionBoolean(monContext, R.string.idOptionLiensDansArticles, R.bool.defautOptionLiensDansArticles);

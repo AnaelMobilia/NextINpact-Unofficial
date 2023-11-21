@@ -38,9 +38,9 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     private int id;
     /**
-     * PK de l'article parent
+     * ID de l'article parent
      */
-    private int pkArticle;
+    private int idArticle;
     /**
      * Auteur du commentaire
      */
@@ -105,17 +105,17 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * @return pkArticle
+     * @return idArticle
      */
-    public int getPkArticle() {
-        return pkArticle;
+    public int getIdArticle() {
+        return idArticle;
     }
 
     /**
-     * @param pkArticle pkArticle
+     * @param idArticle idArticle
      */
-    public void setPkArticle(int pkArticle) {
-        this.pkArticle = pkArticle;
+    public void setIdArticle(int idArticle) {
+        this.idArticle = idArticle;
     }
 
     /**
@@ -125,19 +125,19 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
         return auteur;
     }
 
+    /**
+     * @param auteur auteur
+     */
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
     public int getNumeroAffichage() {
         return numeroAffichage;
     }
 
     public void setNumeroAffichage(int numeroAffichage) {
         this.numeroAffichage = numeroAffichage;
-    }
-
-    /**
-     * @param auteur auteur
-     */
-    public void setAuteur(String auteur) {
-        this.auteur = auteur;
     }
 
     /**
