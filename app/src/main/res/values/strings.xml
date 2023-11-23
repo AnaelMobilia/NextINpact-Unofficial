@@ -71,7 +71,7 @@ https://www.nextinpact.com/abonnement"</string>
     <!-- Message d'erreur / information en Toast -->
     <string name="articleVideErreurHTML">"Oups…! Le contenu de cet article n'a pas été synchronisé. Il le sera lorsque vous lancerez la prochaine synchronisation."</string>
     <string name="erreurAuthentification">"Erreur lors de l'authentification sur next.ink. Vérifiez l'utilisateur et le mot de passe définis dans les options."</string>
-    <string name="infoOptionAbonne">"Pour lire les articles abonnés, configurez votre compte abonné Next dans les options !"</string>
+    <string name="infoOptionAbonne">"Pour lire les contenus abonnés, configurez votre compte Next dans les options !"</string>
     <string name="erreurEnvoiMail">"Aucune application n'est configurée pour envoyer un mail sur votre appareil."</string>
     <string name="erreurCompteAbonnement">"Votre abonnement Next est expiré, les articles Abonné ne pourront pas être lus !"</string>
     <string name="erreurZoomImage">"Oups…! Cette image ne peut pas être affichée."</string>
