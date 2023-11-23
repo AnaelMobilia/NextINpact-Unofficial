@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 120 120"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="favicon_next.svg"
+   inkscape:export-filename="favicon_next.png"
+   inkscape:export-xdpi="409.60001"
+   inkscape:export-ydpi="409.60001"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="6.475"
+     inkscape:cx="59.76834"
+     inkscape:cy="56.138996"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#4f62ff;stroke-width:3.77953;fill-opacity:1"
+       d="M 42.202151,104.16668 C 37.78397,99.463742 38.967948,96.365437 51.062195,80.981134 57.115486,73.281103 62.563033,65.351314 63.16787,63.359351 64.880299,57.719616 63.028406,53.98378 50.977949,38.768384 41.723549,27.08337 40.056248,24.435887 40.043209,21.405424 c -0.0189,-4.674482 3.305008,-7.924309 8.107956,-7.924309 1.921927,0 4.199697,0.562507 5.061732,1.250003 3.473953,2.770545 22.282205,27.558312 24.461594,32.238312 3.315175,7.119156 3.302778,18.959622 -0.02646,26.011692 -2.225121,4.712163 -21.039269,29.545588 -24.433058,32.249988 -2.647862,2.11004 -8.56732,1.53786 -11.012032,-1.06443 z"
+       id="path1" />
+  </g>
+</svg>
