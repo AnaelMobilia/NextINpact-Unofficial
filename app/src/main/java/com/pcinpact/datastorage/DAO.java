@@ -311,6 +311,11 @@ public final class DAO extends SQLiteOpenHelper {
             enregistrer = true;
         }
 
+        // Corriger le nombre de commentaires si nécessaire (l'information n'est plus fournie par le même endpoint que l'article)
+        if (testItem.getNbCommentaires() < unArticle.getNbCommentaires()) {
+            unArticle.setNbCommentaires(testItem.getNbCommentaires());
+        }
+
         // Dois-je l'enregistrer
         if (enregistrer) {
             // Enregistrement
