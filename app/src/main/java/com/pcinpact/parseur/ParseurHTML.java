@@ -82,20 +82,24 @@ public class ParseurHTML {
 
                 // Champs non présents dans le brief
                 if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
-                    // TODO - https://github.com/NextINpact/Next/issues/82
-                    /*
-                    // Sous titre
-                    monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("yoast_head_json").getString("description"), true));
-                     */
+                    // Ces informations sont dépendantes du plugin acf qui doit être activé dans l'API WP
+                    // Cf https://github.com/NextINpact/Next/issues/82
+                    try {
+                        // Sous titre
+                        monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
 
-                    // TODO - https://github.com/NextINpact/Next/issues/82
-                    /*
-                    // Statut abonné
-                    String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
-                    if (!"".equals(dateFinBlocage)) {
-                        monArticleItem.setAbonne(true);
+                        // TODO - https://github.com/NextINpact/Next/issues/82
+                        /*
+                        // Statut abonné
+                        String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
+                        if (!"".equals(dateFinBlocage)) {
+                            monArticleItem.setAbonne(true);
+                        }
+                         */
+                    } catch (JSONException e) {
+                        Log.e("ParseurHTML", "getListeArticles() - Pas de sous-titre ou statut abonné", e);
                     }
-                     */
+
                 }
 
                 // URL Seo
