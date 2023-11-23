@@ -76,7 +76,13 @@ public class ParseurHTML {
                 monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimestamp(laDate));
 
                 // URL de l'image d'illustration
-                monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
+                try {
+                    // Image optimisée (conservant le ratio de l'image d'origine)
+                    monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getJSONObject("media_details").getJSONObject("sizes").getJSONObject("medium").getString("source_url"));
+                } catch (JSONException e) {
+                    // Image par défaut
+                    monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
+                }
                 // Titre de l'article
                 monArticleItem.setTitre(Parser.unescapeEntities(unArticle.getJSONObject("title").getString("rendered"), true));
 
