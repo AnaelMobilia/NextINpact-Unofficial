@@ -1,13 +1,15 @@
-Lisez les actualités et les commentaires de Next lorsque vous êtes connecté à Internet, et également "hors-ligne" (métro, zones hors réseau, etc) grâce à un système de cache intégré !
-L'application gère les contenus abonnés.
-Un thème sombre est également présent.
+Disclaimer: this application contain only news and comments in french!
 
-Application NON officielle développée par un lecteur (passionné) de Next.
-N'hésitez pas à m'indiquer vos attentes !
-Code source disponible sur le site de l'application.
+Read the news and comments of Next when you are connected to the Internet, and also "offline" (metro, off-grid areas, etc.) thanks to an integrated cache system!
+The application manages subscribed content.
+A dark theme is also present.
 
-Si vous appréciez leur travail, abonnez-vous à Next pour soutenir leur indépendance !
-=> http://www.nextinpact.com/abonnement
+Unofficial application developed by a (passionate) reader of Next.
+Do not hesitate to tell me your expectations!
+Source code available on the application website.
+
+If you enjoy their work, subscribe to Next to support their independence!
+=> http://www.nextinpact.com/subscription
 
 ---
-Envie de tester les nouvelle versions en avant-première ? Activez la réception des versions bêta dans votre compte Google : https://play.google.com/apps/testing/com.pcinpact
+Want to test the new versions in preview? Enable beta delivery to your Google account: https://play.google.com/apps/testing/com.pcinpact
