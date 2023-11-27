@@ -161,7 +161,8 @@ public class ParseurHTML {
                 // Pour chaque iframe
                 for (Element uneIframe : lesIframes) {
                     // URL du lecteur
-                    String urlLecteur = uneIframe.attr("src").toLowerCase(Constantes.LOCALE);
+                    String urlLecteurBrute = uneIframe.attr("src");
+                    String urlLecteur = urlLecteurBrute.toLowerCase(Constantes.LOCALE);
 
                     for (String unScheme : schemes) {
                         if (urlLecteur.startsWith(unScheme)) {
@@ -174,8 +175,8 @@ public class ParseurHTML {
                         }
                     }
 
-                    // ID de la vidéo
-                    String idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+                    // ID de la vidéo - sur l'URL brute pour gérer les ID de vidéo avec des majuscules
+                    String idVideo = urlLecteurBrute.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
                     // Ma substitution
                     String monRemplacement;
