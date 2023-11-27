@@ -266,43 +266,20 @@ public class ParseurHTML {
                     uneVideo.remove();
                 }
 
-                // Gestion des URL relatives des images
-                Elements lesImages = lArticle.select("img[src]");
-                // Pour chaque image
-                for (Element uneImage : lesImages) {
-                    // Si ce n'est pas un drawable de l'application
-                    if (!uneImage.attr("src").startsWith("android.resource://")) {
-                        // Assignation de son URL absolue
-                        uneImage.attr("src", uneImage.absUrl("src"));
-                    }
-                }
-
-
                 /*
-                 * Gestion des images #232
+                 * Gestion des images
                  */
-                // Standard
-                // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
-                // -12.htm
-                // <p style="text-align: center;"><img src="https://cdn2.nextinpact.com/images/bd/news/168187.png" alt="Orange Bouquet
-                // => Rien à faire !
-
-                // fancyimg
-                // https://m.nextinpact.com/news/105343-orange-remise-coupleede-1998-avec-epresse-et-izneo-famille-by-canal-passe-a
-                // -12.htm
-                // <p style="text-align: center;
-                // "><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168188.png" rel="group_fancy"><img
-                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168188.png" alt="Orange ePresse izneo" height="216"
-                // /></a><a class="fancyimg" href="https://cdn2.nextinpact.com/images/bd/news/168189.png" rel="group_fancy"><img
-                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168189.png" alt="Orange ePresse izneo" /><br /></a><span
-                // style="font-size: smaller; font-weight: bold;">ePresse avec Orange et izneo, également avec Orange</span></p>
+                // fancyimg - Articles migrés à priori
+                /**
+                 *<figure class="content-img" style="text-align: center;" data-imageid="174190"><a class="fancyimg" href="https://cdnx.nextinpact.com/data-next/image/bd/174190.png" rel="group-fancy"> <img style="display:block;max-width: 100%;"  class="lazyload" data-sizes="auto" data-srcset="https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=75&resize=75 75w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=100&resize=100 100w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=150&resize=150 150w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=240&resize=240 240w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=320&resize=320 320w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=500&resize=500 500w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=640&resize=640 640w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=800&resize=800 800w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1024&resize=1024 1024w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1280&resize=1280 1280w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1600&resize=1600 1600w" data-src="https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png" alt="Threadripper Pro 7000" /></a></figure>
+                 */
                 Elements liensImagesFancy = lArticle.select("a[class=fancyimg]:has(img)");
                 // Pour chaque <a>
                 for (Element lienImageFancy : liensImagesFancy) {
                     // Pour chaque image...
                     for (Element lImage : lienImageFancy.select("img")) {
                         // Passage à l'image pleine taille
-                        lImage.attr("src", lienImageFancy.absUrl("href"));
+                        lImage.attr("src", lienImageFancy.attr("href"));
                         // Injection de l'image pleine taille...
                         lienImageFancy.before(lImage.outerHtml());
                     }
@@ -310,32 +287,26 @@ public class ParseurHTML {
                     lienImageFancy.remove();
                 }
 
-                // slideshow-container
-                // https://m.nextinpact.com/news/105361-pcspecialist-arrive-en-france-avec-ses-pc-fixes-et-portables
-                // -personnalisables.htm
-                // <ul class="slideshow-container"><li><a href="https://cdn2.nextinpact.com/images/bd/news/168239.png"><img
-                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168239.png" alt="PCSpecialist"
-                // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168239.png"
-                // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168240.png"><img src="https://cdn2.nextinpact
-                // .com/images/bd/news/mini-168240.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
-                // .com/images/bd/news/168240.png" /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168241.png"><img
-                // src="https://cdn2.nextinpact.com/images/bd/news/mini-168241.png" alt="PCSpecialist"
-                // data-large-src="https://cdn2.nextinpact.com/images/bd/news/168241.png"
-                // /></a></li><li><a href="https://cdn2.nextinpact.com/images/bd/news/168242.png"><img src="https://cdn2.nextinpact
-                // .com/images/bd/news/mini-168242.png" alt="PCSpecialist" data-large-src="https://cdn2.nextinpact
-                // .com/images/bd/news/168242.png" /></a></li></ul>
-                Elements lesSlideShow = lArticle.select("ul[class=slideshow-container]:has(li > a > img)");
-                // Pour chaque slideshow
-                for (Element unSlideShow : lesSlideShow) {
-                    // Pour chaque <img> du slideshow !
-                    for (Element imageSlideShow : unSlideShow.select("img")) {
-                        // Prise de l'image en pleine taille
-                        imageSlideShow.attr("src", imageSlideShow.absUrl("data-large-src"));
-                        // Injection de l'image pleine taille...
-                        unSlideShow.before("<p>" + imageSlideShow.outerHtml() + "</p>");
+                // data-srcset (Jetpack i*.wp.com)
+                /**
+                 * <img width="1024" height="535" style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png" alt="Trois missions Apollo : 11, 13 et 17 " class="wp-image-117815" srcset="https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png 1024w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-300x157.png 300w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-768x402.png 768w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704.png 1492w" sizes="(max-width: 1024px) 100vw, 1024px" />
+                 */
+                Elements lesImages = lArticle.select("img[srcset]");
+                // Pour chaque image
+                for (Element uneImage : lesImages) {
+                    // Récupération du premier lien du srcset (1024w)
+                    String srcset = uneImage.attr("srcset");
+                    Pattern p = Pattern.compile("^(.+?) [0-9]+w");
+                    Matcher m = p.matcher(srcset);
+                    while (m.find()) {
+                        uneImage.attr("src", m.group(1));
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.d("ParseurHTML", "getListeArticles() - Regex img : " + m.group(1) + " (srcset : " + srcset + ")");
+                        }
                     }
-                    // Suppression du slideshow
-                    unSlideShow.remove();
+                    uneImage.removeAttr("srcset");
+                    uneImage.removeAttr("data-srcset");
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
