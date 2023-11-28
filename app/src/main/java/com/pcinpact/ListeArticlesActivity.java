@@ -476,25 +476,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Télécharge la liste d'articles (y compris le brief)
-     *
-     * @param isDownloadBrief Boolean true => télécharger que le brief / false => télécharger que les articles / null => télécharger les deux
+     * Télécharger la liste des articles et leur contenu (y compris le brief)
      */
-    private void telechargeListeArticles(Boolean isDownloadBrief) {
+    private void telechargeListeArticles() {
         AsyncHTMLDownloader monAHD;
         // Les articles
-        if (isDownloadBrief == null || !isDownloadBrief) {
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
-            // Lancement du téléchargement
-            launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
-        }
+        monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        // Lancement du téléchargement
+        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
 
         // Le brief
-        if (isDownloadBrief == null || isDownloadBrief) {
-            monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
-            // Lancement du1 téléchargement
-            launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
-        }
+        monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        // Lancement du1 téléchargement
+        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
     }
 
     /**
@@ -520,7 +514,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ListeArticlesActivity", "launchAHD() - erreur lancement AHD" + unAHD.toString());
+                Log.e("ListeArticlesActivity", "launchAHD() - erreur lancement AHD" + unAHD);
             }
         }
     }
@@ -724,9 +718,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         monToast.show();
 
         /*
-         * Téléchargement des pages de liste d'articles
+         * Téléchargement des articles (brief + standard)
          */
-        telechargeListeArticles(null);
+        telechargeListeArticles();
 
         // GUI : fin de l'activité en cours...
         finChargementGUI(Constantes.HTML_LISTE_ARTICLES);

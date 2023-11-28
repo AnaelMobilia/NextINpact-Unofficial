@@ -50,22 +50,10 @@ public class ArticleActivity extends AppCompatActivity {
      */
     private DAO monDAO;
     /**
-     * Accès au menu
-     */
-    private Menu monMenu;
-    /**
-     * Bouton de partage
-     */
-    private MenuItem shareItem;
-    /**
      * Viewpager2 pour le slide des articles
      */
     private ViewPager2 monViewPager2;
     private ArticlePagerAdapter pagerAdapter;
-    /**
-     * Cacher le bouton de partage
-     */
-    private boolean cacherBoutonPartage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,14 +100,11 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Stockage du menu
-        monMenu = menu;
-
-        super.onCreateOptionsMenu(monMenu);
+        super.onCreateOptionsMenu(menu);
 
         // Je charge mon menu dans l'actionBar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_article_actions, monMenu);
+        inflater.inflate(R.menu.activity_article_actions, menu);
 
         // Suis-je en mode DEBUG ?
         Boolean modeDebug = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionDebug, R.bool.defautOptionDebug);
@@ -133,13 +118,11 @@ public class ArticleActivity extends AppCompatActivity {
             boutonDebug.setVisible(true);
         }
 
-        // Récupération du bouton de partage
-        shareItem = monMenu.findItem(R.id.action_share);
-
-
         // Option : cacher le bouton de partage
-        cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage, R.bool.defautOptionCacherBoutonPartage);
+        boolean cacherBoutonPartage = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionCacherBoutonPartage, R.bool.defautOptionCacherBoutonPartage);
         if (cacherBoutonPartage) {
+            // Récupération du bouton de partage
+            MenuItem shareItem = menu.findItem(R.id.action_share);
             // Le cacher
             shareItem.setVisible(false);
         }

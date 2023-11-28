@@ -29,7 +29,8 @@ import com.bumptech.glide.module.AppGlideModule;
 
 
 /**
- * Configuration de Glide -> https://bumptech.github.io/glide/doc/configuration.html
+ * Configuration de Glide
+ * @see <a href="https://bumptech.github.io/glide/doc/configuration.html">Doc</a>
  */
 @GlideModule
 public class ConfigurationGlideModule extends AppGlideModule {
@@ -46,7 +47,8 @@ public class ConfigurationGlideModule extends AppGlideModule {
     }
 
     /**
-     * Glide v4 - https://bumptech.github.io/glide/doc/configuration.html#manifest-parsing
+     * Glide v4
+     * @see <a href="https://bumptech.github.io/glide/doc/configuration.html#manifest-parsing">Doc</a>
      *
      * @return boolean
      */

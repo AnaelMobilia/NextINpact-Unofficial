@@ -20,12 +20,15 @@ package com.pcinpact;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.pcinpact.utils.Constantes;
+
+import java.util.Objects;
 
 /**
  * Options de l'application.
@@ -52,10 +55,10 @@ public class OptionsActivity extends AppCompatActivity implements PreferenceFrag
     }
 
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller, Preference pref) {
         // Instantiate the new Fragment
         final Bundle args = pref.getExtras();
-        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(), pref.getFragment());
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(getClassLoader(), Objects.requireNonNull(pref.getFragment()));
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment

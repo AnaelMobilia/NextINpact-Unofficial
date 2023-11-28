@@ -98,7 +98,6 @@ public class Downloader {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
-                Log.e("Downloader", "download() - " + e.toString());
             }
         }
         // DEBUG
@@ -160,7 +159,7 @@ public class Downloader {
         } catch (IOException | NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("Downloader", "connexionAbonne() - " + e.toString());
+                Log.e("Downloader", "connexionAbonne()", e);
             }
         }
         return monToken;

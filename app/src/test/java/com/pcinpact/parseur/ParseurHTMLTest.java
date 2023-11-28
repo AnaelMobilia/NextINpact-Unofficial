@@ -27,10 +27,6 @@ import java.util.ArrayList;
 
 public class ParseurHTMLTest {
     /**
-     * Impossible de mettre le code HTML dans un fichier resources jusqu'à Android Studio 1.3
-     * https://code.google.com/p/android/issues/detail?id=136013#c28
-     * https://code.google.com/p/android/issues/detail?id=64887
-     * <p>
      * Vérifie le bon fonctionnement du parseur entre un code HTML figé et le résultat correct attendu
      */
     @Test

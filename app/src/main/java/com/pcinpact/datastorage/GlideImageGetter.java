@@ -110,7 +110,7 @@ public class GlideImageGetter implements Html.ImageGetter {
                     drawable.draw(canvas);
                 } catch (Exception e) {
                     if (Constantes.DEBUG) {
-                        Log.e("GlideImageGetter", "draw() - Exception " + e);
+                        Log.e("GlideImageGetter", "draw() - Exception", e);
                     }
                 }
             }
