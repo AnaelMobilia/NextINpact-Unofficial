@@ -18,6 +18,7 @@
  */
 package com.pcinpact;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,16 +28,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
-import androidx.core.view.MenuItemCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.andremion.counterfab.CounterFab;
 import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
-
-import java.util.UUID;
 
 /**
  * Affichage d'un article.
@@ -145,15 +142,12 @@ public class ArticleActivity extends AppCompatActivity {
         if (cacherBoutonPartage) {
             // Le cacher
             shareItem.setVisible(false);
-        } else {
-            genererShareIntent(true);
         }
 
-        // Configuration de l'intent
+        // Configuration du slider
         monViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -166,18 +160,12 @@ public class ArticleActivity extends AppCompatActivity {
                 // Marquer l'article comme lu en BDD
                 monDAO.marquerArticleLu(articleId);
 
-                // Mise à jour de l'intent
-                if (!cacherBoutonPartage) {
-                    genererShareIntent(false);
-                }
-
                 // Bouton des commentaires
                 genererBadgeCommentaires();
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
@@ -192,42 +180,30 @@ public class ArticleActivity extends AppCompatActivity {
             Intent intentDebug = new Intent(getApplicationContext(), DebugActivity.class);
             intentDebug.putExtra("ARTICLE_ID", articleId);
             startActivity(intentDebug);
+        } else if (id == R.id.action_share) {
+            // Chargement de l'article concerné
+            ArticleItem monArticle = monDAO.chargerArticle(articleId);
+
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.i("ArticleActivity", "onOptionsItemSelected() - Intent " + articleId + " / " + monArticle.getURLseo());
+            }
+
+            // Création de l'intent
+            Intent monIntent = new Intent(Intent.ACTION_SEND);
+            monIntent.setType("text/plain");
+            monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURLseo());
+            try {
+                startActivity(monIntent);
+            } catch (ActivityNotFoundException e) {
+                // DEBUG
+                if (Constantes.DEBUG) {
+                    Log.e("ArticleActivity", "onOptionsItemSelected() - Impossible de lancer l'intent pour " + articleId, e);
+                }
+            }
         }
 
         return super.onOptionsItemSelected(pItem);
-    }
-
-    /**
-     * Création d'un intent pour le Share (mutualisation de code)
-     *
-     * @param isNewActivity boolean Est-ce une nouvelle activité ou un glissement d'article ?
-     */
-    private void genererShareIntent(boolean isNewActivity) {
-        // Chargement de l'article concerné
-        ArticleItem monArticle = monDAO.chargerArticle(articleId);
-
-        // Création de l'intent
-        Intent monIntent = new Intent(Intent.ACTION_SEND);
-        monIntent.setType("text/plain");
-        monIntent.putExtra(Intent.EXTRA_TEXT, monArticle.getURLseo());
-
-        // DEBUG
-        if (Constantes.DEBUG) {
-            Log.i("ArticleActivity", "genererShareIntent() - Intent " + articleId + " / " + monArticle.getURLseo());
-        }
-
-        ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        // Ne pas afficher l'icône de la dernière application utilisés pour le partage
-        // Génère des exceptions malgré la doc "java.lang.IllegalStateException: No preceding call to #readHistoricalData"
-        //myShareActionProvider.setShareHistoryFileName(null);
-        // Du coup on utilise un nom de fichier random qui sera effacé à la fermeture de l'application
-        myShareActionProvider.setShareHistoryFileName(Constantes.PREFIXE_SHARE_HISTORY_FILE_NAME + UUID.randomUUID().toString());
-        // Assignation de mon intent
-        myShareActionProvider.setShareIntent(monIntent);
-        // Si ce n'est pas une nouvelle activité, rafraîchir le menu pour supprimer la dernière action
-        if (!isNewActivity) {
-            supportInvalidateOptionsMenu();
-        }
     }
 
     /**

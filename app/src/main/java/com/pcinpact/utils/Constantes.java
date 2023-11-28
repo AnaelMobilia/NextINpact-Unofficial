@@ -101,11 +101,6 @@ public class Constantes {
      * Taille (en Mo) du cache sur le disque
      */
     public static final int TAILLE_CACHE = 50;
-    /**
-     * Préfixe pour les fichiers servant à gérer l'historique du ShareActionProvider
-     */
-    public static final String PREFIXE_SHARE_HISTORY_FILE_NAME = "historySAP_";
-
 
     /*
      * TYPES DE TELECHARGEMENTS.
