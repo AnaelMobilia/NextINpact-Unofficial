@@ -261,6 +261,8 @@ public final class DAO extends SQLiteOpenHelper {
      * @param supprimerCommentaires Faut-il effacer les commentaires & date de refresh si c'est un update ?
      */
     public void enregistrerArticle(final ArticleItem unArticle, final boolean supprimerCommentaires) {
+        // Supprimer l'article existant
+        supprimerArticle(unArticle.getId(), false);
         ContentValues insertValues = new ContentValues();
 
         // Supprimer l'ancienne version mais conserver la PK

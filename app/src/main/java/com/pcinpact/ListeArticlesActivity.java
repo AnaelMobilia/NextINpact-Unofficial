@@ -539,24 +539,26 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
         // Téléchargement d'articles ou du brief
         else {
-            // Si c'est un téléchargement de la liste d'articles
-            if (desItems.size() > 0) {
-                for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                    // Enregistrer en BDD les articles s'il est nouveau ou mis à jour (erreur de téléchargement, accès au contenu abonné, ...)
-                    monDAO.enregistrerArticleSiNouveau(unArticle);
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Récupérer les informations sur les commentaires en BDD
+                ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
+                unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
+                unArticle.setDernierCommLu(articleBdd.getDernierCommLu());
+                unArticle.setLu(articleBdd.isLu());
+                // Enregistrer en BDD l'article
+                monDAO.enregistrerArticle(unArticle);
 
-                    // Télécharger le nombre de commentaires de chaque article (sauf s'il n'y en a pas ou que l'on a déjà lu tous les commentaires)
-                    int idDernierCommentaireApi = unArticle.getParseurLastCommentId();
-                    int idDernierCommentaireLu = monDAO.getIdDernierCommentaireLu(unArticle.getId());
-                    if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireLu) {
-                        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
-                        // Lancement du téléchargement
-                        launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
-                    } else {
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.d("ListeArticlesActivity", "downloadHTMLFini() -  " + unArticle.getId() + " : chargement des commentaires non requis : " + idDernierCommentaireLu + " -> parseur " + idDernierCommentaireApi);
-                        }
+                // Télécharger le nombre de commentaires de chaque article (sauf s'il n'y en a pas ou que l'on a déjà lu tous les commentaires)
+                int idDernierCommentaireApi = unArticle.getParseurLastCommentId();
+                int idDernierCommentaireLu = articleBdd.getDernierCommLu();
+                if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireLu) {
+                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
+                    // Lancement du téléchargement
+                    launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
+                } else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.d("ListeArticlesActivity", "downloadHTMLFini() -  " + unArticle.getId() + " : chargement des commentaires non requis : " + idDernierCommentaireLu + " -> parseur " + idDernierCommentaireApi);
                     }
                 }
             }
