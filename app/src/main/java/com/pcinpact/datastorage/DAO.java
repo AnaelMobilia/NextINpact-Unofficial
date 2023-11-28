@@ -246,27 +246,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Enregistre (ou MàJ) un article en BDD (effacement dans la base de données)
+     * Enregistre (ou MàJ) un article en BDD
      *
      * @param unArticle ArticleItem
      */
     public void enregistrerArticle(final ArticleItem unArticle) {
-        enregistrerArticle(unArticle, true);
-    }
-
-    /**
-     * Enregistre (ou MàJ) un article en BDD
-     *
-     * @param unArticle             ArticleItem
-     * @param supprimerCommentaires Faut-il effacer les commentaires & date de refresh si c'est un update ?
-     */
-    public void enregistrerArticle(final ArticleItem unArticle, final boolean supprimerCommentaires) {
         // Supprimer l'article existant
         supprimerArticle(unArticle.getId(), false);
-        ContentValues insertValues = new ContentValues();
 
-        // Supprimer l'ancienne version mais conserver la PK
-        supprimerArticle(unArticle.getId(), supprimerCommentaires);
+        ContentValues insertValues = new ContentValues();
 
         insertValues.put(ARTICLE_ID, unArticle.getId());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
@@ -288,47 +276,6 @@ public final class DAO extends SQLiteOpenHelper {
             if (Constantes.DEBUG) {
                 Log.e("DAO", "enregistrerArticle() - erreur SQL", e);
             }
-        }
-    }
-
-    /**
-     * Enregistre un article en BDD uniquement s'il n'existait pas ou qu'il a été mis à jour
-     *
-     * @param unArticle ArticleItem
-     */
-    public void enregistrerArticleSiNouveau(final ArticleItem unArticle) {
-        // Est-il déjà présent en BDD ?
-        ArticleItem testItem = this.chargerArticle(unArticle.getId());
-
-        boolean enregistrer = false;
-        // Cas validant un enregistrement
-        if (testItem.getTimeStampPublication() != unArticle.getTimeStampPublication()) {
-            // Article pas encore en BDD, MàJ de l'article
-            enregistrer = true;
-        } else if ("".equals(testItem.getContenu()) && !"".equals(unArticle.getContenu())) {
-            // Article existant mais sans contenu en BDD et contenu dans l'article proposé
-            enregistrer = true;
-        } else if (testItem.isAbonne() && !testItem.isDlContenuAbonne() && unArticle.isDlContenuAbonne()) {
-            // Article abonné existant dont je n'avais pas le contenu Abonné et maintenant je l'ai
-            enregistrer = true;
-        }
-
-        // Corriger le nombre de commentaires si nécessaire (l'information n'est plus fournie par le même endpoint que l'article)
-        if (testItem.getNbCommentaires() < unArticle.getNbCommentaires()) {
-            unArticle.setNbCommentaires(testItem.getNbCommentaires());
-        }
-
-        // Dois-je l'enregistrer
-        if (enregistrer) {
-            // Enregistrement
-            this.enregistrerArticle(unArticle);
-        } else {
-            // Je met à jour le nb de comms de l'article en question...
-            updateNbCommentairesArticle(unArticle.getId(), unArticle.getNbCommentaires());
-        }
-
-        if (Constantes.DEBUG) {
-            Log.d("DAO", "enregistrerArticleSiNouveau() - enregistrer : " + enregistrer);
         }
     }
 
@@ -466,7 +413,7 @@ public final class DAO extends SQLiteOpenHelper {
             if (supprimerCommentaires) {
                 Log.d("DAO", "supprimerArticle() - Suppression article + commentaires " + idArticle);
             } else {
-                Log.d("DAO", "supprimerArticle() - Suppression article " + idArticle);
+                Log.d("DAO", "supprimerArticle() - Suppression article (sans les commentaires) " + idArticle);
             }
         }
         try {
@@ -475,16 +422,14 @@ public final class DAO extends SQLiteOpenHelper {
             if (supprimerCommentaires) {
                 // Commentaires
                 maBDD.delete(BDD_TABLE_COMMENTAIRES, COMMENTAIRE_ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)});
+                // Date de refresh
+                this.supprimerDateRefresh(idArticle);
             }
         } catch (SQLiteException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("DAO", "supprimerArticle() - erreur SQL", e);
             }
-        }
-        if (supprimerCommentaires) {
-            // Date de refresh
-            this.supprimerDateRefresh(idArticle);
         }
     }
 
