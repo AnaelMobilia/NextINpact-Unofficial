@@ -201,15 +201,15 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             Log.i("CommentairesActivity", "refreshListeCommentaires()");
         }
 
-        int idDernierCommentaire = 0;
+        int indiceDernierCommentaire = 0;
         isFinCommentaires = false;
         // Si j'ai des commentaires, je récupère le nombre de commentaires
         if (!mesCommentaires.isEmpty()) {
-            idDernierCommentaire = mesCommentaires.size();
+            indiceDernierCommentaire = mesCommentaires.size();
         }
 
         // Quelle est la page à charger (actuelle si pas 10 commentaires, sinon la prochaine)
-        int maPage = (idDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
+        int maPage = (indiceDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
 
         // Création de l'URL
         String monPath = Constantes.NEXT_URL_COMMENTAIRES + idArticle + Constantes.NEXT_URL_COMMENTAIRES_PARAM_PAGE + maPage;
