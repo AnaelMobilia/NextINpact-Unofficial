@@ -381,6 +381,37 @@ public final class DAO extends SQLiteOpenHelper {
         return retour;
     }
 
+
+    /**
+     * Récupération de l'ID du dernier commentaire lu
+     *
+     * @param idArticle ID de l'article
+     * @return int ID du dernier commentaire lu
+     */
+    public int getIdDernierCommentaireLu(final int idArticle) {
+        // Les colonnes à récupérer
+        String[] mesColonnes = new String[]{"MAX(" + COMMENTAIRE_ID + ")"};
+
+        // Requête sur la BDD
+        Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, mesColonnes, COMMENTAIRE_ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)}, null, null, null);
+
+        int retour = 0;
+
+        // Je vais au premier (et unique) résultat
+        if (monCursor.moveToNext()) {
+            retour = monCursor.getInt(0);
+        }
+        // Fermeture du curseur
+        monCursor.close();
+
+        // Valeur par défaut...
+        if (retour < 1) {
+            retour = 0;
+        }
+
+        return retour;
+    }
+
     /**
      * MàJ du nb de commentaires d'un article déjà synchronisé
      *
