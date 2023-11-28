@@ -1,0 +1,13 @@
+v2.7.1
+- Evolutions suite à la migration vers next.ink :
+  - [Fix] Les sous-titres n'apparaissaient pas
+  - [Fix] Certaines images n'apparaissaient pas dans les articles
+  - [New] Chargement des miniatures plus rapide
+  - [New] Rafraichissement de la liste des articles plus rapide
+  - [Update] Le partage d'article propose l'ensemble des applications disponibles
+
+Fonctionnalités en cours de traitement par l'équipe de Next :
+- Gestion du contenu abonné
+- Auteur des commentaires
+- Smileys "ancienne version"
+=> Elles seront intégrées dans l'application dès qu'elles seront disponibles.
