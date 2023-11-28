@@ -524,15 +524,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Téléchargement du nombre de commentaires et des 10 premiers commentaires
         if (uneURL.startsWith(Constantes.NEXT_URL_COMMENTAIRES)) {
             for (Item unItem : desItems) {
-                // Nombre de commentaires
+                // Nombre total de commentaires d'un article (entête Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL)
                 if (unItem instanceof ArticleItem) {
-                    // Récupération de l'article depuis la BDD
-                    ArticleItem monArticle = monDAO.chargerArticle(((ArticleItem) unItem).getId());
-                    monArticle.setNbCommentaires(((ArticleItem) unItem).getNbCommentaires());
-                    // L'enregistrer mais sans effacer les commentaires & date de refresh
-                    monDAO.enregistrerArticle(monArticle, false);
+                    monDAO.updateNbCommentairesArticle(((ArticleItem) unItem).getId(), ((ArticleItem) unItem).getNbCommentaires());
                 }
-                // Commentaires
+                // Commentaires de l'article
                 else {
                     monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
                 }
