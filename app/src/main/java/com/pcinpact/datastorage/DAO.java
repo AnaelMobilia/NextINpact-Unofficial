@@ -331,15 +331,15 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * MàJ de l'ID du dernier commentaire lu
+     * MàJ de l'indice du dernier commentaire lu
      *
-     * @param idArticle     ID de l'article
-     * @param idCommentaire ID du dernier commentaire lu
+     * @param idArticle         ID de l'article
+     * @param indiceCommentaire Indice du dernier commentaire lu (position dans le listview)
      */
-    public void setDernierCommentaireLu(final int idArticle, final int idCommentaire) {
+    public void setIndiceDernierCommentaireLu(final int idArticle, final int indiceCommentaire) {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
-        updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, idCommentaire);
+        updateValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, indiceCommentaire);
 
         try {
             maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)});
@@ -352,12 +352,12 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Récupération de l'ID du dernier commentaire lu
+     * Récupération de l'indice du dernier commentaire lu (position dans la listview)
      *
      * @param idArticle ID de l'article
-     * @return int ID du dernier commentaire lu
+     * @return int Indice du dernier commentaire lu
      */
-    public int getDernierCommentaireLu(final int idArticle) {
+    public int getIndiceDernierCommentaireLu(final int idArticle) {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{ARTICLE_DERNIER_COMMENTAIRE_LU};
 

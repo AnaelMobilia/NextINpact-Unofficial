@@ -184,7 +184,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            idDernierCommentaireLu = monDAO.getDernierCommentaireLu(idArticle) - 1;
+            idDernierCommentaireLu = monDAO.getIndiceDernierCommentaireLu(idArticle) - 1;
             monListView.setSelection(idDernierCommentaireLu);
         }
 
@@ -310,7 +310,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
-                    monDAO.setDernierCommentaireLu(idArticle, lastVisibleItem);
+                    monDAO.setIndiceDernierCommentaireLu(idArticle, lastVisibleItem);
                     // Mise à jour de la copie locale
                     idDernierCommentaireLu = lastVisibleItem;
                     // DEBUG
