@@ -56,7 +56,6 @@ import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -606,13 +605,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // MàJ de la date de dernier refresh
-        long dernierRefresh = TimeUnit.SECONDS.toMillis(monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES));
+        long dernierRefresh = monDAO.chargerDateRefresh(Constantes.DB_REFRESH_ID_LISTE_ARTICLES);
 
         if (dernierRefresh == 0) {
             // Jamais synchro...
             headerTextView.setText(getString(R.string.lastUpdateNever));
         } else {
-            String monTexte = getString(R.string.lastUpdate) + new SimpleDateFormat(Constantes.FORMAT_DATE_DERNIER_REFRESH, Constantes.LOCALE).format(dernierRefresh);
+            String monTexte = getString(R.string.lastUpdate) + MyDateUtils.formatDate(Constantes.FORMAT_DATE_DERNIER_REFRESH, dernierRefresh);
             // Une MàJ à déjà été faite
             headerTextView.setText(monTexte);
         }

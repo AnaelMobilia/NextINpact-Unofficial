@@ -19,11 +19,7 @@
 package com.pcinpact.items;
 
 import com.pcinpact.utils.Constantes;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import com.pcinpact.utils.MyDateUtils;
 
 /**
  * Objet Article.
@@ -95,11 +91,7 @@ public class ArticleItem implements Item {
      * @return Heure & minute de la publication
      */
     public String getHeureMinutePublication() {
-        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
-        // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, Constantes.LOCALE);
-
-        return dfm.format(maDate);
+        return MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, this.getTimeStampPublication());
     }
 
     /**
@@ -108,15 +100,9 @@ public class ArticleItem implements Item {
      * @return Date de la publication
      */
     public String getDatePublication() {
-        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
-        // Format souhaité
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, Constantes.LOCALE);
-        String laDate = dfm.format(maDate);
-
+        String laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, this.getTimeStampPublication());
         // Première lettre en majuscule
-        laDate = String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
-
-        return laDate;
+        return String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
     }
 
     /**

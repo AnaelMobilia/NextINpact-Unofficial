@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -64,15 +65,28 @@ public class MyDateUtils {
     }
 
     /**
-     * Convertit un timestamp en date ISO8601
+     * Convertir un timestamp en date ISO8601
      *
      * @param unTimestamp timestamp
      * @return String
      */
-    public static String convertToDateISO8601(long unTimestamp) {
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE, Constantes.LOCALE);
+    public static String convertToDateISO8601(final long unTimestamp) {
+        return formatDate(Constantes.FORMAT_DATE, unTimestamp);
+    }
+
+    /**
+     * Formatter une date
+     *
+     * @param format      format souhaité (SimpleDateFormat)
+     * @param unTimestamp un timestamp
+     * @return String
+     */
+    public static String formatDate(final String format, final long unTimestamp) {
+        Date maDate = new Date(TimeUnit.SECONDS.toMillis(unTimestamp));
+        // Format souhaité
+        DateFormat dfm = new SimpleDateFormat(format, Constantes.LOCALE);
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
-        return dfm.format(unTimestamp * 1000L);
+        return dfm.format(maDate);
     }
 
     /**
@@ -81,7 +95,7 @@ public class MyDateUtils {
      * @param nbJours nombre de jours à enlever
      * @return timestamp
      */
-    public static long timeStampDateActuelleMinus(int nbJours) {
+    public static long timeStampDateActuelleMinus(final int nbJours) {
         long monRetour;
 
         // Date du jour
