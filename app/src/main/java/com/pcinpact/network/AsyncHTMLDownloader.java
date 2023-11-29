@@ -59,11 +59,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     /**
      * Téléchargement d'une ressource
      *
-     * @param parent       parent à callback à la fin
-     * @param unType       type de la ressource (Cf Constantes.TYPE_)
-     * @param uneURL       URL de la ressource à télécharger
-     * @param unIdArticle  ID de l'article
-     * @param unToken      token de connexion
+     * @param parent      parent à callback à la fin
+     * @param unType      type de la ressource (Cf Constantes.TYPE_)
+     * @param uneURL      URL de la ressource à télécharger
+     * @param unIdArticle ID de l'article
+     * @param unToken     token de connexion
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final String unToken) {
         // Mappage des attributs de cette requête
@@ -82,20 +82,22 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         // Récupération du contenu HTML
         String[] datas = Downloader.download(URL, token);
 
-        switch (typeHTML) {
-            case Constantes.HTML_LISTE_ARTICLES:
-                monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
-                break;
+        if (!"".equals(datas[Downloader.CONTENT_BODY])) {
+            switch (typeHTML) {
+                case Constantes.HTML_LISTE_ARTICLES:
+                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
+                    break;
 
-            case Constantes.HTML_COMMENTAIRES:
-                monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], idArticle);
-                break;
+                case Constantes.HTML_COMMENTAIRES:
+                    monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], idArticle);
+                    break;
 
-            default:
-                if (Constantes.DEBUG) {
-                    Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + URL);
-                }
-                break;
+                default:
+                    if (Constantes.DEBUG) {
+                        Log.e("AsyncHTMLDownloader", "doInBackground() - type HTML incohérent : " + typeHTML + " - URL : " + URL);
+                    }
+                    break;
+            }
         }
         return monRetour;
     }
