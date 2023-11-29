@@ -68,9 +68,9 @@ public class ArticleItem implements Item {
      */
     private boolean isDlContenuAbonne;
     /**
-     * ID du dernier commentaire lu
+     * Indice du dernier commentaire lu
      */
-    private int dernierCommLu = 0;
+    private int indiceDernierCommLu = 0;
     /**
      * URL SEO de l'article
      */
@@ -195,7 +195,7 @@ public class ArticleItem implements Item {
      * @return int
      */
     public int getNbCommentairesNonLus() {
-        int nbComms = this.getNbCommentaires() - this.getDernierCommLu();
+        int nbComms = this.getNbCommentaires() - this.getIndiceDernierCommLu();
         // Prévenir un cas négatif
         if (nbComms < 0) {
             nbComms = 0;
@@ -274,17 +274,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return ID dernier commentaire lu
+     * @return Indice du dernier commentaire lu
      */
-    public int getDernierCommLu() {
-        return dernierCommLu;
+    public int getIndiceDernierCommLu() {
+        return indiceDernierCommLu;
     }
 
     /**
-     * @param dernierCommLu ID dernier commentaire lu
+     * @param indiceDernierCommLu Indice du dernier commentaire lu
      */
-    public void setDernierCommLu(int dernierCommLu) {
-        this.dernierCommLu = dernierCommLu;
+    public void setIndiceDernierCommLu(int indiceDernierCommLu) {
+        this.indiceDernierCommLu = indiceDernierCommLu;
     }
 
     /**

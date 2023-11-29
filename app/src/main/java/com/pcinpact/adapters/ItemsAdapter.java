@@ -317,7 +317,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm, R.bool.defautOptionAfficherNbNouveauComm);
                     // Ssi commentaires déjà lus
-                    if (nbNouveauComm && ai.getDernierCommLu() > 0) {
+                    if (nbNouveauComm && ai.getIndiceDernierCommLu() > 0) {
                         // Affichage seulement si des nouveaux commentaires
                         if (ai.getNbCommentairesNonLus() > 0) {
                             // Insertion dans texte

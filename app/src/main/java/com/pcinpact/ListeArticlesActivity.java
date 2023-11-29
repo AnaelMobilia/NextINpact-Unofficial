@@ -543,14 +543,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Récupérer les informations sur les commentaires en BDD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
                 unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
-                unArticle.setDernierCommLu(articleBdd.getDernierCommLu());
+                unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
                 unArticle.setLu(articleBdd.isLu());
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(unArticle);
 
                 // Télécharger le nombre de commentaires de chaque article (sauf s'il n'y en a pas ou que l'on a déjà lu tous les commentaires)
                 int idDernierCommentaireApi = unArticle.getParseurLastCommentId();
-                int idDernierCommentaireLu = articleBdd.getDernierCommLu();
+                int idDernierCommentaireLu = monDAO.getIdDernierCommentaireLu(unArticle.getId());
                 if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireLu) {
                     AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
                     // Lancement du téléchargement

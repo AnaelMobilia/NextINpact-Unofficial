@@ -266,7 +266,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_IS_ABONNE, unArticle.isAbonne());
         insertValues.put(ARTICLE_IS_LU, unArticle.isLu());
         insertValues.put(ARTICLE_DL_CONTENU_ABONNE, unArticle.isDlContenuAbonne());
-        insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getDernierCommLu());
+        insertValues.put(ARTICLE_DERNIER_COMMENTAIRE_LU, unArticle.getIndiceDernierCommLu());
         insertValues.put(ARTICLE_URL_SEO, unArticle.getURLseo());
 
         try {
@@ -657,7 +657,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setAbonne((unCursor.getInt(7) > 0));
         monArticle.setLu((unCursor.getInt(8) > 0));
         monArticle.setDlContenuAbonne((unCursor.getInt(9) > 0));
-        monArticle.setDernierCommLu(unCursor.getInt(10));
+        monArticle.setIndiceDernierCommLu(unCursor.getInt(10));
         monArticle.setURLseo(unCursor.getString(11));
 
         return monArticle;
