@@ -35,11 +35,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -404,11 +400,13 @@ public class ParseurHTML {
                 // TODO - https://github.com/AnaelMobilia/NextINpact-Unofficial/issues/309#issuecomment-1796525253
                 //  Peut-être "statut : approved"
                 // Commentaires modérés
+                /*
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
                     DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
                     contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : " + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
                 }
+                 */
 
                 // Texte cité ex  > texte cité
                 // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
@@ -427,6 +425,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
 
                 // TODO - https://github.com/NextINpact/Next/issues/160
+                /*
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
                 // regexp : .*tag":"(.*)".*,"image":"(.*)".* ==> contenuHtml = contenuHtml.replace("$1", "<img src=\\"" +
@@ -577,6 +576,7 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":plantage:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
                 contenuHtml = contenuHtml.replace(":auto:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "auto.gif\" />");
                 contenuHtml = contenuHtml.replace(":pciwin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "champion.gif\" />");
+                */
 
                 monCommentaireItem.setCommentaire(contenuHtml);
                 // Et je le stocke
