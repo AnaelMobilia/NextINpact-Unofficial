@@ -63,9 +63,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private int idArticle;
     /**
-     * ID du dernier commentaire lu
+     * Indice du dernier commentaire lu
      */
-    private int idDernierCommentaireLu;
+    private int indiceDernierCommentaireLu;
     /**
      * ItemAdapter
      */
@@ -184,8 +184,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            idDernierCommentaireLu = monDAO.getIndiceDernierCommentaireLu(idArticle) - 1;
-            monListView.setSelection(idDernierCommentaireLu);
+            indiceDernierCommentaireLu = monDAO.getIndiceDernierCommentaireLu(idArticle) - 1;
+            monListView.setSelection(indiceDernierCommentaireLu);
         }
 
         // MàJ de la date de dernier refresh
@@ -306,13 +306,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                  * Gestion de la réouverture au dernier commentaire lu
                  */
                 // Et qu'on a lu plus de commentaires
-                if (reouverture && lastVisibleItem > idDernierCommentaireLu) {
+                if (reouverture && lastVisibleItem > indiceDernierCommentaireLu) {
                     /*
                      * Enregistrement de l'id du dernier commentaire affiché
                      */
                     monDAO.setIndiceDernierCommentaireLu(idArticle, lastVisibleItem);
                     // Mise à jour de la copie locale
-                    idDernierCommentaireLu = lastVisibleItem;
+                    indiceDernierCommentaireLu = lastVisibleItem;
                     // DEBUG
                     if (Constantes.DEBUG) {
                         Log.d("CommentairesActivity", "onScroll() - setDernierCommentaireLu(" + idArticle + ", " + lastVisibleItem + ")");
