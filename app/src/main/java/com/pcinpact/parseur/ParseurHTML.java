@@ -141,12 +141,12 @@ public class ParseurHTML {
                     auteur = unArticle.getJSONObject("_embedded").getJSONArray("author").getJSONObject(0).getString("name");
                 }
                 contenu += "Par " + auteur + " - actu" + "@" + "nextinpact.com";
-                // Date de publication
-                laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, monArticleItem.getTimeStampPublication());
-                contenu += " le " + laDate;
 
                 // Lien vers l'article
                 contenu += "<br /><br />Article publié sur <a href=\"" + monArticleItem.getURLseo() + "\">" + monArticleItem.getURLseo() + "</a>";
+                // Date de publication
+                laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, monArticleItem.getTimeStampPublication());
+                contenu += " le " + laDate;
                 contenu += "</footer>";
                 contenu += "</article>";
 
