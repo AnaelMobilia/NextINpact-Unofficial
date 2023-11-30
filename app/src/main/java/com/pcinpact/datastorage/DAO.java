@@ -332,12 +332,12 @@ public final class DAO extends SQLiteOpenHelper {
 
 
     /**
-     * Récupération de l'ID du dernier commentaire lu
+     * Récupération de l'ID du dernier commentaire en BDD
      *
      * @param idArticle ID de l'article
-     * @return int ID du dernier commentaire lu
+     * @return int ID du dernier commentaire en BDD
      */
-    public int getIdDernierCommentaireLu(final int idArticle) {
+    public int getMaxIdCommentaireTelecharge(final int idArticle) {
         // Les colonnes à récupérer
         String[] mesColonnes = new String[]{"MAX(" + COMMENTAIRE_ID + ")"};
 
