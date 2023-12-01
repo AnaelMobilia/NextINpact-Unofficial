@@ -18,4 +18,4 @@ jobs:
           export GRADLE_HOME=$PWD/gradle-8.2
           export PATH=$GRADLE_HOME/bin:$PATH
           gradle -v
-          gradle build
+          gradle build --warning-mode all

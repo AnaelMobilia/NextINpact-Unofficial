@@ -40,6 +40,9 @@ android {
         textReport true
     }
     namespace 'com.pcinpact'
+    buildFeatures {
+        buildConfig true
+    }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile).tap {
             configureEach {
