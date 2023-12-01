@@ -548,10 +548,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(unArticle);
 
-                // Télécharger le nombre de commentaires de chaque article (sauf s'il n'y en a pas ou que l'on a déjà lu tous les commentaires)
+                // Télécharger le nombre de commentaires de chaque article SAUF SI :
+                //   - L'API indique qu'il n'y a pas de commentaires (-1)
+                //   - On a déjà téléchargé l'ID du dernier commentaire indiqué par l'API
+                //   - L'ID du dernier commentaire indiqué par l'API n'a pas changé depuis la dernière synchro
                 int idDernierCommentaireApi = unArticle.getParseurLastCommentId();
                 int idDernierCommentaireTelecharge = monDAO.getMaxIdCommentaireTelecharge(unArticle.getId());
-                if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireTelecharge) {
+                int idDernierCommentaireApiEnBdd = articleBdd.getParseurLastCommentId();
+                if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireTelecharge && idDernierCommentaireApi != idDernierCommentaireApiEnBdd) {
                     AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
                     // Lancement du téléchargement
                     launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
