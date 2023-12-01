@@ -136,7 +136,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String[] COMMENTAIRE__COLONNES = new String[]{COMMENTAIRE_ID, COMMENTAIRE_ARTICLE_ID, COMMENTAIRE_AUTEUR, COMMENTAIRE_TIMESTAMP, COMMENTAIRE_CONTENU};
     /**
-     * Table refresh (date de msie à jour)
+     * Table refresh (date de mise à jour)
      */
     private static final String BDD_TABLE_REFRESH = "refresh";
     /**

@@ -396,7 +396,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     private void finTelechargement() {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("CommentairesActivity", "finTelechargement() " + dlInProgress);
+            Log.i("CommentairesActivity", "finTelechargement() : " + dlInProgress);
         }
         // J'enregistre l'état
         dlInProgress--;
