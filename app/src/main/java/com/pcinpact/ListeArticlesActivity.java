@@ -523,6 +523,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
         // Téléchargement du nombre de commentaires et des 10 premiers commentaires
         if (uneURL.startsWith(Constantes.NEXT_URL_COMMENTAIRES)) {
+            int idArticle = 0;
             for (Item unItem : desItems) {
                 // Nombre total de commentaires d'un article (entête Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL)
                 if (unItem instanceof ArticleItem) {
@@ -531,7 +532,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Commentaires de l'article
                 else {
                     monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
+                    idArticle = ((CommentaireItem) unItem).getIdArticle();
                 }
+            }
+            // Enregistrer la date de téléchargement
+            if (idArticle != 0) {
+                long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
             }
 
             // gestion du téléchargement GUI
