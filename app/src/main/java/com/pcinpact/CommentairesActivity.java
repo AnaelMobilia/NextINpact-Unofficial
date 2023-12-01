@@ -445,7 +445,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     @Override
     public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
         // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
-        if (desItems.size() < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
+        if ((desItems.size() - 1) < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
             // Je note qu'il n'y a plus de commentaires
             isFinCommentaires = true;
 
@@ -463,6 +463,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         for (Item unItem : desItems) {
             if (unItem instanceof CommentaireItem) {
                 monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
+            } else {
+                // Mettre à jour le nombre total de commentaires
+                monDAO.updateNbCommentairesArticle(idArticle, ((ArticleItem) unItem).getNbCommentaires());
             }
         }
 
