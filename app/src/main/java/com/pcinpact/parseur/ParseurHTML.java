@@ -287,7 +287,7 @@ public class ParseurHTML {
                     lienImageFancy.remove();
                 }
 
-                // data-srcset (Jetpack i*.wp.com)
+                // data-srcset (Jetpack i*.wp.com) AVEC srcset
                 /*
                  * <img width="1024" height="535" style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png" alt="Trois missions Apollo : 11, 13 et 17 " class="wp-image-117815" srcset="https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png 1024w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-300x157.png 300w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-768x402.png 768w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704.png 1492w" sizes="(max-width: 1024px) 100vw, 1024px" />
                  */
@@ -305,8 +305,18 @@ public class ParseurHTML {
                             Log.d("ParseurHTML", "getListeArticles() - Regex img : " + m.group(1) + " (srcset : " + srcset + ")");
                         }
                     }
-                    uneImage.removeAttr("srcset");
-                    uneImage.removeAttr("data-srcset");
+                    // Ne pas rentrer dans le nettoyage suivant
+                    uneImage.removeAttr("data-src");
+                }
+
+                // data-srcset (Jetpack i*.wp.com) SANS srcset ("slideshow-container")
+                /*
+                <img style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png" width="400px" height="300px" />
+                 */
+                lesImages = lArticle.select("img[data-src]");
+                // Pour chaque image
+                for (Element uneImage : lesImages) {
+                    uneImage.attr("src", uneImage.attr("data-src"));
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
@@ -316,8 +326,11 @@ public class ParseurHTML {
                     element.removeAttr("rel");
                     element.removeAttr("class");
                     element.removeAttr("style");
-                    element.removeAttr("data-imageid");
                     element.removeAttr("alt");
+                    element.removeAttr("data-sizes");
+                    element.removeAttr("srcset");
+                    element.removeAttr("data-srcset");
+                    element.removeAttr("data-src");
                 }
 
                 // Elimination des htmlentities (beaucoup de &nbsp;)
