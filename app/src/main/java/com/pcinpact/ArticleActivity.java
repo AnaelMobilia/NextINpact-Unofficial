@@ -70,7 +70,7 @@ public class ArticleActivity extends AppCompatActivity {
         // Partie graphique
         setContentView(R.layout.activity_article);
 
-        // PK de l'article concerné
+        // ID de l'article concerné
         try {
             articleId = getIntent().getExtras().getInt("ARTICLE_ID");
         } catch (NullPointerException e) {
