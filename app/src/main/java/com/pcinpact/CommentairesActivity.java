@@ -67,6 +67,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private int indiceDernierCommentaireLu;
     /**
+     * ID du dernier commentaire connu pour l'article
+     */
+    private int idDernierCommentaireArticle;
+    /**
      * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
@@ -169,9 +173,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Je charge mes commentaires
         mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(idArticle));
 
-        // Je récupère le site concerné
+        // Je récupère l'ID du dernier commentaire connu pour cet article
         ArticleItem monArticle = monDAO.chargerArticle(idArticle);
-        idArticle = monArticle.getId();
+        idDernierCommentaireArticle = monArticle.getParseurLastCommentId();
 
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
@@ -184,7 +188,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
         if (reouverture) {
             // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            indiceDernierCommentaireLu = monDAO.getIndiceDernierCommentaireLu(idArticle) - 1;
+            indiceDernierCommentaireLu = monArticle.getIndiceDernierCommLu() - 1;
             monListView.setSelection(indiceDernierCommentaireLu);
         }
 
@@ -401,6 +405,13 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         if (dlInProgress == 0 || isChargementTotal) {
             // Chargement des commentaires triés
             mesCommentaires = monDAO.chargerCommentairesTriParID(idArticle);
+        }
+
+        // Mise à jour de l'ID du dernier commentaire connu de l'article si nécessaire
+        int idDernierCommentaire = mesCommentaires.get(mesCommentaires.size() - 1).getId();
+        if (idDernierCommentaire > idDernierCommentaireArticle) {
+            monDAO.setIdDernierCommentaireParseur(idArticle, idDernierCommentaire);
+            idDernierCommentaireArticle = idDernierCommentaire;
         }
 
         // Si plus de téléchargement en cours

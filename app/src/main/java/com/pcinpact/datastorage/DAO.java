@@ -314,41 +314,31 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Récupération de l'indice du dernier commentaire lu (position dans la listview)
+     * MàJ de l'ID du dernier commentaire connu pour l'article
      *
-     * @param idArticle ID de l'article
-     * @return int Indice du dernier commentaire lu
+     * @param idArticle        ID de l'article
+     * @param idDernierCommentaireParseur ID du dernier commentaire connu pour l'article
      */
-    public int getIndiceDernierCommentaireLu(final int idArticle) {
-        // Les colonnes à récupérer
-        String[] mesColonnes = new String[]{ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU};
+    public void setIdDernierCommentaireParseur(final int idArticle, final int idDernierCommentaireParseur) {
+        // Les datas à MàJ
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR, idDernierCommentaireParseur);
 
-        // Requête sur la BDD
-        Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, mesColonnes, ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)}, null, null, null);
-
-        int retour = 0;
-
-        // Je vais au premier (et unique) résultat
-        if (monCursor.moveToNext()) {
-            retour = monCursor.getInt(0);
+        try {
+            maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)});
+        } catch (SQLiteException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("DAO", "setIdDernierCommentaireParseur() - erreur SQL", e);
+            }
         }
-        // Fermeture du curseur
-        monCursor.close();
-
-        // Valeur par défaut...
-        if (retour < 1) {
-            retour = 0;
-        }
-
-        return retour;
     }
 
-
     /**
-     * Récupération de l'ID du dernier commentaire en BDD
+     * Récupération de l'ID du dernier commentaire téléchargé (en BDD)
      *
      * @param idArticle ID de l'article
-     * @return int ID du dernier commentaire en BDD
+     * @return int ID du dernier commentaire téléchargé (en BDD)
      */
     public int getMaxIdCommentaireTelecharge(final int idArticle) {
         // Les colonnes à récupérer
