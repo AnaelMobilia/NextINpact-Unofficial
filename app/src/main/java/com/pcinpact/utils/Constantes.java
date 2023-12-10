@@ -58,14 +58,15 @@ public class Constantes {
     /**
      * URL de téléchargement Next.
      */
-    public static final String NEXT_BASE_URL = "https://next.ink/wp-json/";
+    public static final String NEXT_URL = "https://next.ink/";
+    public static final String NEXT_API_URL = NEXT_URL + "/wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
     public static final int NB_ARTICLES_PAR_PAGE = 100;
     // _embed permet d'avoir les données associées directement dans la réponse (_links doit être présent), _fields permet de filtrer sur les champs que l'on souhaite récupérer.
-    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_BASE_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,_links,_embedded,title.rendered,type,acf.subtitle,link,content.rendered&after=";
-    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_BASE_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,_links,_embedded,title.rendered,type,link,content.rendered&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_API_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,_links,_embedded,title.rendered,type,acf.subtitle,link,content.rendered&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_API_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,_links,_embedded,title.rendered,type,link,content.rendered&after=";
     /**
      * Type de données Articles chez Next
      */
@@ -76,7 +77,7 @@ public class Constantes {
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
     // On veut avoir les commentaires par ordre chronologique (donc croissant)
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_BASE_URL + "wp/v2/comments?orderby=date_gmt&order=asc&_fields=id,author_name,content,parent,date&post=";
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_API_URL + "wp/v2/comments?orderby=date_gmt&order=asc&_fields=id,author_name,content,parent,date&post=";
     public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
     public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
