@@ -1,0 +1,12 @@
+v2.7.2
+- Evolutions suite à la migration vers next.ink :
+  - [New] Récupération des contenus abonnés
+  - [Update] Téléchargement du nombre de commentaires plus rapide
+  - [Update] Optimisation des quantités de données (articles, images)
+  - [Fix] Connexion abonné suite retrait API /auth/
+
+Fonctionnalités en cours de traitement par l'équipe de Next :
+- Gestion du contenu abonné via l'API
+- Auteur des commentaires
+- Smileys "ancienne version"
+=> Elles seront intégrées dans l'application dès qu'elles seront disponibles.
