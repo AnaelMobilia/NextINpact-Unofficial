@@ -59,7 +59,7 @@ public class Constantes {
      * URL de téléchargement Next.
      */
     public static final String NEXT_URL = "https://next.ink/";
-    public static final String NEXT_API_URL = NEXT_URL + "/wp-json/";
+    public static final String NEXT_API_URL = NEXT_URL + "wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
@@ -111,11 +111,23 @@ public class Constantes {
     /**
      * Type : liste des articles.
      */
-    public static final int HTML_LISTE_ARTICLES = 1;
+    public static final int DOWNLOAD_HTML_LISTE_ARTICLES = 1;
+    /**
+     * Type : contenu des articles
+     */
+    public static final int DOWNLOAD_HTML_CONTENU_ARTICLES = 2;
+    /**
+     * Type : liste et contenu des articles du brief
+     */
+    public static final int DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF = 3;
     /**
      * Type : commentaires.
      */
-    public static final int HTML_COMMENTAIRES = 2;
+    public static final int DOWNLOAD_HTML_COMMENTAIRES = 4;
+    /**
+     * Type : technique (pour forcer la GUI)
+     */
+    public static final int DOWNLOAD_TECHNICAL = 0;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.

@@ -80,7 +80,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
-     * [ 0, HTML_LISTE_ARTICLES, HTML_COMMENTAIRES ]
+     * [ TECHNICAL, HTML_LISTE_ARTICLES, HTML_CONTENU_ARTICLES, HTML_LISTE_ET_ARTICLES_BRIEF, HTML_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -150,7 +150,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         headerTextView = findViewById(R.id.header_text);
 
         // Initialisation de l'array de supervision des téléchargements
-        dlInProgress = new int[3];
+        dlInProgress = new int[5];
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -217,10 +217,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Debug - Effacement du cache
             else if (key.equals(getResources().getString(R.string.idOptionDebugEffacerCache))) {
                 // Je vide ma liste d'articles...
-                nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                nouveauChargementGUI(Constantes.DOWNLOAD_TECHNICAL);
                 mesArticles.clear();
                 // Lancement du refresh de l'affichage
-                finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+                finChargementGUI(Constantes.DOWNLOAD_TECHNICAL);
             }
             // Changement de thème
             else if (key.equals(getResources().getString(R.string.idOptionThemeSombre))) {
@@ -445,7 +445,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void prepareTelechargementListeArticles() {
         // GUI : activité en cours...
-        nouveauChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        nouveauChargementGUI(Constantes.DOWNLOAD_TECHNICAL);
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -478,17 +478,17 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Télécharger la liste des articles et leur contenu (y compris le brief)
      */
-    private void telechargeListeArticles() {
+    private void telechargerLesContenus() {
         AsyncHTMLDownloader monAHD;
         // Les articles
-        monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
         // Lancement du téléchargement
-        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
+        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
 
         // Le brief
-        monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
         // Lancement du1 téléchargement
-        launchAHD(monAHD, Constantes.HTML_LISTE_ARTICLES);
+        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF);
     }
 
     /**
@@ -542,10 +542,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
 
             // gestion du téléchargement GUI
-            finChargementGUI(Constantes.HTML_COMMENTAIRES);
+            finChargementGUI(Constantes.DOWNLOAD_HTML_COMMENTAIRES);
         }
-        // Téléchargement d'articles ou du brief
-        else {
+        // Téléchargement de la liste d'articles ou du brief
+        else if (uneURL.startsWith(Constantes.NEXT_API_URL)) {
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                 // Récupérer les informations sur les commentaires en BDD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
@@ -555,6 +555,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(unArticle);
 
+                // TODO : https://github.com/NextINpact/Next/issues/82
+                // Pour la liste d'articles, lancer le téléchargement du contenu de chaque article (gestion du statut Abonné)
+                if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+                    // Lancer le téléchargement du contenu de l'article
+                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, Constantes.NEXT_URL + unArticle.getId(), unArticle.getId(), token);
+                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                }
+
                 // Télécharger le nombre de commentaires de chaque article SAUF SI :
                 //   - L'API indique qu'il n'y a pas de commentaires (-1)
                 //   - On a déjà téléchargé l'ID du dernier commentaire indiqué par l'API
@@ -563,9 +571,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 int idDernierCommentaireTelecharge = monDAO.getMaxIdCommentaireTelecharge(unArticle.getId());
                 int idDernierCommentaireApiEnBdd = articleBdd.getParseurLastCommentId();
                 if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireTelecharge && idDernierCommentaireApi != idDernierCommentaireApiEnBdd) {
-                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
+                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
                     // Lancement du téléchargement
-                    launchAHD(monAHD, Constantes.HTML_COMMENTAIRES);
+                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_COMMENTAIRES);
                 } else {
                     // DEBUG
                     if (Constantes.DEBUG) {
@@ -575,7 +583,23 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
 
             // gestion du téléchargement GUI
-            finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+            if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
+            } else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF);
+            }
+        } // Contenu d'un article
+        else {
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Charger l'article de la BDD
+                ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
+                articleBdd.setContenu(unArticle.getContenu());
+                // Enregistrer en BDD l'article
+                monDAO.enregistrerArticle(articleBdd);
+
+                // gestion du téléchargement GUI
+                finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+            }
         }
     }
 
@@ -623,9 +647,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      * Gère les animations de téléchargement.
      */
     private void nouveauChargementGUI(int typeDL) {
-        // Si c'est le premier => activation des gri-gri GUI
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_COMMENTAIRES] == 0) {
+        int total = 0;
+        for (int value : dlInProgress) {
+            total += value;
+        }
+        // Si c'est le premier => activation des gri-gri GUI
+        if (total == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "nouveauChargementGUI() - Lancement animation");
@@ -656,8 +684,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Je note la fin du téléchargement
         dlInProgress[typeDL]--;
 
-        // Si la liste d'articles est chargée
-        if (typeDL == Constantes.HTML_LISTE_ARTICLES && dlInProgress[Constantes.HTML_LISTE_ARTICLES] == 0) {
+        // Si toutes les lites d'articles sont chargées
+        if ((typeDL == Constantes.DOWNLOAD_HTML_LISTE_ARTICLES || typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF) && (dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ARTICLES] + dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF]) == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");
@@ -673,15 +701,19 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             monItemsAdapter.notifyDataSetChanged();
         }
 
-        // Si toutes les données sont téléchargées...
         // TODO API 24 :: Arrays.stream(dlInProgress).sum() == 0;
-        if (dlInProgress[Constantes.HTML_LISTE_ARTICLES] + dlInProgress[Constantes.HTML_COMMENTAIRES] == 0) {
+        int total = 0;
+        for (int value : dlInProgress) {
+            total += value;
+        }
+        // Si toutes les données sont téléchargées...
+        if (total == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Arrêt animation");
             }
 
-            // Je met à jour les données (mise à jour # commentaires)
+            // Je met à jour les données
             monItemsAdapter.updateListeItems(prepareAffichage());
             // Je notifie le changement pour un rafraichissement du contenu
             monItemsAdapter.notifyDataSetChanged();
@@ -729,9 +761,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         /*
          * Téléchargement des articles (brief + standard)
          */
-        telechargeListeArticles();
+        telechargerLesContenus();
 
         // GUI : fin de l'activité en cours...
-        finChargementGUI(Constantes.HTML_LISTE_ARTICLES);
+        finChargementGUI(Constantes.DOWNLOAD_TECHNICAL);
     }
 }

@@ -67,17 +67,12 @@ public class Downloader {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
             Request request;
             // Pas de token
-            //if (unToken == null || "".equals(unToken)) {
+            if (unToken == null || "".equals(unToken)) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
-            //} else {
+            } else {
                 // TODO - https://github.com/NextINpact/Next/issues/100
-                //request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", unToken).build();
-
-                //byte[] data = "username:password".getBytes(StandardCharsets.UTF_8);
-                //String base64 = Base64.encodeToString(data, Base64.NO_WRAP);
-
-                //request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Authorization", "Basic " + base64).build();
-            //}
+                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", unToken).build();
+            }
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
