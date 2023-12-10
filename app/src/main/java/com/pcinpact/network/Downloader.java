@@ -19,16 +19,15 @@
 package com.pcinpact.network;
 
 import android.net.TrafficStats;
-import android.util.Base64;
 import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
@@ -120,21 +119,23 @@ public class Downloader {
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
 
-            // Objet JSON pour la connexion (protection des quotes)
-            JSONObject monJSON = new JSONObject();
-            try {
-                monJSON.put(Constantes.AUTHENTIFICATION_USERNAME, username);
-                monJSON.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
-            } catch (JSONException e) {
-                if (Constantes.DEBUG) {
-                    Log.e("Downloader", "connexionAbonne() - JSONException", e);
-                }
-            }
+            // Simulation de connexion via la page web (l'endpoint API /auth/v1/authenticate a été retiré)
+            // Afficher le formulaire pour récupérer le token CSRF "security"
+            String[] datas = download(Constantes.NEXT_URL_AUTH_FORM, null);
+
+            Elements token = Jsoup.parse(datas[CONTENT_BODY]).select(Constantes.NEXT_AUTH_FORM_TOKEN);
+            String formToken = token.val();
+
+            // Envoyer le contenu du formulaire avec le token CSRF
+            String payload = Constantes.AUTHENTIFICATION_ACTION;
+            payload += Constantes.AUTHENTIFICATION_USERNAME + URLEncoder.encode(username, Constantes.X_NEXT_ENCODAGE);
+            payload += Constantes.AUTHENTIFICATION_PASSWORD + URLEncoder.encode(password, Constantes.X_NEXT_ENCODAGE);
+            payload += Constantes.AUTHENTIFICATION_TOKEN + URLEncoder.encode(formToken, Constantes.X_NEXT_ENCODAGE);
 
             // Requête d'authentification
-            RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_NEXT_ENCODAGE));
+            RequestBody body = RequestBody.create(payload, MediaType.get("application/x-www-form-urlencoded; charset=" + Constantes.X_NEXT_ENCODAGE));
 
-            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
+            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH_POST);
             Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
 
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage

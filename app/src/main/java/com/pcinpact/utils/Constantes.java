@@ -83,7 +83,9 @@ public class Constantes {
     /**
      * URL d'authentification.
      */
-    public static final String NEXT_URL_AUTH = NEXT_BASE_URL + "auth/v1/authenticate";
+    public static final String NEXT_URL_AUTH_FORM = NEXT_URL + "login/";
+    public static final String NEXT_AUTH_FORM_TOKEN = "#security";
+    public static final String NEXT_URL_AUTH_POST = NEXT_URL + "wp-admin/admin-ajax.php";
     /**
      * URL des smileys
      */
@@ -190,14 +192,16 @@ public class Constantes {
     /*
      * PARAMETRES D'AUTHENTIFICATION.
      */
+    public static final String AUTHENTIFICATION_ACTION = "action=ajaxlogin";
+    public static final String AUTHENTIFICATION_TOKEN = "&security=";
     /**
      * Paramètre utilisateur.
      */
-    public static final String AUTHENTIFICATION_USERNAME = "username";
+    public static final String AUTHENTIFICATION_USERNAME = "&username=";
     /**
      * Paramètre mot de passe.
      */
-    public static final String AUTHENTIFICATION_PASSWORD = "password";
+    public static final String AUTHENTIFICATION_PASSWORD = "&password=";
     /**
      * Nom du cookie retourné à l'authentification.
      */
