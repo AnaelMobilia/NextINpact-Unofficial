@@ -84,7 +84,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <!-- Ensemble des règles de couleurs des thèmes NXI -->
+    <!-- Ensemble des règles de couleurs des thèmes Next -->
     <style name="BanniereFond_clair">
         <item name="android:background">#064358</item>
     </style>

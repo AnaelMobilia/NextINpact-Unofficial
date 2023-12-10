@@ -52,7 +52,7 @@ public class Downloader {
      * Téléchargement d'une ressource
      *
      * @param uneURL  URL de la ressource à télécharger
-     * @param unToken Token d'authentification NXI
+     * @param unToken Token d'authentification Next
      * @return tableau ["headers", "body"] avec le contenu brut de chaque
      */
     public static String[] download(final String uneURL, final String unToken) {
@@ -111,8 +111,8 @@ public class Downloader {
     /**
      * Connexion au compte abonné.
      *
-     * @param username nom d'utilisateur NXI
-     * @param password mot de passe NXI
+     * @param username nom d'utilisateur Next
+     * @param password mot de passe Next
      * @return String Token d'identification (vide si pas d'auth)
      */
     public static String connexionAbonne(final String username, final String password) {
