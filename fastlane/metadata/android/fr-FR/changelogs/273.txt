@@ -1,0 +1,8 @@
+v2.7.3
+- [Fix] Traitement d'erreur de l'API Next lors de l'accès aux images de l'article
+
+Fonctionnalités en cours de traitement par l'équipe de Next :
+- Gestion du contenu abonné via l'API
+- Auteur des commentaires
+- Smileys "ancienne version"
+=> Seront intégrées dès que leur implémentation aura été effectuée.
