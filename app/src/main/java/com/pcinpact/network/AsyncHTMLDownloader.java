@@ -24,6 +24,7 @@ import android.util.Log;
 import com.pcinpact.items.Item;
 import com.pcinpact.parseur.ParseurHTML;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -89,6 +90,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     protected ArrayList<? extends Item> doInBackground(String... params) {
         ArrayList<? extends Item> monRetour = new ArrayList<>();
 
+        // Timestamp du téléchargement
+        long currentTs = MyDateUtils.timeStampNow();
+
         // Récupération du contenu HTML
         String[] datas = Downloader.download(URL, isAuthentifie, token);
 
@@ -96,11 +100,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             switch (typeHTML) {
                 case Constantes.DOWNLOAD_HTML_LISTE_ARTICLES:
                 case Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF:
-                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]);
+                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY], currentTs);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
-                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, isAuthentifie);
+                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, isAuthentifie, currentTs);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_COMMENTAIRES:

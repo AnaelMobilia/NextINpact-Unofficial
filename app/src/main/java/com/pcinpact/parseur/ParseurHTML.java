@@ -52,9 +52,10 @@ public class ParseurHTML {
      * @param unContenu contenu HTML
      * @param idArticle ID de l'article
      * @param isAuthentifie Est-on authentifié sur Next ?
+     * @param currentTs Timestamp du téléchargement
      * @return Objet avec l'ID et le contenu HTML de l'article
      */
-    public static ArrayList<ArticleItem> getContenuArticle(final String unContenu, final int idArticle, final boolean isAuthentifie) {
+    public static ArrayList<ArticleItem> getContenuArticle(final String unContenu, final int idArticle, final boolean isAuthentifie, final long currentTs) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -64,6 +65,9 @@ public class ParseurHTML {
 
             // Le contenu abonné a-t-il été récupéré ?
             monArticleItem.setDlContenuAbonne(isAuthentifie);
+
+            // Timestamp de téléchargement
+            monArticleItem.setTimestampDl(currentTs);
 
             // Contenu de l'article
             String contenu = "<article>";
@@ -276,9 +280,10 @@ public class ParseurHTML {
      * Parse la liste des articles + fourni le contenu pour le brief
      *
      * @param unContenu contenu JSON brut
+     * @param currentTs Timestamp du téléchargement
      * @return liste d'articleItem
      */
-    public static ArrayList<ArticleItem> getListeArticles(final String unContenu) {
+    public static ArrayList<ArticleItem> getListeArticles(final String unContenu, final long currentTs) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
@@ -291,12 +296,18 @@ public class ParseurHTML {
                 JSONObject unArticle = lesArticles.getJSONObject(i);
                 monArticleItem = new ArticleItem();
 
+                // Timestamp de téléchargement
+                monArticleItem.setTimestampDl(currentTs);
+
                 // ID de l'article
                 monArticleItem.setId(unArticle.getInt("id"));
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("date");
                 monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(laDate));
+                // Date de modication de l'article
+                laDate = unArticle.getString("modified");
+                monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(laDate));
 
                 // URL de l'image d'illustration
                 try {

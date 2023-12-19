@@ -79,6 +79,14 @@ public class ArticleItem implements Item {
      * Dernier ID de commentaire lors du parsage
      */
     private int parseurLastCommentId = 0;
+    /**
+     * Timestamp de téléchargement
+     */
+    private long timestampDl;
+    /**
+     * Timestamp de modification (non persistent)
+     */
+    private long timestampModification;
 
     @Override
     public int getType() {
@@ -299,5 +307,33 @@ public class ArticleItem implements Item {
      */
     public void setParseurLastCommentId(int parseurLastCommentId) {
         this.parseurLastCommentId = parseurLastCommentId;
+    }
+
+    /**
+     * @return Timestamp du téléchargement de l'article
+     */
+    public long getTimestampDl() {
+        return timestampDl;
+    }
+
+    /**
+     * @param timestampDl Timestamp du téléchargement de l'article
+     */
+    public void setTimestampDl(long timestampDl) {
+        this.timestampDl = timestampDl;
+    }
+
+    /**
+     * @return Timestamp de modification de l'article (non persistent)
+     */
+    public long getTimestampModification() {
+        return timestampModification;
+    }
+
+    /**
+     * @param timestampModification Timestamp de modification de l'article (non persistent)
+     */
+    public void setTimestampModification(long timestampModification) {
+        this.timestampModification = timestampModification;
     }
 }

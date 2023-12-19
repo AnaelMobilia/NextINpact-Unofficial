@@ -112,4 +112,18 @@ public class MyDateUtils {
         }
         return monRetour;
     }
+
+    /**
+     * Timestamp actuel
+     *
+     * @return timestamp
+     */
+    public static long timeStampNow() {
+        long monRetour;
+
+        // Date actuelle
+        Calendar monCalendar = Calendar.getInstance();
+        monRetour = TimeUnit.MILLISECONDS.toSeconds(monCalendar.getTimeInMillis());
+        return monRetour;
+    }
 }

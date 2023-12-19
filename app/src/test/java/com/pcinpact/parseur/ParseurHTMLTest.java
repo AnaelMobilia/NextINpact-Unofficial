@@ -20,6 +20,7 @@ package com.pcinpact.parseur;
 
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
+import com.pcinpact.utils.MyDateUtils;
 
 import org.junit.Test;
 
@@ -50,7 +51,7 @@ public class ParseurHTMLTest {
          * Traitement du fichier...
          */
         ArrayList<ArticleItem> articlesCalcules;
-        articlesCalcules = ParseurHTML.getListeArticles(contenuIS);
+        articlesCalcules = ParseurHTML.getListeArticles(contenuIS, MyDateUtils.timeStampNow());
 
         /*
          * Vérification...
