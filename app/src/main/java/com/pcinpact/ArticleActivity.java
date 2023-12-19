@@ -92,7 +92,10 @@ public class ArticleActivity extends AppCompatActivity {
         monViewPager2.setAdapter(pagerAdapter);
 
         // Définition de l'article demandé !
-        monViewPager2.setCurrentItem(pagerAdapter.getPosition(articleId));
+        // 2nd paramètre false pour désactiver la "transition" qui crée un ensemble de Fragment pour rien
+        // -> https://issuetracker.google.com/issues/169172453
+        // -> https://stackoverflow.com/questions/64010576/viewpager2-doesnt-show-correct-fragment-on-slow-devices-or-when-debugging
+        monViewPager2.setCurrentItem(pagerAdapter.getPosition(articleId), false);
 
         // Bouton des commentaires
         genererBadgeCommentaires();
