@@ -337,6 +337,8 @@ public class ParseurHTML {
                         }
                     } catch (JSONException e) {
                         Log.e("ParseurHTML", "getListeArticles() - Erreur end_restriction_date", e);
+                        // Forcer le statut abonné pour lé télécharger dans tous les cas
+                        monArticleItem.setAbonne(true);
                     }
 
                 }
