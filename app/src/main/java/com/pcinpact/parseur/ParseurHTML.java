@@ -666,7 +666,6 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
 
                 // TODO - https://github.com/NextINpact/Next/issues/160
-                /*
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
                 // regexp : .*tag":"(.*)".*,"image":"(.*)".* ==> contenuHtml = contenuHtml.replace("$1", "<img src=\\"" +
@@ -817,7 +816,6 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace(":plantage:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "plantage.gif\" />");
                 contenuHtml = contenuHtml.replace(":auto:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "auto.gif\" />");
                 contenuHtml = contenuHtml.replace(":pciwin:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "champion.gif\" />");
-                */
 
                 monCommentaireItem.setCommentaire(contenuHtml);
                 // Et je le stocke
