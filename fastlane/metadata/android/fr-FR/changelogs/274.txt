@@ -1,0 +1,6 @@
+v2.7.4
+- [New] Gestion des modifications des articles post-publication
+- [Update] Amélioration de la vitesse de synchronisation
+
+Fonctionnalités en cours de traitement par l'équipe de Next :
+- Auteur des commentaires

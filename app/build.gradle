@@ -10,8 +10,8 @@ android {
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 34
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
-        versionCode 273
-        versionName "2.7.3"
+        versionCode 274
+        versionName "2.7.4"
     }
 
     buildTypes {
