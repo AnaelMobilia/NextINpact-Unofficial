@@ -552,12 +552,17 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
                 unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
                 unArticle.setLu(articleBdd.isLu());
+                // Conserver le contenu complet d'un article Abonné déjà téléchargé
+                if (unArticle.isAbonne() && articleBdd.isDlContenuAbonne()) {
+                    unArticle.setContenu(articleBdd.getContenu());
+                    unArticle.setDlContenuAbonne(articleBdd.isDlContenuAbonne());
+                }
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(unArticle);
 
-                // TODO : https://github.com/NextINpact/Next/issues/82
-                // Pour la liste d'articles, lancer le téléchargement du contenu de chaque article (gestion du statut Abonné)
-                if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+                // TODO : https://github.com/NextINpact/Next/issues/100
+                // Pour la liste d'articles, lancer le téléchargement du contenu des articles "Abonné"
+                if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && unArticle.isAbonne() && !unArticle.isDlContenuAbonne()) {
                     // Lancer le téléchargement du contenu de l'article
                     AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, Constantes.NEXT_URL + unArticle.getId(), unArticle.getId(), token);
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
@@ -594,6 +599,10 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Charger l'article de la BDD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
                 articleBdd.setContenu(unArticle.getContenu());
+                // Noter que le contenu Abonné a été téléchargé
+                if(articleBdd.isAbonne() && unArticle.isDlContenuAbonne()) {
+                    articleBdd.setDlContenuAbonne(unArticle.isDlContenuAbonne());
+                }
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(articleBdd);
 

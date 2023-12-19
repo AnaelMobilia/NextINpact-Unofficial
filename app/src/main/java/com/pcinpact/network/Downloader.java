@@ -50,11 +50,12 @@ public class Downloader {
     /**
      * Téléchargement d'une ressource
      *
-     * @param uneURL  URL de la ressource à télécharger
-     * @param unToken Token d'authentification Next
+     * @param uneURL        URL de la ressource à télécharger
+     * @param isAuthentifie Est-on authentifié sur Next ?
+     * @param unToken       Token d'authentification Next
      * @return tableau ["headers", "body"] avec le contenu brut de chaque
      */
-    public static String[] download(final String uneURL, final String unToken) {
+    public static String[] download(final String uneURL, final boolean isAuthentifie, final String unToken) {
         // Retour
         String[] datas = new String[2];
         datas[CONTENT_HEADERS] = "";
@@ -67,7 +68,7 @@ public class Downloader {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
             Request request;
             // Pas de token
-            if (unToken == null || "".equals(unToken)) {
+            if (!isAuthentifie) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
             } else {
                 // TODO - https://github.com/NextINpact/Next/issues/100
@@ -116,7 +117,7 @@ public class Downloader {
 
             // Simulation de connexion via la page web (l'endpoint API /auth/v1/authenticate a été retiré)
             // Afficher le formulaire pour récupérer le token CSRF "security"
-            String[] datas = download(Constantes.NEXT_URL_AUTH_FORM, null);
+            String[] datas = download(Constantes.NEXT_URL_AUTH_FORM, false, null);
 
             Elements token = Jsoup.parse(datas[CONTENT_BODY]).select(Constantes.NEXT_AUTH_FORM_TOKEN);
             String formToken = token.val();

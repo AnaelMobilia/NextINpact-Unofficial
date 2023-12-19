@@ -62,11 +62,11 @@ public class ArticleItem implements Item {
     /**
      * L'article est-il déjà lu ?
      */
-    private boolean isLu;
+    private boolean isLu = false;
     /**
      * Le contenu abonné a-t-il été téléchargé ?
      */
-    private boolean isDlContenuAbonne;
+    private boolean isDlContenuAbonne = false;
     /**
      * Indice du dernier commentaire lu
      */

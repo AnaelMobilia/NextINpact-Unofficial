@@ -96,7 +96,7 @@ public class ArticleFragment extends Fragment {
             monCAI.setContenu(getString(R.string.articleVideErreurHTML));
         } else {
             if (Constantes.DEBUG) {
-                Log.w("ArticleFragment", "onViewCreated() - Article non vide");
+                Log.i("ArticleFragment", "onViewCreated() - Article non vide");
             }
             monCAI.setContenu(monContenu);
         }

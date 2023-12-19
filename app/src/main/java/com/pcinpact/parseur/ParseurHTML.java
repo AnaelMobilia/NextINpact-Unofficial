@@ -51,15 +51,19 @@ public class ParseurHTML {
      *
      * @param unContenu contenu HTML
      * @param idArticle ID de l'article
+     * @param isAuthentifie Est-on authentifié sur Next ?
      * @return Objet avec l'ID et le contenu HTML de l'article
      */
-    public static ArrayList<ArticleItem> getContenuArticle(final String unContenu, final int idArticle) {
+    public static ArrayList<ArticleItem> getContenuArticle(final String unContenu, final int idArticle, final boolean isAuthentifie) {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
             Document article = Jsoup.parse(unContenu);
             ArticleItem monArticleItem = new ArticleItem();
             monArticleItem.setId(idArticle);
+
+            // Le contenu abonné a-t-il été récupéré ?
+            monArticleItem.setDlContenuAbonne(isAuthentifie);
 
             // Contenu de l'article
             String contenu = "<article>";
@@ -306,7 +310,7 @@ public class ParseurHTML {
                         // Si toujours pas d'image, fallback sur le logo du site
                         monArticleItem.setUrlIllustration("android.resource://com.pcinpact/drawable/" + R.drawable.logo_next_barre);
                         // DEBUG
-                        if(Constantes.DEBUG) {
+                        if (Constantes.DEBUG) {
                             Log.e("ParseurHTML", "getListeArticles() - Crash image illustration", e1);
                         }
                     }
@@ -322,16 +326,17 @@ public class ParseurHTML {
                         // Sous titre
                         monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
 
-                        // TODO - https://github.com/NextINpact/Next/issues/82
-                        /*
+                    } catch (JSONException e) {
+                        Log.e("ParseurHTML", "getListeArticles() - Erreur subtitle", e);
+                    }
+                    try {
                         // Statut abonné
                         String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
                         if (!"".equals(dateFinBlocage)) {
                             monArticleItem.setAbonne(true);
                         }
-                         */
                     } catch (JSONException e) {
-                        Log.e("ParseurHTML", "getListeArticles() - Pas de sous-titre ou statut abonné", e);
+                        Log.e("ParseurHTML", "getListeArticles() - Erreur end_restriction_date", e);
                     }
 
                 }

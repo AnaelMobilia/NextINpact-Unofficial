@@ -55,6 +55,10 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * Token du compte Next
      */
     private final String token;
+    /**
+     * Est-on authentifié sur Next ?
+     */
+    private final boolean isAuthentifie;
 
     /**
      * Téléchargement d'une ressource
@@ -73,6 +77,12 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         typeHTML = unType;
         idArticle = unIdArticle;
         token = unToken;
+        // Est-on authentifié sur Next ?
+        if (unToken == null || "".equals(unToken)) {
+            isAuthentifie = false;
+        } else {
+            isAuthentifie = true;
+        }
     }
 
     @Override
@@ -80,7 +90,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         ArrayList<? extends Item> monRetour = new ArrayList<>();
 
         // Récupération du contenu HTML
-        String[] datas = Downloader.download(URL, token);
+        String[] datas = Downloader.download(URL, isAuthentifie, token);
 
         if (!"".equals(datas[Downloader.CONTENT_BODY])) {
             switch (typeHTML) {
@@ -90,7 +100,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                     break;
 
                 case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
-                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle);
+                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, isAuthentifie);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_COMMENTAIRES:

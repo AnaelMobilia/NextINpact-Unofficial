@@ -56,7 +56,7 @@ public class ArticlePagerAdapter extends FragmentStateAdapter {
 
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.d("ArticlePagerAdapter", "getItem() - " + position + " => #" + idArticle);
+            Log.d("ArticlePagerAdapter", "createFragment() - " + position + " => #" + idArticle);
         }
 
         // Création du fragment
