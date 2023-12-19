@@ -58,7 +58,7 @@ public class ParseurHTMLTest {
         for (int i = 0; i < Constantes.NB_ARTICLES_PAR_PAGE; i++) {
             /*
             assertEquals(mesArticles.get(i).getId(), articlesCalcules.get(i).getId());
-            assertEquals(mesArticles.get(i).getTimeStampPublication(), articlesCalcules.get(i).getTimeStampPublication());
+            assertEquals(mesArticles.get(i).getTimestampPublication(), articlesCalcules.get(i).getTimeStampPublication());
             assertEquals(mesArticles.get(i).getUrlIllustration(), articlesCalcules.get(i).getUrlIllustration());
             assertEquals(mesArticles.get(i).getUrl(), articlesCalcules.get(i).getUrl());
             assertEquals(mesArticles.get(i).getTitre(), articlesCalcules.get(i).getTitre());

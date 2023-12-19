@@ -88,7 +88,7 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_IS_LU = "islu";
     /**
-     * Champ articles => Contenu abonnétéléchargé ?
+     * Champ articles => Contenu abonné téléchargé ?
      */
     private static final String ARTICLE_DL_CONTENU_ABONNE = "iscontenuabonnedl";
     /**
@@ -271,7 +271,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_ID, unArticle.getId());
         insertValues.put(ARTICLE_TITRE, unArticle.getTitre());
         insertValues.put(ARTICLE_SOUS_TITRE, unArticle.getSousTitre());
-        insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimeStampPublication());
+        insertValues.put(ARTICLE_TIMESTAMP, unArticle.getTimestampPublication());
         insertValues.put(ARTICLE_ILLUSTRATION_URL, unArticle.getUrlIllustration());
         insertValues.put(ARTICLE_CONTENU, unArticle.getContenu());
         insertValues.put(ARTICLE_NB_COMMS, unArticle.getNbCommentaires());
@@ -316,7 +316,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * MàJ de l'ID du dernier commentaire connu pour l'article
      *
-     * @param idArticle        ID de l'article
+     * @param idArticle                   ID de l'article
      * @param idDernierCommentaireParseur ID du dernier commentaire connu pour l'article
      */
     public void setIdDernierCommentaireParseur(final int idArticle, final int idDernierCommentaireParseur) {
@@ -499,7 +499,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(COMMENTAIRE_ARTICLE_ID, unCommentaire.getIdArticle());
         insertValues.put(COMMENTAIRE_ID, unCommentaire.getId());
         insertValues.put(COMMENTAIRE_AUTEUR, unCommentaire.getAuteur());
-        insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimeStampPublication());
+        insertValues.put(COMMENTAIRE_TIMESTAMP, unCommentaire.getTimestampPublication());
         insertValues.put(COMMENTAIRE_CONTENU, unCommentaire.getCommentaire());
 
         try {
@@ -653,7 +653,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setId(unCursor.getInt(0));
         monArticle.setTitre(unCursor.getString(1));
         monArticle.setSousTitre(unCursor.getString(2));
-        monArticle.setTimeStampPublication(unCursor.getLong(3));
+        monArticle.setTimestampPublication(unCursor.getLong(3));
         monArticle.setUrlIllustration(unCursor.getString(4));
         monArticle.setContenu(unCursor.getString(5));
         monArticle.setNbCommentaires(unCursor.getInt(6));
@@ -679,7 +679,7 @@ public final class DAO extends SQLiteOpenHelper {
         monCommentaire.setId(unCursor.getInt(0));
         monCommentaire.setIdArticle(unCursor.getInt(1));
         monCommentaire.setAuteur(unCursor.getString(2));
-        monCommentaire.setTimeStampPublication(unCursor.getLong(3));
+        monCommentaire.setTimestampPublication(unCursor.getLong(3));
         monCommentaire.setCommentaire(unCursor.getString(4));
 
         return monCommentaire;

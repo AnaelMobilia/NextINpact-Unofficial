@@ -296,7 +296,7 @@ public class ParseurHTML {
 
                 // Date de publication de l'article
                 String laDate = unArticle.getString("date");
-                monArticleItem.setTimeStampPublication(MyDateUtils.convertToTimestamp(laDate));
+                monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(laDate));
 
                 // URL de l'image d'illustration
                 try {
@@ -382,7 +382,7 @@ public class ParseurHTML {
                 // Lien vers l'article
                 contenu += "<br /><br />Article publié sur <a href=\"" + monArticleItem.getURLseo() + "\">" + monArticleItem.getURLseo() + "</a>";
                 // Date de publication
-                laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, monArticleItem.getTimeStampPublication());
+                laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, monArticleItem.getTimestampPublication());
                 contenu += " le " + laDate;
                 contenu += "</footer>";
                 contenu += "</article>";
@@ -618,7 +618,7 @@ public class ParseurHTML {
                 monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("author_name"), true));
 
                 // Date
-                monCommentaireItem.setTimeStampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date")));
+                monCommentaireItem.setTimestampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date")));
 
                 // Contenu
                 String contenuHtml = unCommentaire.getJSONObject("content").getString("rendered");
@@ -632,7 +632,7 @@ public class ParseurHTML {
                 if (unCommentaire.optInt("moderationReasonId") != 0) {
                     DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
-                    contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimeStampPublication()))) + " : " + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
+                    contenuHtml = "<em>Commentaire de " + monCommentaireItem.getAuteur() + " a été modéré " + dfm.format(new Date(TimeUnit.SECONDS.toMillis(monCommentaireItem.getTimestampPublication()))) + " : " + unCommentaire.getJSONObject("moderationReason").getString("content") + "</em>";
                 }
                  */
 

@@ -52,7 +52,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     /**
      * Timsetamp du commentaire
      */
-    private long timeStampPublication;
+    private long timestampPublication;
     /**
      * Numéro à afficher (géré directement par la BDD)
      */
@@ -69,7 +69,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * @return Auteur et date
      */
     public String getAuteurDateCommentaire() {
-        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimeStampPublication()));
+        Date maDate = new Date(TimeUnit.SECONDS.toMillis(this.getTimestampPublication()));
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
@@ -155,16 +155,16 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     }
 
     /**
-     * @return timeStampPublication
+     * @return timestampPublication
      */
-    public long getTimeStampPublication() {
-        return timeStampPublication;
+    public long getTimestampPublication() {
+        return timestampPublication;
     }
 
     /**
-     * @param timeStampPublication timeStampPublication
+     * @param timestampPublication timestampPublication
      */
-    public void setTimeStampPublication(long timeStampPublication) {
-        this.timeStampPublication = timeStampPublication;
+    public void setTimestampPublication(long timestampPublication) {
+        this.timestampPublication = timestampPublication;
     }
 }

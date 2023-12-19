@@ -58,7 +58,7 @@ public class ArticleItem implements Item {
     /**
      * Timestamp de publication de l'article
      */
-    private long timeStampPublication;
+    private long timestampPublication;
     /**
      * L'article est-il déjà lu ?
      */
@@ -91,7 +91,7 @@ public class ArticleItem implements Item {
      * @return Heure & minute de la publication
      */
     public String getHeureMinutePublication() {
-        return MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, this.getTimeStampPublication());
+        return MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_ARTICLE_HEURE, this.getTimestampPublication());
     }
 
     /**
@@ -100,7 +100,7 @@ public class ArticleItem implements Item {
      * @return Date de la publication
      */
     public String getDatePublication() {
-        String laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, this.getTimeStampPublication());
+        String laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, this.getTimestampPublication());
         // Première lettre en majuscule
         return String.valueOf(laDate.charAt(0)).toUpperCase(Constantes.LOCALE) + laDate.substring(1);
     }
@@ -232,17 +232,17 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return timeStampPublication
+     * @return timestampPublication
      */
-    public long getTimeStampPublication() {
-        return timeStampPublication;
+    public long getTimestampPublication() {
+        return timestampPublication;
     }
 
     /**
-     * @param timeStampPublication timeStampPublication
+     * @param timestampPublication timestampPublication
      */
-    public void setTimeStampPublication(long timeStampPublication) {
-        this.timeStampPublication = timeStampPublication;
+    public void setTimestampPublication(long timestampPublication) {
+        this.timestampPublication = timestampPublication;
     }
 
     /**

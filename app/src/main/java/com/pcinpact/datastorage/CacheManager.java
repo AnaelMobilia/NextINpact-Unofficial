@@ -58,7 +58,7 @@ public class CacheManager {
 
         // Nombre de jours d'articles demandés par l'utilisateur
         int nbJours = Constantes.getOptionInt(monContext, R.string.idOptionNbJoursArticles, R.string.defautOptionNbJoursArticles);
-        long timeStampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
+        long timestampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
         // Chargement de tous les articles de la BDD
         ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
@@ -66,7 +66,7 @@ public class CacheManager {
         // Boucle sur les articles
         for (ArticleItem unArticle : mesArticles) {
             // Si il est trop vieux...
-            if (unArticle.getTimeStampPublication() < timeStampMinArticle) {
+            if (unArticle.getTimestampPublication() < timestampMinArticle) {
                 // DEBUG
                 if (Constantes.DEBUG) {
                     Log.w("CacheManager", "nettoyerCache() - suppression de " + unArticle.getTitre());
