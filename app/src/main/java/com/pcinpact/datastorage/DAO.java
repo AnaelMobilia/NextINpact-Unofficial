@@ -221,51 +221,55 @@ public final class DAO extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        switch (oldVersion) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                // Refonte des BDD pour Next
-                // Suppression des tables existantes
-                String reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_ARTICLES + ";";
-                db.execSQL(reqUpdateFrom9);
-                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_COMMENTAIRES + ";";
-                db.execSQL(reqUpdateFrom9);
-                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_REFRESH + ";";
-                db.execSQL(reqUpdateFrom9);
-                reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
-                db.execSQL(reqUpdateFrom9);
-                // Recréation des tables vierges
-                this.onCreate(db);
-                // On vient de recréer la base de données de zéro => ne pas faire les upgrade (déjà effectués dans la création)
-                break;
-            case 10:
-                // Renommage du champ en BDD
-                String reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " RENAME COLUMN dernierCommentaireLu TO " + ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU + ";";
-                db.execSQL(reqUpdateFrom10);
-                // Ajout de l'ID du dernier commentaire retourné par le parseur
-                reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR + " INTEGER;";
-                db.execSQL(reqUpdateFrom10);
-                break;
-            case 11:
-                // Ajout du timestamp de téléchargement
-                String reqUpdateFrom11 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_TIMESTAMP_DL + " INTEGER;";
-                db.execSQL(reqUpdateFrom11);
-                // Définir le timestamp de l'article par défaut
-                reqUpdateFrom11 = "UPDATE " + BDD_TABLE_ARTICLES + " SET " + ARTICLE_TIMESTAMP_DL + " = " + ARTICLE_TIMESTAMP + ";";
-                db.execSQL(reqUpdateFrom11);
-                break;
-            default:
-                // DEBUG
-                if (Constantes.DEBUG) {
-                    Log.e("DAO", "onUpgrade() - cas default !");
-                }
+        // Avec la passage à Next, on recréée totalement la BDD
+        if (oldVersion <= 9) {
+            // Suppression des tables existantes
+            String reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_ARTICLES + ";";
+            db.execSQL(reqUpdateFrom9);
+            reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_COMMENTAIRES + ";";
+            db.execSQL(reqUpdateFrom9);
+            reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_REFRESH + ";";
+            db.execSQL(reqUpdateFrom9);
+            reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
+            db.execSQL(reqUpdateFrom9);
+            // Recréation des tables vierges
+            this.onCreate(db);
+        } else {
+            switch (oldVersion) {
+                case 10:
+                    // #314 - Erreur possible sur le onUpgrade() 9 - 11
+                    try {
+                        // Renommage du champ en BDD
+                        String reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " RENAME COLUMN dernierCommentaireLu TO " + ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU + ";";
+                        db.execSQL(reqUpdateFrom10);
+                        // Ajout de l'ID du dernier commentaire retourné par le parseur
+                        reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR + " INTEGER;";
+                        db.execSQL(reqUpdateFrom10);
+                    } catch (SQLiteException e) {
+                        if (Constantes.DEBUG) {
+                            Log.e("DAO", "onUpgrade() 10", e);
+                        }
+                    }
+                case 11:
+                    // #314 - Erreur possible sur le onUpgrade() 9 - 11
+                    try {
+                        // Ajout du timestamp de téléchargement
+                        String reqUpdateFrom11 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_TIMESTAMP_DL + " INTEGER;";
+                        db.execSQL(reqUpdateFrom11);
+                        // Définir le timestamp de l'article par défaut
+                        reqUpdateFrom11 = "UPDATE " + BDD_TABLE_ARTICLES + " SET " + ARTICLE_TIMESTAMP_DL + " = " + ARTICLE_TIMESTAMP + ";";
+                        db.execSQL(reqUpdateFrom11);
+                    } catch (SQLiteException e) {
+                        if (Constantes.DEBUG) {
+                            Log.e("DAO", "onUpgrade() 11", e);
+                        }
+                    }
+                default:
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("DAO", "onUpgrade() - cas default !");
+                    }
+            }
         }
     }
 
