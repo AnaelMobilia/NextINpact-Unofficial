@@ -408,7 +408,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         }
 
         // Mise à jour de l'ID du dernier commentaire connu de l'article si nécessaire
-        if (mesCommentaires.size() > 0) {
+        if (!mesCommentaires.isEmpty()) {
             int idDernierCommentaire = mesCommentaires.get(mesCommentaires.size() - 1).getId();
             if (idDernierCommentaire > idDernierCommentaireArticle) {
                 monDAO.setIdDernierCommentaireParseur(idArticle, idDernierCommentaire);

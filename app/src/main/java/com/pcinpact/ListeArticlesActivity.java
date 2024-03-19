@@ -757,7 +757,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // Pas d'identifiants
             message = getString(R.string.infoOptionAbonne);
             token = null;
-        } else if ("".equals(unToken)) {
+        } else if (unToken.isEmpty()) {
             // Erreur d'auth
             message = getString(R.string.erreurAuthentification);
             token = null;

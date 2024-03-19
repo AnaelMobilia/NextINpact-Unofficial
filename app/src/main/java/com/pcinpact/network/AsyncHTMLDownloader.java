@@ -79,7 +79,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         idArticle = unIdArticle;
         token = unToken;
         // Est-on authentifié sur Next ?
-        if (unToken == null || "".equals(unToken)) {
+        if (unToken == null || unToken.isEmpty()) {
             isAuthentifie = false;
         } else {
             isAuthentifie = true;

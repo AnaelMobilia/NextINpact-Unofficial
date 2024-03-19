@@ -149,10 +149,6 @@ public class ArticleActivity extends AppCompatActivity {
                 // Bouton des commentaires
                 genererBadgeCommentaires();
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
         });
 
         return true;

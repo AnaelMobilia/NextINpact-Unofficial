@@ -343,7 +343,7 @@ public class ParseurHTML {
                     try {
                         // Statut abonné
                         String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
-                        if (!"".equals(dateFinBlocage)) {
+                        if (!dateFinBlocage.isEmpty()) {
                             monArticleItem.setAbonne(true);
                         }
                     } catch (JSONException e) {
