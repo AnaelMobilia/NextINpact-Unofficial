@@ -665,6 +665,23 @@ public class ParseurHTML {
                 contenuHtml = contenuHtml.replace("<blockquote>", ouvreCitation);
                 contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
 
+                // Gras - ex : **texte**
+                // .*? => .* en mode ungreedy (merci Java :-))
+                contenuHtml = contenuHtml.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+
+                // Italique - ex : *jekyll <jesaispluslenomdel'argument> ;*
+                contenuHtml = contenuHtml.replaceAll("\\*(.*?)\\*", "<i>$1</i>");
+
+                // Barré - ex : ~~texte~~
+                contenuHtml = contenuHtml.replaceAll("~~(.*?)~~", "<s>$1</s>");
+
+                // Lien - ex : [Texte](http://)
+                // 1. Reformatage des données qui arrivent sont forme de lien + markdown
+                // ex : des [droits](<a href="https://next.ink/131132/france-travail-pirate-les-donnees-de-43-millions-de-personnes-potentiellement-derobees/#comment-archor-2127552" rel="ugc">https://next.ink/131132/france-travail-pirate-les-donnees-de-43-millions-de-personnes-potentiellement-derobees/#comment-archor-2127552</a>)
+                contenuHtml = contenuHtml.replaceAll("]\\(<a href=\"(.+)\".*>(\\1)</a>\\)", "]($1)");
+                // 2. Parsage habituel du markdown
+                contenuHtml = contenuHtml.replaceAll("\\[(.*?)]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
+
                 // TODO - https://github.com/NextINpact/Next/issues/160
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
