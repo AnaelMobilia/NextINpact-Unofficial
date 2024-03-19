@@ -1,0 +1,5 @@
+v2.7.6
+- [Update] Parsage du markdown des commentaires
+
+Fonctionnalités en cours de traitement par l'équipe de Next :
+- Auteur des commentaires
