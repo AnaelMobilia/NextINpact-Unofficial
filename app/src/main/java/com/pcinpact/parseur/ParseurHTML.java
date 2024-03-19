@@ -682,6 +682,10 @@ public class ParseurHTML {
                 // 2. Parsage habituel du markdown
                 contenuHtml = contenuHtml.replaceAll("\\[(.*?)]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
 
+                // Smileys - Fix certains smileys sont déjà rendus par WP
+                // <img src="https://next.ink/wp-includes/images/smilies/mrgreen.png" alt=":mrgreen:" class="wp-smiley" style="height: 1em; max-height: 1em;" />
+                contenuHtml = contenuHtml.replaceAll("<img src=\".+([a-zA-Z0-9-_]+)\\.[a-z]{3}\" alt=\":\\1:\" class=\"wp-smiley\" style=\".+\" />", ":$1:");
+
                 // TODO - https://github.com/NextINpact/Next/issues/160
                 // Smiley ex : :inpactitude: (via replace au lieu d'une regexp paramétrée pour aller plus vite)
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
