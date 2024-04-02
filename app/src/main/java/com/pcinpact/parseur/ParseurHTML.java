@@ -31,12 +31,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,10 +51,10 @@ public class ParseurHTML {
     /**
      * Récupérer le contenu d'un article (depuis le site web)
      *
-     * @param unContenu contenu HTML
-     * @param idArticle ID de l'article
+     * @param unContenu     contenu HTML
+     * @param idArticle     ID de l'article
      * @param isAuthentifie Est-on authentifié sur Next ?
-     * @param currentTs Timestamp du téléchargement
+     * @param currentTs     Timestamp du téléchargement
      * @return Objet avec l'ID et le contenu HTML de l'article
      */
     public static ArrayList<ArticleItem> getContenuArticle(final String unContenu, final int idArticle, final boolean isAuthentifie, final long currentTs) {
@@ -548,17 +550,33 @@ public class ParseurHTML {
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
-                Elements elements = lArticle.select("*");
+                // Eléments génériques
+                Elements elements = lArticle.select("[^data-],[^aria-]");
+                HashSet<String> attrToRemove = new HashSet<String>();
                 for (Element element : elements) {
-                    element.removeAttr("target");
-                    element.removeAttr("rel");
-                    element.removeAttr("class");
-                    element.removeAttr("style");
+                    // Parcours des attributs
+                    for (Attribute attribute : element.attributes()) {
+                        String key = attribute.getKey();
+                        // Enregistrement des attributs matchant la pattern
+                        if (key.startsWith("data-") || key.startsWith("aria-")) {
+                            attrToRemove.add(key);
+                        }
+                    }
+                }
+
+                // Eléments spécifiques
+                elements = lArticle.select("*");
+                for (Element element : elements) {
                     element.removeAttr("alt");
-                    element.removeAttr("data-sizes");
+                    element.removeAttr("class");
+                    element.removeAttr("rel");
                     element.removeAttr("srcset");
-                    element.removeAttr("data-srcset");
-                    element.removeAttr("data-src");
+                    element.removeAttr("style");
+                    element.removeAttr("target");
+                    // Suppression des attributs génériques
+                    for (String unAttr : attrToRemove) {
+                        element.removeAttr(unAttr);
+                    }
                 }
 
                 // Elimination des htmlentities (beaucoup de &nbsp;)
