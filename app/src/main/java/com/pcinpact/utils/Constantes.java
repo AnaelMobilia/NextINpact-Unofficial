@@ -77,7 +77,7 @@ public class Constantes {
      */
     public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
     // On veut avoir les commentaires par ordre chronologique (donc croissant)
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_API_URL + "wp/v2/comments?orderby=date_gmt&order=asc&_fields=id,author_name,content,parent,date&post=";
+    public static final String NEXT_URL_COMMENTAIRES = NEXT_API_URL + "wp/v2/comments?orderby=date_gmt&order=asc&_fields=id,next_author,content,parent,date&post=";
     public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
     public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
     /**
@@ -99,6 +99,11 @@ public class Constantes {
      * Balise HTML pour les citations de commentaires
      */
     public static final String TAG_HTML_QUOTE = "myquote";
+    /**
+     * Balises pour encadrer des citations
+     */
+    public static final String TAG_HTML_QUOTE_OPEN = "<div><" + Constantes.TAG_HTML_QUOTE + ">";
+    public static final String TAG_HTML_QUOTE_CLOSE = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
 
     /**
      * Taille (en Mo) du cache sur le disque

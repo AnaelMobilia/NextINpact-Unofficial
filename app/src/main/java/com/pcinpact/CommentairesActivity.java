@@ -179,7 +179,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
-        // Je fait remarquer que le contenu à changé
+        // Je fais remarquer que le contenu à changé
         monItemsAdapter.notifyDataSetChanged();
 
         /*

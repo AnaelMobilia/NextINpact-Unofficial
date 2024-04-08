@@ -540,6 +540,15 @@ public final class DAO extends SQLiteOpenHelper {
 
         // Si je ne l'ai pas récupéré c'est que je peux l'enregistrer en BDD !
         if (testItem.getId() == 0) {
+            // Si c'est un commentaire en réponse, charger le commentaire d'origine
+            if(unCommentaire.getIdParent() != 0) {
+                CommentaireItem commentaireParent = this.chargerCommentaire(unCommentaire.getIdArticle(), unCommentaire.getIdParent());
+
+                // Citations - "En réponse à xxx"
+                String contenuHtml = Constantes.TAG_HTML_QUOTE_OPEN + "<b>En réponse à " + commentaireParent.getAuteur() + "</b>" + Constantes.TAG_HTML_QUOTE_CLOSE + commentaireParent.getCommentaire();
+                unCommentaire.setCommentaire(contenuHtml);
+            }
+
             this.enregistrerCommentaire(unCommentaire);
         }
     }

@@ -660,7 +660,7 @@ public class ParseurHTML {
                 monCommentaireItem.setId(unCommentaire.getInt("id"));
 
                 // Auteur
-                monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("author_name"), true));
+                monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("next_author"), true));
 
                 // Date
                 monCommentaireItem.setTimestampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date")));
@@ -682,20 +682,17 @@ public class ParseurHTML {
                  */
 
                 // Texte cité ex  > texte cité
-                // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
-                String ouvreCitation = "<div><" + Constantes.TAG_HTML_QUOTE + ">";
-                String fermeCitation = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
 
+                // Citations - "En réponse à xxx"
                 int parentId = unCommentaire.getInt("parent");
                 if (parentId != 0) {
-                    // Citations - "En réponse à xxx"
-                    // TODO - https://github.com/NextINpact/Next/issues/73
-                    contenuHtml = ouvreCitation + "<b>En réponse à " + parentId + "</b>" + fermeCitation + contenuHtml;
+                    monCommentaireItem.setIdParent(parentId);
                 }
 
+                // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
                 // Remplacement des citations "blockquote" par la custom
-                contenuHtml = contenuHtml.replace("<blockquote>", ouvreCitation);
-                contenuHtml = contenuHtml.replace("</blockquote>", fermeCitation);
+                contenuHtml = contenuHtml.replace("<blockquote>", Constantes.TAG_HTML_QUOTE_OPEN);
+                contenuHtml = contenuHtml.replace("</blockquote>", Constantes.TAG_HTML_QUOTE_CLOSE);
 
                 // Gras - ex : **texte**
                 // .*? => .* en mode ungreedy (merci Java :-))

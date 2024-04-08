@@ -38,9 +38,13 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     private int id;
     /**
-     * ID de l'article parent
+     * ID de l'article associé
      */
     private int idArticle;
+    /**
+     * ID du commentaire parent
+     */
+    private int idParent;
     /**
      * Auteur du commentaire
      */
@@ -116,6 +120,20 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     public void setIdArticle(int idArticle) {
         this.idArticle = idArticle;
+    }
+
+    /**
+     * @return idParent
+     */
+    public int getIdParent() {
+        return idParent;
+    }
+
+    /**
+     * @param idParent idParent
+     */
+    public void setIdParent(int idParent) {
+        this.idParent = idParent;
     }
 
     /**
