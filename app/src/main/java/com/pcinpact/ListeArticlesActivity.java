@@ -81,7 +81,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
-     * [ TECHNICAL, HTML_LISTE_ARTICLES, HTML_CONTENU_ARTICLES, HTML_LISTE_ET_ARTICLES_BRIEF, HTML_COMMENTAIRES ]
+     * [ TECHNICAL, HTML_LISTE_ET_CONTENU_ARTICLES, HTML_LISTE_ET_CONTENU_BRIEF, HTML_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -151,7 +151,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         headerTextView = findViewById(R.id.header_text);
 
         // Initialisation de l'array de supervision des téléchargements
-        dlInProgress = new int[5];
+        dlInProgress = new int[4];
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -482,14 +482,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void telechargerLesContenus() {
         AsyncHTMLDownloader monAHD;
         // Les articles
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
         // Lancement du téléchargement
-        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
+        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES);
 
         // Le brief
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
         // Lancement du1 téléchargement
-        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF);
+        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF);
     }
 
     /**
@@ -564,14 +564,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Enregistrer en BDD l'article
                 monDAO.enregistrerArticle(unArticle);
 
-                // TODO : https://github.com/NextINpact/Next/issues/100
-                // Articles standard : faut-il (re)télécharger le contenu abonné ?
-                if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && unArticle.isAbonne() && (!unArticle.isDlContenuAbonne() || unArticle.getTimestampModification() > articleBdd.getTimestampDl())) {
-                    // Lancer le téléchargement du contenu de l'article
-                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, Constantes.NEXT_URL + unArticle.getId(), unArticle.getId(), session);
-                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
-                }
-
                 // Télécharger le nombre de commentaires de chaque article SAUF SI :
                 //   - L'API indique qu'il n'y a pas de commentaires (-1)
                 //   - On a déjà téléchargé l'ID du dernier commentaire indiqué par l'API
@@ -593,25 +585,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // gestion du téléchargement GUI
             if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES);
             } else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF);
-            }
-        } // Contenu d'un article
-        else {
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
-                // Charger l'article de la BDD
-                ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
-                articleBdd.setContenu(unArticle.getContenu());
-                // Noter que le contenu Abonné a été téléchargé
-                if (articleBdd.isAbonne() && unArticle.isDlContenuAbonne()) {
-                    articleBdd.setDlContenuAbonne(unArticle.isDlContenuAbonne());
-                }
-                // Enregistrer en BDD l'article
-                monDAO.enregistrerArticle(articleBdd);
-
-                // gestion du téléchargement GUI
-                finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF);
             }
         }
     }
@@ -698,7 +674,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         dlInProgress[typeDL]--;
 
         // Si toutes les lites d'articles sont chargées
-        if ((typeDL == Constantes.DOWNLOAD_HTML_LISTE_ARTICLES || typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF) && (dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ARTICLES] + dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF]) == 0) {
+        if ((typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES || typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF) && (dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES] + dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF]) == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");

@@ -88,13 +88,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
 
         if (!datas[Downloader.CONTENT_BODY].isEmpty()) {
             switch (typeHTML) {
-                case Constantes.DOWNLOAD_HTML_LISTE_ARTICLES:
-                case Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF:
+                case Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES:
+                case Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF:
                     monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY], currentTs);
-                    break;
-
-                case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
-                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, session.isUserAuthenticated(), currentTs);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_COMMENTAIRES:

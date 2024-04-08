@@ -65,7 +65,7 @@ public class Constantes {
      */
     public static final int NB_ARTICLES_PAR_PAGE = 100;
     // _embed permet d'avoir les données associées directement dans la réponse (_links doit être présent), _fields permet de filtrer sur les champs que l'on souhaite récupérer.
-    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_API_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,modified,_links,_embedded,title.rendered,type,acf,link,content.rendered&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_API_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,modified,_links,_embedded,title.rendered,type,acf,link,content.rendered,next_paywall&after=";
     public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_API_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,modified,_links,_embedded,title.rendered,type,link,content.rendered&after=";
     /**
      * Type de données Articles chez Next
@@ -112,25 +112,21 @@ public class Constantes {
      * TYPES DE TELECHARGEMENTS.
      */
     /**
-     * Type : liste des articles.
-     */
-    public static final int DOWNLOAD_HTML_LISTE_ARTICLES = 1;
-    /**
-     * Type : contenu des articles
-     */
-    public static final int DOWNLOAD_HTML_CONTENU_ARTICLES = 2;
-    /**
-     * Type : liste et contenu des articles du brief
-     */
-    public static final int DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF = 3;
-    /**
-     * Type : commentaires.
-     */
-    public static final int DOWNLOAD_HTML_COMMENTAIRES = 4;
-    /**
      * Type : technique (pour forcer la GUI)
      */
     public static final int DOWNLOAD_TECHNICAL = 0;
+    /**
+     * Type : liste des articles.
+     */
+    public static final int DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES = 1;
+    /**
+     * Type : liste et contenu des articles du brief
+     */
+    public static final int DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF = 2;
+    /**
+     * Type : commentaires.
+     */
+    public static final int DOWNLOAD_HTML_COMMENTAIRES = 3;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.
