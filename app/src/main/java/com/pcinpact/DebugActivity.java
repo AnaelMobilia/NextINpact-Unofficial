@@ -33,6 +33,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.network.AccountCheckInterface;
 import com.pcinpact.network.AsyncAccountCheck;
+import com.pcinpact.network.Authentication;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
@@ -157,12 +158,12 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
     }
 
     @Override
-    public void retourVerifCompte(String token) {
+    public void retourVerifCompte(final Authentication resultat) {
         String message;
-        if ("".equals(token)) {
-            message = getString(R.string.erreurAuthentification);
-        } else {
+        if (resultat.isUserAuthenticated()) {
             message = getString(R.string.compteAbonne);
+        } else {
+            message = getString(R.string.erreurAuthentification);
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);

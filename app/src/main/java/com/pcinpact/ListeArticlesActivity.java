@@ -52,6 +52,7 @@ import com.pcinpact.items.SectionItem;
 import com.pcinpact.network.AccountCheckInterface;
 import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.Authentication;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
@@ -112,9 +113,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private int dernierePosition;
     /**
-     * Identifiant de l'utilisateur (null si non connecté)
+     * Session Next
      */
-    private String token;
+    private Authentication session;
     /**
      * Timestamp de la date jusqu'à laquelle télécharger les articles
      */
@@ -459,9 +460,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
         String passwordOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionPassword, R.string.defautOptionPassword);
         // Identifiants non définis...
-        if ("".equals(usernameOption) && "".equals(passwordOption)) {
+        if (usernameOption.isEmpty() || passwordOption.isEmpty()) {
             // Lancement du téléchargement des articles
-            retourVerifCompte(null);
+            retourVerifCompte(new Authentication());
         } else {
             // Lancement de la vérif des identifiants (flux réseau donc asynchrone)
             AsyncAccountCheck maVerif = new AsyncAccountCheck(this, usernameOption, passwordOption);
@@ -481,12 +482,12 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private void telechargerLesContenus() {
         AsyncHTMLDownloader monAHD;
         // Les articles
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
 
         // Le brief
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, token);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
         // Lancement du1 téléchargement
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF);
     }
@@ -567,7 +568,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Articles standard : faut-il (re)télécharger le contenu abonné ?
                 if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE) && unArticle.isAbonne() && (!unArticle.isDlContenuAbonne() || unArticle.getTimestampModification() > articleBdd.getTimestampDl())) {
                     // Lancer le téléchargement du contenu de l'article
-                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, Constantes.NEXT_URL + unArticle.getId(), unArticle.getId(), token);
+                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, Constantes.NEXT_URL + unArticle.getId(), unArticle.getId(), session);
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
                 }
 
@@ -579,7 +580,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 int idDernierCommentaireTelecharge = monDAO.getMaxIdCommentaireTelecharge(unArticle.getId());
                 int idDernierCommentaireApiEnBdd = articleBdd.getParseurLastCommentId();
                 if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireTelecharge && idDernierCommentaireApi != idDernierCommentaireApiEnBdd) {
-                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), token);
+                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), session);
                     // Lancement du téléchargement
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_COMMENTAIRES);
                 } else {
@@ -746,25 +747,25 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void retourVerifCompte(String unToken) {
+    public void retourVerifCompte(final Authentication resultat) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "retourVerifCompte() - Token : " + unToken);
+            Log.i("ListeArticlesActivity", "retourVerifCompte() - Cookie : " + resultat.getCookie() + " - Nonce : " + resultat.getNonce());
         }
 
         String message;
-        if (unToken == null) {
+        if (resultat.getCookie() == null || resultat.getNonce() == null) {
             // Pas d'identifiants
             message = getString(R.string.infoOptionAbonne);
-            token = null;
-        } else if (unToken.isEmpty()) {
+            session = new Authentication();
+        } else if (resultat.getCookie().isEmpty() || resultat.getNonce().isEmpty()) {
             // Erreur d'auth
             message = getString(R.string.erreurAuthentification);
-            token = null;
+            session = new Authentication();
         } else {
             // Compte abonné connecté avec succès
             message = getString(R.string.compteAbonne);
-            token = unToken;
+            session = resultat;
         }
         // Retour utilisateur
         Toast monToast = Toast.makeText(this, message, Toast.LENGTH_LONG);

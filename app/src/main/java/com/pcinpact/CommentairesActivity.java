@@ -41,6 +41,7 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.items.Item;
 import com.pcinpact.network.AsyncHTMLDownloader;
+import com.pcinpact.network.Authentication;
 import com.pcinpact.network.RefreshDisplayInterface;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
@@ -219,7 +220,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         String monPath = Constantes.NEXT_URL_COMMENTAIRES + idArticle + Constantes.NEXT_URL_COMMENTAIRES_PARAM_PAGE + maPage;
 
         // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, monPath, idArticle, null);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, monPath, idArticle, new Authentication());
 
         // DEBUG
         if (Constantes.DEBUG) {

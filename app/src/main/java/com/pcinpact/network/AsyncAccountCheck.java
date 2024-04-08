@@ -31,7 +31,7 @@ import java.util.concurrent.RejectedExecutionException;
  *
  * @author Anael
  */
-public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
+public class AsyncAccountCheck extends AsyncTask<String, Void, Authentication> {
     /**
      * Parent qui sera rappelé à la fin.
      */
@@ -67,8 +67,8 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
 
 
     @Override
-    protected String doInBackground(String... params) {
-        String resultat = "";
+    protected Authentication doInBackground(String... params) {
+        Authentication resultat = new Authentication();
         try {
             resultat = Downloader.connexionAbonne(username, password);
         } catch (Exception e) {
@@ -81,10 +81,10 @@ public class AsyncAccountCheck extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(final Authentication resultat) {
         try {
             // Le parent peut avoir été garbage collecté
-            monParent.get().retourVerifCompte(result);
+            monParent.get().retourVerifCompte(resultat);
         } catch (Exception e) {
             // DEBUG
             if (Constantes.DEBUG) {

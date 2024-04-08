@@ -53,13 +53,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      */
     private final int idArticle;
     /**
-     * Token du compte Next
+     * Session Next
      */
-    private final String token;
-    /**
-     * Est-on authentifié sur Next ?
-     */
-    private final boolean isAuthentifie;
+    private final Authentication session;
 
     /**
      * Téléchargement d'une ressource
@@ -68,22 +64,16 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unType      type de la ressource (Cf Constantes.TYPE_)
      * @param uneURL      URL de la ressource à télécharger
      * @param unIdArticle ID de l'article
-     * @param unToken     token de connexion
+     * @param uneSession   Session Next
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final String unToken) {
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final Authentication uneSession) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
         URL = uneURL;
         typeHTML = unType;
         idArticle = unIdArticle;
-        token = unToken;
-        // Est-on authentifié sur Next ?
-        if (unToken == null || unToken.isEmpty()) {
-            isAuthentifie = false;
-        } else {
-            isAuthentifie = true;
-        }
+        session = uneSession;
     }
 
     @Override
@@ -94,9 +84,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         long currentTs = MyDateUtils.timeStampNow();
 
         // Récupération du contenu HTML
-        String[] datas = Downloader.download(URL, isAuthentifie, token);
+        String[] datas = Downloader.download(URL, session);
 
-        if (!"".equals(datas[Downloader.CONTENT_BODY])) {
+        if (!datas[Downloader.CONTENT_BODY].isEmpty()) {
             switch (typeHTML) {
                 case Constantes.DOWNLOAD_HTML_LISTE_ARTICLES:
                 case Constantes.DOWNLOAD_HTML_LISTE_ET_ARTICLES_BRIEF:
@@ -104,7 +94,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                     break;
 
                 case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
-                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, isAuthentifie, currentTs);
+                    monRetour = ParseurHTML.getContenuArticle(datas[Downloader.CONTENT_BODY], idArticle, session.isUserAuthenticated(), currentTs);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_COMMENTAIRES:

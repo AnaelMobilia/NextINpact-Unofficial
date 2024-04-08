@@ -19,16 +19,37 @@
 package com.pcinpact.network;
 
 /**
- * Interface générique de callback à la fin de vérification d'identifiants
- *
- * @author Anael
+ * Stockage de l'authentification sur l'API WP Next
  */
-public interface AccountCheckInterface {
+public class Authentication {
+    private String cookie;
+    private String nonce;
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
 
     /**
-     * Retour d'une vérification d'identifiants abonnés
+     * L'utilisateur est-il authentifié sur l'API WP Next ?
      *
-     * @param resultat objet de session Next
+     * @return boolean
      */
-    void retourVerifCompte(final Authentication resultat);
+    public boolean isUserAuthenticated() {
+        if (cookie == null || cookie.isEmpty() || nonce == null || nonce.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }
