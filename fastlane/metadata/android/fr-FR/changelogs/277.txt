@@ -1,0 +1,7 @@
+v2.7.7
+- [New] Nom de l'auteur des commentaires et des citations
+- [Amélioration] Parsage du markdown des commentaires
+- [Amélioration] Récupération des contenus plus rapides
+- [Amélioration] Meilleure gestion des sessions
+
+Merci à l'équipe de Next pour les évolutions apportées à l'API ! :)
