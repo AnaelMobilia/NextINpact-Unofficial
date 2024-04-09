@@ -89,7 +89,7 @@ public class ArticleFragment extends Fragment {
         monCAI.setIdArticle(idArticle);
 
         // Gestion de l'absence de contenu
-        if ("".equals(monContenu)) {
+        if (monContenu.isEmpty()) {
             if (Constantes.DEBUG) {
                 Log.w("ArticleFragment", "onViewCreated() - Article vide");
             }
