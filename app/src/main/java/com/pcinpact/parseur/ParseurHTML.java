@@ -444,6 +444,7 @@ public class ParseurHTML {
                  */
 
                 // Texte cité ex  > texte cité
+                contenuHtml = contenuHtml.replaceAll("<p>&gt;(.*)</p>", Constantes.TAG_HTML_QUOTE_OPEN + "$1" + Constantes.TAG_HTML_QUOTE_CLOSE);
 
                 // Citations - "En réponse à xxx"
                 int parentId = unCommentaire.getInt("parent");
