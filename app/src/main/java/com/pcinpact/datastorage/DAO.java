@@ -545,7 +545,7 @@ public final class DAO extends SQLiteOpenHelper {
                 CommentaireItem commentaireParent = this.chargerCommentaire(unCommentaire.getIdArticle(), unCommentaire.getIdParent());
 
                 // Citations - "En réponse à xxx"
-                String contenuHtml = Constantes.TAG_HTML_QUOTE_OPEN + "<b>En réponse à " + commentaireParent.getAuteur() + "</b>" + Constantes.TAG_HTML_QUOTE_CLOSE + commentaireParent.getCommentaire();
+                String contenuHtml = Constantes.TAG_HTML_QUOTE_OPEN + "<b>En réponse à " + commentaireParent.getAuteur() + "</b>" + Constantes.TAG_HTML_QUOTE_CLOSE + unCommentaire.getCommentaire();
                 unCommentaire.setCommentaire(contenuHtml);
             }
 
