@@ -143,7 +143,14 @@ public class ParseurHTML {
                 // Champs non présents dans le brief
                 if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
                     // Contenu abonné
-                    contenu += unArticle.getString("next_paywall");
+                    String contenuAbonne = unArticle.getString("next_paywall");
+                    contenu += contenuAbonne;
+
+                    if (contenuAbonne.equals("null")) {
+                        monArticleItem.setDlContenuAbonne(false);
+                    } else {
+                        monArticleItem.setDlContenuAbonne(true);
+                    }
                 }
                 contenu += "<footer>";
                 // Auteur de l'article
