@@ -4,11 +4,11 @@ android {
     defaultConfig {
         applicationId "com.pcinpact"
         // SDK utilisé pour compiler l'application
-        compileSdk 34
+        compileSdk 35
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-        targetSdkVersion 34
+        targetSdkVersion 35
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
         versionCode 278
         versionName "2.7.8"
@@ -56,13 +56,13 @@ android {
  * Dépendances de l'application
  */
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
-    implementation 'org.jsoup:jsoup:1.17.2'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4'
+    implementation 'org.jsoup:jsoup:1.18.1'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.preference:preference:1.2.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.github.bumptech.glide:annotations:4.16.0'
