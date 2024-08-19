@@ -109,6 +109,14 @@ public class Constantes {
     public static final int TAILLE_CACHE = 50;
 
     /*
+     * LOGOS A UTILISER
+     */
+    /**
+     * Logo du Brief
+     */
+    public static final String LOGO_BRIEF = "FORCE_LOGO_BRIEF";
+
+    /*
      * TYPES DE TELECHARGEMENTS.
      */
     /**

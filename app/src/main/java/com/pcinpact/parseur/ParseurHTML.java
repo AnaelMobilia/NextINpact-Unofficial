@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
  */
 public class ParseurHTML {
     /**
-     * Parse la liste des articles + fourni le contenu pour le brief
+     * Parse la liste des articles + le brief
      *
      * @param unContenu contenu JSON brut
      * @param currentTs Timestamp du téléchargement
@@ -81,21 +81,23 @@ public class ParseurHTML {
                 monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(laDate));
 
                 // URL de l'image d'illustration
-                try {
-                    // Image optimisée (conservant le ratio de l'image d'origine)
-                    monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getJSONObject("media_details").getJSONObject("sizes").getJSONObject("medium").getString("source_url"));
-                } catch (JSONException e) {
+                if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
                     try {
-                        // Image par défaut
-                        monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
-                    } catch (JSONException e1) {
-                        // Si toujours pas d'image, fallback sur le logo du site
-                        monArticleItem.setUrlIllustration("android.resource://com.pcinpact/drawable/" + R.drawable.logo_next_barre);
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.e("ParseurHTML", "getListeArticles() - Crash image illustration", e1);
+                        // Image optimisée (conservant le ratio de l'image d'origine)
+                        monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getJSONObject("media_details").getJSONObject("sizes").getJSONObject("medium").getString("source_url"));
+                    } catch (JSONException e) {
+                        try {
+                            // Image par défaut
+                            monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
+                        } catch (JSONException e1) {
+                            // DEBUG
+                            if (Constantes.DEBUG) {
+                                Log.e("ParseurHTML", "getListeArticles() - Crash image illustration", e1);
+                            }
                         }
                     }
+                } else {
+                    monArticleItem.setUrlIllustration(Constantes.LOGO_BRIEF);
                 }
                 // Titre de l'article
                 monArticleItem.setTitre(Parser.unescapeEntities(unArticle.getJSONObject("title").getString("rendered"), true));

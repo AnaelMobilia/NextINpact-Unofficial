@@ -327,12 +327,16 @@ public class ItemsAdapter extends BaseAdapter {
 
                     articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
-                    if (checkTelechargementImage(monContext)) {
-                        // Téléchargement OK
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).into(articleVH.imageArticle);
+                    if(Constantes.LOGO_BRIEF.equals(ai.getUrlIllustration())) {
+                        Glide.with(monContext).load(R.drawable.logo_lebrief).into(articleVH.imageArticle);
                     } else {
-                        // Uniquement avec le cache
-                        Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                        if (checkTelechargementImage(monContext)) {
+                            // Téléchargement OK
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).into(articleVH.imageArticle);
+                        } else {
+                            // Uniquement avec le cache
+                            Glide.with(monContext).load(ai.getUrlIllustration()).placeholder(R.drawable.logo_next).error(R.drawable.logo_next_barre).onlyRetrieveFromCache(true).into(articleVH.imageArticle);
+                        }
                     }
 
                     // On applique le zoom éventuel

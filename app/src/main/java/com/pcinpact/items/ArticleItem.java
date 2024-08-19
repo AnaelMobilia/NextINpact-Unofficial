@@ -212,7 +212,7 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * @return idIllustration
+     * @return urlIllustration
      */
     public String getUrlIllustration() {
         return urlIllustration;
