@@ -122,7 +122,6 @@ public class ParseurHTML {
                         // Forcer le statut abonné pour lé télécharger dans tous les cas
                         monArticleItem.setAbonne(true);
                     }
-
                 }
 
                 // URL Seo
@@ -490,6 +489,7 @@ public class ParseurHTML {
                 // Liste des smileys => https://api-v1.nextinpact.com/api/v1/Commentaire/smileys
                 // regexp : .*tag":"(.*)".*,"image":"(.*)".* ==> contenuHtml = contenuHtml.replace("$1", "<img src=\\"" +
                 // Constantes.X_CDN_SMILEY_URL + "$2\\" />");\n
+                contenuHtml = contenuHtml.replace(":santa_flock:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "santa_flock.gif\" />");
                 contenuHtml = contenuHtml.replace(":windu:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "windu.gif\" />");
                 contenuHtml = contenuHtml.replace(":baffe:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "baffe.gif\" />");
                 contenuHtml = contenuHtml.replace(":stress:", "<img src=\"" + Constantes.X_CDN_SMILEY_URL + "stress.gif\" />");
