@@ -313,10 +313,15 @@ public class ParseurHTML {
                 /*
                 <img style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png" width="400px" height="300px" />
                  */
-                lesImages = lArticle.select("img[data-src]");
+                lesImages = lArticle.select("img[data-src],img[fifu-data-src]");
                 // Pour chaque image
                 for (Element uneImage : lesImages) {
-                    uneImage.attr("src", uneImage.attr("data-src"));
+                    // 2024-08-20 : nouveau plugin utilisé par Next
+                    String value = uneImage.attr("fifu-data-src");
+                    if ("".equals(value)) {
+                        value = uneImage.attr("data-src");
+                    }
+                    uneImage.attr("src", value);
                 }
 
                 // #317 - <figure>
