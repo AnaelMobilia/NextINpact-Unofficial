@@ -141,23 +141,6 @@ public class Constantes {
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 
     /*
-     * PATH DES FICHIERS LOCAUX -- Conservation pour l'effacement en v2.4.0
-     */
-    /**
-     * Path des miniatures des articles.
-     */
-    public static final String PATH_IMAGES_MINIATURES = "/MINIATURES/";
-    /**
-     * Path des images de contenu des articles.
-     */
-    public static final String PATH_IMAGES_ILLUSTRATIONS = "/ILLUSTRATIONS/";
-    /**
-     * Path des smileys.
-     */
-    public static final String PATH_IMAGES_SMILEYS = "/SMILEYS/";
-
-
-    /*
      * FORMATS D'AFFICHAGE.
      */
     /**
