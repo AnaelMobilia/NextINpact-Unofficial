@@ -92,7 +92,7 @@ public class Constantes {
     /**
      * Timeout pour les téléchargements (en ms) - default = ~250000.
      */
-    public static final int TIMEOUT = 15000;
+    public static final int TIMEOUT = 30000;
     /**
      * Balise HTML pour les citations de commentaires
      */
