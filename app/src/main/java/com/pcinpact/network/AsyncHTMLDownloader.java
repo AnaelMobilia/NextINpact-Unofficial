@@ -84,7 +84,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
         long currentTs = MyDateUtils.timeStampNow();
 
         // Récupération du contenu HTML
-        String[] datas = Downloader.download(URL, session);
+        String[] datas = Downloader.download(URL, session, Constantes.TIMEOUT_CONTENU);
 
         if (!datas[Downloader.CONTENT_BODY].isEmpty()) {
             switch (typeHTML) {

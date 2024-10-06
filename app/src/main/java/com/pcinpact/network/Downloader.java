@@ -52,9 +52,10 @@ public class Downloader {
      *
      * @param uneURL     URL de la ressource à télécharger
      * @param uneSession Session Next
+     * @param timeout    Timeout de la connexion (en ms)
      * @return tableau ["headers", "body"] avec le contenu brut de chaque
      */
-    public static String[] download(final String uneURL, final Authentication uneSession) {
+    public static String[] download(final String uneURL, final Authentication uneSession, final int timeout) {
         // Retour
         String[] datas = new String[2];
         datas[CONTENT_HEADERS] = "";
@@ -64,7 +65,7 @@ public class Downloader {
             if (Constantes.DEBUG) {
                 Log.d("Downloader", "download() - Lancement connexion");
             }
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS).callTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).writeTimeout(timeout, TimeUnit.MILLISECONDS).build();
             Request request;
             // Pas de token
             if (!uneSession.isUserAuthenticated()) {
@@ -111,7 +112,7 @@ public class Downloader {
     public static Authentication connexionAbonne(final String username, final String password) {
         Authentication monAuthentication = new Authentication();
         try {
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT, TimeUnit.MILLISECONDS).build();
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).callTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).build();
 
             // Objet JSON pour la connexion (protection des quotes)
             JSONObject monJSON = new JSONObject();

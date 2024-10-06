@@ -90,9 +90,10 @@ public class Constantes {
     public static final String X_CDN_SMILEY_URL = "https://cdn2.nextinpact.com/smileys/";
 
     /**
-     * Timeout pour les téléchargements (en ms) - default = ~250000.
+     * Timeout pour les téléchargements (en ms) - default = 10s.
      */
-    public static final int TIMEOUT = 30000;
+    public static final int TIMEOUT_CONTENU = 30000;
+    public static final int TIMEOUT_IMAGES = 15000;
     /**
      * Balise HTML pour les citations de commentaires
      */
