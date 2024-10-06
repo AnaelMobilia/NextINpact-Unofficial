@@ -1,0 +1,2 @@
+v2.8.0
+- [Fix] Meilleure gestion des temps de réponse des serveurs de Next
