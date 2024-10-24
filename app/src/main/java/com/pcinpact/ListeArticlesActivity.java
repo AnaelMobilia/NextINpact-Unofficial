@@ -120,6 +120,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      * Timestamp de la date jusqu'à laquelle télécharger les articles
      */
     private long timestampMinArticle;
+    private long timestampMinBrief;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -230,7 +231,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
             // Nb de jours d'articles à télécharger
             else if (key.equals(getResources().getString(R.string.idOptionNbJoursArticles))) {
-                calculerTimeStampMinArticle();
+                calculerTimeStampMinContenus();
             }
         };
         // Attachement du superviseur aux préférences
@@ -291,9 +292,6 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
         return true;
     }
-
-
-    // TODO : liste des appels à dl (voir meme des notifs qui remonteraient du downloader) avec les URL concernées
 
     /**
      * Gestion du clic sur un article => l'ouvrir
@@ -432,13 +430,30 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Calculer la date minimum pour les articles
+     * Calculer la date minimum pour les contenus (articles et briefs)
      */
-    private void calculerTimeStampMinArticle() {
-        // Nombre de jours demandés par l'utilisateur
+    private void calculerTimeStampMinContenus() {
+        // Nombre de jours configurés par l'utilisateur
         int nbJours = Constantes.getOptionInt(getApplicationContext(), R.string.idOptionNbJoursArticles, R.string.defautOptionNbJoursArticles);
-
-        timestampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
+        long timeStampConfig = MyDateUtils.timeStampDateActuelleMinus(nbJours);
+        long timeStampDernierArticle = timeStampConfig;
+        long timeStampDernierBrief = timeStampConfig;
+        for (ArticleItem unContenu : mesArticles) {
+            if (unContenu.getUrlIllustration().equals(Constantes.LOGO_BRIEF)) {
+                // Brief
+                if (unContenu.getTimestampPublication() > timeStampDernierBrief) {
+                    timeStampDernierBrief = unContenu.getTimestampPublication();
+                }
+            } else {
+                // Article
+                if (unContenu.getTimestampPublication() > timeStampDernierArticle) {
+                    timeStampDernierArticle = unContenu.getTimestampPublication();
+                }
+            }
+        }
+        // Assigner les valeurs
+        timestampMinArticle = timeStampDernierArticle;
+        timestampMinBrief = timeStampDernierBrief;
     }
 
     /**
@@ -454,7 +469,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
 
         // TimeStamp de la date depuis laquelle télécharger les articles
-        calculerTimeStampMinArticle();
+        calculerTimeStampMinContenus();
 
         // Récupération des identifiants de l'utilisateur
         String usernameOption = Constantes.getOptionString(getApplicationContext(), R.string.idOptionLogin, R.string.defautOptionLogin);
@@ -487,7 +502,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES);
 
         // Le brief
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinArticle), 0, session);
+        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.convertToDateISO8601(timestampMinBrief), 0, session);
         // Lancement du1 téléchargement
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF);
     }
