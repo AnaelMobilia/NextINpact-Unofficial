@@ -1,0 +1,2 @@
+v2.8.1
+- [Update] Récupération uniquement des contenus plus récents que ceux déjà synchronisés
