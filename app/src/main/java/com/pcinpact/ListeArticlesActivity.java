@@ -439,7 +439,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         long timeStampDernierArticle = timeStampConfig;
         long timeStampDernierBrief = timeStampConfig;
         for (ArticleItem unContenu : mesArticles) {
-            if (unContenu.getUrlIllustration().equals(Constantes.LOGO_BRIEF)) {
+            // Contenu non synchronisé
+            if (Constantes.LOGO_BRIEF.equals(unContenu.getUrlIllustration())) {
                 // Brief
                 if (unContenu.getTimestampPublication() > timeStampDernierBrief) {
                     timeStampDernierBrief = unContenu.getTimestampPublication();
