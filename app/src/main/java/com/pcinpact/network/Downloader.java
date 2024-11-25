@@ -23,15 +23,17 @@ import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -71,7 +73,7 @@ public class Downloader {
             if (!uneSession.isUserAuthenticated()) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
             } else {
-                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", uneSession.getCookie()).addHeader("X-WP-Nonce", uneSession.getNonce()).build();
+                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", uneSession.getCookie()).build();
             }
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
@@ -113,59 +115,78 @@ public class Downloader {
         Authentication monAuthentication = new Authentication();
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).callTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).build();
+            String key = "";
 
-            // Objet JSON pour la connexion (protection des quotes)
-            JSONObject monJSON = new JSONObject();
-            try {
-                monJSON.put(Constantes.AUTHENTIFICATION_USERNAME, username);
-                monJSON.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
-            } catch (JSONException e) {
-                if (Constantes.DEBUG) {
-                    Log.e("Downloader", "connexionAbonne() - JSONException", e);
-                }
-            }
-
-            // Requête d'authentification
-            RequestBody body = RequestBody.create(monJSON.toString(), MediaType.get("application/json; charset=" + Constantes.X_NEXT_ENCODAGE));
-
-            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
-            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
-
-            // DEBUG
-            if (Constantes.DEBUG) {
-                final Buffer buffer = new Buffer();
-                body.writeTo(buffer);
-                Log.d("Downloader", "connexionAbonne() - Requête : " + request + " - Body : " + buffer.readUtf8());
-            }
-
+            // Récupération de la clef de sécurité sur la page d'authentification
+            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_PRE_AUTH);
+            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).build();
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
+            String responseContent = response.body().string();
 
-            // Authentification OK
-            if (response.isSuccessful()) {
-                // Je passe en revue les cookies retournés
-                for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
-                    // Si c'est le bon cookie :-)
-                    if (unCookie.name().startsWith(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
-                        monAuthentication.setCookie(unCookie.name() + "=" + unCookie.value());
-                    }
+            if (response.isSuccessful() && responseContent.contains(Constantes.AUTHENTIFICATION_KEY)) {
+                Document monDocument = Jsoup.parse(responseContent);
+                Elements mesElements = monDocument.select("input[name=" + Constantes.AUTHENTIFICATION_KEY + "]");
+                for (Element unElement : mesElements) {
+                    key = unElement.val();
                 }
-                JSONObject retourApi = new JSONObject(response.body().string());
-                monAuthentication.setNonce(retourApi.getString("nonce"));
-
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("Downloader", "connexionAbonne() - OK -> Cookie : " + monAuthentication.getCookie() + " - Nonce : " + monAuthentication.getNonce());
+                    Log.d("Downloader", "connexionAbonne() - PRE-AUTH OK -> key : " + key);
                 }
+
+                if (!key.isEmpty()) {
+                    RequestBody body = new FormBody.Builder()
+                            .add(Constantes.AUTHENTIFICATION_USERNAME, username)
+                            .add(Constantes.AUTHENTIFICATION_PASSWORD, password)
+                            .add(Constantes.AUTHENTIFICATION_KEY, key)
+                            .build();
+
+                    // Requête d'authentification
+                    monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
+                    request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
+
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        final Buffer buffer = new Buffer();
+                        body.writeTo(buffer);
+                        Log.d("Downloader", "connexionAbonne() - Requête : " + request + " - Body : " + buffer.readUtf8());
+                    }
+
+                    // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
+                    TrafficStats.setThreadStatsTag(1);
+                    response = client.newCall(request).execute();
+
+                    // Authentification OK
+                    if (response.isSuccessful()) {
+                        // Je passe en revue les cookies retournés
+                        for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
+                            // Si c'est le bon cookie :-)
+                            if (unCookie.name().startsWith(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
+                                monAuthentication.setCookie(unCookie.name() + "=" + unCookie.value());
+                            }
+                        }
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.d("Downloader", "connexionAbonne() - OK -> Cookie : " + monAuthentication.getCookie());
+                        }
+                    } else {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.d("Downloader", "connexionAbonne() - KO -> response : " + response);
+                        }
+                    }
+                }
+                response.close();
             } else {
                 // DEBUG
                 if (Constantes.DEBUG) {
-                    Log.d("Downloader", "connexionAbonne() - KO -> response : " + response);
+                    Log.d("Downloader", "connexionAbonne() - PRE-AUTH KO -> response : " + response);
                 }
             }
             response.close();
-        } catch (IOException | NullPointerException | JSONException e) {
+        } catch (IOException | NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("Downloader", "connexionAbonne()", e);

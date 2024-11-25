@@ -33,14 +33,6 @@ public class Authentication {
         this.cookie = cookie;
     }
 
-    public String getNonce() {
-        return nonce;
-    }
-
-    public void setNonce(String nonce) {
-        this.nonce = nonce;
-    }
-
     /**
      * L'utilisateur est-il authentifié sur l'API WP Next ?
      *

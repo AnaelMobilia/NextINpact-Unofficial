@@ -742,15 +742,15 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     public void retourVerifCompte(final Authentication resultat) {
         // DEBUG
         if (Constantes.DEBUG) {
-            Log.i("ListeArticlesActivity", "retourVerifCompte() - Cookie : " + resultat.getCookie() + " - Nonce : " + resultat.getNonce());
+            Log.i("ListeArticlesActivity", "retourVerifCompte() - Cookie : " + resultat.getCookie());
         }
 
         String message;
-        if (resultat.getCookie() == null || resultat.getNonce() == null) {
+        if (resultat.getCookie() == null) {
             // Pas d'identifiants
             message = getString(R.string.infoOptionAbonne);
             session = new Authentication();
-        } else if (resultat.getCookie().isEmpty() || resultat.getNonce().isEmpty()) {
+        } else if (resultat.getCookie().isEmpty()) {
             // Erreur d'auth
             message = getString(R.string.erreurAuthentification);
             session = new Authentication();

@@ -59,7 +59,6 @@ public class Constantes {
      * URL de téléchargement Next.
      */
     public static final String NEXT_URL = "https://next.ink/";
-    public static final String NEXT_API_URL = NEXT_URL + "wp-json/";
     /**
      * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
      */
@@ -83,7 +82,8 @@ public class Constantes {
     /**
      * URL d'authentification.
      */
-    public static final String NEXT_URL_AUTH = NEXT_API_URL + "auth/v1/authenticate";
+    public static final String NEXT_URL_PRE_AUTH = NEXT_URL + "login/";
+    public static final String NEXT_URL_AUTH = NEXT_URL + "wp-admin/admin-ajax.php?action=ajaxlogin";
     /**
      * URL des smileys
      */
@@ -203,6 +203,10 @@ public class Constantes {
      * Paramètre mot de passe.
      */
     public static final String AUTHENTIFICATION_PASSWORD = "password";
+    /**
+     * Token présent dans la page d'authentification (anti bruteforce)
+     */
+    public static final String AUTHENTIFICATION_KEY =  "security";
     /**
      * Nom du cookie retourné à l'authentification.
      */
