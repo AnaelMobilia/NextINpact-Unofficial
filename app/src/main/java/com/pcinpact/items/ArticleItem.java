@@ -87,6 +87,10 @@ public class ArticleItem implements Item {
      * Timestamp de modification (non persistent)
      */
     private long timestampModification;
+    /**
+     * Est-ce un brief ?
+     */
+    private boolean isBrief = false;
 
     @Override
     public int getType() {
@@ -335,5 +339,21 @@ public class ArticleItem implements Item {
      */
     public void setTimestampModification(long timestampModification) {
         this.timestampModification = timestampModification;
+    }
+
+    /**
+     * Est-ce un brief ?
+     *
+     * @return boolean
+     */
+    public boolean getIsBrief() {
+        return isBrief;
+    }
+
+    /**
+     * @param isBrief Est-ce un brief ?
+     */
+    public void setIsBrief(boolean isBrief) {
+        this.isBrief = isBrief;
     }
 }

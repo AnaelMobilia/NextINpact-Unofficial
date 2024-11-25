@@ -327,7 +327,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
-                    if(Constantes.LOGO_BRIEF.equals(ai.getUrlIllustration())) {
+                    if(ai.getIsBrief()) {
                         Glide.with(monContext).load(R.drawable.logo_lebrief).into(articleVH.imageArticle);
                     } else {
                         if (checkTelechargementImage(monContext)) {
