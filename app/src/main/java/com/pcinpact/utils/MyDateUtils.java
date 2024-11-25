@@ -65,16 +65,6 @@ public class MyDateUtils {
     }
 
     /**
-     * Convertir un timestamp en date ISO8601
-     *
-     * @param unTimestamp timestamp
-     * @return String
-     */
-    public static String convertToDateISO8601(final long unTimestamp) {
-        return formatDate(Constantes.FORMAT_DATE, unTimestamp);
-    }
-
-    /**
      * Formatter une date
      *
      * @param format      format souhaité (SimpleDateFormat)
