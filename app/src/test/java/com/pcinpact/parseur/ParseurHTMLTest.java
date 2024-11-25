@@ -56,8 +56,8 @@ public class ParseurHTMLTest {
         /*
          * Vérification...
          */
+        /*
         for (int i = 0; i < Constantes.NB_ARTICLES_PAR_PAGE; i++) {
-            /*
             assertEquals(mesArticles.get(i).getId(), articlesCalcules.get(i).getId());
             assertEquals(mesArticles.get(i).getTimestampPublication(), articlesCalcules.get(i).getTimeStampPublication());
             assertEquals(mesArticles.get(i).getUrlIllustration(), articlesCalcules.get(i).getUrlIllustration());
@@ -66,7 +66,7 @@ public class ParseurHTMLTest {
             assertEquals(mesArticles.get(i).getSousTitre(), articlesCalcules.get(i).getSousTitre());
             assertEquals(mesArticles.get(i).getNbCommentaires(), articlesCalcules.get(i).getNbCommentaires());
             assertEquals(mesArticles.get(i).isAbonne(), articlesCalcules.get(i).isAbonne());
-             */
         }
+        */
     }
 }
