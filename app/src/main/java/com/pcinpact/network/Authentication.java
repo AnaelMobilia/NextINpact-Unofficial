@@ -23,7 +23,6 @@ package com.pcinpact.network;
  */
 public class Authentication {
     private String cookie;
-    private String nonce;
 
     public String getCookie() {
         return cookie;
@@ -39,7 +38,7 @@ public class Authentication {
      * @return boolean
      */
     public boolean isUserAuthenticated() {
-        if (cookie == null || cookie.isEmpty() || nonce == null || nonce.isEmpty()) {
+        if (cookie == null || cookie.isEmpty()) {
             return false;
         }
         return true;

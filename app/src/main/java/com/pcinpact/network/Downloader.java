@@ -73,7 +73,7 @@ public class Downloader {
             if (!uneSession.isUserAuthenticated()) {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).build();
             } else {
-                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("Cookie", uneSession.getCookie()).build();
+                request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("cookie", uneSession.getCookie()).build();
             }
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);

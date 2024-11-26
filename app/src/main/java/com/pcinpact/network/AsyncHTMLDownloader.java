@@ -64,7 +64,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
      * @param unType      type de la ressource (Cf Constantes.TYPE_)
      * @param uneURL      URL de la ressource à télécharger
      * @param unIdArticle ID de l'article
-     * @param uneSession   Session Next
+     * @param uneSession  Session Next
      */
     public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final Authentication uneSession) {
         // Mappage des attributs de cette requête
@@ -91,6 +91,11 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
                 case Constantes.DOWNLOAD_HTML_LISTE_ARTICLES:
                 case Constantes.DOWNLOAD_HTML_LISTE_BRIEF:
                     monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY], currentTs);
+                    break;
+
+                case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
+                case Constantes.DOWNLOAD_HTML_CONTENU_BRIEF:
+                    monRetour = ParseurHTML.getContenuArticles(datas[Downloader.CONTENT_BODY], currentTs);
                     break;
 
                 case Constantes.DOWNLOAD_HTML_COMMENTAIRES:

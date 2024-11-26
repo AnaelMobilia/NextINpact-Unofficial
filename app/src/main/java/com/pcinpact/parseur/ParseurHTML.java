@@ -70,9 +70,6 @@ public class ParseurHTML {
                 Elements maSelection;
                 String maValeur;
 
-                // Timestamp de téléchargement
-                monArticleItem.setTimestampDl(currentTs);
-
                 // ID de l'article
                 monArticleItem.setId(Integer.parseInt(unArticle.attr("data-post-id")));
 
@@ -135,6 +132,235 @@ public class ParseurHTML {
             }
         }
 
+        return mesArticlesItem;
+    }
+
+    /**
+     * Parse le contenu des articles + le brief
+     *
+     * @param unContenu contenu HTML brut
+     * @param currentTs Timestamp du téléchargement
+     * @return liste d'articleItem
+     */
+    public static ArrayList<ArticleItem> getContenuArticles(final String unContenu, final long currentTs) {
+        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
+
+        try {
+            // Récupération du HTML
+            Document maPage = Jsoup.parse(unContenu);
+            Elements mesArticles = maPage.select("article");
+            ArticleItem monArticleItem;
+
+            for (Element unArticle : mesArticles) {
+                monArticleItem = new ArticleItem();
+                Elements maSelection;
+                String maValeur;
+
+                // ID de l'article
+                monArticleItem.setId(Integer.parseInt(unArticle.attr("data-post-id")));
+
+                // Timestamp de téléchargement
+                monArticleItem.setTimestampDl(currentTs);
+                monArticleItem.setTimestampModification(currentTs);
+
+                // Statut abonné
+                maSelection = unArticle.select("div[id^=next-paywall]");
+                if (!maSelection.isEmpty()) {
+                    monArticleItem.setAbonne(true);
+                    monArticleItem.setDlContenuAbonne(false);
+                }
+
+                // Contenu de l'article
+                String contenu = "<article>";
+                contenu += "<h1>";
+                maSelection = unArticle.select("h1[id=next-title-single-post]");
+                if (!maSelection.isEmpty()) {
+                    contenu += maSelection.get(0).text();
+                }
+                contenu += "</h1>";
+                contenu += "<span>";
+                maSelection = unArticle.select("h1[id=next-subtitle-single-post]");
+                if (!maSelection.isEmpty()) {
+                    contenu += maSelection.get(0).text();
+                }
+                contenu += "</span>";
+
+                // Calcul du footer avant le nettoyage du contenu HTML
+                String contenuFooter = "<footer>";
+                // Auteur de l'article
+                contenuFooter += "Par ";
+                maSelection = unArticle.select("a[class=next-post-author]");
+                if (!maSelection.isEmpty()) {
+                    contenuFooter += maSelection.get(0).text();
+                } else {
+                    contenuFooter += "l'équipe Next";
+                }
+                contenuFooter += " - actu" + "@" + "next.ink";
+
+                // Lien vers l'article
+                maValeur = unArticle.attr("data-post-title");
+                contenuFooter += "<br /><br />Article publié sur <a href=\"" + maValeur + "\">" + maValeur + "</a>";
+                // Date de publication
+                contenuFooter += " le ";
+                maSelection = unArticle.select("p[class=next-single-date-post]");
+                if (!maSelection.isEmpty()) {
+                    contenuFooter += maSelection.get(0).text().toLowerCase();
+                }
+                contenuFooter += "</footer>";
+
+                // NETTOYAGE DU CONTENU
+                // Gestion des iframe
+                Elements lesIframes = unArticle.select("iframe");
+                // généralisation de l'URL en dehors du scheme
+                String[] schemes = {"https://", "http://", "//"};
+                // Pour chaque iframe
+                for (Element uneIframe : lesIframes) {
+                    // URL du lecteur
+                    String urlLecteurBrute = uneIframe.attr("src");
+                    String urlLecteur = urlLecteurBrute.toLowerCase(Constantes.LOCALE);
+
+                    for (String unScheme : schemes) {
+                        if (urlLecteur.startsWith(unScheme)) {
+                            // Suppression du scheme
+                            urlLecteur = urlLecteur.substring(unScheme.length());
+                            // DEBUG
+                            if (Constantes.DEBUG) {
+                                Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+                            }
+                        }
+                    }
+
+                    // ID de la vidéo - sur l'URL brute pour gérer les ID de vidéo avec des majuscules
+                    String idVideo = urlLecteurBrute.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+
+                    // Ma substitution
+                    String monRemplacement;
+
+                    // Gestion des lecteurs vidéos
+                    if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
+                        // Liste de lecture Youtube
+                        // Recalcul de l'ID de la vidéo (cas particulier)
+                        idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
+                        monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
+                        // Youtube
+                        monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
+                        // Dailymotion
+                        monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
+                    } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
+                        // VIMEO
+                        monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
+                    } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
+                        // Videos.gouv.fr
+                        monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                    } else if (urlLecteur.startsWith("vid.me")) {
+                        // Vidme
+                        monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
+                    } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
+                        // Soundcloud (l'URL commence bien par w.soundcloud !)
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
+                        // Scribd
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
+                    } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
+                        // Canal+
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
+                    } else if (urlLecteur.startsWith("www.arte.tv/")) {
+                        // Arte
+                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
+                    } else {
+                        // Déchet (catch all)
+                        monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
+
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                        }
+                    }
+                    // Je remplace l'iframe par mon contenu
+                    uneIframe.before(monRemplacement);
+                    uneIframe.remove();
+
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.i("ParseurHTML", "Remplacement par une iframe : " + monRemplacement);
+                    }
+                }
+
+                // Gestion des videos HTML5
+                Elements lesVideos = unArticle.select("video");
+                for (Element uneVideo : lesVideos) {
+                    String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
+                    // Je remplace la vidéo par mon contenu
+                    uneVideo.before(monRemplacement);
+                    uneVideo.remove();
+                }
+
+                // #317 - <figure>
+                //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
+                // <img src=""/>
+                // ...
+                Elements lesImages = unArticle.select(" figure > img[src~=.+]");
+                // Pour chaque image
+                for (Element uneImage : lesImages) {
+                    Element monParent = uneImage.parent();
+                    // Remonter l'image au dessus de la figure
+                    monParent.before(uneImage);
+                    // Effacer la figure (et ses autres enfants <img src=""/>)
+                    monParent.remove();
+                }
+
+                // Suppression des attributs sans intérêt pour l'application
+                // Eléments génériques
+                Elements elements = unArticle.select("[^data-],[^aria-]");
+                HashSet<String> attrToRemove = new HashSet<String>();
+                for (Element element : elements) {
+                    // Parcours des attributs
+                    for (Attribute attribute : element.attributes()) {
+                        String key = attribute.getKey();
+                        // Enregistrement des attributs matchant la pattern
+                        if (key.startsWith("data-") || key.startsWith("aria-")) {
+                            attrToRemove.add(key);
+                        }
+                    }
+                }
+
+                // Eléments spécifiques
+                elements = unArticle.select("*");
+                for (Element element : elements) {
+                    element.removeAttr("alt");
+                    element.removeAttr("class");
+                    element.removeAttr("rel");
+                    element.removeAttr("srcset");
+                    element.removeAttr("style");
+                    element.removeAttr("target");
+                    // Suppression des attributs génériques
+                    for (String unAttr : attrToRemove) {
+                        element.removeAttr(unAttr);
+                    }
+                }
+
+                maSelection = unArticle.select("div[id=next-single-post]");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).html();
+                    // Elimination des htmlentities (beaucoup de &nbsp;)
+                    contenu += Parser.unescapeEntities(maValeur, true);
+                }
+
+                contenu += contenuFooter;
+                contenu += "</article>";
+                monArticleItem.setContenu(contenu);
+
+                // Et je le stocke
+                mesArticlesItem.add(monArticleItem);
+            }
+        } catch (NullPointerException e) {
+            // DEBUG
+            if (Constantes.DEBUG) {
+                Log.e("ParseurHTML", "getContenuArticles() - Crash ", e);
+            }
+        }
         return mesArticlesItem;
     }
 

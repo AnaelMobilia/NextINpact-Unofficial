@@ -598,6 +598,13 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
                 unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
                 unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
+                // Récupérer certaines informations
+                unArticle.setTitre(articleBdd.getTitre());
+                unArticle.setSousTitre(articleBdd.getSousTitre());
+                unArticle.setUrlIllustration(articleBdd.getUrlIllustration());
+                unArticle.setURLseo(articleBdd.getURLseo());
+                unArticle.setIsBrief(articleBdd.getIsBrief());
+                unArticle.setTimestampPublication(articleBdd.getTimestampPublication());
                 // Si l'article a été modifié après le téléchargement, ne pas conserver l'état de lecture
                 if (articleBdd.getTimestampDl() >= unArticle.getTimestampModification()) {
                     unArticle.setLu(articleBdd.isLu());
@@ -627,13 +634,12 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                         Log.d("ListeArticlesActivity", "downloadHTMLFini() -  " + unArticle.getId() + " : chargement des commentaires non requis : " + idDernierCommentaireTelecharge + " -> parseur " + idDernierCommentaireApi);
                     }
                 }
-            }
-
-            // gestion du téléchargement GUI
-            if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
-            } else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_BRIEF);
+                // gestion du téléchargement GUI
+                if (unArticle.getIsBrief()) {
+                    finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
+                } else {
+                    finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                }
             }
         }
     }
