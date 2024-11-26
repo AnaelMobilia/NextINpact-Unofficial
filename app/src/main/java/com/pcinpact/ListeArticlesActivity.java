@@ -576,14 +576,14 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Téléchargement du contenu
                 AsyncHTMLDownloader monAHD;
                 if (unArticle.getIsBrief()) {
-                    nouveauChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
                     monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF, unArticle.getURLseo(), unArticle.getId(), session);
+                    // Lancement du téléchargement
+                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
                 } else {
-                    nouveauChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
                     monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, unArticle.getURLseo(), unArticle.getId(), session);
+                    // Lancement du téléchargement
+                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
                 }
-                // Lancement du téléchargement
-                launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
             }
             // gestion du téléchargement GUI
             if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
