@@ -32,10 +32,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeFilter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -340,6 +343,25 @@ public class ParseurHTML {
                         element.removeAttr(unAttr);
                     }
                 }
+
+                // Supprimer les commentaires "<!-- wp:paragraph -->"
+                unArticle.filter(new NodeFilter() {
+                    @Override
+                    public FilterResult tail(Node node, int depth) {
+                        if (node instanceof Comment) {
+                            return FilterResult.REMOVE;
+                        }
+                        return FilterResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FilterResult head(Node node, int depth) {
+                        if (node instanceof Comment) {
+                            return FilterResult.REMOVE;
+                        }
+                        return FilterResult.CONTINUE;
+                    }
+                });
 
                 maSelection = unArticle.select("div[id=next-single-post]");
                 if (!maSelection.isEmpty()) {
