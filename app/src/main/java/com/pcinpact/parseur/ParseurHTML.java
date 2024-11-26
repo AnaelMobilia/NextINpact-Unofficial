@@ -119,6 +119,13 @@ public class ParseurHTML {
                     monArticleItem.setSousTitre(maValeur);
                 }
 
+                // Nombre de commentaires
+                maSelection = unArticle.select("span[class=next-total-comment]");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).text();
+                    monArticleItem.setNbCommentaires(Integer.parseInt(maValeur));
+                }
+
                 mesArticlesItem.add(monArticleItem);
             }
         } catch (NullPointerException e) {
