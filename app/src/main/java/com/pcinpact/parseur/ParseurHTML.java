@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
@@ -50,7 +51,7 @@ public class ParseurHTML {
     /**
      * Parse la liste des articles + le brief
      *
-     * @param unContenu contenu JSON brut
+     * @param unContenu contenu HTML brut
      * @param currentTs Timestamp du téléchargement
      * @return liste d'articleItem
      */
@@ -58,334 +59,72 @@ public class ParseurHTML {
         ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
-            // Récupération du JSON
-            JSONArray lesArticles = new JSONArray(unContenu);
+            // Récupération du HTML
+            Document maPage = Jsoup.parse(unContenu);
+            Elements mesArticles = maPage.select("div[data-post-id]");
 
             ArticleItem monArticleItem;
             // Pour chaque article
-            for (int i = 0; i < lesArticles.length(); i++) {
-                JSONObject unArticle = lesArticles.getJSONObject(i);
+            for (Element unArticle : mesArticles) {
                 monArticleItem = new ArticleItem();
+                Elements maSelection;
+                String maValeur;
 
                 // Timestamp de téléchargement
                 monArticleItem.setTimestampDl(currentTs);
 
                 // ID de l'article
-                monArticleItem.setId(unArticle.getInt("id"));
+                monArticleItem.setId(Integer.parseInt(unArticle.attr("data-post-id")));
 
                 // Date de publication de l'article
-                String laDate = unArticle.getString("date");
-                monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(laDate));
-                // Date de modication de l'article
-                laDate = unArticle.getString("modified");
-                monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(laDate));
-
-                // URL de l'image d'illustration
-                if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
-                    try {
-                        // Image optimisée (conservant le ratio de l'image d'origine)
-                        monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getJSONObject("media_details").getJSONObject("sizes").getJSONObject("medium").getString("source_url"));
-                    } catch (JSONException e) {
-                        try {
-                            // Image par défaut
-                            monArticleItem.setUrlIllustration(unArticle.getJSONObject("_embedded").getJSONArray("wp:featuredmedia").getJSONObject(0).getString("source_url"));
-                        } catch (JSONException e1) {
-                            // DEBUG
-                            if (Constantes.DEBUG) {
-                                Log.e("ParseurHTML", "getListeArticles() - Crash image illustration", e1);
-                            }
-                        }
-                    }
-                } else {
-                    monArticleItem.setUrlIllustration(Constantes.LOGO_BRIEF);
+                maSelection = unArticle.select("p[class=next-post-time] > abbr");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).attr("title");
+                    monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur));
                 }
+
+                // URL Seo + type (brief / article)
+                maSelection = unArticle.select("h1[class=next-post-title] > a");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).attr("href");
+                    monArticleItem.setURLseo(maValeur);
+
+                    if (maValeur.contains(Constantes.NEXT_TYPE_ARTICLES_BRIEF)) {
+                        monArticleItem.setIsBrief(true);
+                    } else {
+                        monArticleItem.setIsBrief(false);
+                    }
+                }
+
+                // URL de l'image d'illustration (seulement pour les articles)
+                if (!monArticleItem.getIsBrief()) {
+                    maSelection = unArticle.select("img");
+                    if (!maSelection.isEmpty()) {
+                        maValeur = maSelection.get(0).attr("src");
+                        monArticleItem.setUrlIllustration(maValeur);
+                    }
+                }
+
                 // Titre de l'article
-                monArticleItem.setTitre(Parser.unescapeEntities(unArticle.getJSONObject("title").getString("rendered"), true));
-
-                // Champs non présents dans le brief
-                if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
-                    // Ces informations sont dépendantes du plugin acf qui doit être activé dans l'API WP
-                    // Cf https://github.com/NextINpact/Next/issues/82
-                    try {
-                        // Sous titre
-                        monArticleItem.setSousTitre(Parser.unescapeEntities(unArticle.getJSONObject("acf").getString("subtitle"), true));
-
-                    } catch (JSONException e) {
-                        Log.e("ParseurHTML", "getListeArticles() - Erreur subtitle", e);
-                    }
-                    try {
-                        // Statut abonné
-                        String dateFinBlocage = unArticle.getJSONObject("acf").getString("end_restriction_date");
-                        if (!dateFinBlocage.isEmpty()) {
-                            monArticleItem.setAbonne(true);
-                        }
-                    } catch (JSONException e) {
-                        Log.e("ParseurHTML", "getListeArticles() - Erreur end_restriction_date", e);
-                        // Forcer le statut abonné pour lé télécharger dans tous les cas
-                        monArticleItem.setAbonne(true);
-                    }
+                maSelection = unArticle.select("h1[class=next-post-title]");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).text();
+                    monArticleItem.setTitre(maValeur);
                 }
 
-                // URL Seo
-                monArticleItem.setURLseo(unArticle.getString("link"));
-
-                // Contenu de l'article
-                String contenu = "<article>";
-                contenu += "<h1>";
-                contenu += monArticleItem.getTitre();
-                contenu += "</h1>";
-                // Pas de sous-titre dans le brief
-                if (!"null".equals(monArticleItem.getSousTitre())) {
-                    contenu += "<span>";
-                    contenu += monArticleItem.getSousTitre();
-                    contenu += "</span>";
-                }
-                contenu += unArticle.getJSONObject("content").getString("rendered");
-                // Champs non présents dans le brief
-                if (Constantes.NEXT_TYPE_ARTICLES_STANDARD.equals(unArticle.getString("type"))) {
-                    // Contenu abonné
-                    String contenuAbonne = unArticle.getString("next_paywall");
-                    contenu += contenuAbonne;
-
-                    if (contenuAbonne.equals("null")) {
-                        monArticleItem.setDlContenuAbonne(false);
-                    } else {
-                        monArticleItem.setDlContenuAbonne(true);
-                    }
-                }
-                contenu += "<footer>";
-                // Auteur de l'article
-                String auteur;
-                if (Constantes.NEXT_TYPE_ARTICLES_BRIEF.equals(unArticle.getString("type"))) {
-                    // Pas d'auteur pour le brief
-                    auteur = "l'équipe Next";
-                } else {
-                    auteur = unArticle.getJSONObject("_embedded").getJSONArray("author").getJSONObject(0).getString("name");
-                }
-                contenu += "Par " + auteur + " - actu" + "@" + "nextinpact.com";
-
-                // Lien vers l'article
-                contenu += "<br /><br />Article publié sur <a href=\"" + monArticleItem.getURLseo() + "\">" + monArticleItem.getURLseo() + "</a>";
-                // Date de publication
-                laDate = MyDateUtils.formatDate(Constantes.FORMAT_AFFICHAGE_SECTION_DATE, monArticleItem.getTimestampPublication());
-                contenu += " le " + laDate;
-                contenu += "</footer>";
-                contenu += "</article>";
-
-                // L'article
-                Elements lArticle = Jsoup.parse(contenu).select("article");
-
-                // NETTOYAGE DU CONTENU
-                // Gestion des iframe
-                Elements lesIframes = lArticle.select("iframe");
-                // généralisation de l'URL en dehors du scheme
-                String[] schemes = {"https://", "http://", "//"};
-                // Pour chaque iframe
-                for (Element uneIframe : lesIframes) {
-                    // URL du lecteur
-                    String urlLecteurBrute = uneIframe.attr("src");
-                    String urlLecteur = urlLecteurBrute.toLowerCase(Constantes.LOCALE);
-
-                    for (String unScheme : schemes) {
-                        if (urlLecteur.startsWith(unScheme)) {
-                            // Suppression du scheme
-                            urlLecteur = urlLecteur.substring(unScheme.length());
-                            // DEBUG
-                            if (Constantes.DEBUG) {
-                                Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
-                            }
-                        }
-                    }
-
-                    // ID de la vidéo - sur l'URL brute pour gérer les ID de vidéo avec des majuscules
-                    String idVideo = urlLecteurBrute.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
-
-                    // Ma substitution
-                    String monRemplacement;
-
-                    // Gestion des lecteurs vidéos
-                    if (urlLecteur.startsWith("www.youtube.com/embed/videoseries")) {
-                        // Liste de lecture Youtube
-                        // Recalcul de l'ID de la vidéo (cas particulier)
-                        idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
-                        monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
-                    } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
-                        // Youtube
-                        monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
-                    } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
-                        // Dailymotion
-                        monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
-                    } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
-                        // VIMEO
-                        monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
-                    } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
-                        // Videos.gouv.fr
-                        monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
-                    } else if (urlLecteur.startsWith("vid.me")) {
-                        // Vidme
-                        monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
-                    } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
-                        // Soundcloud (l'URL commence bien par w.soundcloud !)
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
-                    } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
-                        // Scribd
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
-                    } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
-                        // Canal+
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
-                    } else if (urlLecteur.startsWith("www.arte.tv/")) {
-                        // Arte
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
-                    } else {
-                        // Déchet (catch all)
-                        monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
-
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
-                        }
-                    }
-
-
-                    // Je remplace l'iframe par mon contenu
-                    uneIframe.before(monRemplacement);
-                    uneIframe.remove();
-
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.i("ParseurHTML", "Remplacement par une iframe : " + monRemplacement);
-                    }
+                // Sous-titre
+                maSelection = unArticle.select("h2[class=next-post-subtitle]");
+                if (!maSelection.isEmpty()) {
+                    maValeur = maSelection.get(0).text();
+                    monArticleItem.setSousTitre(maValeur);
                 }
 
-                // Gestion des videos HTML5
-                Elements lesVideos = lArticle.select("video");
-                for (Element uneVideo : lesVideos) {
-                    String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
-                    // Je remplace la vidéo par mon contenu
-                    uneVideo.before(monRemplacement);
-                    uneVideo.remove();
-                }
-
-                /*
-                 * Gestion des images
-                 */
-                // fancyimg - Articles migrés à priori
-                /*
-                 *<figure class="content-img" style="text-align: center;" data-imageid="174190"><a class="fancyimg" href="https://cdnx.nextinpact.com/data-next/image/bd/174190.png" rel="group-fancy"> <img style="display:block;max-width: 100%;"  class="lazyload" data-sizes="auto" data-srcset="https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=75&resize=75 75w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=100&resize=100 100w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=150&resize=150 150w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=240&resize=240 240w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=320&resize=320 320w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=500&resize=500 500w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=640&resize=640 640w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=800&resize=800 800w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1024&resize=1024 1024w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1280&resize=1280 1280w, https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png?w=1600&resize=1600 1600w" data-src="https://i0.wp.com/cdnx.nextinpact.com/data-next/image/bd/174190.png" alt="Threadripper Pro 7000" /></a></figure>
-                 */
-                Elements liensImagesFancy = lArticle.select("a[class=fancyimg]:has(img)");
-                // Pour chaque <a>
-                for (Element lienImageFancy : liensImagesFancy) {
-                    // Pour chaque image...
-                    for (Element lImage : lienImageFancy.select("img")) {
-                        // Passage à l'image pleine taille
-                        lImage.attr("src", lienImageFancy.attr("href"));
-                        // Injection de l'image pleine taille...
-                        lienImageFancy.before(lImage.outerHtml());
-                    }
-                    // Suppression du lien (et ses enfants)
-                    lienImageFancy.remove();
-                }
-
-                // data-srcset (Jetpack i*.wp.com) AVEC srcset
-                /*
-                 * <img width="1024" height="535" style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png" alt="Trois missions Apollo : 11, 13 et 17 " class="wp-image-117815" srcset="https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-1024x535.png 1024w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-300x157.png 300w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704-768x402.png 768w, https://next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-25-235704.png 1492w" sizes="(max-width: 1024px) 100vw, 1024px" />
-                 */
-                Elements lesImages = lArticle.select("img[srcset]");
-                // Pour chaque image
-                for (Element uneImage : lesImages) {
-                    // Récupération du premier lien du srcset (1024w)
-                    String srcset = uneImage.attr("srcset");
-                    Pattern p = Pattern.compile("^(.+?) [0-9]+w");
-                    Matcher m = p.matcher(srcset);
-                    while (m.find()) {
-                        uneImage.attr("src", m.group(1));
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.d("ParseurHTML", "getListeArticles() - Regex img : " + m.group(1) + " (srcset : " + srcset + ")");
-                        }
-                    }
-                    // Ne pas rentrer dans le nettoyage suivant
-                    uneImage.removeAttr("data-src");
-                }
-
-                // data-srcset (Jetpack i*.wp.com) SANS srcset ("slideshow-container")
-                /*
-                <img style="display:block" class="lazyload" data-sizes="auto" data-srcset="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=75&resize=75 75w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=100&resize=100 100w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=150&resize=150 150w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=240&resize=240 240w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=320&resize=320 320w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=500&resize=500 500w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=640&resize=640 640w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=800&resize=800 800w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1024&resize=1024 1024w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1280&resize=1280 1280w, https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png?w=1600&resize=1600 1600w" data-src="https://i1.wp.com/next.ink/wp-content/uploads/2023/11/Capture-decran-2023-11-30-121406.png" width="400px" height="300px" />
-                 */
-                lesImages = lArticle.select("img[data-src],img[fifu-data-src]");
-                // Pour chaque image
-                for (Element uneImage : lesImages) {
-                    // 2024-08-20 : nouveau plugin utilisé par Next
-                    String value = uneImage.attr("fifu-data-src");
-                    if ("".equals(value)) {
-                        value = uneImage.attr("data-src");
-                    }
-                    uneImage.attr("src", value);
-                }
-
-                // #317 - <figure>
-                //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
-                // <img src=""/>
-                // ...
-                lesImages = lArticle.select(" figure > img[src~=.+]");
-                // Pour chaque image
-                for (Element uneImage : lesImages) {
-                    Element monParent = uneImage.parent();
-                    // Remonter l'image au dessus de la figure
-                    monParent.before(uneImage);
-                    // Effacer la figure (et ses autres enfants <img src=""/>)
-                    monParent.remove();
-                }
-
-                // Suppression des attributs sans intérêt pour l'application
-                // Eléments génériques
-                Elements elements = lArticle.select("[^data-],[^aria-]");
-                HashSet<String> attrToRemove = new HashSet<String>();
-                for (Element element : elements) {
-                    // Parcours des attributs
-                    for (Attribute attribute : element.attributes()) {
-                        String key = attribute.getKey();
-                        // Enregistrement des attributs matchant la pattern
-                        if (key.startsWith("data-") || key.startsWith("aria-")) {
-                            attrToRemove.add(key);
-                        }
-                    }
-                }
-
-                // Eléments spécifiques
-                elements = lArticle.select("*");
-                for (Element element : elements) {
-                    element.removeAttr("alt");
-                    element.removeAttr("class");
-                    element.removeAttr("rel");
-                    element.removeAttr("srcset");
-                    element.removeAttr("style");
-                    element.removeAttr("target");
-                    // Suppression des attributs génériques
-                    for (String unAttr : attrToRemove) {
-                        element.removeAttr(unAttr);
-                    }
-                }
-
-                // Elimination des htmlentities (beaucoup de &nbsp;)
-                contenu = Parser.unescapeEntities(lArticle.toString(), true);
-                monArticleItem.setContenu(contenu);
-
-                // ID du dernier commentaire (sert à piloter la vérification du # de commentaires)
-                int lastComment = -1;
-                if (unArticle.getJSONObject("_embedded").has("replies")) {
-                    lastComment = unArticle.getJSONObject("_embedded").getJSONArray("replies").getJSONArray(0).getJSONObject(0).getInt("id");
-                }
-                monArticleItem.setParseurLastCommentId(lastComment);
-
-                // Et je le stocke
                 mesArticlesItem.add(monArticleItem);
             }
-        } catch (JSONException | NullPointerException e) {
+        } catch (NullPointerException e) {
             // DEBUG
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "getListeArticles() - Crash JSON", e);
+                Log.e("ParseurHTML", "getListeArticles() - Crash", e);
             }
         }
 

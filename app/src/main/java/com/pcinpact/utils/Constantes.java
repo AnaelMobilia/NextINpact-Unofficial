@@ -60,12 +60,12 @@ public class Constantes {
      */
     public static final String NEXT_URL = "https://next.ink/";
     /**
-     * Page des articles (listing) 10 articles par page pour ne pas télécharger pour rien des ressources
+     * Page listant les contenus (briefs & articles)
      */
-    public static final int NB_ARTICLES_PAR_PAGE = 100;
-    // _embed permet d'avoir les données associées directement dans la réponse (_links doit être présent), _fields permet de filtrer sur les champs que l'on souhaite récupérer.
-    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_API_URL + "wp/v2/posts?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,modified,_links,_embedded,title.rendered,type,acf,link,content.rendered,next_paywall&after=";
-    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_API_URL + "wp/v2/brief_article?per_page=" + NB_ARTICLES_PAR_PAGE + "&_embed=wp:featuredmedia,author,replies&_fields=id,date,modified,_links,_embedded,title.rendered,type,link,content.rendered&after=";
+    public static final String NEXT_URL_LISTE_ARTICLE = NEXT_URL + "?begin=";
+    public static final String NEXT_URL_LISTE_ARTICLE_END = "&end=";
+    // Les briefs sont remontés dans la liste des autre articles
+    public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_URL + "xxx";
     /**
      * Type de données Articles chez Next
      */
@@ -117,17 +117,25 @@ public class Constantes {
      */
     public static final int DOWNLOAD_TECHNICAL = 0;
     /**
-     * Type : liste des articles.
+     * Type : liste des articles y compris le brief
      */
-    public static final int DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES = 1;
+    public static final int DOWNLOAD_HTML_LISTE_ARTICLES = 1;
     /**
-     * Type : liste et contenu des articles du brief
+     * Type : contenu des articles y compris le brief
      */
-    public static final int DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF = 2;
+    public static final int DOWNLOAD_HTML_CONTENU_ARTICLES = 2;
+    /**
+     * Type : liste des articles du brief
+     */
+    public static final int DOWNLOAD_HTML_LISTE_BRIEF = 3;
+    /**
+     * Type : contenu des articles du brief
+     */
+    public static final int DOWNLOAD_HTML_CONTENU_BRIEF = 4;
     /**
      * Type : commentaires.
      */
-    public static final int DOWNLOAD_HTML_COMMENTAIRES = 3;
+    public static final int DOWNLOAD_HTML_COMMENTAIRES = 5;
 
     /*
      * FORMATS DU SITE POUR LE PARSEUR.
@@ -135,7 +143,11 @@ public class Constantes {
     /**
      * Format des dates sur le site.
      */
-    public static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String FORMAT_DATE = "yyyy-MM-dd";
+    /**
+     * Format des dates textuelles sur le site
+     */
+    public static final String FORMAT_DATE_TEXTUELLE = "EEEE dd MMMM yyyy 'à' HH'h'mm";
     /**
      * Date et heure de publication d'un commentaire.
      */
@@ -198,7 +210,7 @@ public class Constantes {
     /**
      * Token présent dans la page d'authentification (anti bruteforce)
      */
-    public static final String AUTHENTIFICATION_KEY =  "security";
+    public static final String AUTHENTIFICATION_KEY = "security";
     /**
      * Nom du cookie retourné à l'authentification.
      */

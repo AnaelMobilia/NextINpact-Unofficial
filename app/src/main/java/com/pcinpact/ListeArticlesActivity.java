@@ -18,6 +18,8 @@
  */
 package com.pcinpact;
 
+import static java.lang.Math.max;
+
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -81,7 +83,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     private DAO monDAO;
     /**
      * Nombre de DL en cours
-     * [ TECHNICAL, HTML_LISTE_ET_CONTENU_ARTICLES, HTML_LISTE_ET_CONTENU_BRIEF, HTML_COMMENTAIRES ]
+     * [ TECHNICAL, HTML_LISTE_ARTICLES, HTML_CONTENU_ARTICLES, HTML_LISTE_BRIEF, HTML_CONTENU_BRIEF, HTML_COMMENTAIRES ]
      */
     private int[] dlInProgress;
     /**
@@ -117,7 +119,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private Authentication session;
     /**
-     * Timestamp de la date jusqu'à laquelle télécharger les articles
+     * Timestamp de la date à partir de laquelle télécharger les articles
      */
     private long timestampMinArticle;
     private long timestampMinBrief;
@@ -152,7 +154,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         headerTextView = findViewById(R.id.header_text);
 
         // Initialisation de l'array de supervision des téléchargements
-        dlInProgress = new int[4];
+        dlInProgress = new int[6];
 
         // Mise en place de l'itemAdapter
         monItemsAdapter = new ItemsAdapter(getApplicationContext(), getLayoutInflater(), new ArrayList<>());
@@ -493,19 +495,15 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     /**
-     * Télécharger la liste des articles et leur contenu (y compris le brief)
+     * Télécharger la liste des articles (y compris le brief), puis les contenus via downloadHTMLFini()
      */
     private void telechargerLesContenus() {
-        AsyncHTMLDownloader monAHD;
-        // Les articles
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES, Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.formatDate(Constantes.FORMAT_DATE, timestampMinArticle), 0, session);
+        // Liste des articles et du brief
+        String monUrl = Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.formatDate(Constantes.FORMAT_DATE, max(timestampMinArticle, timestampMinBrief));
+        monUrl += Constantes.NEXT_URL_LISTE_ARTICLE_END + MyDateUtils.formatDate(Constantes.FORMAT_DATE, MyDateUtils.timeStampNow());
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, monUrl, 0, session);
         // Lancement du téléchargement
-        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES);
-
-        // Le brief
-        monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF, Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF + MyDateUtils.formatDate(Constantes.FORMAT_DATE, timestampMinBrief), 0, session);
-        // Lancement du1 téléchargement
-        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF);
+        launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
     }
 
     /**
@@ -561,8 +559,40 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             // gestion du téléchargement GUI
             finChargementGUI(Constantes.DOWNLOAD_HTML_COMMENTAIRES);
         }
-        // Téléchargement de la liste d'articles ou du brief
-        else if (uneURL.startsWith(Constantes.NEXT_API_URL)) {
+        // Téléchargement de la liste des articles (y compris le brief)
+        else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+                // Enregistrement en BDD si on ne connaissait pas encore l'article
+                boolean save = true;
+                for (ArticleItem unArticleEnBdd : mesArticles) {
+                    if (unArticleEnBdd.getId() == unArticle.getId()) {
+                        save = false;
+                    }
+                }
+                if (save) {
+                    monDAO.enregistrerArticle(unArticle);
+                }
+
+                // Téléchargement du contenu
+                AsyncHTMLDownloader monAHD;
+                if (unArticle.getIsBrief()) {
+                    nouveauChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
+                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF, unArticle.getURLseo(), unArticle.getId(), session);
+                } else {
+                    nouveauChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, unArticle.getURLseo(), unArticle.getId(), session);
+                }
+                // Lancement du téléchargement
+                launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
+            }
+            // gestion du téléchargement GUI
+            if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
+            } else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_BRIEF);
+            }
+        } // Téléchargement du contenu...
+        else {
             for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
                 // Récupérer les informations sur les commentaires en BDD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
@@ -601,9 +631,9 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
             // gestion du téléchargement GUI
             if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES);
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
             } else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE_BRIEF)) {
-                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF);
+                finChargementGUI(Constantes.DOWNLOAD_HTML_LISTE_BRIEF);
             }
         }
     }
@@ -689,8 +719,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Je note la fin du téléchargement
         dlInProgress[typeDL]--;
 
-        // Si toutes les lites d'articles sont chargées
-        if ((typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES || typeDL == Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF) && (dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_ARTICLES] + dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ET_CONTENU_BRIEF]) == 0) {
+        // Rafraîchir l'interface dès que la liste des contenus est récupérée (même si le corps des articles n'est pas encore récupéré)
+        if ((typeDL == Constantes.DOWNLOAD_HTML_LISTE_ARTICLES || typeDL == Constantes.DOWNLOAD_HTML_LISTE_BRIEF) && (dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_ARTICLES] + dlInProgress[Constantes.DOWNLOAD_HTML_LISTE_BRIEF]) == 0) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.w("ListeArticlesActivity", "finChargementGUI() - Rafraichissement liste articles");

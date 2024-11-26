@@ -42,22 +42,16 @@ public class MyDateUtils {
      * @return timestamp
      */
     public static long convertToTimestamp(String uneDate) {
-        // Ex de dates : 2020-11-13T15:52:42.0216538 / 2020-11-05T14:00:18.239 / 2020-11-04T07:30:08.4
-        // => Suppression à partir du ".XXX" (millisecondes)
-        int posPoint = uneDate.indexOf(".");
-        if (posPoint != -1) {
-            uneDate = uneDate.substring(0, posPoint);
-        }
-
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE, Constantes.LOCALE);
+        // Ex de dates : Vendredi 15 novembre 2024 à 18h21
+        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE_TEXTUELLE, Constantes.LOCALE);
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {
             // Récupération du timestamp
-            laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate).getTime());
+            laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate.toLowerCase()).getTime());
         } catch (ParseException | NullPointerException e) {
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : " + uneDate, e);
+                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : \"" + uneDate + "\"", e);
             }
         }
 
