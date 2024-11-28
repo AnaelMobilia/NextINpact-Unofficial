@@ -26,6 +26,7 @@ import androidx.preference.PreferenceManager;
 
 import com.pcinpact.BuildConfig;
 
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -230,7 +231,8 @@ public class Constantes {
         String numVersion = BuildConfig.VERSION_NAME;
 
         if (Constantes.DEBUG) {
-            numVersion += " DEV";
+            numVersion += " DEV - build ";
+            numVersion += new Date(BuildConfig.TIMESTAMP);
         }
 
         return USER_AGENT + numVersion;

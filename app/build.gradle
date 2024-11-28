@@ -9,6 +9,8 @@ android {
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 35
+        // Enregistrer la date du build
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
         versionCode 281
         versionName "2.8.1"
