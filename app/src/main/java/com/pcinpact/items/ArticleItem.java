@@ -23,8 +23,6 @@ import com.pcinpact.utils.MyDateUtils;
 
 /**
  * Objet Article.
- *
- * @author Anael
  */
 public class ArticleItem implements Item {
     /**

@@ -26,8 +26,6 @@ import com.pcinpact.items.Item;
 
 /**
  * ViewHolder pour un ArticleItem.
- *
- * @author Anael
  */
 public class ArticleItemViewHolder implements ItemViewHolder {
     /**

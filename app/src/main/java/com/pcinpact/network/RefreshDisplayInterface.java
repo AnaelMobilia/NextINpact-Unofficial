@@ -24,8 +24,6 @@ import java.util.ArrayList;
 
 /**
  * Interface générique de callback à la fin des téléchargements HTML / Image.
- *
- * @author Anael
  */
 public interface RefreshDisplayInterface {
 

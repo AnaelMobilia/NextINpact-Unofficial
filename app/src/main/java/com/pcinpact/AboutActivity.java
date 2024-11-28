@@ -27,8 +27,6 @@ import com.pcinpact.utils.Constantes;
 
 /**
  * A propos...
- *
- * @author Anael
  */
 public class AboutActivity extends AppCompatActivity {
 

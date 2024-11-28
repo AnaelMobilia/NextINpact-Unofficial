@@ -31,8 +31,6 @@ import java.util.Locale;
 
 /**
  * Constantes et outils.
- *
- * @author Anael
  */
 public class Constantes {
     /**

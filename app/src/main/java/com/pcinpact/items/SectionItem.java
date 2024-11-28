@@ -20,8 +20,6 @@ package com.pcinpact.items;
 
 /**
  * Objet Section (séparateur date dans la liste d'articles).
- *
- * @author Anael
  */
 public class SectionItem implements Item {
     /**

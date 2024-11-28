@@ -24,8 +24,6 @@ import com.pcinpact.items.Item;
 
 /**
  * ViewHolder pour un SectionItem.
- *
- * @author Anael
  */
 public class SectionItemViewHolder implements ItemViewHolder {
     /**

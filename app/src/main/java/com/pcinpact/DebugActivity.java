@@ -40,8 +40,6 @@ import java.util.ArrayList;
 
 /**
  * Debug de l'application.
- *
- * @author Anael
  */
 public class DebugActivity extends AppCompatActivity implements AccountCheckInterface {
     @Override

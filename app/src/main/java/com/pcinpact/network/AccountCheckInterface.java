@@ -20,8 +20,6 @@ package com.pcinpact.network;
 
 /**
  * Interface générique de callback à la fin de vérification d'identifiants
- *
- * @author Anael
  */
 public interface AccountCheckInterface {
 

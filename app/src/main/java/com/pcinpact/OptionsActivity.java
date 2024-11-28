@@ -32,8 +32,6 @@ import java.util.Objects;
 
 /**
  * Options de l'application.
- *
- * @author Anael
  */
 public class OptionsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     @Override

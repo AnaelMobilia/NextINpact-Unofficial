@@ -30,8 +30,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Calcul de dates.
- *
- * @author Anael
  */
 public class MyDateUtils {
 

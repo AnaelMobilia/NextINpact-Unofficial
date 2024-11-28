@@ -42,8 +42,6 @@ import okio.Buffer;
 
 /**
  * Téléchargement des ressources.
- *
- * @author Anael
  */
 public class Downloader {
     public static final int CONTENT_HEADERS = 0;

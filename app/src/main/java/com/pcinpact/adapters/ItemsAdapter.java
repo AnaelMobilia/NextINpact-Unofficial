@@ -59,8 +59,6 @@ import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
 
 /**
  * Adapter pour le rendu des *Item.
- *
- * @author Anael
  */
 public class ItemsAdapter extends BaseAdapter {
     /**

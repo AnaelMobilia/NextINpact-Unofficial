@@ -65,8 +65,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Liste des articles
- *
- * @author Anael
  */
 public class ListeArticlesActivity extends AppCompatActivity implements RefreshDisplayInterface, OnItemClickListener, AccountCheckInterface {
     /**

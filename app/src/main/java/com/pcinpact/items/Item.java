@@ -20,8 +20,6 @@ package com.pcinpact.items;
 
 /**
  * Objet générique Item.
- *
- * @author Anael
  */
 public interface Item {
 

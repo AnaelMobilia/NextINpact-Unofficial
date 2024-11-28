@@ -28,8 +28,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Vérification d'un compte abonné
- *
- * @author Anael
  */
 public class AsyncAccountCheck extends AsyncTask<String, Void, Authentication> {
     /**

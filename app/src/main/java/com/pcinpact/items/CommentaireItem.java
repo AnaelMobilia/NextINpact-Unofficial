@@ -29,8 +29,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Objet Commentaire
- *
- * @author Anael
  */
 public class CommentaireItem implements Item, Comparable<CommentaireItem> {
     /**

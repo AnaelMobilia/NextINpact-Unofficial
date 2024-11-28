@@ -31,8 +31,6 @@ import com.pcinpact.utils.Constantes;
 
 /**
  * Affiche une image en grand
- *
- * @author Anael
  */
 public class ImageActivity extends AppCompatActivity {
 

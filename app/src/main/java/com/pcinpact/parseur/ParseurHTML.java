@@ -47,8 +47,6 @@ import java.util.regex.Pattern;
 
 /**
  * Parseur du code HTML
- *
- * @author Anael
  */
 public class ParseurHTML {
     /**

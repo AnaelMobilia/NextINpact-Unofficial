@@ -34,8 +34,6 @@ import java.util.ArrayList;
 
 /**
  * Abstraction de la BDD sqlite
- *
- * @author Anael
  */
 public final class DAO extends SQLiteOpenHelper {
     /**

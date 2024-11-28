@@ -28,8 +28,6 @@ import com.pcinpact.utils.Constantes;
 
 /**
  * Vérifie que le clic sur un lien saura bien être géré (évite crash car pas d'application capable...).
- *
- * @author Anael
  */
 class GestionLiens extends LinkMovementMethod {
     @Override

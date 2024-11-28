@@ -37,8 +37,6 @@ import com.pcinpact.utils.Constantes;
 
 /**
  * Affichage d'un article.
- *
- * @author Anael
  */
 public class ArticleActivity extends AppCompatActivity {
     /**

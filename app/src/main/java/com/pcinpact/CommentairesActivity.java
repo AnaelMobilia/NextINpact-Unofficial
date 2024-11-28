@@ -51,8 +51,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Affichage des commentaires
- *
- * @author Anael
  */
 public class CommentairesActivity extends AppCompatActivity implements RefreshDisplayInterface {
     /**

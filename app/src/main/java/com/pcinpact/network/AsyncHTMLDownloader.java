@@ -31,9 +31,7 @@ import java.util.ArrayList;
 import java.util.concurrent.RejectedExecutionException;
 
 /**
- * téléchargement du code HTML.
- *
- * @author Anael
+ * Téléchargement du code HTML.
  */
 public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? extends Item>> {
     /**

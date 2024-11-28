@@ -34,8 +34,6 @@ import java.util.ArrayList;
 
 /**
  * Gestion du cache de l'application
- *
- * @author Anael
  */
 public class CacheManager {
 

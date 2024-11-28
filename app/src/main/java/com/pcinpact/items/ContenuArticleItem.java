@@ -20,8 +20,6 @@ package com.pcinpact.items;
 
 /**
  * Contenu textuel d'un article.
- *
- * @author Anael
  */
 public class ContenuArticleItem implements Item {
 
