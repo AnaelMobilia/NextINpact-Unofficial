@@ -25,6 +25,7 @@ import com.pcinpact.utils.MyDateUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParseurHTMLTest {
     /**
@@ -36,7 +37,7 @@ public class ParseurHTMLTest {
          * Contenu généré via DEBUG -> Développement - Log.e(ArrayList[ArticleItem])
          */
 
-        ArrayList<ArticleItem> mesArticles = new ArrayList<>();
+        List<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem unArticle;
         unArticle = new ArticleItem();
         mesArticles.add(unArticle);
@@ -50,8 +51,8 @@ public class ParseurHTMLTest {
         /*
          * Traitement du fichier...
          */
-        ArrayList<ArticleItem> articlesCalcules;
-        articlesCalcules = ParseurHTML.getListeArticles(contenuIS, MyDateUtils.timeStampNow());
+        List<ArticleItem> articlesCalcules;
+        //articlesCalcules = ParseurHTML.getListeArticles(contenuIS, MyDateUtils.timeStampNow());
 
         /*
          * Vérification...

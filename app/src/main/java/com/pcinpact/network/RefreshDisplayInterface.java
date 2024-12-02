@@ -20,7 +20,7 @@ package com.pcinpact.network;
 
 import com.pcinpact.items.Item;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interface générique de callback à la fin des téléchargements HTML / Image.
@@ -33,5 +33,5 @@ public interface RefreshDisplayInterface {
      * @param uneURL   URL demdandée
      * @param mesItems liste d'*Itemstéléchargés
      */
-    void downloadHTMLFini(final String uneURL, final ArrayList<? extends Item> mesItems);
+    void downloadHTMLFini(final String uneURL, final List<Item> mesItems);
 }

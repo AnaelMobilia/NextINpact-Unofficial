@@ -37,6 +37,7 @@ import com.pcinpact.items.ContenuArticleItem;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contenu d'article, utilisé pour le slider
@@ -82,7 +83,7 @@ public class ArticleFragment extends Fragment {
         String monContenu = monArticle.getContenu();
 
         // Stockage en ArrayList pour l'itemAdapter
-        ArrayList<ContenuArticleItem> monAR = new ArrayList<>();
+        List<ContenuArticleItem> monAR = new ArrayList<>();
 
         // Création de mon CAI
         ContenuArticleItem monCAI = new ContenuArticleItem();

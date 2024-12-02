@@ -31,13 +31,13 @@ import com.pcinpact.datastorage.DAO;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ArticlePagerAdapter extends FragmentStateAdapter {
     /**
      * Les articles
      */
-    private final ArrayList<ArticleItem> mesArticles;
+    private final List<ArticleItem> mesArticles;
 
     public ArticlePagerAdapter(FragmentActivity fa, Context unContext) {
         super(fa);

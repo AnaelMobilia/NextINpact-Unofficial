@@ -53,11 +53,10 @@ public class ParseurHTML {
      * Parse la liste des articles + le brief
      *
      * @param unContenu contenu HTML brut
-     * @param currentTs Timestamp du téléchargement
      * @return liste d'articleItem
      */
-    public static ArrayList<ArticleItem> getListeArticles(final String unContenu, final long currentTs) {
-        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
+    public static List<ArticleItem> getListeArticles(final String unContenu) {
+        List<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
             // Récupération du HTML
@@ -143,8 +142,8 @@ public class ParseurHTML {
      * @param currentTs Timestamp du téléchargement
      * @return liste d'articleItem
      */
-    public static ArrayList<ArticleItem> getContenuArticles(final String unContenu, final long currentTs) {
-        ArrayList<ArticleItem> mesArticlesItem = new ArrayList<>();
+    public static List<ArticleItem> getContenuArticles(final String unContenu, final long currentTs) {
+        List<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
             // Récupération du HTML
@@ -392,8 +391,6 @@ public class ParseurHTML {
      * @param idArticle ID de l'article
      * @return liste de CommentaireItem (10 premiers commentaires) et ArticleItem (Nb total de commentaires)
      */
-    public static ArrayList<Item> getCommentaires(final String unContenu, final String headers, final int idArticle) {
-        // mon retour
         ArrayList<Item> monRetour = new ArrayList<>();
 
         // Mon Article
@@ -411,6 +408,8 @@ public class ParseurHTML {
         }
 
         monRetour.add(monArticle);
+    public static List<CommentaireItem> getCommentaires(final String unContenu, final int idArticle) {
+        List<CommentaireItem> monRetour = new ArrayList<>();
 
         try {
             // Récupération du JSON

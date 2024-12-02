@@ -31,6 +31,7 @@ import com.pcinpact.items.CommentaireItem;
 import com.pcinpact.utils.Constantes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstraction de la BDD sqlite
@@ -497,13 +498,13 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Charge les articles de la BDD triés par date de publication
      *
-     * @return ArrayList<ArticleItem> les articles demandés
+     * @return List<ArticleItem> les articles demandés
      */
-    public ArrayList<ArticleItem> chargerArticlesTriParDate() {
+    public List<ArticleItem> chargerArticlesTriParDate() {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_ARTICLES, ARTICLE__COLONNES, null, null, null, null, ARTICLE_TIMESTAMP + " DESC");
 
-        ArrayList<ArticleItem> mesArticles = new ArrayList<>();
+        List<ArticleItem> mesArticles = new ArrayList<>();
         ArticleItem monArticle;
         // Je passe tous les résultats
         while (monCursor.moveToNext()) {
@@ -597,11 +598,11 @@ public final class DAO extends SQLiteOpenHelper {
      * @param idArticle ID de l'article concerné
      * @return liste des commentaires
      */
-    public ArrayList<CommentaireItem> chargerCommentairesTriParID(final int idArticle) {
+    public List<CommentaireItem> chargerCommentairesTriParID(final int idArticle) {
         // Requête sur la BDD
         Cursor monCursor = maBDD.query(BDD_TABLE_COMMENTAIRES, COMMENTAIRE__COLONNES, COMMENTAIRE_ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)}, null, null, "1");
 
-        ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
+        List<CommentaireItem> mesCommentaires = new ArrayList<>();
         CommentaireItem monCommentaire;
         // Je passe tous les résultats
         while (monCursor.moveToNext()) {

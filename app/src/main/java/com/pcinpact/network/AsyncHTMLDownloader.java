@@ -28,12 +28,13 @@ import com.pcinpact.utils.MyDateUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Téléchargement du code HTML.
  */
-public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? extends Item>> {
+public class AsyncHTMLDownloader extends AsyncTask<String, Void, List<Item>> {
     /**
      * Parent qui sera rappelé à la fin.
      */
@@ -75,8 +76,8 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     }
 
     @Override
-    protected ArrayList<? extends Item> doInBackground(String... params) {
-        ArrayList<? extends Item> monRetour = new ArrayList<>();
+    protected List<Item> doInBackground(String... params) {
+        List<Item> monRetour = new ArrayList<>();
 
         // Timestamp du téléchargement
         long currentTs = MyDateUtils.timeStampNow();
@@ -88,17 +89,17 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
             switch (typeHTML) {
                 case Constantes.DOWNLOAD_HTML_LISTE_ARTICLES:
                 case Constantes.DOWNLOAD_HTML_LISTE_BRIEF:
-                    monRetour = ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY], currentTs);
+                    monRetour.addAll(ParseurHTML.getListeArticles(datas[Downloader.CONTENT_BODY]));
                     break;
 
                 case Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES:
                 case Constantes.DOWNLOAD_HTML_CONTENU_BRIEF:
-                    monRetour = ParseurHTML.getContenuArticles(datas[Downloader.CONTENT_BODY], currentTs);
+                    monRetour.addAll(ParseurHTML.getContenuArticles(datas[Downloader.CONTENT_BODY], currentTs));
                     break;
 
-                case Constantes.DOWNLOAD_HTML_COMMENTAIRES:
-                    monRetour = ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], datas[Downloader.CONTENT_HEADERS], idArticle);
-                    break;
+                //case Constantes.DOWNLOAD_HTML_COMMENTAIRES:
+                //    monRetour.addAll(ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], idArticle));
+                //    break;
 
                 default:
                     if (Constantes.DEBUG) {
@@ -111,7 +112,7 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, ArrayList<? ext
     }
 
     @Override
-    protected void onPostExecute(ArrayList<? extends Item> result) {
+    protected void onPostExecute(List<Item> result) {
         try {
             // Le parent peut avoir été garbage collecté
             monParent.get().downloadHTMLFini(URL, result);

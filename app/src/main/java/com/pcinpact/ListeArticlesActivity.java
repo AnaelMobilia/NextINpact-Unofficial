@@ -61,6 +61,7 @@ import com.pcinpact.utils.MyDateUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,7 +71,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     /**
      * Les articles
      */
-    private ArrayList<ArticleItem> mesArticles = new ArrayList<>();
+    private List<ArticleItem> mesArticles = new ArrayList<>();
     /**
      * ItemAdapter
      */
@@ -533,7 +534,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
     }
 
     @Override
-    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(String uneURL, List<Item> desItems) {
         // Téléchargement du nombre de commentaires et des 10 premiers commentaires
         if (uneURL.startsWith(Constantes.NEXT_URL_COMMENTAIRES)) {
             int idArticle = 0;
@@ -559,7 +560,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         }
         // Téléchargement de la liste des articles (y compris le brief)
         else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+            for (Item unArticleTmp : desItems) {
+                ArticleItem unArticle = (ArticleItem) unArticleTmp;
                 // Enregistrement en BDD si on ne connaissait pas encore l'article
                 boolean save = true;
                 for (ArticleItem unArticleEnBdd : mesArticles) {
@@ -591,7 +593,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
         } // Téléchargement du contenu...
         else {
-            for (ArticleItem unArticle : (ArrayList<ArticleItem>) desItems) {
+            for (Item unArticleTmp : desItems) {
+                ArticleItem unArticle = (ArticleItem) unArticleTmp;
                 // Récupérer les informations sur les commentaires en BDD
                 ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
                 unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
@@ -647,8 +650,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      *
      * @return Liste d'articles
      */
-    private ArrayList<Item> prepareAffichage() {
-        ArrayList<Item> monRetour = new ArrayList<>();
+    private List<Item> prepareAffichage() {
+        List<Item> monRetour = new ArrayList<>();
         String jourActuel = "";
 
         // Chargement des articles depuis la BDD (triés par date de publication)

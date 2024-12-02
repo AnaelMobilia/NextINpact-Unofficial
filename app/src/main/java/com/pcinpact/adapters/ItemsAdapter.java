@@ -53,7 +53,7 @@ import com.pcinpact.items.SectionItem;
 import com.pcinpact.parseur.TagHandler;
 import com.pcinpact.utils.Constantes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
 
@@ -72,7 +72,7 @@ public class ItemsAdapter extends BaseAdapter {
     /**
      * Items à afficher.
      */
-    private ArrayList<? extends Item> mesItems;
+    private List<? extends Item> mesItems;
 
     /**
      * Constructeur.
@@ -82,7 +82,7 @@ public class ItemsAdapter extends BaseAdapter {
      * @param desItems         items à afficher
      */
     public ItemsAdapter(final Context unContext, final LayoutInflater unLayoutInflater,
-                        final ArrayList<? extends Item> desItems) {
+                        final List<? extends Item> desItems) {
         /*
          * Cf issue #188 : une activité est requise pour que le layoutinflater puisse être associé à une activité =>
          * possibilité de lancer une autre apps
@@ -99,7 +99,7 @@ public class ItemsAdapter extends BaseAdapter {
      *
      * @param nouveauxItems liste d'items
      */
-    public void updateListeItems(final ArrayList<? extends Item> nouveauxItems) {
+    public void updateListeItems(final List<? extends Item> nouveauxItems) {
         mesItems = nouveauxItems;
     }
 

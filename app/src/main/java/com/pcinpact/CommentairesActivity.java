@@ -47,6 +47,7 @@ import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,7 +57,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     /**
      * Les commentaires
      */
-    private ArrayList<CommentaireItem> mesCommentaires = new ArrayList<>();
+    private List<CommentaireItem> mesCommentaires = new ArrayList<>();
     /**
      * ID de l'article
      */
@@ -444,7 +445,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     }
 
     @Override
-    public void downloadHTMLFini(String uneURL, ArrayList<? extends Item> desItems) {
+    public void downloadHTMLFini(String uneURL, List<Item> desItems) {
         // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
         if ((desItems.size() - 1) < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
             // Je note qu'il n'y a plus de commentaires

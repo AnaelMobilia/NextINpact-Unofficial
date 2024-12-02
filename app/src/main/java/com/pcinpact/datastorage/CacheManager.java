@@ -30,7 +30,7 @@ import com.pcinpact.utils.MyDateUtils;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Gestion du cache de l'application
@@ -59,7 +59,7 @@ public class CacheManager {
         long timestampMinArticle = MyDateUtils.timeStampDateActuelleMinus(nbJours);
 
         // Chargement de tous les articles de la BDD
-        ArrayList<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
+        List<ArticleItem> mesArticles = monDAO.chargerArticlesTriParDate();
 
         // Boucle sur les articles
         for (ArticleItem unArticle : mesArticles) {

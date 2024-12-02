@@ -36,7 +36,7 @@ import com.pcinpact.network.AsyncAccountCheck;
 import com.pcinpact.network.Authentication;
 import com.pcinpact.utils.Constantes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Debug de l'application.
@@ -134,7 +134,7 @@ public class DebugActivity extends AppCompatActivity implements AccountCheckInte
             // Si j'ai un article
             if (articleId != 0) {
                 // Chargement des commentaires
-                ArrayList<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParID(articleId);
+                List<CommentaireItem> lesCommentaires = monDAO.chargerCommentairesTriParID(articleId);
                 TextView maTextView = findViewById(R.id.debugTextViewHTML);
 
                 StringBuilder monContenu = new StringBuilder();
