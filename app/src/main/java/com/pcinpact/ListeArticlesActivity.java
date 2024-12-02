@@ -441,7 +441,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         long timeStampDernierBrief = timeStampConfig;
         for (ArticleItem unContenu : mesArticles) {
             // Contenu non synchronisé
-            if (unContenu.getIsBrief()) {
+            if (unContenu.isBrief()) {
                 // Brief
                 if (unContenu.getTimestampPublication() > timeStampDernierBrief) {
                     timeStampDernierBrief = unContenu.getTimestampPublication();
@@ -575,7 +575,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
                 // Téléchargement du contenu
                 AsyncHTMLDownloader monAHD;
-                if (unArticle.getIsBrief()) {
+                if (unArticle.isBrief()) {
                     monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF, unArticle.getURLseo(), unArticle.getId(), session);
                     // Lancement du téléchargement
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
@@ -604,7 +604,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 unArticle.setSousTitre(articleBdd.getSousTitre());
                 unArticle.setUrlIllustration(articleBdd.getUrlIllustration());
                 unArticle.setURLseo(articleBdd.getURLseo());
-                unArticle.setIsBrief(articleBdd.getIsBrief());
+                unArticle.setBrief(articleBdd.isBrief());
                 unArticle.setTimestampPublication(articleBdd.getTimestampPublication());
                 // Si l'article a été modifié après le téléchargement, ne pas conserver l'état de lecture
                 if (articleBdd.getTimestampDl() >= unArticle.getTimestampModification()) {
@@ -636,7 +636,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     }
                 }
                 // gestion du téléchargement GUI
-                if (unArticle.getIsBrief()) {
+                if (unArticle.isBrief()) {
                     finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
                 } else {
                     finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);

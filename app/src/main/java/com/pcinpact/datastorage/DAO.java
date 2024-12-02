@@ -311,7 +311,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_URL_SEO, unArticle.getURLseo());
         insertValues.put(ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR, unArticle.getParseurLastCommentId());
         insertValues.put(ARTICLE_TIMESTAMP_DL, unArticle.getTimestampDl());
-        insertValues.put(ARTICLE_BRIEF, unArticle.getIsBrief());
+        insertValues.put(ARTICLE_BRIEF, unArticle.isBrief());
 
         try {
             maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
@@ -704,7 +704,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setURLseo(unCursor.getString(11));
         monArticle.setParseurLastCommentId(unCursor.getInt(12));
         monArticle.setTimestampDl(unCursor.getLong(13));
-        monArticle.setIsBrief((unCursor.getInt(14) > 0));
+        monArticle.setBrief((unCursor.getInt(14) > 0));
 
         return monArticle;
     }

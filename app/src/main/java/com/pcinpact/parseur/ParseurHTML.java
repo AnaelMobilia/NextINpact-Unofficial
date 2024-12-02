@@ -87,14 +87,14 @@ public class ParseurHTML {
                     monArticleItem.setURLseo(maValeur);
 
                     if (maValeur.contains(Constantes.NEXT_TYPE_ARTICLES_BRIEF)) {
-                        monArticleItem.setIsBrief(true);
+                        monArticleItem.setBrief(true);
                     } else {
-                        monArticleItem.setIsBrief(false);
+                        monArticleItem.setBrief(false);
                     }
                 }
 
                 // URL de l'image d'illustration (seulement pour les articles)
-                if (!monArticleItem.getIsBrief()) {
+                if (!monArticleItem.isBrief()) {
                     maSelection = unArticle.select("img");
                     if (!maSelection.isEmpty()) {
                         maValeur = maSelection.get(0).attr("src");

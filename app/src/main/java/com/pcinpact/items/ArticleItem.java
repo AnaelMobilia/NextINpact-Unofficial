@@ -344,14 +344,14 @@ public class ArticleItem implements Item {
      *
      * @return boolean
      */
-    public boolean getIsBrief() {
+    public boolean isBrief() {
         return isBrief;
     }
 
     /**
      * @param isBrief Est-ce un brief ?
      */
-    public void setIsBrief(boolean isBrief) {
+    public void setBrief(boolean isBrief) {
         this.isBrief = isBrief;
     }
 }
