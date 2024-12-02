@@ -151,6 +151,10 @@ public class Constantes {
      * Date et heure de publication d'un commentaire.
      */
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+    /**
+     * Date et heure au format ISO 8601
+     */
+    public static final String FORMAT_DATE_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     /*
      * FORMATS D'AFFICHAGE.

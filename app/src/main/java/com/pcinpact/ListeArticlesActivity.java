@@ -606,9 +606,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 unArticle.setURLseo(articleBdd.getURLseo());
                 unArticle.setBrief(articleBdd.isBrief());
                 unArticle.setTimestampPublication(articleBdd.getTimestampPublication());
-                // Si l'article a été modifié après le téléchargement, ne pas conserver l'état de lecture
-                if (articleBdd.getTimestampDl() >= unArticle.getTimestampModification()) {
-                    unArticle.setLu(articleBdd.isLu());
+                unArticle.setLu(articleBdd.isLu());
+                unArticle.setUpdated(articleBdd.isUpdated());
+                // L'article a été lu et a été modifié après son téléchargement précédent ?
+                if (articleBdd.isLu() && articleBdd.getTimestampDl() < unArticle.getTimestampModification()) {
+                    unArticle.setUpdated(true);
                 }
                 // Conserver le contenu complet d'un article Abonné déjà téléchargé
                 if (unArticle.isAbonne() && articleBdd.isDlContenuAbonne()) {

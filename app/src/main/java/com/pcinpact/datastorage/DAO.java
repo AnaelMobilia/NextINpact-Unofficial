@@ -40,7 +40,7 @@ public final class DAO extends SQLiteOpenHelper {
     /**
      * Version de la BDD (à mettre à jour à chaque changement du schèma)
      */
-    private static final int BDD_VERSION = 13;
+    private static final int BDD_VERSION = 14;
     /**
      * Nom de la BDD
      */
@@ -111,9 +111,13 @@ public final class DAO extends SQLiteOpenHelper {
      */
     private static final String ARTICLE_BRIEF = "brief";
     /**
+     * Champ articles -> mis à jour ?
+     */
+    private static final String ARTICLE_MIS_A_JOUR = "updated";
+    /**
      * Toutes les colonnes à charger pour un article
      */
-    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU, ARTICLE_URL_SEO, ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR, ARTICLE_TIMESTAMP_DL, ARTICLE_BRIEF};
+    private static final String[] ARTICLE__COLONNES = new String[]{ARTICLE_ID, ARTICLE_TITRE, ARTICLE_SOUS_TITRE, ARTICLE_TIMESTAMP, ARTICLE_ILLUSTRATION_URL, ARTICLE_CONTENU, ARTICLE_NB_COMMS, ARTICLE_IS_ABONNE, ARTICLE_IS_LU, ARTICLE_DL_CONTENU_ABONNE, ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU, ARTICLE_URL_SEO, ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR, ARTICLE_TIMESTAMP_DL, ARTICLE_BRIEF, ARTICLE_MIS_A_JOUR};
     /**
      * Table commentaires
      */
@@ -207,7 +211,7 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Table des articles
-        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER NOT NULL PRIMARY KEY, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_URL_SEO + " TEXT," + ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR + " INTEGER, " + ARTICLE_TIMESTAMP_DL + " INTEGER, " + ARTICLE_IS_LU + " BOOLEAN);";
+        String reqCreateArticles = "CREATE TABLE " + BDD_TABLE_ARTICLES + " (" + ARTICLE_ID + " INTEGER NOT NULL PRIMARY KEY, " + ARTICLE_TITRE + " TEXT NOT NULL, " + ARTICLE_SOUS_TITRE + " TEXT, " + ARTICLE_TIMESTAMP + " INTEGER NOT NULL, " + ARTICLE_ILLUSTRATION_URL + " TEXT, " + ARTICLE_CONTENU + " TEXT, " + ARTICLE_NB_COMMS + " INTEGER, " + ARTICLE_IS_ABONNE + " BOOLEAN, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_DL_CONTENU_ABONNE + " BOOLEAN, " + ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU + " INTEGER, " + ARTICLE_URL_SEO + " TEXT," + ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR + " INTEGER, " + ARTICLE_TIMESTAMP_DL + " INTEGER, " + ARTICLE_IS_LU + " BOOLEAN, " + ARTICLE_MIS_A_JOUR + " BOOLEAN);";
         db.execSQL(reqCreateArticles);
 
         // Table des commentaires
@@ -277,6 +281,16 @@ public final class DAO extends SQLiteOpenHelper {
                             Log.e("DAO", "onUpgrade() 12", e);
                         }
                     }
+                case 13:
+                    try {
+                        // Ajout du timestamp de téléchargement
+                        String reqUpdateFrom13 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_MIS_A_JOUR + " BOOLEAN;";
+                        db.execSQL(reqUpdateFrom13);
+                    } catch (SQLiteException e) {
+                        if (Constantes.DEBUG) {
+                            Log.e("DAO", "onUpgrade() 13", e);
+                        }
+                    }
                 default:
                     // DEBUG
                     if (Constantes.DEBUG) {
@@ -312,6 +326,7 @@ public final class DAO extends SQLiteOpenHelper {
         insertValues.put(ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR, unArticle.getParseurLastCommentId());
         insertValues.put(ARTICLE_TIMESTAMP_DL, unArticle.getTimestampDl());
         insertValues.put(ARTICLE_BRIEF, unArticle.isBrief());
+        insertValues.put(ARTICLE_MIS_A_JOUR, unArticle.isUpdated());
 
         try {
             maBDD.insert(BDD_TABLE_ARTICLES, null, insertValues);
@@ -425,6 +440,7 @@ public final class DAO extends SQLiteOpenHelper {
         // Les datas à MàJ
         ContentValues updateValues = new ContentValues();
         updateValues.put(ARTICLE_IS_LU, true);
+        updateValues.put(ARTICLE_MIS_A_JOUR, false);
 
         try {
             maBDD.update(BDD_TABLE_ARTICLES, updateValues, ARTICLE_ID + "=?", new String[]{String.valueOf(idArticle)});
@@ -705,6 +721,7 @@ public final class DAO extends SQLiteOpenHelper {
         monArticle.setParseurLastCommentId(unCursor.getInt(12));
         monArticle.setTimestampDl(unCursor.getLong(13));
         monArticle.setBrief((unCursor.getInt(14) > 0));
+        monArticle.setUpdated((unCursor.getInt(15) > 0));
 
         return monArticle;
     }

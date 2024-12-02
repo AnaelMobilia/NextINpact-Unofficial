@@ -137,6 +137,7 @@ https://next.ink/subs"</string>
     <!-- Liste des articles -->
     <string name="accueilBadgeAbonne">"  Abonné  "</string>
     <string name="accueilImageArticleAlt">Image article</string>
+    <string name="accueilBadgeUpdated">"  Mis à jour  "</string>
 
     <!-- Commentaires -->
     <string name="commentairesPlusDeCommentaires">Télécharger les commentaires suivants</string>

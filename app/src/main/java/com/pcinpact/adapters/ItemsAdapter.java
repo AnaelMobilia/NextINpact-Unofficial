@@ -173,6 +173,7 @@ public class ItemsAdapter extends BaseAdapter {
                     articleVH.relativeLayout = maView.findViewById(R.id.relativeLayoutArticle);
                     articleVH.imageArticle = maView.findViewById(R.id.imageArticle);
                     articleVH.labelAbonne = maView.findViewById(R.id.labelAbonne);
+                    articleVH.labelUpdated = maView.findViewById(R.id.labelUpdated);
                     articleVH.titreArticle = maView.findViewById(R.id.titreArticle);
                     articleVH.heureArticle = maView.findViewById(R.id.heureArticle);
                     articleVH.sousTitreArticle = maView.findViewById(R.id.sousTitreArticle);
@@ -305,6 +306,12 @@ public class ItemsAdapter extends BaseAdapter {
                     } else {
                         articleVH.labelAbonne.setVisibility(View.GONE);
                     }
+                    // Gestion du badge "Mis à jour"
+                    if (ai.isUpdated()) {
+                        articleVH.labelUpdated.setVisibility(View.VISIBLE);
+                    } else {
+                        articleVH.labelUpdated.setVisibility(View.GONE);
+                    }
                     // Remplissage des textview
                     articleVH.titreArticle.setText(ai.getTitre());
                     articleVH.heureArticle.setText(ai.getHeureMinutePublication());
@@ -343,6 +350,7 @@ public class ItemsAdapter extends BaseAdapter {
                     appliqueZoom(articleVH.sousTitreArticle, Constantes.TEXT_SIZE_SMALL);
                     appliqueZoom(articleVH.commentairesArticle, Constantes.TEXT_SIZE_MICRO);
                     appliqueZoom(articleVH.labelAbonne, Constantes.TEXT_SIZE_SMALL);
+                    appliqueZoom(articleVH.labelUpdated, Constantes.TEXT_SIZE_SMALL);
                     break;
 
                 case Item.TYPE_COMMENTAIRE:

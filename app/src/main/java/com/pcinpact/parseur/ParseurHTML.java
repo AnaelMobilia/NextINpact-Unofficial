@@ -23,7 +23,6 @@ import android.util.Log;
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
-import com.pcinpact.items.Item;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
@@ -42,8 +41,7 @@ import org.jsoup.select.NodeFilter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * Parseur du code HTML
@@ -77,7 +75,7 @@ public class ParseurHTML {
                 maSelection = unArticle.select("p[class=next-post-time] > abbr");
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).attr("title");
-                    monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur));
+                    monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur, Constantes.FORMAT_DATE_TEXTUELLE, true));
                 }
 
                 // URL Seo + type (brief / article)
@@ -149,10 +147,11 @@ public class ParseurHTML {
             // Récupération du HTML
             Document maPage = Jsoup.parse(unContenu);
             Elements mesArticles = maPage.select("article");
-            ArticleItem monArticleItem;
+            ArticleItem monArticleItem = new ArticleItem();
 
-            for (Element unArticle : mesArticles) {
-                monArticleItem = new ArticleItem();
+            if (!mesArticles.isEmpty()) {
+                Element unArticle = mesArticles.get(0);
+                // Variables pour faire des recherches de valeurs
                 Elements maSelection;
                 String maValeur;
 
@@ -161,7 +160,14 @@ public class ParseurHTML {
 
                 // Timestamp de téléchargement
                 monArticleItem.setTimestampDl(currentTs);
-                monArticleItem.setTimestampModification(currentTs);
+
+                // Récupération de la date de mise à jour dans les meta
+                // <meta property="article:modified_time" content="2024-12-02T15:42:58+00:00" />
+                Elements dates = maPage.select("meta[property=article:modified_time]");
+                if (!dates.isEmpty()) {
+                    monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(dates.get(0).attr("content"), Constantes.FORMAT_DATE_ISO8601, false));
+                }
+
 
                 // Statut abonné
                 maSelection = unArticle.select("div[id^=next-paywall]");
@@ -429,7 +435,7 @@ public class ParseurHTML {
                 monCommentaireItem.setAuteur(Parser.unescapeEntities(unCommentaire.getString("next_author"), true));
 
                 // Date
-                monCommentaireItem.setTimestampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date")));
+                monCommentaireItem.setTimestampPublication(MyDateUtils.convertToTimestamp(unCommentaire.getString("date"), Constantes.FORMAT_DATE_TEXTUELLE, true));
 
                 // Contenu
                 String contenuHtml = unCommentaire.getJSONObject("content").getString("rendered");

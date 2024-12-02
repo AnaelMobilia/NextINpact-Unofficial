@@ -89,6 +89,10 @@ public class ArticleItem implements Item {
      * Est-ce un brief ?
      */
     private boolean isBrief = false;
+    /**
+     * Mis à jour depuis la lecture ?
+     */
+    private boolean isUpdated = false;
 
     @Override
     public int getType() {
@@ -353,5 +357,21 @@ public class ArticleItem implements Item {
      */
     public void setBrief(boolean isBrief) {
         this.isBrief = isBrief;
+    }
+
+    /**
+     * L'article a-t-il été mis à jour depuis sa lecture ?
+     *
+     * @return boolean
+     */
+    public boolean isUpdated() {
+        return isUpdated;
+    }
+
+    /**
+     * @param updated L'article a-t-il été mis à jour depuis sa lecture ?
+     */
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
     }
 }

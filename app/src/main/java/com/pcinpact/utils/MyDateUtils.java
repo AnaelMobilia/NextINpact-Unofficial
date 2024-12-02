@@ -36,20 +36,25 @@ public class MyDateUtils {
     /**
      * Convertit une date texte en timestamp au format Next
      *
-     * @param uneDate date au format textuel
+     * @param uneDate    date au format textuel
+     * @param formatDate format de la date (Constantes.FORMAT_DATE_xxx)
+     * @param lowerCaseDate Mettre la date source en minuscules ?
      * @return timestamp
      */
-    public static long convertToTimestamp(String uneDate) {
+    public static long convertToTimestamp(String uneDate, String formatDate, boolean lowerCaseDate) {
         // Ex de dates : Vendredi 15 novembre 2024 à 18h21
-        DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_DATE_TEXTUELLE, Constantes.LOCALE);
+        if(lowerCaseDate) {
+            uneDate = uneDate.toLowerCase();
+        }
+        DateFormat dfm = new SimpleDateFormat(formatDate, Constantes.LOCALE);
         dfm.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         long laDateTS = 0;
         try {
             // Récupération du timestamp
-            laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate.toLowerCase()).getTime());
+            laDateTS = TimeUnit.MILLISECONDS.toSeconds(dfm.parse(uneDate).getTime());
         } catch (ParseException | NullPointerException e) {
             if (Constantes.DEBUG) {
-                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : \"" + uneDate + "\"", e);
+                Log.e("ParseurHTML", "convertToTimeStamp() - erreur parsage date : \"" + uneDate + "\" - format : \"" + formatDate + "\"", e);
             }
         }
 

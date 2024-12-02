@@ -37,6 +37,10 @@ public class ArticleItemViewHolder implements ItemViewHolder {
      */
     public TextView labelAbonne;
     /**
+     * Label "Mis à jour"
+     */
+    public TextView labelUpdated;
+    /**
      * Titre.
      */
     public TextView titreArticle;
