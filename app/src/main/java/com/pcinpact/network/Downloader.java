@@ -88,7 +88,7 @@ public class Downloader {
                 datas[CONTENT_HEADERS] = response.headers().toString();
             }
             response.close();
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException | NullPointerException | IllegalArgumentException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("Downloader", "download() - Erreur de téléchargement pour " + uneURL, e);
