@@ -140,21 +140,22 @@ public class Constantes {
      * FORMATS DU SITE POUR LE PARSEUR.
      */
     /**
-     * Format des dates sur le site.
+     * Format de date à utiliser pour appeler l'URL de Next
      */
-    public static final String FORMAT_DATE = "yyyy-MM-dd";
+    public static final String FORMAT_DATE_URL = "yyyy-MM-dd";
     /**
-     * Format des dates textuelles sur le site
+     * Format des dates sur la liste des articles
      */
-    public static final String FORMAT_DATE_TEXTUELLE = "EEEE dd MMMM yyyy 'à' HH'h'mm";
+    public static final String FORMAT_DATE_LISTE_ARTICLES = "EEEE dd MMMM yyyy 'à' HH'h'mm";
+    /**
+     * Date et heure de modification d'un article au format ISO 8601
+     */
+    public static final String FORMAT_DATE_MODIF_ARTICLE = "yyyy-MM-dd'T'HH:mm:ssXXX";
+
     /**
      * Date et heure de publication d'un commentaire.
      */
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
-    /**
-     * Date et heure au format ISO 8601
-     */
-    public static final String FORMAT_DATE_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     /*
      * FORMATS D'AFFICHAGE.

@@ -75,7 +75,7 @@ public class ParseurHTML {
                 maSelection = unArticle.select("p[class=next-post-time] > abbr");
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).attr("title");
-                    monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur, Constantes.FORMAT_DATE_TEXTUELLE, true));
+                    monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur, Constantes.FORMAT_DATE_LISTE_ARTICLES, true));
                 }
 
                 // URL Seo + type (brief / article)
@@ -165,9 +165,8 @@ public class ParseurHTML {
                 // <meta property="article:modified_time" content="2024-12-02T15:42:58+00:00" />
                 Elements dates = maPage.select("meta[property=article:modified_time]");
                 if (!dates.isEmpty()) {
-                    monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(dates.get(0).attr("content"), Constantes.FORMAT_DATE_ISO8601, false));
+                    monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(dates.get(0).attr("content"), Constantes.FORMAT_DATE_MODIF_ARTICLE, false));
                 }
-
 
                 // Statut abonné
                 maSelection = unArticle.select("div[id^=next-paywall]");

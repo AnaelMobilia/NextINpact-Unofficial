@@ -498,8 +498,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
      */
     private void telechargerLesContenus() {
         // Liste des articles et du brief
-        String monUrl = Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.formatDate(Constantes.FORMAT_DATE, max(timestampMinArticle, timestampMinBrief));
-        monUrl += Constantes.NEXT_URL_LISTE_ARTICLE_END + MyDateUtils.formatDate(Constantes.FORMAT_DATE, MyDateUtils.timeStampNow());
+        String monUrl = Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.formatDate(Constantes.FORMAT_DATE_URL, max(timestampMinArticle, timestampMinBrief));
+        monUrl += Constantes.NEXT_URL_LISTE_ARTICLE_END + MyDateUtils.formatDate(Constantes.FORMAT_DATE_URL, MyDateUtils.timeStampNow());
         AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, monUrl, 0, session);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
