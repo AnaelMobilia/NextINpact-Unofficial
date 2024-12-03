@@ -73,11 +73,7 @@ public class Constantes {
     /**
      * URL de téléchargement des commentaires.
      */
-    public static final int NB_COMMENTAIRES_PAR_PAGE = 10;
-    // On veut avoir les commentaires par ordre chronologique (donc croissant)
-    public static final String NEXT_URL_COMMENTAIRES = NEXT_API_URL + "wp/v2/comments?orderby=date_gmt&order=asc&_fields=id,next_author,content,parent,date&post=";
-    public static final String NEXT_URL_COMMENTAIRES_PARAM_PAGE = "&page=";
-    public static final String NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL = "x-wp-total: ";
+    // Dans le contenu de l'article
     /**
      * URL d'authentification.
      */
@@ -151,9 +147,12 @@ public class Constantes {
      * Date et heure de modification d'un article au format ISO 8601
      */
     public static final String FORMAT_DATE_MODIF_ARTICLE = "yyyy-MM-dd'T'HH:mm:ssXXX";
-
     /**
-     * Date et heure de publication d'un commentaire.
+     * Date et heure de publication d'un commentaire
+     */
+    public static final String FORMAT_DATE_COMMENTAIRE = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * Format à utiliser pour l'affichage dans l'application pour les commentaires
      */
     public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
 

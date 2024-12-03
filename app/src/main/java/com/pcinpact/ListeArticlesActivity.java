@@ -535,31 +535,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
 
     @Override
     public void downloadHTMLFini(String uneURL, List<Item> desItems) {
-        // Téléchargement du nombre de commentaires et des 10 premiers commentaires
-        if (uneURL.startsWith(Constantes.NEXT_URL_COMMENTAIRES)) {
-            int idArticle = 0;
-            for (Item unItem : desItems) {
-                // Nombre total de commentaires d'un article (entête Constantes.NEXT_URL_COMMENTAIRES_HEADER_NB_TOTAL)
-                if (unItem instanceof ArticleItem) {
-                    monDAO.updateNbCommentairesArticle(((ArticleItem) unItem).getId(), ((ArticleItem) unItem).getNbCommentaires());
-                }
-                // Commentaires de l'article
-                else {
-                    monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
-                    idArticle = ((CommentaireItem) unItem).getIdArticle();
-                }
-            }
-            // Enregistrer la date de téléchargement
-            if (idArticle != 0) {
-                long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
-            }
-
-            // gestion du téléchargement GUI
-            finChargementGUI(Constantes.DOWNLOAD_HTML_COMMENTAIRES);
-        }
         // Téléchargement de la liste des articles (y compris le brief)
-        else if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
+        if (uneURL.startsWith(Constantes.NEXT_URL_LISTE_ARTICLE)) {
             for (Item unArticleTmp : desItems) {
                 ArticleItem unArticle = (ArticleItem) unArticleTmp;
                 // Enregistrement en BDD si on ne connaissait pas encore l'article
@@ -593,55 +570,50 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
             }
         } // Téléchargement du contenu...
         else {
-            for (Item unArticleTmp : desItems) {
-                ArticleItem unArticle = (ArticleItem) unArticleTmp;
-                // Récupérer les informations sur les commentaires en BDD
-                ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
-                unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
-                unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
-                // Récupérer certaines informations
-                unArticle.setTitre(articleBdd.getTitre());
-                unArticle.setSousTitre(articleBdd.getSousTitre());
-                unArticle.setUrlIllustration(articleBdd.getUrlIllustration());
-                unArticle.setURLseo(articleBdd.getURLseo());
-                unArticle.setBrief(articleBdd.isBrief());
-                unArticle.setTimestampPublication(articleBdd.getTimestampPublication());
-                unArticle.setLu(articleBdd.isLu());
-                unArticle.setUpdated(articleBdd.isUpdated());
-                // L'article a été lu et a été modifié après son téléchargement précédent ?
-                if (articleBdd.isLu() && articleBdd.getTimestampDl() < unArticle.getTimestampModification()) {
-                    unArticle.setUpdated(true);
-                }
-                // Conserver le contenu complet d'un article Abonné déjà téléchargé
-                if (unArticle.isAbonne() && articleBdd.isDlContenuAbonne()) {
-                    unArticle.setContenu(articleBdd.getContenu());
-                    unArticle.setDlContenuAbonne(articleBdd.isDlContenuAbonne());
-                }
-                // Enregistrer en BDD l'article
-                monDAO.enregistrerArticle(unArticle);
-
-                // Télécharger le nombre de commentaires de chaque article SAUF SI :
-                //   - L'API indique qu'il n'y a pas de commentaires (-1)
-                //   - On a déjà téléchargé l'ID du dernier commentaire indiqué par l'API
-                //   - L'ID du dernier commentaire indiqué par l'API n'a pas changé depuis la dernière synchro
-                int idDernierCommentaireApi = unArticle.getParseurLastCommentId();
-                int idDernierCommentaireTelecharge = monDAO.getMaxIdCommentaireTelecharge(unArticle.getId());
-                int idDernierCommentaireApiEnBdd = articleBdd.getParseurLastCommentId();
-                if (idDernierCommentaireApi != -1 && idDernierCommentaireApi != idDernierCommentaireTelecharge && idDernierCommentaireApi != idDernierCommentaireApiEnBdd) {
-                    AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, Constantes.NEXT_URL_COMMENTAIRES + unArticle.getId(), unArticle.getId(), session);
-                    // Lancement du téléchargement
-                    launchAHD(monAHD, Constantes.DOWNLOAD_HTML_COMMENTAIRES);
-                } else {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.d("ListeArticlesActivity", "downloadHTMLFini() -  " + unArticle.getId() + " : chargement des commentaires non requis : " + idDernierCommentaireTelecharge + " -> parseur " + idDernierCommentaireApi);
+            for (Item unItem : desItems) {
+                // Récupération des commentaires
+                if (unItem instanceof CommentaireItem) {
+                    CommentaireItem unCommentaire = (CommentaireItem) unItem;
+                    monDAO.enregistrerCommentaireSiNouveau(unCommentaire);
+                    int idArticle = unCommentaire.getIdArticle();
+                    // Enregistrer la date de téléchargement
+                    if (idArticle != 0) {
+                        long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                        monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
                     }
-                }
-                // gestion du téléchargement GUI
-                if (unArticle.isBrief()) {
-                    finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
-                } else {
-                    finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                } else if (unItem instanceof ArticleItem) {
+                    ArticleItem unArticle = (ArticleItem) unItem;
+                    // Récupérer les informations sur les commentaires en BDD
+                    ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
+                    unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
+                    unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
+                    // Récupérer certaines informations
+                    unArticle.setTitre(articleBdd.getTitre());
+                    unArticle.setSousTitre(articleBdd.getSousTitre());
+                    unArticle.setUrlIllustration(articleBdd.getUrlIllustration());
+                    unArticle.setURLseo(articleBdd.getURLseo());
+                    unArticle.setBrief(articleBdd.isBrief());
+                    unArticle.setTimestampPublication(articleBdd.getTimestampPublication());
+                    unArticle.setLu(articleBdd.isLu());
+                    unArticle.setUpdated(articleBdd.isUpdated());
+                    // L'article a été lu et a été modifié après son téléchargement précédent ?
+                    if (articleBdd.isLu() && articleBdd.getTimestampDl() < unArticle.getTimestampModification()) {
+                        unArticle.setUpdated(true);
+                    }
+                    // Conserver le contenu complet d'un article Abonné déjà téléchargé
+                    if (unArticle.isAbonne() && articleBdd.isDlContenuAbonne()) {
+                        unArticle.setContenu(articleBdd.getContenu());
+                        unArticle.setDlContenuAbonne(articleBdd.isDlContenuAbonne());
+                    }
+                    // Enregistrer en BDD l'article
+                    monDAO.enregistrerArticle(unArticle);
+
+                    // gestion du téléchargement GUI
+                    if (unArticle.isBrief()) {
+                        finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
+                    } else {
+                        finChargementGUI(Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
+                    }
                 }
             }
         }
