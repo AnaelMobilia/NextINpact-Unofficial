@@ -218,7 +218,7 @@ public class ParseurHTML {
                 // Pour chaque iframe
                 for (Element uneIframe : lesIframes) {
                     // URL du lecteur
-                    String urlLecteurBrute = uneIframe.attr("src");
+                    String urlLecteurBrute = Parser.unescapeEntities(uneIframe.attr("src"), true);
                     String urlLecteur = urlLecteurBrute.toLowerCase(Constantes.LOCALE);
 
                     for (String unScheme : schemes) {
@@ -227,13 +227,13 @@ public class ParseurHTML {
                             urlLecteur = urlLecteur.substring(unScheme.length());
                             // DEBUG
                             if (Constantes.DEBUG) {
-                                Log.w("ParseurHTML", "getArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
+                                Log.w("ParseurHTML", "getContenuArticle() - Iframe : utilisation du scheme " + unScheme + " => " + urlLecteur);
                             }
                         }
                     }
 
                     // ID de la vidéo - sur l'URL brute pour gérer les ID de vidéo avec des majuscules
-                    String idVideo = urlLecteurBrute.substring(urlLecteur.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
+                    String idVideo = urlLecteurBrute.substring(urlLecteurBrute.lastIndexOf("/") + 1).split("\\?")[0].split("#")[0];
 
                     // Ma substitution
                     String monRemplacement;
@@ -243,41 +243,41 @@ public class ParseurHTML {
                         // Liste de lecture Youtube
                         // Recalcul de l'ID de la vidéo (cas particulier)
                         idVideo = urlLecteur.substring(urlLecteur.lastIndexOf("list=") + "list=".length()).split("\\?")[0].split("#")[0];
-                        monRemplacement = "<a href=\"http://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
+                        monRemplacement = "<a href=\"https://www.youtube.com/playlist?list=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_liste_youtube + "\" /></a>";
                     } else if (urlLecteur.startsWith("www.youtube.com/embed/") || urlLecteur.startsWith("www.youtube-nocookie.com/embed/")) {
                         // Youtube
-                        monRemplacement = "<a href=\"http://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
+                        monRemplacement = "<a href=\"https://www.youtube.com/watch?v=" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_youtube + "\" /></a>";
                     } else if (urlLecteur.startsWith("www.dailymotion.com/embed/video/")) {
                         // Dailymotion
-                        monRemplacement = "<a href=\"http://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
+                        monRemplacement = "<a href=\"https://www.dailymotion.com/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_dailymotion + "\" /></a>";
                     } else if (urlLecteur.startsWith("player.vimeo.com/video/")) {
                         // VIMEO
-                        monRemplacement = "<a href=\"http://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
+                        monRemplacement = "<a href=\"https://www.vimeo.com/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vimeo + "\" /></a>";
                     } else if (urlLecteur.startsWith("static.videos.gouv.fr/player/video/")) {
                         // Videos.gouv.fr
-                        monRemplacement = "<a href=\"http://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
+                        monRemplacement = "<a href=\"https://static.videos.gouv.fr/player/video/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_videos_gouv_fr + "\" /></a>";
                     } else if (urlLecteur.startsWith("vid.me")) {
                         // Vidme
                         monRemplacement = "<a href=\"https://vid.me/" + idVideo + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_vidme + "\" /></a>";
                     } else if (urlLecteur.startsWith("w.soundcloud.com/player/")) {
                         // Soundcloud (l'URL commence bien par w.soundcloud !)
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
+                        monRemplacement = "<a href=\"https://" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_soundcloud + "\" /></a>";
                     } else if (urlLecteur.startsWith("www.scribd.com/embeds/")) {
                         // Scribd
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
+                        monRemplacement = "<a href=\"https://" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_scribd + "\" /></a>";
                     } else if (urlLecteur.startsWith("player.canalplus.fr/embed/")) {
                         // Canal+
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
+                        monRemplacement = "<a href=\"https://" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_canalplus + "\" /></a>";
                     } else if (urlLecteur.startsWith("www.arte.tv/")) {
                         // Arte
-                        monRemplacement = "<a href=\"" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
+                        monRemplacement = "<a href=\"https://" + urlLecteur + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_arte + "\" /></a>";
                     } else {
                         // Déchet (catch all)
                         monRemplacement = "<a href=\"" + uneIframe.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
 
                         // DEBUG
                         if (Constantes.DEBUG) {
-                            Log.e("ParseurHTML", "getArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
+                            Log.e("ParseurHTML", "getContenuArticle() - Iframe non gérée dans " + monArticleItem.getId() + " : " + uneIframe.absUrl("src"));
                         }
                     }
                     // Je remplace l'iframe par mon contenu
@@ -286,7 +286,7 @@ public class ParseurHTML {
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.i("ParseurHTML", "Remplacement par une iframe : " + monRemplacement);
+                        Log.i("ParseurHTML", "getContenuArticle() - Remplacement par une iframe : " + urlLecteurBrute + " => " + monRemplacement);
                     }
                 }
 
