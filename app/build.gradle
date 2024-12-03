@@ -74,6 +74,12 @@ dependencies {
     implementation 'com.github.andremion:counterfab:1.2.2'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 /**
  * Affichage des warnings java à la compilation
  */
