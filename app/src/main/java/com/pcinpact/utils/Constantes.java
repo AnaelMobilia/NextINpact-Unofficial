@@ -51,10 +51,6 @@ public class Constantes {
      */
     public static final Locale LOCALE = Locale.FRANCE;
     /**
-     * Encodage des pages.
-     */
-    public static final String X_NEXT_ENCODAGE = "UTF-8";
-    /**
      * URL de téléchargement Next.
      */
     public static final String NEXT_URL = "https://next.ink/";
@@ -71,18 +67,10 @@ public class Constantes {
     public static final String NEXT_TYPE_ARTICLES_STANDARD = "post";
     public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief_article";
     /**
-     * URL de téléchargement des commentaires.
-     */
-    // Dans le contenu de l'article
-    /**
      * URL d'authentification.
      */
     public static final String NEXT_URL_PRE_AUTH = NEXT_URL + "login/";
     public static final String NEXT_URL_AUTH = NEXT_URL + "wp-admin/admin-ajax.php?action=ajaxlogin";
-    /**
-     * URL des smileys
-     */
-    public static final String X_CDN_SMILEY_URL = "https://cdn2.nextinpact.com/smileys/";
 
     /**
      * Timeout pour les téléchargements (en ms) - default = 10s.
@@ -294,21 +282,6 @@ public class Constantes {
 
         Editor editor = mesPrefs.edit();
         editor.putBoolean(unContext.getString(idOption), valeurOption);
-        editor.apply();
-    }
-
-    /**
-     * Enregistre un int dans les préférences.
-     *
-     * @param unContext    context d'application
-     * @param idOption     id de l'option
-     * @param valeurOption valeur à enregistrer
-     */
-    public static void setOptionInt(final Context unContext, final int idOption, final String valeurOption) {
-        SharedPreferences mesPrefs = PreferenceManager.getDefaultSharedPreferences(unContext);
-
-        Editor editor = mesPrefs.edit();
-        editor.putString(unContext.getString(idOption), valeurOption);
         editor.apply();
     }
 }
