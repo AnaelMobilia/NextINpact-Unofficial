@@ -544,6 +544,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 for (ArticleItem unArticleEnBdd : mesArticles) {
                     if (unArticleEnBdd.getId() == unArticle.getId()) {
                         save = false;
+                        break;
                     }
                 }
                 if (save) {
@@ -572,8 +573,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         else {
             for (Item unItem : desItems) {
                 // Récupération des commentaires
-                if (unItem instanceof CommentaireItem) {
-                    CommentaireItem unCommentaire = (CommentaireItem) unItem;
+                if (unItem instanceof CommentaireItem unCommentaire) {
                     monDAO.enregistrerCommentaireSiNouveau(unCommentaire);
                     int idArticle = unCommentaire.getIdArticle();
                     // Enregistrer la date de téléchargement
@@ -581,8 +581,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                         long dateRefresh = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
                         monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
                     }
-                } else if (unItem instanceof ArticleItem) {
-                    ArticleItem unArticle = (ArticleItem) unItem;
+                } else if (unItem instanceof ArticleItem unArticle) {
                     // Récupérer les informations sur les commentaires en BDD
                     ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
                     unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
