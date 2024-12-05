@@ -442,22 +442,10 @@ public class ParseurHTML {
                 }
 
                 // Citations - "En réponse à xxx"
-                int parentId = unCommentaire.getInt("parent");
-                if (parentId != 0) {
-                    monCommentaireItem.setIdParent(parentId);
-                }
-
-                // Mis dans une div sinon #246 #151 (Cf ba64faeab9e5fe8f6d2f993777fea378830c323f)
-                // Remplacement des citations "blockquote" par la custom
-                contenuHtml = contenuHtml.replace("<blockquote>", Constantes.TAG_HTML_QUOTE_OPEN);
-                contenuHtml = contenuHtml.replace("</blockquote>", Constantes.TAG_HTML_QUOTE_CLOSE);
-
-                // Gras - ex : **texte**
-                // .*? => .* en mode ungreedy (merci Java :-))
-                contenuHtml = contenuHtml.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
-
-                // Italique - ex : *jekyll <jesaispluslenomdel'argument> ;*
-                contenuHtml = contenuHtml.replaceAll("\\*(.*?)\\*", "<i>$1</i>");
+                //int parentId = unCommentaire.getInt("parent");
+                //if (parentId != 0) {
+                //    monCommentaireItem.setIdParent(parentId);
+                //}
 
                 // Et je le stocke
                 monRetour.add(monCommentaireItem);

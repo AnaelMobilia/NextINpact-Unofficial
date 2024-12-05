@@ -75,7 +75,7 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
         // Format souhaité
         DateFormat dfm = new SimpleDateFormat(Constantes.FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE, Constantes.LOCALE);
 
-        return this.getAuteur() + " " + dfm.format(maDate);
+        return this.getAuteur().replaceAll("(.*) (Abonné|Équipe)(.*)", "$1 ($2) $3") + dfm.format(maDate);
     }
 
     /**

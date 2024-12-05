@@ -99,10 +99,9 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, List<Item>> {
                     monRetour.addAll(ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], idArticle));
                     break;
 
-                // Désormais traité directement dans le bloc du dessus
-                //case Constantes.DOWNLOAD_HTML_COMMENTAIRES:
-                //    monRetour.addAll(ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], idArticle));
-                //    break;
+                case Constantes.DOWNLOAD_HTML_COMMENTAIRES:
+                    monRetour.addAll(ParseurHTML.getCommentaires(datas[Downloader.CONTENT_BODY], idArticle));
+                    break;
 
                 default:
                     if (Constantes.DEBUG) {

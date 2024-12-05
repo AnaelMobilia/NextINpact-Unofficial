@@ -205,21 +205,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
             Log.i("CommentairesActivity", "refreshListeCommentaires()");
         }
 
-        int indiceDernierCommentaire = 0;
         isFinCommentaires = false;
-        // Si j'ai des commentaires, je récupère le nombre de commentaires
-        if (!mesCommentaires.isEmpty()) {
-            indiceDernierCommentaire = mesCommentaires.size();
-        }
 
-        // Quelle est la page à charger (actuelle si pas 10 commentaires, sinon la prochaine)
-        int maPage = (indiceDernierCommentaire / Constantes.NB_COMMENTAIRES_PAR_PAGE) + 1;
-
-        // Création de l'URL
-        String monPath = Constantes.NEXT_URL_COMMENTAIRES + idArticle + Constantes.NEXT_URL_COMMENTAIRES_PARAM_PAGE + maPage;
-
-        // Ma tâche de DL
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, monPath, idArticle, new Authentication());
+        ArticleItem unArticle = monDAO.chargerArticle(idArticle);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, unArticle.getURLseo(), idArticle, new Authentication());
 
         // DEBUG
         if (Constantes.DEBUG) {
@@ -447,7 +436,9 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
     @Override
     public void downloadHTMLFini(String uneURL, List<Item> desItems) {
         // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
-        if ((desItems.size() - 1) < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
+        //if ((desItems.size() - 1) < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
+        // On récupère désormais l'ensemble des commentaires d'un bloc
+        if (true) {
             // Je note qu'il n'y a plus de commentaires
             isFinCommentaires = true;
 
@@ -472,10 +463,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         }
 
         // Chargement de TOUS les commentaires ?
-        if (isChargementTotal) {
-            // Lancement du prochain téléchargement...
-            refreshListeCommentaires();
-        }
+        //if (isChargementTotal) {
+        //    // Lancement du prochain téléchargement...
+        //    refreshListeCommentaires();
+        //}
         // Arrêt des gris-gris en GUI
         finTelechargement();
     }
