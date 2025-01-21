@@ -582,11 +582,8 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                         monDAO.enregistrerDateRefresh(idArticle, dateRefresh);
                     }
                 } else if (unItem instanceof ArticleItem unArticle) {
-                    // Récupérer les informations sur les commentaires en BDD
+                    // Récupérer certaines informations de l'article en BDD
                     ArticleItem articleBdd = monDAO.chargerArticle(unArticle.getId());
-                    unArticle.setNbCommentaires(articleBdd.getNbCommentaires());
-                    unArticle.setIndiceDernierCommLu(articleBdd.getIndiceDernierCommLu());
-                    // Récupérer certaines informations
                     unArticle.setTitre(articleBdd.getTitre());
                     unArticle.setSousTitre(articleBdd.getSousTitre());
                     unArticle.setUrlIllustration(articleBdd.getUrlIllustration());

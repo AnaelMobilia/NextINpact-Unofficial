@@ -321,13 +321,10 @@ public class ItemsAdapter extends BaseAdapter {
                     String texteCommentaires = String.valueOf(ai.getNbCommentaires());
 
                     boolean nbNouveauComm = Constantes.getOptionBoolean(monContext, R.string.idOptionAfficherNbNouveauComm, R.bool.defautOptionAfficherNbNouveauComm);
-                    // Ssi commentaires déjà lus
-                    if (nbNouveauComm && ai.getIndiceDernierCommLu() > 0) {
-                        // Affichage seulement si des nouveaux commentaires
-                        if (ai.getNbCommentairesNonLus() > 0) {
-                            // Insertion dans texte
-                            texteCommentaires += " (+" + ai.getNbCommentairesNonLus() + ")";
-                        }
+                    // Ssi commentaires déjà lus et de nouveaux commentaires
+                    if (nbNouveauComm && ai.getNbCommentairesNonLus() > 0) {
+                        // Insertion dans texte
+                        texteCommentaires += " (+" + ai.getNbCommentairesNonLus() + ")";
                     }
 
                     articleVH.commentairesArticle.setText(texteCommentaires);

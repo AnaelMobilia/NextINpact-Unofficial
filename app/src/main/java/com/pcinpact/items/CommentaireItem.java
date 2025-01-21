@@ -59,6 +59,10 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      * Numéro à afficher (géré directement par la BDD)
      */
     private int numeroAffichage;
+    /**
+     * Le commentaire est-il déjà lu ?
+     */
+    private boolean isLu = false;
 
     @Override
     public int getType() {
@@ -182,5 +186,19 @@ public class CommentaireItem implements Item, Comparable<CommentaireItem> {
      */
     public void setTimestampPublication(long timestampPublication) {
         this.timestampPublication = timestampPublication;
+    }
+
+    /**
+     * @return isLu
+     */
+    public boolean isLu() {
+        return isLu;
+    }
+
+    /**
+     * @param isLu isLu
+     */
+    public void setLu(boolean isLu) {
+        this.isLu = isLu;
     }
 }

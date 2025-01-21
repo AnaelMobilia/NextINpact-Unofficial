@@ -46,6 +46,10 @@ public class ArticleItem implements Item {
      */
     private int nbCommentaires = 0;
     /**
+     * Nombre de commentaires NON LUS de l'article
+     */
+    private int nbCommentairesNonLus = 0;
+    /**
      * URL de la miniature de l'article
      */
     private String urlIllustration;
@@ -66,17 +70,9 @@ public class ArticleItem implements Item {
      */
     private boolean isDlContenuAbonne = false;
     /**
-     * Indice du dernier commentaire lu
-     */
-    private int indiceDernierCommLu = 0;
-    /**
      * URL SEO de l'article
      */
     private String URLseo;
-    /**
-     * Dernier ID de commentaire lors du parsage
-     */
-    private int parseurLastCommentId = 0;
     /**
      * Timestamp de téléchargement
      */
@@ -204,17 +200,22 @@ public class ArticleItem implements Item {
     }
 
     /**
-     * Nb de commentaires non lus
-     *
-     * @return int
+     * @return nbCommentairesNonLus
      */
     public int getNbCommentairesNonLus() {
-        int nbComms = this.getNbCommentaires() - this.getIndiceDernierCommLu();
-        // Prévenir un cas négatif
-        if (nbComms < 0) {
-            nbComms = 0;
+        if (this.isLu) {
+            return nbCommentairesNonLus;
+        } else {
+            // Si un article n'a pas été lu, ses commentaires ne le sont pas plus
+            return 0;
         }
-        return nbComms;
+    }
+
+    /**
+     * @param nbCommentairesNonLus nbCommentairesNonLus
+     */
+    public void setNbCommentairesNonLus(int nbCommentairesNonLus) {
+        this.nbCommentairesNonLus = nbCommentairesNonLus;
     }
 
     /**
@@ -285,34 +286,6 @@ public class ArticleItem implements Item {
      */
     public void setDlContenuAbonne(boolean isDlContenuAbonne) {
         this.isDlContenuAbonne = isDlContenuAbonne;
-    }
-
-    /**
-     * @return Indice du dernier commentaire lu
-     */
-    public int getIndiceDernierCommLu() {
-        return indiceDernierCommLu;
-    }
-
-    /**
-     * @param indiceDernierCommLu Indice du dernier commentaire lu
-     */
-    public void setIndiceDernierCommLu(int indiceDernierCommLu) {
-        this.indiceDernierCommLu = indiceDernierCommLu;
-    }
-
-    /**
-     * @return ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
-     */
-    public int getParseurLastCommentId() {
-        return parseurLastCommentId;
-    }
-
-    /**
-     * @param parseurLastCommentId ID du dernier commentaire retourné par le parseur (-1 <=> pas de commentaires)
-     */
-    public void setParseurLastCommentId(int parseurLastCommentId) {
-        this.parseurLastCommentId = parseurLastCommentId;
     }
 
     /**

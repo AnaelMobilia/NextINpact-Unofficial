@@ -63,14 +63,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      */
     private int idArticle;
     /**
-     * Indice du dernier commentaire lu
-     */
-    private int indiceDernierCommentaireLu;
-    /**
-     * ID du dernier commentaire connu pour l'article
-     */
-    private int idDernierCommentaireArticle;
-    /**
      * ItemAdapter
      */
     private ItemsAdapter monItemsAdapter;
@@ -86,14 +78,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
      * Fin des commentaires ?
      */
     private Boolean isFinCommentaires = false;
-    /**
-     * téléchargement de TOUS les commentaires ?
-     */
-    private Boolean isChargementTotal = false;
-    /**
-     * Réouverture au dernier commentaire lu ?
-     */
-    private Boolean reouverture;
     /**
      * Bouton pour télécharger 10 commentaires en plus
      */
@@ -132,11 +116,8 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Gestion du swipe refresh
         monSwipeRefreshLayout = findViewById(R.id.swipe_container);
         // onRefresh
-        monSwipeRefreshLayout.setOnRefreshListener(() -> {
-            // Chargement de tous les commentaires
-            isChargementTotal = true;
-            refreshListeCommentaires();
-        });
+        // Chargement de tous les commentaires
+        monSwipeRefreshLayout.setOnRefreshListener(this::refreshListeCommentaires);
 
         headerTextView = findViewById(R.id.header_text);
         // Liste des commentaires
@@ -173,10 +154,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // Je charge mes commentaires
         mesCommentaires.addAll(monDAO.chargerCommentairesTriParID(idArticle));
 
-        // Je récupère l'ID du dernier commentaire connu pour cet article
-        ArticleItem monArticle = monDAO.chargerArticle(idArticle);
-        idDernierCommentaireArticle = monArticle.getParseurLastCommentId();
-
         // MàJ de l'affichage
         monItemsAdapter.updateListeItems(mesCommentaires);
         // Je fais remarquer que le contenu à changé
@@ -185,10 +162,16 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         /*
          * Réouverture au dernier commentaire lu
          */
-        reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
-        if (reouverture) {
-            // Réaffichage du dernier commentaire (a-t-il été lu ?)
-            indiceDernierCommentaireLu = monArticle.getIndiceDernierCommLu() - 1;
+        Boolean reouverture = Constantes.getOptionBoolean(getApplicationContext(), R.string.idOptionPositionCommentaire, R.bool.defautOptionPositionCommentaire);
+        // Réaffichage à partir du premier commentaire non lu
+        if (reouverture && !mesCommentaires.isEmpty()) {
+            int indiceDernierCommentaireLu = 0;
+            // Chercher si on a des commentaires déjà lus
+            for (CommentaireItem unCommentaire : mesCommentaires) {
+                if (unCommentaire.isLu()) {
+                    indiceDernierCommentaireLu++;
+                }
+            }
             monListView.setSelection(indiceDernierCommentaireLu);
         }
 
@@ -295,20 +278,20 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
                     }
                 }
 
-                /*
-                 * Gestion de la réouverture au dernier commentaire lu
-                 */
-                // Et qu'on a lu plus de commentaires
-                if (reouverture && lastVisibleItem > indiceDernierCommentaireLu) {
-                    /*
-                     * Enregistrement de l'id du dernier commentaire affiché
-                     */
-                    monDAO.setIndiceDernierCommentaireLu(idArticle, lastVisibleItem);
-                    // Mise à jour de la copie locale
-                    indiceDernierCommentaireLu = lastVisibleItem;
+                // Marquer les commentaires affichés comme lus (réouverture au dernier commentaire lu)
+                // -1 => [0 - n-1] + -1 => "Date dernier rafraichissement"
+                int position = lastVisibleItem - 2;
+                try {
+                    int idCommentaire = mesCommentaires.get(position).getId();
+                    monDAO.setIndiceDernierCommentaireLu(idArticle, idCommentaire);
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.d("CommentairesActivity", "onScroll() - setDernierCommentaireLu(" + idArticle + ", " + lastVisibleItem + ")");
+                        Log.d("CommentairesActivity", "onScroll() - setDernierCommentaireLu(" + idArticle + ", " + idCommentaire + ")");
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("CommentairesActivity", "onScroll() - CRASH setDernierCommentaireLu(" + idArticle + ", xxx) => " + position);
                     }
                 }
 
@@ -336,10 +319,6 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         int id = pItem.getItemId();
         if (id == R.id.action_refresh) {
             // Rafraichir la liste des commentaires
-            // téléchargement de TOUS les commentaires
-            isChargementTotal = true;
-
-            // Lancement du premier chargement
             refreshListeCommentaires();
         } else if (id == R.id.action_debug) {
             // Débug - Affichage du code source HTML
@@ -390,19 +369,10 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         // J'enregistre l'état
         dlInProgress--;
 
-        // Si téléchargement fini ou téléchargement de tous les commentaires
-        if (dlInProgress == 0 || isChargementTotal) {
+        // Si téléchargement fini
+        if (dlInProgress == 0) {
             // Chargement des commentaires triés
             mesCommentaires = monDAO.chargerCommentairesTriParID(idArticle);
-        }
-
-        // Mise à jour de l'ID du dernier commentaire connu de l'article si nécessaire
-        if (!mesCommentaires.isEmpty()) {
-            int idDernierCommentaire = mesCommentaires.get(mesCommentaires.size() - 1).getId();
-            if (idDernierCommentaire > idDernierCommentaireArticle) {
-                monDAO.setIdDernierCommentaireParseur(idArticle, idDernierCommentaire);
-                idDernierCommentaireArticle = idDernierCommentaire;
-            }
         }
 
         // Si plus de téléchargement en cours
@@ -435,38 +405,19 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
 
     @Override
     public void downloadHTMLFini(String uneURL, List<Item> desItems) {
-        // Nombre de commentaires récupérés inférieur à ce qui était demandé => fin du fil de commentaires
-        //if ((desItems.size() - 1) < Constantes.NB_COMMENTAIRES_PAR_PAGE) {
-        // On récupère désormais l'ensemble des commentaires d'un bloc
-        if (true) {
-            // Je note qu'il n'y a plus de commentaires
-            isFinCommentaires = true;
+        // Je note qu'il n'y a plus de commentaires
+        isFinCommentaires = true;
 
-            // Chargement de TOUS les commentaires ?
-            if (isChargementTotal) {
-                // On enlève le marqueur
-                isChargementTotal = false;
-            }
-
-            if (Constantes.DEBUG) {
-                Log.i("CommentairesActivity", "downloadHTMLFini() - fin des commentaires");
-            }
+        if (Constantes.DEBUG) {
+            Log.i("CommentairesActivity", "downloadHTMLFini() - fin des commentaires");
         }
         // Stockage en BDD des nouveaux commentaires
         for (Item unItem : desItems) {
             if (unItem instanceof CommentaireItem) {
                 monDAO.enregistrerCommentaireSiNouveau((CommentaireItem) unItem);
-            } else {
-                // Mettre à jour le nombre total de commentaires
-                monDAO.updateNbCommentairesArticle(idArticle, ((ArticleItem) unItem).getNbCommentaires());
             }
         }
 
-        // Chargement de TOUS les commentaires ?
-        //if (isChargementTotal) {
-        //    // Lancement du prochain téléchargement...
-        //    refreshListeCommentaires();
-        //}
         // Arrêt des gris-gris en GUI
         finTelechargement();
     }
