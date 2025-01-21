@@ -142,7 +142,7 @@ public class Constantes {
     /**
      * Format à utiliser pour l'affichage dans l'application pour les commentaires
      */
-    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = "'le' dd/MM/yyyy 'à' HH:mm:ss";
+    public static final String FORMAT_AFFICHAGE_COMMENTAIRE_DATE_HEURE = " 'le' dd/MM/yyyy 'à' HH:mm:ss";
 
     /*
      * FORMATS D'AFFICHAGE.
