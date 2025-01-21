@@ -157,11 +157,6 @@ public final class DAO extends SQLiteOpenHelper {
     private static final String[] REFRESH__COLONNES = new String[]{REFRESH_TIMESTAMP};
 
     /**
-     * Table cacheImage => plus utilisée (conservé pour la suppression de la table)
-     */
-    private static final String BDD_TABLE_CACHE_IMAGE = "cacheImage";
-
-    /**
      * BDD SQLite
      */
     private static SQLiteDatabase maBDD = null;
@@ -230,7 +225,7 @@ public final class DAO extends SQLiteOpenHelper {
             db.execSQL(reqUpdateFrom9);
             reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_REFRESH + ";";
             db.execSQL(reqUpdateFrom9);
-            reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_CACHE_IMAGE;
+            reqUpdateFrom9 = "DROP TABLE IF EXISTS cacheImage";
             db.execSQL(reqUpdateFrom9);
             // Recréation des tables vierges
             this.onCreate(db);
