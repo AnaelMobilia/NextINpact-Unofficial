@@ -329,7 +329,7 @@ public class ItemsAdapter extends BaseAdapter {
 
                     articleVH.commentairesArticle.setText(texteCommentaires);
                     // Gestion de l'image
-                    if(ai.isBrief()) {
+                    if (ai.isBrief()) {
                         Glide.with(monContext).load(R.drawable.logo_lebrief).into(articleVH.imageArticle);
                     } else {
                         if (checkTelechargementImage(monContext)) {
@@ -371,14 +371,14 @@ public class ItemsAdapter extends BaseAdapter {
 
                     // DEBUG
                     if (Constantes.DEBUG) {
-                        Log.i("ItemsAdapter", "getView() - Commentaire #" + ci.getId());
+                        Log.d("ItemsAdapter", "getView() - Commentaire #" + ci.getId());
                     }
 
                     // Remplissage des textview
                     commentaireVH.auteurDateCommentaire.setText(ci.getAuteurDateCommentaire());
                     commentaireVH.numeroCommentaire.setText(String.valueOf(ci.getNumeroAffichage()));
                     if (Constantes.DEBUG) {
-                        Log.i("ItemsAdapter", "getView() - Commentaire : " + ci.getCommentaire());
+                        Log.d("ItemsAdapter", "getView() - Commentaire : " + ci.getCommentaire());
                     }
 
                     Spanned spannedCommentaire;
@@ -452,7 +452,7 @@ public class ItemsAdapter extends BaseAdapter {
                                 intentZoomImg.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 monContext.startActivity(intentZoomImg);
                                 if (Constantes.DEBUG) {
-                                    Log.i("ItemsAdapter", "getView() - Demande de zoom sur " + imageSource);
+                                    Log.d("ItemsAdapter", "getView() - Demande de zoom sur " + imageSource);
                                 }
                             }
                         }, start, end, flags);

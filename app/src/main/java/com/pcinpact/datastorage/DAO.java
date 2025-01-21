@@ -485,7 +485,7 @@ public final class DAO extends SQLiteOpenHelper {
         // Si je ne l'ai pas récupéré c'est que je peux l'enregistrer en BDD !
         if (testItem.getId() == 0) {
             // Si c'est un commentaire en réponse, charger le commentaire d'origine
-            if(unCommentaire.getIdParent() != 0) {
+            if (unCommentaire.getIdParent() != 0) {
                 CommentaireItem commentaireParent = this.chargerCommentaire(unCommentaire.getIdArticle(), unCommentaire.getIdParent());
 
                 // Citations - "En réponse à xxx"
@@ -523,7 +523,7 @@ public final class DAO extends SQLiteOpenHelper {
     }
 
     /**
-     * Charge tous les commentaires d'un article
+     * Charge tous les commentaires d'un article triés par leur ID
      *
      * @param idArticle ID de l'article concerné
      * @return liste des commentaires
