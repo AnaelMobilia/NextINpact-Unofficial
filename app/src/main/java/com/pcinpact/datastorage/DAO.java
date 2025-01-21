@@ -217,7 +217,7 @@ public final class DAO extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Avec la passage à Next, on recréée totalement la BDD
-        if (oldVersion <= 9) {
+        if (oldVersion <= 11) {
             // Suppression des tables existantes
             String reqUpdateFrom9 = "DROP TABLE IF EXISTS " + BDD_TABLE_ARTICLES + ";";
             db.execSQL(reqUpdateFrom9);
@@ -231,34 +231,6 @@ public final class DAO extends SQLiteOpenHelper {
             this.onCreate(db);
         } else {
             switch (oldVersion) {
-                case 10:
-                    // #314 - Erreur possible sur le onUpgrade() 9 - 11
-                    try {
-                        // Renommage du champ en BDD
-                        String reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " RENAME COLUMN dernierCommentaireLu TO " + ARTICLE_INDICE_DERNIER_COMMENTAIRE_LU + ";";
-                        db.execSQL(reqUpdateFrom10);
-                        // Ajout de l'ID du dernier commentaire retourné par le parseur
-                        reqUpdateFrom10 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_ID_DERNIER_COMMENTAIRE_PARSEUR + " INTEGER;";
-                        db.execSQL(reqUpdateFrom10);
-                    } catch (SQLiteException e) {
-                        if (Constantes.DEBUG) {
-                            Log.e("DAO", "onUpgrade() 10", e);
-                        }
-                    }
-                case 11:
-                    // #314 - Erreur possible sur le onUpgrade() 9 - 11
-                    try {
-                        // Ajout du timestamp de téléchargement
-                        String reqUpdateFrom11 = "ALTER TABLE " + BDD_TABLE_ARTICLES + " ADD COLUMN " + ARTICLE_TIMESTAMP_DL + " INTEGER;";
-                        db.execSQL(reqUpdateFrom11);
-                        // Définir le timestamp de l'article par défaut
-                        reqUpdateFrom11 = "UPDATE " + BDD_TABLE_ARTICLES + " SET " + ARTICLE_TIMESTAMP_DL + " = " + ARTICLE_TIMESTAMP + ";";
-                        db.execSQL(reqUpdateFrom11);
-                    } catch (SQLiteException e) {
-                        if (Constantes.DEBUG) {
-                            Log.e("DAO", "onUpgrade() 11", e);
-                        }
-                    }
                 case 12:
                     try {
                         // Ajout du timestamp de téléchargement
