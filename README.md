@@ -5,7 +5,7 @@
 
 ## Bibliothèques utilisées par le projet :
 
-- [jsoup v1.18.3 - MIT](http://jsoup.org/) : Parsage du code HTML
+- [jsoup v1.20.1 - MIT](http://jsoup.org/) : Parsage du code HTML
 - [PhotoView v2.3.0 - Apache 2.0](https://github.com/Baseflow/PhotoView) : zoom sur les images
 - [Glide v4.16.0 - BSD, part MIT and Apache 2.0](https://github.com/bumptech/glide) : chargement, cache et affichage des images
 - [OkHttp v4.12.0 - Apache 2.0](https://github.com/square/okhttp) : Chargement des données et définition du user-agent utilisé par Glide
