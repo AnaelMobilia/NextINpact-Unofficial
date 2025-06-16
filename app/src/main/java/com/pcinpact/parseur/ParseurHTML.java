@@ -181,7 +181,7 @@ public class ParseurHTML {
                 }
                 contenu += "</h1>";
                 contenu += "<span>";
-                maSelection = unArticle.select("h1[id=next-subtitle-single-post]");
+                maSelection = unArticle.select("h2[id=next-subtitle-single-post]");
                 if (!maSelection.isEmpty()) {
                     contenu += maSelection.get(0).text();
                 }
