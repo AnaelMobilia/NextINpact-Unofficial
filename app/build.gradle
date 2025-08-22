@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        applicationId "com.pcinpact"
+        applicationId 'com.pcinpact'
         // SDK utilisé pour compiler l'application
         compileSdk 35
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
@@ -10,10 +10,10 @@ android {
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
         targetSdkVersion 35
         // Enregistrer la date du build
-        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
+        buildConfigField 'long', 'TIMESTAMP', System.currentTimeMillis() + 'L'
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
         versionCode 291
-        versionName "2.9.1"
+        versionName '2.9.1'
     }
 
     buildTypes {
@@ -38,17 +38,17 @@ android {
         // https://github.com/bumptech/glide/issues/4940
         lintConfig = file("$rootDir/android-lint.xml")
         // Affichage sur stdout des erreurs
-        textOutput file('stdout')
-        textReport true
+        textOutput = file('stdout')
+        textReport = true
     }
-    namespace 'com.pcinpact'
+    namespace = 'com.pcinpact'
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile).tap {
             configureEach {
-                options.compilerArgs << "-Xlint:unchecked"
+                options.compilerArgs << '-Xlint:unchecked'
             }
         }
     }
@@ -85,7 +85,7 @@ java {
 allprojects {
     tasks.withType(JavaCompile).tap {
         configureEach {
-            options.compilerArgs << "-Xlint:deprecation"
+            options.compilerArgs << '-Xlint:deprecation'
         }
     }
 }
