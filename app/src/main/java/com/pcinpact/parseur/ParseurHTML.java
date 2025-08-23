@@ -164,7 +164,7 @@ public class ParseurHTML {
                 }
 
                 // Statut abonné
-                maSelection = unArticle.select("div[id^=next-paywall]");
+                maSelection = unArticle.select("div[id^=next-paywall]:not(div[id=next-comments] div[id^=next-paywall])");
                 if (!maSelection.isEmpty()) {
                     monArticleItem.setAbonne(true);
                     monArticleItem.setDlContenuAbonne(false);
