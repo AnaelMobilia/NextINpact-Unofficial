@@ -1,0 +1,3 @@
+v2.9.2
+- [Fix] Parsage du site web suite à une modification du DOM
+- [Fix] Affichage sur Android 15 et 16
