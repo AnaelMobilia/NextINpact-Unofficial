@@ -78,7 +78,7 @@ public class ParseurHTML {
                 }
 
                 // URL Seo + type (brief / article)
-                maSelection = unArticle.select("h1[class=next-post-title] > a");
+                maSelection = unArticle.select("h2[class=next-post-title] > a");
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).attr("href");
                     monArticleItem.setURLseo(maValeur);
@@ -96,7 +96,7 @@ public class ParseurHTML {
                 }
 
                 // Titre de l'article
-                maSelection = unArticle.select("h1[class=next-post-title]");
+                maSelection = unArticle.select("h2[class=next-post-title]");
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).text();
                     monArticleItem.setTitre(maValeur);
@@ -181,7 +181,7 @@ public class ParseurHTML {
                 contenu += "<span>";
                 maSelection = unArticle.select("h2[id=next-subtitle-single-post]");
                 if (!maSelection.isEmpty()) {
-                    contenu += maSelection.get(0).text();
+                    contenu += "<em>" + maSelection.get(0).text() + "</em>";
                 }
                 contenu += "</span>";
 
