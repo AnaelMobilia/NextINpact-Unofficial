@@ -150,25 +150,6 @@ public class CacheManager {
             }
         }
     }
-
-    /**
-     * Efface tous les fichiers d'un répertoire.
-     *
-     * @param unPath       répertoire
-     * @param startingWith Début du pattern du nom du fichier ("" pour tous les fichiers)
-     */
-    public static void effacerContenuRepertoire(final String unPath, final String startingWith) {
-        File[] mesFichiers = new File(unPath).listFiles();
-
-        if (mesFichiers != null) {
-            for (File unFichier : mesFichiers) {
-                if (unFichier.getName().startsWith(startingWith)) {
-                    // Fichier à effacer
-                    unFichier.delete();
-                }
-            }
-        }
-    }
 }
 
 /**

@@ -38,9 +38,6 @@ public class Authentication {
      * @return boolean
      */
     public boolean isUserAuthenticated() {
-        if (cookie == null || cookie.isEmpty()) {
-            return false;
-        }
-        return true;
+        return cookie != null && !cookie.isEmpty();
     }
 }

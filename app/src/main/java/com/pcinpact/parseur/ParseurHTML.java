@@ -20,6 +20,8 @@ package com.pcinpact.parseur;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.pcinpact.R;
 import com.pcinpact.items.ArticleItem;
 import com.pcinpact.items.CommentaireItem;
@@ -81,11 +83,7 @@ public class ParseurHTML {
                     maValeur = maSelection.get(0).attr("href");
                     monArticleItem.setURLseo(maValeur);
 
-                    if (maValeur.contains(Constantes.NEXT_TYPE_ARTICLES_BRIEF)) {
-                        monArticleItem.setBrief(true);
-                    } else {
-                        monArticleItem.setBrief(false);
-                    }
+                    monArticleItem.setBrief(maValeur.contains(Constantes.NEXT_TYPE_ARTICLES_BRIEF));
                 }
 
                 // URL de l'image d'illustration (seulement pour les articles)
@@ -316,7 +314,7 @@ public class ParseurHTML {
                 // Suppression des attributs sans intérêt pour l'application
                 // Eléments génériques
                 Elements elements = unArticle.select("[^data-],[^aria-]");
-                HashSet<String> attrToRemove = new HashSet<String>();
+                HashSet<String> attrToRemove = new HashSet<>();
                 for (Element element : elements) {
                     // Parcours des attributs
                     for (Attribute attribute : element.attributes()) {
@@ -345,16 +343,18 @@ public class ParseurHTML {
 
                 // Supprimer les commentaires "<!-- wp:paragraph -->"
                 unArticle.filter(new NodeFilter() {
+                    @NonNull
                     @Override
-                    public FilterResult tail(Node node, int depth) {
+                    public FilterResult tail(@NonNull Node node, int depth) {
                         if (node instanceof Comment) {
                             return FilterResult.REMOVE;
                         }
                         return FilterResult.CONTINUE;
                     }
 
+                    @NonNull
                     @Override
-                    public FilterResult head(Node node, int depth) {
+                    public FilterResult head(@NonNull Node node, int depth) {
                         if (node instanceof Comment) {
                             return FilterResult.REMOVE;
                         }
@@ -389,10 +389,9 @@ public class ParseurHTML {
      * Parse les commentaires
      *
      * @param unContenu contenu HTML brut
-     * @param idArticle ID de l'article
      * @return liste de CommentaireItem
      */
-    public static List<CommentaireItem> getCommentaires(final String unContenu, final int idArticle) {
+    public static List<CommentaireItem> getCommentaires(final String unContenu) {
         List<CommentaireItem> monRetour = new ArrayList<>();
 
         try {
