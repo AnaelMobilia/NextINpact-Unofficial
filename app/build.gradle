@@ -2,23 +2,23 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        applicationId 'com.pcinpact'
+        applicationId = 'com.pcinpact'
         // SDK utilisé pour compiler l'application
-        compileSdk 35
+        compileSdk = 36
         // minSdkVersion est la version minimum pour faire tourner l'application (5.0)
         minSdkVersion 21
         // targetSdkVersion est la version la plus élevée testée et fonctionnelle (pas besoin de faire tourner la rétro-compatibilité)
-        targetSdkVersion 35
+        targetSdkVersion 36
         // Enregistrer la date du build
         buildConfigField 'long', 'TIMESTAMP', System.currentTimeMillis() + 'L'
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
-        versionCode 291
-        versionName '2.9.1'
+        versionCode = 291
+        versionName = '2.9.1'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
