@@ -52,13 +52,15 @@ public class ParseurHTML {
      * @param unContenu contenu HTML brut
      * @return liste d'articleItem
      */
-    public static List<ArticleItem> getListeArticles(final String unContenu) {
+    public static List<ArticleItem> getListeArticles(String unContenu) {
         List<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
             // Récupération du HTML
             Document maPage = Jsoup.parse(unContenu);
+            unContenu = null; // Optimisation mémoire
             Elements mesArticles = maPage.select("div[data-post-id]");
+            maPage = null; // Optimisation mémoire
 
             ArticleItem monArticleItem;
             // Pour chaque article
@@ -135,12 +137,13 @@ public class ParseurHTML {
      * @param currentTs Timestamp du téléchargement
      * @return liste d'articleItem
      */
-    public static List<ArticleItem> getContenuArticles(final String unContenu, final long currentTs) {
+    public static List<ArticleItem> getContenuArticles(String unContenu, final long currentTs) {
         List<ArticleItem> mesArticlesItem = new ArrayList<>();
 
         try {
             // Récupération du HTML
             Document maPage = Jsoup.parse(unContenu);
+            unContenu = null; // Optimisation mémoire
             Elements mesArticles = maPage.select("article");
             ArticleItem monArticleItem = new ArticleItem();
 
@@ -158,10 +161,11 @@ public class ParseurHTML {
 
                 // Récupération de la date de mise à jour dans les meta
                 // <meta property="article:modified_time" content="2024-12-02T15:42:58+00:00" />
-                Elements dates = maPage.select("meta[property=article:modified_time]");
-                if (!dates.isEmpty()) {
-                    monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(dates.get(0).attr("content"), Constantes.FORMAT_DATE_MODIF_ARTICLE, false));
+                maSelection = maPage.select("meta[property=article:modified_time]");
+                if (!maSelection.isEmpty()) {
+                    monArticleItem.setTimestampModification(MyDateUtils.convertToTimestamp(maSelection.get(0).attr("content"), Constantes.FORMAT_DATE_MODIF_ARTICLE, false));
                 }
+                maPage = null; // Optimisation mémoire
 
                 // Statut abonné
                 maSelection = unArticle.select("div[id^=next-paywall]:not(div[id=next-comments] div[id^=next-paywall])");
@@ -210,11 +214,11 @@ public class ParseurHTML {
 
                 // NETTOYAGE DU CONTENU
                 // Gestion des iframe
-                Elements lesIframes = unArticle.select("iframe");
+                maSelection = unArticle.select("iframe");
                 // généralisation de l'URL en dehors du scheme
                 String[] schemes = {"https://", "http://", "//"};
                 // Pour chaque iframe
-                for (Element uneIframe : lesIframes) {
+                for (Element uneIframe : maSelection) {
                     // URL du lecteur
                     String urlLecteurBrute = Parser.unescapeEntities(uneIframe.attr("src"), true);
                     String urlLecteur = urlLecteurBrute.toLowerCase(Constantes.LOCALE);
@@ -289,11 +293,11 @@ public class ParseurHTML {
                 }
 
                 // Gestion des videos HTML5
-                Elements lesVideos = unArticle.select("video");
-                for (Element uneVideo : lesVideos) {
-                    String monRemplacement = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
+                maSelection = unArticle.select("video");
+                for (Element uneVideo : maSelection) {
+                    maValeur = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
                     // Je remplace la vidéo par mon contenu
-                    uneVideo.before(monRemplacement);
+                    uneVideo.before(maValeur);
                     uneVideo.remove();
                 }
 
@@ -301,9 +305,9 @@ public class ParseurHTML {
                 //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
                 // <img src=""/>
                 // ...
-                Elements lesImages = unArticle.select(" figure > img[src~=.+]");
+                maSelection = unArticle.select(" figure > img[src~=.+]");
                 // Pour chaque image
-                for (Element uneImage : lesImages) {
+                for (Element uneImage : maSelection) {
                     Element monParent = uneImage.parent();
                     // Remonter l'image au dessus de la figure
                     monParent.before(uneImage);
@@ -313,9 +317,9 @@ public class ParseurHTML {
 
                 // Suppression des attributs sans intérêt pour l'application
                 // Eléments génériques
-                Elements elements = unArticle.select("[^data-],[^aria-]");
+                maSelection = unArticle.select("[^data-],[^aria-]");
                 HashSet<String> attrToRemove = new HashSet<>();
-                for (Element element : elements) {
+                for (Element element : maSelection) {
                     // Parcours des attributs
                     for (Attribute attribute : element.attributes()) {
                         String key = attribute.getKey();
@@ -327,8 +331,8 @@ public class ParseurHTML {
                 }
 
                 // Eléments spécifiques
-                elements = unArticle.select("*");
-                for (Element element : elements) {
+                maSelection = unArticle.select("*");
+                for (Element element : maSelection) {
                     element.removeAttr("alt");
                     element.removeAttr("class");
                     element.removeAttr("rel");
@@ -391,12 +395,13 @@ public class ParseurHTML {
      * @param unContenu contenu HTML brut
      * @return liste de CommentaireItem
      */
-    public static List<CommentaireItem> getCommentaires(final String unContenu) {
+    public static List<CommentaireItem> getCommentaires(String unContenu) {
         List<CommentaireItem> monRetour = new ArrayList<>();
 
         try {
             // Récupération du HTML
             Document maPage = Jsoup.parse(unContenu);
+            unContenu = null; // Optimisation mémoire
             Elements mesCommentaires = maPage.select("div[class=comments-list] > div");
             CommentaireItem monCommentaireItem;
 
@@ -407,9 +412,9 @@ public class ParseurHTML {
                 String maValeur;
 
                 // Récupération de l'ID de l'article
-                Elements articleId = maPage.select("article");
-                if (!articleId.isEmpty()) {
-                    monCommentaireItem.setIdArticle(Integer.parseInt(articleId.get(0).attr("data-post-id")));
+                maSelection = maPage.select("article");
+                if (!maSelection.isEmpty()) {
+                    monCommentaireItem.setIdArticle(Integer.parseInt(maSelection.get(0).attr("data-post-id")));
                 }
 
                 // ID du commentaire
@@ -439,12 +444,6 @@ public class ParseurHTML {
                     maValeur = maSelection.get(0).html();
                     monCommentaireItem.setCommentaire(maValeur);
                 }
-
-                // Citations - "En réponse à xxx"
-                //int parentId = unCommentaire.getInt("parent");
-                //if (parentId != 0) {
-                //    monCommentaireItem.setIdParent(parentId);
-                //}
 
                 // Et je le stocke
                 monRetour.add(monCommentaireItem);
