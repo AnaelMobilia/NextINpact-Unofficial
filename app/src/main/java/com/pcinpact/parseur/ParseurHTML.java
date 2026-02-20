@@ -203,9 +203,8 @@ public class ParseurHTML {
 
                 // Lien vers l'article
                 maValeur = unArticle.attr("data-post-title");
-                contenuFooter += "<br /><br />Article publié sur <a href=\"" + maValeur + "\">" + maValeur + "</a>";
+                contenuFooter += "<br /><br />Article publié sur <a href=\"" + maValeur + "\">" + maValeur + "</a> ";
                 // Date de publication
-                contenuFooter += " le ";
                 maSelection = unArticle.select("p[class=next-single-date-post]");
                 if (!maSelection.isEmpty()) {
                     contenuFooter += maSelection.get(0).text().toLowerCase();
