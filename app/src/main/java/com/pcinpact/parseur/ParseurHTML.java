@@ -348,6 +348,15 @@ public class ParseurHTML {
                     uneImage.remove();
                 }
 
+                // Supprimer le détail des informations des articles liés
+                maSelection = contenuArticle.select("div[class=next-hearts-lists]");
+                for (Element unArticleLie : maSelection) {
+                    // Récupérer le lien vers l'article et l'injecter en remplacement de tout le bloc
+                    Elements detailArticleLie = unArticleLie.select("h1[class=next-post-title]");
+                    unArticleLie.before(detailArticleLie.get(0).html());
+                    unArticleLie.remove();
+                }
+
                 // Suppression des attributs sans intérêt pour l'application
                 maSelection = contenuArticle.select("*");
                 HashSet<String> attrToRemove = new HashSet<>();
