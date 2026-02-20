@@ -336,6 +336,15 @@ public class ParseurHTML {
                     uneImage.attr("src", value);
                 }
 
+                // Mettre en italique le texte des <figcaption>
+                maSelection = contenuArticle.select("figcaption");
+                for (Element unFigCaption : maSelection) {
+                    maValeur = "<em>" + unFigCaption.html() + "</em>";
+                    // Je remplace la vidéo par mon contenu
+                    unFigCaption.before(maValeur);
+                    unFigCaption.remove();
+                }
+
                 // #317 - Supprimer les img vides
                 // <figure>
                 //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
