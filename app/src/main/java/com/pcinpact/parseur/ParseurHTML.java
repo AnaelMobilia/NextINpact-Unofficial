@@ -303,7 +303,20 @@ public class ParseurHTML {
                     uneVideo.remove();
                 }
 
-                // #317 - <figure>
+                // <figure class="aligncenter size-large is-resized"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=75&resize=75&ssl=1 75w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=100&resize=100&ssl=1 100w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=150&resize=150&ssl=1 150w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=240&resize=240&ssl=1 240w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=320&resize=320&ssl=1 320w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=500&resize=500&ssl=1 500w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=640&resize=640&ssl=1 640w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=800&resize=800&ssl=1 800w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1&w=1600&resize=1600&ssl=1 1600w" fifu-data-src="https://i0.wp.com/next.ink/wp-content/uploads/2026/02/idmerit1-1024x573.jpg?ssl=1" alt="" class="wp-image-225514" style="width:650px"/><figcaption class="wp-element-caption">IDmerit vante la sécurité de ses services sur la page d&rsquo;accueil de son site &#8211; capture d&rsquo;écran</figcaption></figure></div>
+                maSelection = contenuArticle.select("img[data-src],img[fifu-data-src]");
+                // Pour chaque image
+                for (Element uneImage : maSelection) {
+                    // 2024-08-20 : nouveau plugin utilisé par Next
+                    String value = uneImage.attr("fifu-data-src");
+                    if ("".equals(value)) {
+                        value = uneImage.attr("data-src");
+                    }
+                    uneImage.attr("src", value);
+                }
+
+                // #317 - Supprimer les img vides
+                // <figure>
                 //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
                 // <img src=""/>
                 // ...
