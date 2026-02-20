@@ -320,14 +320,11 @@ public class ParseurHTML {
                 //  <img width="1024" height="516" sizes="(max-width: 1024px) 100vw, 1024px" src="https://next.ink/wp-content/uploads/2024/03/GJtRM81WQAACGBY-1024x516.png">
                 // <img src=""/>
                 // ...
-                maSelection = unArticle.select(" figure > img[src~=.+]");
+                maSelection = contenuArticle.select("figure > img[src=\"\"]");
                 // Pour chaque image
                 for (Element uneImage : maSelection) {
-                    Element monParent = uneImage.parent();
-                    // Remonter l'image au dessus de la figure
-                    monParent.before(uneImage);
-                    // Effacer la figure (et ses autres enfants <img src=""/>)
-                    monParent.remove();
+                    // Effacer l'image
+                    uneImage.remove();
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
