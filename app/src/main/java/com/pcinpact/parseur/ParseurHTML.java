@@ -215,6 +215,27 @@ public class ParseurHTML {
                 unArticle = null; // Optimisation mémoire
 
                 // NETTOYAGE DU CONTENU
+                // Supprimer les commentaires "<!-- wp:paragraph -->"
+                contenuArticle.filter(new NodeFilter() {
+                    @NonNull
+                    @Override
+                    public FilterResult tail(@NonNull Node node, int depth) {
+                        if (node instanceof Comment) {
+                            return FilterResult.REMOVE;
+                        }
+                        return FilterResult.CONTINUE;
+                    }
+
+                    @NonNull
+                    @Override
+                    public FilterResult head(@NonNull Node node, int depth) {
+                        if (node instanceof Comment) {
+                            return FilterResult.REMOVE;
+                        }
+                        return FilterResult.CONTINUE;
+                    }
+                });
+
                 // Gestion des iframe
                 maSelection = contenuArticle.select("iframe");
                 // généralisation de l'URL en dehors du scheme
@@ -328,62 +349,25 @@ public class ParseurHTML {
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
-                // Eléments génériques
-                maSelection = unArticle.select("[^data-],[^aria-]");
+                maSelection = contenuArticle.select("*");
                 HashSet<String> attrToRemove = new HashSet<>();
                 for (Element element : maSelection) {
-                    // Parcours des attributs
-                    for (Attribute attribute : element.attributes()) {
-                        String key = attribute.getKey();
-                        // Enregistrement des attributs matchant la pattern
-                        if (key.startsWith("data-") || key.startsWith("aria-")) {
-                            attrToRemove.add(key);
+                    for (Attribute unAttribut : element.attributes()) {
+                        // Attributs à conserver
+                        if (!unAttribut.getKey().equals("id") && !unAttribut.getKey().equals("src") && !unAttribut.getKey().equals("href")) {
+                           attrToRemove.add(unAttribut.getKey());
                         }
                     }
-                }
-
-                // Eléments spécifiques
-                maSelection = unArticle.select("*");
-                for (Element element : maSelection) {
-                    element.removeAttr("alt");
-                    element.removeAttr("class");
-                    element.removeAttr("rel");
-                    element.removeAttr("srcset");
-                    element.removeAttr("style");
-                    element.removeAttr("target");
-                    // Suppression des attributs génériques
                     for (String unAttr : attrToRemove) {
                         element.removeAttr(unAttr);
                     }
                 }
 
-                // Supprimer les commentaires "<!-- wp:paragraph -->"
-                unArticle.filter(new NodeFilter() {
-                    @NonNull
-                    @Override
-                    public FilterResult tail(@NonNull Node node, int depth) {
-                        if (node instanceof Comment) {
-                            return FilterResult.REMOVE;
-                        }
-                        return FilterResult.CONTINUE;
-                    }
-
-                    @NonNull
-                    @Override
-                    public FilterResult head(@NonNull Node node, int depth) {
-                        if (node instanceof Comment) {
-                            return FilterResult.REMOVE;
-                        }
-                        return FilterResult.CONTINUE;
-                    }
-                });
-
-                maSelection = unArticle.select("div[id=next-single-post]");
-                if (!maSelection.isEmpty()) {
-                    maValeur = maSelection.get(0).html();
-                    // Elimination des htmlentities (beaucoup de &nbsp;)
-                    contenu += Parser.unescapeEntities(maValeur, true);
-                }
+                // Derniers nettoyages avant insertion en BDD
+                // Suppression des id=""
+                maValeur = contenuArticle.removeAttr("id").html();
+                // Elimination des htmlentities (beaucoup de &nbsp;)
+                contenu += Parser.unescapeEntities(maValeur, true);
 
                 contenu += contenuFooter;
                 contenu += "</article>";
