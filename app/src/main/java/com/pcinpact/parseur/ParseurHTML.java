@@ -211,9 +211,12 @@ public class ParseurHTML {
                 }
                 contenuFooter += "</footer>";
 
+                Element contenuArticle = unArticle.select("div[id=next-single-post]").get(0);
+                unArticle = null; // Optimisation mémoire
+
                 // NETTOYAGE DU CONTENU
                 // Gestion des iframe
-                maSelection = unArticle.select("iframe");
+                maSelection = contenuArticle.select("iframe");
                 // généralisation de l'URL en dehors du scheme
                 String[] schemes = {"https://", "http://", "//"};
                 // Pour chaque iframe
@@ -292,7 +295,7 @@ public class ParseurHTML {
                 }
 
                 // Gestion des videos HTML5
-                maSelection = unArticle.select("video");
+                maSelection = contenuArticle.select("video");
                 for (Element uneVideo : maSelection) {
                     maValeur = "<a href=\"" + uneVideo.absUrl("src") + "\"><img src=\"android.resource://com.pcinpact/drawable/" + R.drawable.iframe_non_supportee + "\" /></a>";
                     // Je remplace la vidéo par mon contenu
