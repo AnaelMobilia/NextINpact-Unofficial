@@ -12,8 +12,8 @@ android {
         // Enregistrer la date du build
         buildConfigField 'long', 'TIMESTAMP', System.currentTimeMillis() + 'L'
         // versionCode est utilisé par Google pour les MàJ, versionName est uniquement affiché à l'utilisateur
-        versionCode = 292
-        versionName = '2.9.2'
+        versionCode = 293
+        versionName = '2.9.3'
     }
 
     buildTypes {
