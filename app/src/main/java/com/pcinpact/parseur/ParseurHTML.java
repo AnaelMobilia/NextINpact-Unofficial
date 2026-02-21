@@ -137,16 +137,11 @@ public class ParseurHTML {
                     }
                 }
 
-                // Nombre de commentaires
+                // Nombre de commentaires (balise non présente si aucun commentaire)
                 maSelection = unArticle.select("span[class=next-total-comment]");
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).text();
                     monArticleItem.setNbCommentaires(Integer.parseInt(maValeur));
-                } else {
-                    // DEBUG
-                    if (Constantes.DEBUG) {
-                        Log.e("ParseurHTML", "getListeArticles() - # commentaires non trouvé : " + unArticle.html());
-                    }
                 }
 
                 mesArticlesItem.add(monArticleItem);
