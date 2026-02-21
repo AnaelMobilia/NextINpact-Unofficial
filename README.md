@@ -3,6 +3,13 @@
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-fr.png" alt="Disponible sur F-Droid" height="100">](https://f-droid.org/packages/com.pcinpact/)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png" alt="Disponible sur Google Play" height="100"/>](https://play.google.com/store/apps/details?id=com.pcinpact)
 
+## Description
+Cette application Android récupère les contenus publiés par [Next](https://next.ink) et les affiche dans l'application.
+
+Le contenu HTML récupéré est parsé et nettoyé afin d'optimiser sa taille et sa vitesse d'affichage.
+
+Les contenus sont stockés lors de la synchronisation, permettant une utilisation "hors-ligne" de l'application.
+
 ## Bibliothèques utilisées par le projet :
 
 - [jsoup - MIT](http://jsoup.org/) : Parsage du code HTML
