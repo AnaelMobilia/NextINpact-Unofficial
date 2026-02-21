@@ -27,6 +27,7 @@ import androidx.preference.PreferenceManager;
 import com.pcinpact.BuildConfig;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -84,6 +85,10 @@ public class Constantes {
      */
     public static final String TAG_HTML_QUOTE_OPEN = "<div><" + Constantes.TAG_HTML_QUOTE + ">";
     public static final String TAG_HTML_QUOTE_CLOSE = "</" + Constantes.TAG_HTML_QUOTE + "></div>";
+    /**
+     * Attributs HTML à conserver sur les contenus à enregistrer
+     */
+    public static final List<String> PARSEUR_HTML_ATTR_A_CONSERVER = List.of("href", "src");
 
     /**
      * Taille (en Mo) du cache sur le disque

@@ -398,7 +398,7 @@ public class ParseurHTML {
                 for (Element element : maSelection) {
                     for (Attribute unAttribut : element.attributes()) {
                         // Attributs à conserver
-                        if (!unAttribut.getKey().equals("id") && !unAttribut.getKey().equals("src") && !unAttribut.getKey().equals("href")) {
+                        if (!Constantes.PARSEUR_HTML_ATTR_A_CONSERVER.contains(unAttribut.getKey())) {
                             attrToRemove.add(unAttribut.getKey());
                         }
                     }
@@ -408,8 +408,7 @@ public class ParseurHTML {
                 }
 
                 // Derniers nettoyages avant insertion en BDD
-                // Suppression des id=""
-                maValeur = contenuArticle.removeAttr("id").html();
+                maValeur = contenuArticle.html();
                 // Elimination des htmlentities (beaucoup de &nbsp;)
                 contenu += Parser.unescapeEntities(maValeur, true);
 
