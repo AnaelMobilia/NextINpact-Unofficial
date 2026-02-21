@@ -77,6 +77,11 @@ public class ParseurHTML {
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).attr("title");
                     monArticleItem.setTimestampPublication(MyDateUtils.convertToTimestamp(maValeur, Constantes.FORMAT_DATE_LISTE_ARTICLES, true));
+                } else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles() - date de publication non trouvée : " + unArticle.html());
+                    }
                 }
 
                 // URL Seo + type (brief / article)
@@ -84,8 +89,12 @@ public class ParseurHTML {
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).attr("href");
                     monArticleItem.setURLseo(maValeur);
-
                     monArticleItem.setBrief(maValeur.contains(Constantes.NEXT_TYPE_ARTICLES_BRIEF));
+                } else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles() - URL SEO + Type non trouvés : " + unArticle.html());
+                    }
                 }
 
                 // URL de l'image d'illustration (seulement pour les articles)
@@ -94,6 +103,11 @@ public class ParseurHTML {
                     if (!maSelection.isEmpty()) {
                         maValeur = maSelection.get(0).attr("src");
                         monArticleItem.setUrlIllustration(maValeur);
+                    } else {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ParseurHTML", "getListeArticles() - URL illustration non trouvée : " + unArticle.html());
+                        }
                     }
                 }
 
@@ -102,13 +116,25 @@ public class ParseurHTML {
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).text();
                     monArticleItem.setTitre(maValeur);
+                } else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles() - titre non trouvé : " + unArticle.html());
+                    }
                 }
 
-                // Sous-titre
-                maSelection = unArticle.select("h2[class=next-post-subtitle]");
-                if (!maSelection.isEmpty()) {
-                    maValeur = maSelection.get(0).text();
-                    monArticleItem.setSousTitre(maValeur);
+                // Sous-titre (seulement pour les articles)
+                if (!monArticleItem.isBrief()) {
+                    maSelection = unArticle.select("h2[class=next-post-subtitle]");
+                    if (!maSelection.isEmpty()) {
+                        maValeur = maSelection.get(0).text();
+                        monArticleItem.setSousTitre(maValeur);
+                    } else {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("ParseurHTML", "getListeArticles() - sous-titre non trouvé : " + unArticle.html());
+                        }
+                    }
                 }
 
                 // Nombre de commentaires
@@ -116,6 +142,11 @@ public class ParseurHTML {
                 if (!maSelection.isEmpty()) {
                     maValeur = maSelection.get(0).text();
                     monArticleItem.setNbCommentaires(Integer.parseInt(maValeur));
+                } else {
+                    // DEBUG
+                    if (Constantes.DEBUG) {
+                        Log.e("ParseurHTML", "getListeArticles() - # commentaires non trouvé : " + unArticle.html());
+                    }
                 }
 
                 mesArticlesItem.add(monArticleItem);
@@ -373,7 +404,7 @@ public class ParseurHTML {
                     for (Attribute unAttribut : element.attributes()) {
                         // Attributs à conserver
                         if (!unAttribut.getKey().equals("id") && !unAttribut.getKey().equals("src") && !unAttribut.getKey().equals("href")) {
-                           attrToRemove.add(unAttribut.getKey());
+                            attrToRemove.add(unAttribut.getKey());
                         }
                     }
                     for (String unAttr : attrToRemove) {
