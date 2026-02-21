@@ -500,7 +500,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
         // Liste des articles et du brief
         String monUrl = Constantes.NEXT_URL_LISTE_ARTICLE + MyDateUtils.formatDate(Constantes.FORMAT_DATE_URL, max(timestampMinArticle, timestampMinBrief));
         monUrl += Constantes.NEXT_URL_LISTE_ARTICLE_END + MyDateUtils.formatDate(Constantes.FORMAT_DATE_URL, MyDateUtils.timeStampNow());
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, monUrl, 0, session);
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES, monUrl, session);
         // Lancement du téléchargement
         launchAHD(monAHD, Constantes.DOWNLOAD_HTML_LISTE_ARTICLES);
     }
@@ -554,11 +554,11 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                 // Téléchargement du contenu
                 AsyncHTMLDownloader monAHD;
                 if (unArticle.isBrief()) {
-                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF, unArticle.getURLseo(), unArticle.getId(), session);
+                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF, unArticle.getURLseo(), session);
                     // Lancement du téléchargement
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_BRIEF);
                 } else {
-                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, unArticle.getURLseo(), unArticle.getId(), session);
+                    monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES, unArticle.getURLseo(), session);
                     // Lancement du téléchargement
                     launchAHD(monAHD, Constantes.DOWNLOAD_HTML_CONTENU_ARTICLES);
                 }

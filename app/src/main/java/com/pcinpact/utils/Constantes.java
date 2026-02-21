@@ -64,7 +64,6 @@ public class Constantes {
     /**
      * Type de données Articles chez Next
      */
-    public static final String NEXT_TYPE_ARTICLES_STANDARD = "post";
     public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief_article";
     /**
      * URL d'authentification.

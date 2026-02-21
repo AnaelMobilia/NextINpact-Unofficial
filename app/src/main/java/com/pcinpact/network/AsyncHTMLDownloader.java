@@ -48,10 +48,6 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, List<Item>> {
      */
     private final int typeHTML;
     /**
-     * ID de l'article lié (DL article ou commentaires)
-     */
-    private final int idArticle;
-    /**
      * Session Next
      */
     private final Authentication session;
@@ -62,16 +58,14 @@ public class AsyncHTMLDownloader extends AsyncTask<String, Void, List<Item>> {
      * @param parent      parent à callback à la fin
      * @param unType      type de la ressource (Cf Constantes.TYPE_)
      * @param uneURL      URL de la ressource à télécharger
-     * @param unIdArticle ID de l'article
      * @param uneSession  Session Next
      */
-    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final int unIdArticle, final Authentication uneSession) {
+    public AsyncHTMLDownloader(final RefreshDisplayInterface parent, final int unType, final String uneURL, final Authentication uneSession) {
         // Mappage des attributs de cette requête
         // On peut se permettre de perdre le parent
         monParent = new WeakReference<>(parent);
         URL = uneURL;
         typeHTML = unType;
-        idArticle = unIdArticle;
         session = uneSession;
     }
 

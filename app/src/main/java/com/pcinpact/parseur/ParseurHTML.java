@@ -356,7 +356,7 @@ public class ParseurHTML {
                 for (Element uneImage : maSelection) {
                     // 2024-08-20 : nouveau plugin utilisé par Next
                     String value = uneImage.attr("fifu-data-src");
-                    if ("".equals(value)) {
+                    if (value.isEmpty()) {
                         value = uneImage.attr("data-src");
                     }
                     uneImage.attr("src", value);

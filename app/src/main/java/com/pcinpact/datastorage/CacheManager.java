@@ -28,7 +28,6 @@ import com.pcinpact.items.ArticleItem;
 import com.pcinpact.utils.Constantes;
 import com.pcinpact.utils.MyDateUtils;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
 

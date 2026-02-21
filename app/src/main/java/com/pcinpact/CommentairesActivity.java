@@ -191,7 +191,7 @@ public class CommentairesActivity extends AppCompatActivity implements RefreshDi
         isFinCommentaires = false;
 
         ArticleItem unArticle = monDAO.chargerArticle(idArticle);
-        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, unArticle.getURLseo(), idArticle, new Authentication());
+        AsyncHTMLDownloader monAHD = new AsyncHTMLDownloader(this, Constantes.DOWNLOAD_HTML_COMMENTAIRES, unArticle.getURLseo(), new Authentication());
 
         // DEBUG
         if (Constantes.DEBUG) {
