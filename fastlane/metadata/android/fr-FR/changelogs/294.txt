@@ -1,0 +1,3 @@
+v2.9.4
+- [Fix] Authentification pour les contenus abonnés
+- [Improvement] Meilleur nettoyage du code HTML des commentaires

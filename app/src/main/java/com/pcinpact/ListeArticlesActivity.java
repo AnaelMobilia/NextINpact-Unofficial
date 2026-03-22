@@ -599,7 +599,7 @@ public class ListeArticlesActivity extends AppCompatActivity implements RefreshD
                     // Conserver le contenu complet d'un article Abonné déjà téléchargé
                     if (unArticle.isAbonne() && articleBdd.isDlContenuAbonne()) {
                         unArticle.setContenu(articleBdd.getContenu());
-                        unArticle.setDlContenuAbonne(articleBdd.isDlContenuAbonne());
+                        unArticle.setDlContenuAbonne(true);
                     }
                     // Enregistrer en BDD l'article
                     monDAO.enregistrerArticle(unArticle);
