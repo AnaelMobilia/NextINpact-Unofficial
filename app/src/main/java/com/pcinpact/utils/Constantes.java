@@ -70,7 +70,7 @@ public class Constantes {
      * URL d'authentification.
      */
     public static final String NEXT_URL_PRE_AUTH = NEXT_URL + "login/";
-    public static final String NEXT_URL_AUTH = NEXT_URL + "wp-admin/admin-ajax.php?action=ajaxlogin";
+    public static final String NEXT_URL_AUTH = NEXT_URL + "wp-json/bifrost/v1/auth/login";
 
     /**
      * Timeout pour les téléchargements (en ms) - default = 10s.

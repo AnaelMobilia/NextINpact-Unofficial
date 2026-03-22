@@ -23,6 +23,8 @@ import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,8 +34,8 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -135,11 +137,18 @@ public class Downloader {
                 }
 
                 if (!key.isEmpty()) {
-                    RequestBody body = new FormBody.Builder()
-                            .add(Constantes.AUTHENTIFICATION_USERNAME, username)
-                            .add(Constantes.AUTHENTIFICATION_PASSWORD, password)
-                            .add(Constantes.AUTHENTIFICATION_KEY, key)
-                            .build();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put(Constantes.AUTHENTIFICATION_USERNAME, username);
+                        jsonObject.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
+                    } catch (JSONException e) {
+                        // DEBUG
+                        if (Constantes.DEBUG) {
+                            Log.e("Downloader", "connexionAbonne() - JSONException", e);
+                        }
+                    }
+                    MediaType JSON = MediaType.get("application/json");
+                    RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
 
                     // Requête d'authentification
                     monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
