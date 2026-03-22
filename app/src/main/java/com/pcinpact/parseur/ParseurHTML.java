@@ -480,8 +480,21 @@ public class ParseurHTML {
                 // Contenu
                 maSelection = unCommentaire.select("div[class=comment-content]");
                 if (!maSelection.isEmpty()) {
-                    maValeur = maSelection.get(0).html();
-                    monCommentaireItem.setCommentaire(maValeur);
+                    // Suppression des attributs sans intérêt pour l'application
+                    maSelection = maSelection.select("*");
+                    HashSet<String> attrToRemove = new HashSet<>();
+                    for (Element element : maSelection) {
+                        for (Attribute unAttribut : element.attributes()) {
+                            // Attributs à conserver
+                            if (!Constantes.PARSEUR_HTML_ATTR_A_CONSERVER.contains(unAttribut.getKey())) {
+                                attrToRemove.add(unAttribut.getKey());
+                            }
+                        }
+                        for (String unAttr : attrToRemove) {
+                            element.removeAttr(unAttr);
+                        }
+                    }
+                    monCommentaireItem.setCommentaire(maSelection.get(0).html());
                 }
 
                 // Et je le stocke
