@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
+import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -114,12 +115,20 @@ public class Downloader {
     public static Authentication connexionAbonne(final String username, final String password) {
         Authentication monAuthentication = new Authentication();
         try {
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).callTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
+                    .callTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
+                    .readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
+                    .writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
+                    .build();
             String key = "";
 
             // Récupération de la clef de sécurité sur la page d'authentification
             HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_PRE_AUTH);
-            Request request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).build();
+            Request request = new Request.Builder()
+                    .url(monURL)
+                    .header("User-Agent", Constantes.getUserAgent())
+                    .build();
             // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
             TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
@@ -152,7 +161,11 @@ public class Downloader {
 
                     // Requête d'authentification
                     monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
-                    request = new Request.Builder().url(monURL).header("User-Agent", Constantes.getUserAgent()).post(body).build();
+                    request = new Request.Builder()
+                            .url(monURL)
+                            .header("User-Agent", Constantes.getUserAgent())
+                            .post(body)
+                            .build();
 
                     // DEBUG
                     if (Constantes.DEBUG) {
@@ -169,6 +182,10 @@ public class Downloader {
                     if (response.isSuccessful()) {
                         // Je passe en revue les cookies retournés
                         for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
+                            // DEBUG
+                            if (Constantes.DEBUG) {
+                                Log.d("Downloader", "connexionAbonne() - Cookie : " + unCookie.name());
+                            }
                             // Si c'est le bon cookie :-)
                             if (unCookie.name().startsWith(Constantes.AUTHENTIFICATION_COOKIE_AUTH)) {
                                 monAuthentication.setCookie(unCookie.name() + "=" + unCookie.value());
