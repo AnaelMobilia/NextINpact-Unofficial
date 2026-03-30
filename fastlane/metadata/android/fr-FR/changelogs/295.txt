@@ -1,0 +1,2 @@
+v2.9.5
+- [Fix] Authentification pour les contenus abonnés
