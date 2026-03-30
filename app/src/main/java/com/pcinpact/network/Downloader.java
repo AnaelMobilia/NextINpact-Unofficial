@@ -120,11 +120,12 @@ public class Downloader {
                     .callTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
                     .readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
                     .writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
+                    .followRedirects(false)
                     .build();
             String key = "";
 
             // Récupération de la clef de sécurité sur la page d'authentification
-            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_PRE_AUTH);
+            HttpUrl monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
             Request request = new Request.Builder()
                     .url(monURL)
                     .header("User-Agent", Constantes.getUserAgent())
@@ -146,18 +147,12 @@ public class Downloader {
                 }
 
                 if (!key.isEmpty()) {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put(Constantes.AUTHENTIFICATION_USERNAME, username);
-                        jsonObject.put(Constantes.AUTHENTIFICATION_PASSWORD, password);
-                    } catch (JSONException e) {
-                        // DEBUG
-                        if (Constantes.DEBUG) {
-                            Log.e("Downloader", "connexionAbonne() - JSONException", e);
-                        }
-                    }
-                    MediaType JSON = MediaType.get("application/json");
-                    RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
+                    RequestBody body = new FormBody.Builder()
+                            .add(Constantes.AUTHENTIFICATION_KEY, key)
+                            .add("bifrost_auth_action", "login")
+                            .add(Constantes.AUTHENTIFICATION_USERNAME, username)
+                            .add(Constantes.AUTHENTIFICATION_PASSWORD, password)
+                            .build();
 
                     // Requête d'authentification
                     monURL = HttpUrl.parse(Constantes.NEXT_URL_AUTH);
@@ -179,7 +174,7 @@ public class Downloader {
                     response = client.newCall(request).execute();
 
                     // Authentification OK
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful() || response.isRedirect()) {
                         // Je passe en revue les cookies retournés
                         for (Cookie unCookie : Cookie.parseAll(monURL, response.headers())) {
                             // DEBUG

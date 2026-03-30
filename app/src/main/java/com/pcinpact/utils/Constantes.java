@@ -69,8 +69,7 @@ public class Constantes {
     /**
      * URL d'authentification.
      */
-    public static final String NEXT_URL_PRE_AUTH = NEXT_URL + "login/";
-    public static final String NEXT_URL_AUTH = NEXT_URL + "wp-json/bifrost/v1/auth/login";
+    public static final String NEXT_URL_AUTH = NEXT_URL + "auth/login/";
 
     /**
      * Timeout pour les téléchargements (en ms) - default = 10s.
@@ -204,7 +203,7 @@ public class Constantes {
     /**
      * Token présent dans la page d'authentification (anti bruteforce)
      */
-    public static final String AUTHENTIFICATION_KEY = "security";
+    public static final String AUTHENTIFICATION_KEY = "_wpnonce";
     /**
      * Nom du cookie retourné à l'authentification.
      */
