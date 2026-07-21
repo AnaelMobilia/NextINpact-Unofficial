@@ -13,9 +13,9 @@ jobs:
           java-version: '17'
       - name: Build the app
         run: |
-          wget https://services.gradle.org/distributions/gradle-9.1.0-bin.zip
-          unzip gradle-9.1.0-bin.zip
-          export GRADLE_HOME=$PWD/gradle-9.1.0
+          wget https://services.gradle.org/distributions/gradle-9.6.1-bin.zip
+          unzip gradle-9.6.1-bin.zip
+          export GRADLE_HOME=$PWD/gradle-9.6.1
           export PATH=$GRADLE_HOME/bin:$PATH
           gradle -v
           gradle build --warning-mode all
