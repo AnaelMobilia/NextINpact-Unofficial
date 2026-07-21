@@ -60,12 +60,12 @@ public class Constantes {
      */
     public static final String NEXT_URL_LISTE_ARTICLE = NEXT_URL + "?begin=";
     public static final String NEXT_URL_LISTE_ARTICLE_END = "&end=";
-    // Les briefs sont remontés dans la liste des autre articles
+    // Les briefs sont remontés dans la liste des autres articles
     public static final String NEXT_URL_LISTE_ARTICLE_BRIEF = NEXT_URL + "xxx";
     /**
      * Type de données Articles chez Next
      */
-    public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief_article";
+    public static final String NEXT_TYPE_ARTICLES_BRIEF = "brief-article";
     /**
      * URL d'authentification.
      */
