@@ -1,0 +1,2 @@
+v2.9.6
+- [Fix] Détection des contenus du brief
