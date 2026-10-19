@@ -419,7 +419,7 @@ public class ParseurHTML {
                 // Et je le stocke
                 mesArticlesItem.add(monArticleItem);
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException|IndexOutOfBoundsException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getContenuArticles() - Crash ", e);
@@ -500,7 +500,7 @@ public class ParseurHTML {
                 // Et je le stocke
                 monRetour.add(monCommentaireItem);
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException|IndexOutOfBoundsException e) {
             // DEBUG
             if (Constantes.DEBUG) {
                 Log.e("ParseurHTML", "getCommentaires() - Crash HTML", e);
