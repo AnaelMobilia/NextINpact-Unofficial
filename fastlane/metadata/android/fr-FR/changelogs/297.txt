@@ -1,0 +1,2 @@
+v2.9.7
+- [Fix] Certains articles n'ont pas de contenu
