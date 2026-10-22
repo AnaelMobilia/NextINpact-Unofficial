@@ -18,13 +18,10 @@
  */
 package com.pcinpact.network;
 
-import android.net.TrafficStats;
 import android.util.Log;
 
 import com.pcinpact.utils.Constantes;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -36,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cookie;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -68,7 +64,13 @@ public class Downloader {
             if (Constantes.DEBUG) {
                 Log.d("Downloader", "download() - Lancement connexion");
             }
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS).callTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).writeTimeout(timeout, TimeUnit.MILLISECONDS).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .callTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .writeTimeout(timeout, TimeUnit.MILLISECONDS)
+                    .eventListener(new OkHttpTrafficStatsEventListener().getEventListener())
+                    .build();
             Request request;
             // Pas de token
             if (!uneSession.isUserAuthenticated()) {
@@ -76,8 +78,6 @@ public class Downloader {
             } else {
                 request = new Request.Builder().url(uneURL).header("User-Agent", Constantes.getUserAgent()).addHeader("cookie", uneSession.getCookie()).build();
             }
-            // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
-            TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
 
             // Gestion d'un code erreur
@@ -121,6 +121,7 @@ public class Downloader {
                     .readTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
                     .writeTimeout(Constantes.TIMEOUT_CONTENU, TimeUnit.MILLISECONDS)
                     .followRedirects(false)
+                    .eventListener(new OkHttpTrafficStatsEventListener().getEventListener())
                     .build();
             String key = "";
 
@@ -130,8 +131,6 @@ public class Downloader {
                     .url(monURL)
                     .header("User-Agent", Constantes.getUserAgent())
                     .build();
-            // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
-            TrafficStats.setThreadStatsTag(1);
             Response response = client.newCall(request).execute();
             String responseContent = response.body().string();
 
@@ -169,8 +168,6 @@ public class Downloader {
                         Log.d("Downloader", "connexionAbonne() - Requête : " + request + " - Body : " + buffer.readUtf8());
                     }
 
-                    // Fix UntaggedSocketViolation: Untagged socket detected; use TrafficStats.setThreadSocketTag() to track all network usage
-                    TrafficStats.setThreadStatsTag(1);
                     response = client.newCall(request).execute();
 
                     // Authentification OK
