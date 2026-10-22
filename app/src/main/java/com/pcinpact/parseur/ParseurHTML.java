@@ -388,8 +388,10 @@ public class ParseurHTML {
                 for (Element unArticleLie : maSelection) {
                     // Récupérer le lien vers l'article et l'injecter en remplacement de tout le bloc
                     Elements detailArticleLie = unArticleLie.select("h1[class=next-post-title]");
-                    unArticleLie.before(detailArticleLie.get(0).html());
-                    unArticleLie.remove();
+                    if(!detailArticleLie.isEmpty()) {
+                        unArticleLie.before(detailArticleLie.get(0).html());
+                        unArticleLie.remove();
+                    }
                 }
 
                 // Suppression des attributs sans intérêt pour l'application
