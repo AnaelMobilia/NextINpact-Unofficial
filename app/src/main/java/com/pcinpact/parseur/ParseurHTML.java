@@ -387,7 +387,7 @@ public class ParseurHTML {
                 maSelection = contenuArticle.select("div[class=next-hearts-lists]");
                 for (Element unArticleLie : maSelection) {
                     // Récupérer le lien vers l'article et l'injecter en remplacement de tout le bloc
-                    Elements detailArticleLie = unArticleLie.select("h1[class=next-post-title]");
+                    Elements detailArticleLie = unArticleLie.select("h1,h2,h3,h4,h5,h6[class=next-post-title]");
                     if(!detailArticleLie.isEmpty()) {
                         unArticleLie.before(detailArticleLie.get(0).html());
                         unArticleLie.remove();
